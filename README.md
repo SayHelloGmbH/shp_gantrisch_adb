@@ -14,8 +14,8 @@ The code in the _vendor/parks_api_ subfolder is provided by Schweizer Pärke. Do
 version [here](https://angebote.paerke.ch/de/settings).
 
 When the plugin is first installed, you will need to manually create the database tables using the
-SQL script in vendor/parks*api/database/database.sql. You can use WP CLI for this: `wp db import database.sql`.
-Then call the API script in the browser (see \_Manual Update* below.)
+SQL script in _vendor/parks_api/database/database.sql_. You can use WP CLI for this: `wp db import database.sql`.
+Then call the API script in the browser (see **Manual Update** below.)
 
 ### Version
 
