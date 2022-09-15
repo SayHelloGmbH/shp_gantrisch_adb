@@ -11,7 +11,9 @@
 
 set_time_limit(1200); // twenty minutes, easily enough
 
-require $_SERVER['DOCUMENT_ROOT'] . '/wp-blog-header.php';
+if (!defined('DB_HOST')) {
+	require $_SERVER['DOCUMENT_ROOT'] . '/wp-config.php';
+}
 
 $config = array();
 
