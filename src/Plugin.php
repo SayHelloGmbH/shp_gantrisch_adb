@@ -82,6 +82,7 @@ class Plugin
 		$this->loadClasses(
 			[
 				Package\Fetch::class,
+				Plugin\ACF::class,
 			]
 		);
 
