@@ -3,7 +3,7 @@
  * Plugin Name:       Angebotsdatenbank Naturpark Gantrisch
  * Plugin URI:        https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/
  * Description:       Plugin für die Ausgabe der Angebote auf der Website vom Naturpark Gantrisch.
- * Author:            Mark Howells-Mead (mark@sayhello.ch)
+ * Author:            Say Hello GmbH
  * Version:           0.0.0
  * Author URI:        https://sayhello.ch/
  * Text Domain:       shp_gantrisch_adb
