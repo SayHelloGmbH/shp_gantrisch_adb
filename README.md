@@ -1,8 +1,8 @@
-# Agebotsdatenbank Naturpark Gantrisch
+# Angebotsdatenbank Naturpark Gantrisch
 
 ## Description
 
-Plugin für die Ausgabe der Angebote auf der Website vom Naturpark Gantrisch.
+Plugin für die Ausgabe der Angebote auf der Website des Naturparks Gantrisch.
 
 ## Usage
 
