@@ -76,6 +76,8 @@ class Plugin
 	 */
 	private function run()
 	{
+		register_activation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'activation']);
+		register_deactivation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'deactivation']);
 
 		// Load individual pattern classes which contain
 		// grouped functionality. E.g. everything to do with a post type.
@@ -89,6 +91,16 @@ class Plugin
 		);
 
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
+	}
+
+	public function activation()
+	{
+		flush_rewrite_rules(true);
+	}
+
+	public function deactivation()
+	{
+		flush_rewrite_rules(false);
 	}
 
 	/**
