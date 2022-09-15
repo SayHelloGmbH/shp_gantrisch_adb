@@ -9,6 +9,8 @@ class Plugin
 	public $prefix = '';
 	public $version = '';
 	public $file = '';
+	public $path = '';
+	public $url = '';
 
 	/**
 	 * Loads and initializes the provided classes.
@@ -60,6 +62,8 @@ class Plugin
 			self::$instance->prefix = 'shp_gantrisch_adb';
 			self::$instance->version = $data['Version'];
 			self::$instance->file = $file;
+			self::$instance->path = plugin_dir_path($file);
+			self::$instance->url = plugin_dir_url($file);
 
 			self::$instance->run();
 		}
@@ -77,7 +81,7 @@ class Plugin
 		// grouped functionality. E.g. everything to do with a post type.
 		$this->loadClasses(
 			[
-				// Pattern\Example::class,
+				Package\Fetch::class,
 			]
 		);
 
