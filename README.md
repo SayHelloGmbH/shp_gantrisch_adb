@@ -26,7 +26,7 @@ The current API version is 16. (Installed 15.9.2022)
 The cron file _shp_gantrisch_adb/vendor/parks_api/scripts/cron.php_ is called by a custom CRON
 task (which is registered when the plugin is activated). This is forcibly set to run at 1 a.m.
 every day. The script synchronises the custom database table content with the version from the remote
-API.
+API. The full path to the file is passed to a PHP cURL request.
 
 ### Configuration
 
