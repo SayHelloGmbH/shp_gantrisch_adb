@@ -83,6 +83,8 @@ class Plugin
 		// grouped functionality. E.g. everything to do with a post type.
 		$this->loadClasses(
 			[
+				Blocks\OfferSingle\Block::class,
+
 				Package\Fetch::class,
 				Package\Rewrites::class,
 

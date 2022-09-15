@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-single",
+	"title": "ADB Offer single",
+	"category": "media",
+	"icon": "format-image",
+	"description": "",
+	"keywords": ["offer", "angebot"],
+	"version": "0.0.0",
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js"
+}

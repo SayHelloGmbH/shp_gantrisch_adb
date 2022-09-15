@@ -1,0 +1,60 @@
+{
+	"name": "shp_gantrisch_adb",
+	"description": "A plugin containing some blocks.",
+	"main": "gulpfile.babel.js",
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@bitbucket.org/sayhellogmbh/shp_gantrisch_adb.git"
+	},
+	"author": "Say Hello GmbH",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/issues"
+	},
+	"homepage": "https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb#readme",
+	"dependencies": {
+		"@babel/core": "^7.19.0",
+		"@babel/preset-env": "^7.19.0",
+		"@babel/preset-react": "^7.18.6",
+		"@babel/register": "^7.18.9",
+		"@wordpress/dependency-extraction-webpack-plugin": "^4.0.0",
+		"babel-loader": "^8.2.5",
+		"chokidar": "^3.5.3",
+		"css-loader": "^6.7.1",
+		"fs": "^0.0.1-security",
+		"fsevents": "^2.3.2",
+		"glob": "^8.0.3",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^8.0.0",
+		"gulp-clean-css": "^4.3.0",
+		"gulp-editor-styles": "^1.0.1",
+		"gulp-filter": "^7.0.0",
+		"gulp-livereload": "^4.0.2",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^5.1.0",
+		"gulp-sass-import-json": "^1.0.2",
+		"gulp-sourcemaps": "^3.0.0",
+		"gulp-uglify": "^3.0.2",
+		"sass": "^1.54.8",
+		"sass-loader": "^13.0.2",
+		"style-loader": "^3.3.1",
+		"webpack-stream": "^7.0.0"
+	},
+	"scripts": {
+		"start": "gulp"
+	},
+	"babel": {
+		"presets": [
+			"@babel/env",
+			"@babel/preset-react"
+		]
+	},
+	"browserslist": [
+		"> 1%",
+		"not IE 11"
+	],
+	"engines": {
+		"node": "v16.13.2",
+		"npm": "8.18.0"
+	}
+}
