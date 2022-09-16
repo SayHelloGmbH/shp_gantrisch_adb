@@ -103,7 +103,7 @@ class Offer
 			return null;
 		}
 
-		return esc_html($data->title);
+		return strip_tags($data->title);
 	}
 
 	public function getOfferKeywords(int $offer_id)
@@ -114,7 +114,8 @@ class Offer
 			return null;
 		}
 
-		return explode(' ', $data->keywords);
+		$data->keywords = explode(PHP_EOL, $data->keywords);
+		return array_map('strip_tags', $data->keywords);
 	}
 
 	/**
