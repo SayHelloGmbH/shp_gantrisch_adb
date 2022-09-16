@@ -8,11 +8,12 @@ class Block
 {
 
 	private $query_var = 'adb_offer_id';
+	private $model = null;
 
 	public function run()
 	{
+		$this->model = shp_gantrisch_adb_get_instance()->Model->Offer;
 		add_action('init', [$this, 'register']);
-		add_action('template_redirect', [$this, 'handleInvalidSingle']);
 	}
 
 	public function register()
@@ -37,32 +38,35 @@ class Block
 			$align = "align{$align}";
 		}
 
-		ob_start();
+		$offer = $this->model->getOffer((int) $offer_id);
+
+		if (!$offer) {
+			ob_start();
 ?>
+			<div class="<?php echo $classNameBase; ?>">
+				<div class="c-message c-message--error">
+					<p><?php _ex('Sorry, no matching offer found.', 'Frontend error message', 'shp_gantrisch_adb'); ?></p>
+				</div>
+			</div>
+		<?php
+			$html = ob_get_contents();
+			ob_end_clean();
+
+			return $html;
+		}
+
+		ob_start();
+
+		?>
 		<div class="<?php echo $classNameBase; ?> <?php echo $align; ?>">
-
+			<?php
+			dump($offer);
+			?>
 		</div>
-
-
 <?php
 		$html = ob_get_contents();
 		ob_end_clean();
 
 		return $html;
-	}
-
-	/**
-	 * Handle requests for an invalid single request
-	 * e.g. request with no ID or with an invalid ID
-	 *
-	 * @return void
-	 */
-	public function handleInvalidSingle()
-	{
-		$single_id = preg_replace('/[^0-9]/', '', get_query_var($this->query_var));
-
-		if (!(int) $single_id && has_block('shp/gantrisch-adb-offer-single')) {
-			header("HTTP/1.1 404 Not Found");
-		}
 	}
 }

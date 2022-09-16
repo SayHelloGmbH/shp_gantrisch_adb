@@ -81,15 +81,18 @@ class Plugin
 
 		// Load individual pattern classes which contain
 		// grouped functionality. E.g. everything to do with a post type.
+		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
-				Blocks\OfferSingle\Block::class,
+				Controller\Offer::class,
 				Model\Offer::class,
 
 				Package\Fetch::class,
 				Package\Rewrites::class,
 
 				Plugin\ACF::class,
+
+				Blocks\OfferSingle\Block::class,
 			]
 		);
 

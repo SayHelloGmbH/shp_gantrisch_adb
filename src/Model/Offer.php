@@ -6,7 +6,26 @@ class Offer
 {
 	private $locale = 'de_CH';
 	private $language = 'de';
+	private $cache = true;
 
+	/**
+	 * Individual data sets will be cached for a short
+	 * time, so that multiple blocks can make multiple
+	 * data requests in the same stream without
+	 * firing multiple database queries.
+	 *
+	 * Each entry is in seconds unless otherwise noted.
+	 *
+	 * @var array
+	 */
+	private $transient_lives = ['single' => 10];
+
+	/**
+	 * Which languages are available in the data which
+	 * is delivered by the remote API?
+	 *
+	 * @var array
+	 */
 	private $supported_languages = [
 		'de', 'fr', 'it', 'en'
 	];
@@ -21,6 +40,7 @@ class Offer
 
 	public function __construct()
 	{
+		$this->cache = defined('WP_DEBUG') && WP_DEBUG;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 
@@ -28,6 +48,10 @@ class Offer
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
 		}
+	}
+
+	public function run()
+	{
 	}
 
 	/**
@@ -40,20 +64,35 @@ class Offer
 	 */
 	public function getOffer(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = %s and offer.offer_id = i18n.offer_id and i18n.language = %s", $offer_id, $this->language);
 
-		$results = $wpdb->get_results($sql);
+		$transient_key = "shp_gantrisch_adb_offer_{$offer_id}";
+		$cached_result = get_transient($transient_key);
 
-		if (empty($results)) {
-			return [];
+		if (empty($cached_result) || !$this->cache) {
+			global $wpdb;
+			$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = %s and offer.offer_id = i18n.offer_id and i18n.language = %s", $offer_id, $this->language);
+
+			$results = $wpdb->get_results($sql);
+
+			if (empty($results)) {
+				return null;
+			}
+
+			$result = $results[0];
+			if (!empty($result)) {
+				set_transient($transient_key, $result, $this->transient_lives['single']);
+			}
 		}
 
-		unset($results[0]->park);
-		unset($results[0]->park_id);
-		unset($results[0]->route_url);
+		if (empty($result)) {
+			return null;
+		}
 
-		return $results[0];
+		unset($result->park);
+		unset($result->park_id);
+		unset($result->route_url);
+
+		return $result;
 	}
 
 	/**
