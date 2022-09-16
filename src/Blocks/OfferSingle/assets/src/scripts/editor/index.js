@@ -17,7 +17,7 @@ registerBlockType(block_name, {
 					className={'c-editormessage c-editormessage--info'}
 					dangerouslySetInnerHTML={{
 						__html: _x(
-							'Placeholder for single offer content. The actual content will be loaded dynamically by passing the offer-id to the page on which this block has been placed.',
+							'Placeholder for single offer content.',
 							'Editor message',
 							'shp_gantrisch_adb'
 						),

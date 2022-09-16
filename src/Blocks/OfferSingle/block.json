@@ -5,7 +5,7 @@
 	"title": "ADB Offer single",
 	"category": "media",
 	"icon": "format-image",
-	"description": "",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed",
 	"keywords": ["offer", "angebot"],
 	"version": "0.0.0",
 	"textdomain": "shp_gantrisch_adb",
