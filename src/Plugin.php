@@ -84,6 +84,7 @@ class Plugin
 		$this->loadClasses(
 			[
 				Blocks\OfferSingle\Block::class,
+				Model\Offer::class,
 
 				Package\Fetch::class,
 				Package\Rewrites::class,
