@@ -5,7 +5,7 @@
 	"title": "ADB Offer Keywords",
 	"category": "media",
 	"icon": "format-image",
-	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed. Add each keyword on a new line in the original database.",
 	"keywords": ["offer", "angebot", "keywords"],
 	"textdomain": "shp_gantrisch_adb",
 	"attributes": {
