@@ -106,6 +106,17 @@ class Offer
 		return esc_html($data->title);
 	}
 
+	public function getOfferKeywords(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return explode(' ', $data->keywords);
+	}
+
 	/**
 	 * Get the from and to dates for a specific offer.
 	 *

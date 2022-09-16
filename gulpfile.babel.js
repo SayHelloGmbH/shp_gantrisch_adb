@@ -23,11 +23,15 @@ const config = {
 };
 
 import { task as taskBlockScripts } from './.build/gulp/task-block-scripts';
+import { task as taskBlockStyles } from './.build/gulp/task-block-styles';
 
 export const block_scripts = () => taskBlockScripts(config);
+export const block_styles = () => taskBlockStyles(config);
 
 export const watch = () => {
 	const settings = { usePolling: true, interval: 100 };
+
+	gulp.watch(config.blockStylesSrc, settings, gulp.series(block_styles));
 
 	gulp.watch(
 		`${config.blockScriptsSrc}/**/*.{scss,js}`,

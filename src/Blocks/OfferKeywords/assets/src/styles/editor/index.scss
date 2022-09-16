@@ -1,0 +1,12 @@
+.wp-block-shp-gantrisch-adb-offer-keywords {
+	&__entries {
+		display: flex;
+		gap: 1em;
+	}
+
+	&__entry {
+		display: inline-block;
+		padding: 1em;
+		background-color: silver;
+	}
+}
