@@ -95,6 +95,17 @@ class Offer
 		return $result;
 	}
 
+	public function getOfferTitle(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return esc_html($data->title);
+	}
+
 	/**
 	 * Get the from and to dates for a specific offer.
 	 *

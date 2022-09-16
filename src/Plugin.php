@@ -93,6 +93,7 @@ class Plugin
 				Plugin\ACF::class,
 
 				Blocks\OfferSingle\Block::class,
+				Blocks\OfferTitle\Block::class,
 			]
 		);
 
