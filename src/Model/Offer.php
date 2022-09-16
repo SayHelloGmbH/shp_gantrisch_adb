@@ -40,7 +40,7 @@ class Offer
 
 	public function __construct()
 	{
-		$this->cache = defined('WP_DEBUG') && WP_DEBUG;
+		$this->cache = !defined('WP_DEBUG') || !WP_DEBUG;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 
