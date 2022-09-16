@@ -1,0 +1,17 @@
+.wp-block-shp-gantrisch-adb-offer-keywords {
+	--shp-block--gantrisch-adb-offer-keywords--entry--background-color: #f0f0f0;
+	--shp-block--gantrisch-adb-offer-keywords--entry--padding: 0.5em 1em;
+
+	&__entries {
+		display: flex;
+		gap: 1em;
+	}
+
+	&__entry {
+		display: inline-block;
+		padding: var(--shp-block--gantrisch-adb-offer-keywords--entry--padding);
+		background-color: var(
+			--shp-block--gantrisch-adb-offer-keywords--entry--background-color
+		);
+	}
+}
