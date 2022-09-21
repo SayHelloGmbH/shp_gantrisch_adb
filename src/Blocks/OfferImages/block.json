@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-images",
+	"title": "ADB Offer Images",
+	"category": "media",
+	"icon": "format-image",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed. Add each keyword on a new line in the original database.",
+	"keywords": ["offer", "angebot", "keywords"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"image_size": {
+			"type": "string",
+			"default": "small"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/viewScript.js",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-offer-images-shared"
+	]
+}

@@ -15,7 +15,10 @@ export const task = (config) => {
 
 		files.forEach((file) => {
 			const folders = path.dirname(file).split('/');
-			entries[`${folders[3]}_${folders[folders.length - 1]}`] = file; // MyBlock_editor.js || MyBlock_view.js
+			const folder_last = folders[folders.length - 1];
+			if (!folder_last.match(/^_/)) {
+				entries[`${folders[3]}_${folder_last}`] = file; // MyBlock_editor.js || MyBlock_view.js
+			}
 		});
 
 		src([taskPath])
