@@ -35,6 +35,9 @@ class Offer
 		'offer_image' => 'image',
 		'offer_date' => 'offer_date',
 		'offer_i18n' => 'offer_i18n',
+		'category' => 'category',
+		'category_i18n' => 'category_i18n',
+		'category_link' => 'category_link',
 	];
 
 	private $date_format = 'Y/m/d';
@@ -117,6 +120,19 @@ class Offer
 
 		$data->keywords = explode(PHP_EOL, $data->keywords);
 		return array_map('strip_tags', $data->keywords);
+	}
+
+	public function getOfferCategories(int $offer_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT i18n.category_id, i18n.body, c.parent_id, cl.offer_id, c.sort FROM {$this->tables['category_link']} cl, {$this->tables['category_i18n']} i18n, {$this->tables['category']} c WHERE cl.offer_id = %s AND cl.category_id = i18n.category_id AND cl.category_id = c.category_id AND i18n.language = %s ORDER BY c.sort", $offer_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return null;
+		}
+
+		dump($results, 1, 1);
 	}
 
 	/**

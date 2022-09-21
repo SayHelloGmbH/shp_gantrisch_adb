@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-categories",
+	"title": "ADB Offer Categories",
+	"category": "media",
+	"icon": "format-image",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed. Add each keyword on a new line in the original database.",
+	"keywords": ["offer", "angebot", "category"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"editorStyle": "file:./assets/dist/styles/editor/index.min.css",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-offer-categories-shared"
+	]
+}
