@@ -159,11 +159,34 @@ class Offer
 		return $results;
 	}
 
-	public function getOfferImages($offer_id)
+	/**
+	 * Get all images for the indicated offer
+	 *
+	 * @param integer $offer_id
+	 * @return array
+	 */
+	public function getOfferImages(int $offer_id)
 	{
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT i.offer_id, i.small, i.medium, i.large, i.original, i.copyright FROM {$this->tables['offer']} o, {$this->tables['offer_image']} i WHERE o.offer_id = %s AND o.offer_id = i.offer_id", $offer_id);
 		$results = $wpdb->get_results($sql);
 		return $results;
+	}
+
+	/**
+	 * Get i18n excerpt (description_medium)
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferExcerpt(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return strip_tags($data->description_medium);
 	}
 }

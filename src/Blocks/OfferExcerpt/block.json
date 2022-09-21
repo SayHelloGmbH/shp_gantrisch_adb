@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-excerpt",
+	"title": "ADB Offer Excerpt",
+	"category": "media",
+	"icon": "format-image",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"keywords": ["offer", "angebot", "excerpt", "lede"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js"
+}

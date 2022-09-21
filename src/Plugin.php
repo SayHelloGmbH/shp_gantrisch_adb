@@ -92,6 +92,7 @@ class Plugin
 
 				Plugin\ACF::class,
 
+				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
 				Blocks\OfferKeywords\Block::class,
 				Blocks\OfferSingle\Block::class,
