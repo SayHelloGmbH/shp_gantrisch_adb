@@ -88,7 +88,6 @@ const Edit = (props) => {
 			</InspectorControls>
 			<div {...blockProps}>
 				<div
-					className={`${classNameBase}__inner`}
 					dangerouslySetInnerHTML={{
 						__html: _x(
 							'Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt.',

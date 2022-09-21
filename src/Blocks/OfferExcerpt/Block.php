@@ -59,7 +59,7 @@ class Block
 		}
 ?>
 		<div class="<?php echo implode(' ', $class_names); ?>">
-			<div class="<?php echo $classNameBase; ?>__inner"><?php echo $offer_excerpt; ?></div>
+			<?php echo $offer_excerpt; ?>
 		</div>
 <?php
 		$html = ob_get_contents();
