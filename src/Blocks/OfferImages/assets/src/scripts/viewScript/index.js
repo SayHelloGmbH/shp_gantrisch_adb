@@ -1,42 +1,24 @@
 /**
- * Put together based on the example code at https://wordpress.org/support/topic/swiper-is-not-defined-elementor-3-5/
- * Wait until the elementor frontend init hook fires, then add
- * a new handler to the frontend/element_ready/global hook.
- *
+ * Uses own instance of SwiperJS because the Elementor version
+ * seems to have problems updating the pagination bullets
  */
 
-(function ($) {
-	$(window).on('elementor/frontend/init', () => {
-		const addHandler = () => {
-			const config = {
-					pagination: {
-						el: '.swiper-pagination',
-						clickable: true,
-					},
-				},
-				elements = document.querySelectorAll(
-					'.wp-block-shp-gantrisch-adb-offer-images .swiper-container'
-				);
+import Swiper, { Pagination } from 'swiper';
+Swiper.use([Pagination]);
 
-			if ('undefined' === typeof Swiper) {
-				const AsyncSwiper = elementorFrontend.utils.swiper;
+const elements = document.querySelectorAll(
+	'.wp-block-shp-gantrisch-adb-offer-images .swiper-container'
+);
 
-				new AsyncSwiper(swiperElement, config).then(() => {
-					elements.forEach((element) => {
-						new Swiper(element, config);
-					});
-				});
-			} else {
-				elements.forEach((element) => {
-					new Swiper(element, config);
-				});
-			}
-		};
+if (elements.length) {
+	const config = {
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true,
+		},
+	};
 
-		// https://developers.elementor.com/docs/hooks/js/#frontend-element-ready-global
-		elementorFrontend.hooks.addAction(
-			'frontend/element_ready/global',
-			addHandler
-		);
+	elements.forEach((element) => {
+		new Swiper(element, config);
 	});
-})(jQuery);
+}

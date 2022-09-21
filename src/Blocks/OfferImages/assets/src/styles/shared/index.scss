@@ -5,7 +5,7 @@
 	// Prop name makes use clearer. It's actually the bottom margin on .swiper-wrapper
 	--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top: 2rem;
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet--color: currentColor;
-	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: red;
+	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
 
 	&__figure {
 		padding: 0;
@@ -31,9 +31,17 @@
 		height: auto;
 	}
 
-	.swiper-container {
-		overflow-x: hidden;
-		overflow-y: visible;
+	// .swiper-container {
+	// 	overflow-x: hidden;
+	// 	overflow-y: visible;
+	// }
+
+	.swiper-pagination {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 4px;
 	}
 
 	.swiper-pagination-bullet {
