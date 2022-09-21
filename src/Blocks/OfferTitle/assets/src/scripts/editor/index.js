@@ -18,7 +18,7 @@ registerBlockType(block_name, {
 					className={`${classNameBase}__title`}
 					dangerouslySetInnerHTML={{
 						__html: _x(
-							'--Single offer title--',
+							'Single offer title',
 							'Editor message',
 							'shp_gantrisch_adb'
 						),

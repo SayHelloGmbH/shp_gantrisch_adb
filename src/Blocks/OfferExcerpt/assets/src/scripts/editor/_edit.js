@@ -91,7 +91,7 @@ const Edit = (props) => {
 					className={`${classNameBase}__inner`}
 					dangerouslySetInnerHTML={{
 						__html: _x(
-							'Single offer excerpt. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad harum eveniet ratione sequi perspiciatis. Veniam modi, nihil non nostrum vitae quo velit ipsum repudiandae totam consectetur architecto illo exercitationem in.',
+							'Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt. Single offer excerpt.',
 							'Editor message',
 							'shp_gantrisch_adb'
 						),
