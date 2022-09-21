@@ -2,6 +2,7 @@
   --shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
   --shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 3/2;
   --shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top: 2rem;
+  --shp-block--gantrisch-adb-offer-images--swiper-bullet--gap: 8px;
   --shp-block--gantrisch-adb-offer-images--swiper-bullet--color: currentColor;
   --shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
 }
@@ -27,7 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet--gap);
 }
 .wp-block-shp-gantrisch-adb-offer-images .swiper-pagination-bullet {
   background: currentColor;
