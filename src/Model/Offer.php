@@ -189,4 +189,21 @@ class Offer
 
 		return strip_tags($data->description_medium);
 	}
+
+	/**
+	 * Get long description
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferDescriptionLong(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return strip_tags($data->description_long);
+	}
 }
