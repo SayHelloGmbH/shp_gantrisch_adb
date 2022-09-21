@@ -14,10 +14,12 @@ export const task = (config) => {
 			entries = {};
 
 		files.forEach((file) => {
-			const folders = path.dirname(file).split('/');
-			const folder_last = folders[folders.length - 1];
-			if (!folder_last.match(/^_/)) {
-				entries[`${folders[3]}_${folder_last}`] = file; // MyBlock_editor.js || MyBlock_view.js
+			if (!path.basename(file).match(/^_/)) {
+				const folders = path.dirname(file).split('/');
+				const folder_last = folders[folders.length - 1];
+				if (!folder_last.match(/^_/)) {
+					entries[`${folders[3]}_${folder_last}`] = file; // MyBlock_editor.js || MyBlock_view.js
+				}
 			}
 		});
 
