@@ -244,4 +244,42 @@ class Offer
 
 		return strip_tags($data->description_long);
 	}
+
+	/**
+	 * Get contact info - not i18n!
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferContact(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return nl2br(make_clickable(strip_tags($data->contact)));
+	}
+
+	/**
+	 * Get park partner
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferPartnerText(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		if (!(bool) $data->contact_is_park_partner) {
+			return '';
+		}
+
+		return get_field('shp_gantrisch_adb_park_partner_label', 'options');
+	}
 }

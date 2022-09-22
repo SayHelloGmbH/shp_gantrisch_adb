@@ -96,6 +96,21 @@ class ACF
 						'return_format' => 'id',
 						'ui' => 1,
 					),
+					[
+						'key' => 'field_632c3f6679dee',
+						'label' => _x('Park partner contact label', 'ACF field label', 'shp_gantrisch_adb'),
+						'name' => 'shp_gantrisch_adb_park_partner_label',
+						'type' => 'text',
+						'instructions' => _x('Will appear next to the contact information, if the offer is from a park partner.', 'ACF field label', 'shp_gantrisch_adb'),
+						'required' => 1,
+						'conditional_logic' => 0,
+						'wrapper' => [
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						],
+						'default_value' => '',
+					],
 				),
 				'location' => array(
 					array(
