@@ -44,13 +44,30 @@ class Block
 			return '';
 		}
 
-		$categories = [];
+		$main_categories = [];
+		$sub_categories = [];
 
 		foreach ($offer_categories as $category) {
-			$categories[] = sprintf('<span class="%s__entry">%s</span>', $classNameBase, $category);
+			$main_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--maincategory">%2$s</span>', $classNameBase, $category['body']);
+
+			if (!empty($category['categories'])) {
+				foreach ($category['categories'] as $sub_category) {
+					$sub_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--subcategory">%2$s</span>', $classNameBase, $sub_category['body']);
+				}
+			}
 		}
 
-		if (empty($categories)) {
+		$html = [];
+
+		if (!empty($main_categories)) {
+			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--maincategory">%2$s</div>', $classNameBase, implode('', $main_categories));
+		}
+
+		if (!empty($sub_categories)) {
+			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--subcategory">%2$s</div>', $classNameBase, implode('', $sub_categories));
+		}
+
+		if (empty($html)) {
 			return '';
 		}
 
@@ -58,7 +75,7 @@ class Block
 
 ?>
 		<div class="<?php echo $classNameBase; ?> <?php echo $align; ?>">
-			<div class="<?php echo $classNameBase; ?>__entries"><?php echo implode('', $categories); ?></div>
+			<?php echo implode('', $html); ?>
 		</div>
 <?php
 		$html = ob_get_contents();

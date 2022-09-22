@@ -126,13 +126,35 @@ class Offer
 	{
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT i18n.category_id, i18n.body, c.parent_id, cl.offer_id, c.sort FROM {$this->tables['category_link']} cl, {$this->tables['category_i18n']} i18n, {$this->tables['category']} c WHERE cl.offer_id = %s AND cl.category_id = i18n.category_id AND cl.category_id = c.category_id AND i18n.language = %s ORDER BY c.sort", $offer_id, $this->language);
-		$results = $wpdb->get_results($sql);
+		$results = $wpdb->get_results($sql, ARRAY_A);
 
 		if (empty($results)) {
 			return null;
 		}
 
-		dump($results, 1, 1);
+		$categories = [];
+
+		foreach ($results as $result) {
+			if (!array_key_exists("category{$result['category_id']}", $categories)) {
+				$categories["category{$result['category_id']}"] = $result;
+				$categories["category{$result['category_id']}"]['categories'] = [];
+			}
+		}
+
+
+		foreach ($results as $result) {
+			if (isset($categories["category{$result['parent_id']}"])) {
+				$categories["category{$result['parent_id']}"]['categories'][] = (array) $result;
+			}
+		}
+
+		foreach ($categories as $key => $category) {
+			if (empty($category['categories'])) {
+				unset($categories[$key]);
+			}
+		}
+
+		return $categories;
 	}
 
 	/**

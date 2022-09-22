@@ -14,13 +14,15 @@ registerBlockType(block_name, {
 		const blockProps = useBlockProps();
 		return (
 			<div {...blockProps}>
-				<div className={`${classNameBase}__entries`}>
-					{['Category 1', 'Category 2', 'Category 3'].map(
+				<div
+					className={`${classNameBase}__entries ${classNameBase}__entries--maincategory`}
+				>
+					{['Main category', 'Main category'].map(
 						(category, index) => {
 							return (
-								<div
+								<span
 									key={index}
-									className={`${classNameBase}__entry`}
+									className={`${classNameBase}_entry ${classNameBase}_entry--maincategory`}
 									dangerouslySetInnerHTML={{
 										__html: category,
 									}}
@@ -28,6 +30,26 @@ registerBlockType(block_name, {
 							);
 						}
 					)}
+				</div>
+				<div
+					className={`${classNameBase}__entries ${classNameBase}__entries--subcategory`}
+				>
+					{[
+						'Sub-category',
+						'Sub-category',
+						'Sub-category',
+						'Sub-category',
+					].map((category, index) => {
+						return (
+							<span
+								key={index}
+								className={`${classNameBase}_entry ${classNameBase}_entry--subcategory`}
+								dangerouslySetInnerHTML={{
+									__html: category,
+								}}
+							/>
+						);
+					})}
 				</div>
 			</div>
 		);

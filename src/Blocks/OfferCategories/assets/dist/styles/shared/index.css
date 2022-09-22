@@ -1,0 +1,27 @@
+.wp-block-shp-gantrisch-adb-offer-categories > * + * {
+  margin-left: 1ch;
+}
+.wp-block-shp-gantrisch-adb-offer-categories > * + *::before {
+  margin-right: 1ch;
+  content: "|";
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries {
+  display: inline;
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries--maincategory {
+  font-weight: 700;
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries--maincategory > * + * {
+  margin-left: 0.5ch;
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries--maincategory > * + *::before {
+  margin-right: 0.5ch;
+  content: "/";
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries--subcategory > * + * {
+  margin-left: 1ch;
+}
+.wp-block-shp-gantrisch-adb-offer-categories__entries--subcategory > * + *::before {
+  margin-right: 1ch;
+  content: "|";
+}
