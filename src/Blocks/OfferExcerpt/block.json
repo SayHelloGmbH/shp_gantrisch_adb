@@ -21,7 +21,11 @@
 	},
 	"supports": {
 		"align": ["wide", "full"],
-		"html": false
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js"
 }

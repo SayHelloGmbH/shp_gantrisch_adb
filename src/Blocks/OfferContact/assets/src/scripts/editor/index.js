@@ -5,9 +5,24 @@ import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
 
 import icon from './icon';
-import edit from './_edit';
 
 registerBlockType(block_name, {
 	icon,
-	edit,
+	edit: () => {
+		const blockProps = useBlockProps();
+		return (
+			<div {...blockProps}>
+				<div
+					className={`${classNameBase}__title`}
+					dangerouslySetInnerHTML={{
+						__html: _x(
+							'Single offer contact information. Single offer contact information. Single offer contact information. Single offer contact information.',
+							'Editor message',
+							'shp_gantrisch_adb'
+						),
+					}}
+				/>
+			</div>
+		);
+	},
 });

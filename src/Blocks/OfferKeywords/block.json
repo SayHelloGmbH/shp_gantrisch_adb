@@ -15,7 +15,11 @@
 	},
 	"supports": {
 		"align": ["wide", "full"],
-		"html": false
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"editorStyle": "file:./assets/dist/styles/editor/index.min.css",
