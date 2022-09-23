@@ -1,8 +1,10 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { getBlockDefaultClassName, registerBlockType } from '@wordpress/blocks';
+import { useBlockProps } from '@wordpress/block-editor';
 
 import { _x } from '@wordpress/i18n';
 import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
+const classNameBase = getBlockDefaultClassName(block_name);
 
 import icon from './icon';
 

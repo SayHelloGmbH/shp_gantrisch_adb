@@ -5,10 +5,9 @@ import { __, _x } from '@wordpress/i18n';
 
 import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
+const classNameBase = getBlockDefaultClassName(block_name);
 
 import image_sizes from '../_components/image_sizes';
-
-const classNameBase = getBlockDefaultClassName(block_name);
 
 import icon from './icon';
 
