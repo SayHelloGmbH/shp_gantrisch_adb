@@ -50,15 +50,15 @@ class Block
 			$class_names[] = "align{$attributes['align']}";
 		}
 
-		// if (!empty($attributes['backgroundColor'] ?? '')) {
-		// 	$class_names[] = "has-background";
-		// 	$class_names[] = "has-{$attributes['backgroundColor']}-background-color";
-		// }
+		if (!empty($attributes['backgroundColor'] ?? '')) {
+			$class_names[] = "has-background";
+			$class_names[] = "has-{$attributes['backgroundColor']}-background-color";
+		}
 
-		// if (!empty($attributes['textColor'] ?? '')) {
-		// 	$class_names[] = "has-text-color";
-		// 	$class_names[] = "has-{$attributes['textColor']}-color";
-		// }
+		if (!empty($attributes['textColor'] ?? '')) {
+			$class_names[] = "has-text-color";
+			$class_names[] = "has-{$attributes['textColor']}-color";
+		}
 ?>
 		<div class="<?php echo implode(' ', $class_names); ?>">
 
