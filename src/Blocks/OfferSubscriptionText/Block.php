@@ -60,6 +60,11 @@ class Block
 ?>
 		<div class="<?php echo implode(' ', $class_names); ?>">
 			<div class="<?php echo $classNameBase; ?>__content">
+
+				<?php if (!empty($attributes['title'] ?? '')) { ?>
+					<h2 class="<?php echo $classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
+				<?php } ?>
+
 				<p><?php echo $offer_subscription_text; ?></p>
 			</div>
 		</div>

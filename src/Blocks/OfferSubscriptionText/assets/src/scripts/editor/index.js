@@ -13,7 +13,7 @@ registerBlockType(block_name, {
 	icon,
 	edit: ({ attributes, setAttributes }) => {
 		const blockProps = useBlockProps();
-		const { message } = attributes;
+		const { message, title } = attributes;
 
 		return (
 			<>
@@ -21,7 +21,16 @@ registerBlockType(block_name, {
 					<PanelBody title={_x('Settings')} initialOpen={true}>
 						<TextControl
 							label={_x(
-								'Text if subscription is necessary',
+								'Title (only if subscription required)',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title}
+							onChange={(title) => setAttributes({ title })}
+						/>
+						<TextControl
+							label={_x(
+								'Text (if subscription is required)',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}

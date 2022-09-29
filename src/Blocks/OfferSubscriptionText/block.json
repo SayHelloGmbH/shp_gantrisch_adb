@@ -20,6 +20,9 @@
 		},
 		"message": {
 			"type": "string"
+		},
+		"title": {
+			"type": "string"
 		}
 	},
 	"supports": {
