@@ -34,9 +34,9 @@ class Block
 
 		$classNameBase = wp_get_block_default_classname($block->name);
 
-		$offer_subscription_text = $this->model->getOfferSubscriptionText((int) $offer_id);
+		$offer_subscription_text = $this->model->getOfferSubscriptionText((int) $offer_id, $attributes);
 
-		if (empty($target_audience)) {
+		if (empty($offer_subscription_text)) {
 			return '';
 		}
 
@@ -59,7 +59,9 @@ class Block
 		}
 ?>
 		<div class="<?php echo implode(' ', $class_names); ?>">
-			<?php echo nl2br($target_audience); ?>
+			<div class="<?php echo $classNameBase; ?>__content">
+				<p><?php echo $offer_subscription_text; ?></p>
+			</div>
 		</div>
 <?php
 		$html = ob_get_contents();

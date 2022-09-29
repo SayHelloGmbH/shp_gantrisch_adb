@@ -422,7 +422,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferSubscriptionText(int $offer_id)
+	public function getOfferSubscriptionText(int $offer_id, array $block_attributes)
 	{
 
 		$data = $this->getOfferSubscription((int) $offer_id);
@@ -434,22 +434,6 @@ class Offer
 			return '';
 		}
 
-		dump($data, 1, 1);
-
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->language);
-		$results = $wpdb->get_results($sql);
-
-		if (empty($results)) {
-			return '';
-		}
-
-		$return = [];
-
-		foreach ($results as $result) {
-			$return[] = $result->body;
-		}
-
-		return implode(chr(10), $return);
+		return $block_attributes['message'] ?? '';
 	}
 }
