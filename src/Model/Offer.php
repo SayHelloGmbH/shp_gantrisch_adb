@@ -344,4 +344,23 @@ class Offer
 
 		return $month_names;
 	}
+
+	/**
+	 * Get offer benefits (Leistungen)
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferBenefits(int $offer_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT offer_id, benefits FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return '';
+		}
+
+		return $results[0]->benefits ?? '';
+	}
 }
