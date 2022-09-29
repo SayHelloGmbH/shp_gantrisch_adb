@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
+use DateTime;
+
 class Offer
 {
 	private $locale = 'de_CH';
@@ -31,6 +33,7 @@ class Offer
 	];
 
 	private $tables = [
+		'booking' => 'booking',
 		'offer' => 'offer',
 		'offer_image' => 'image',
 		'offer_date' => 'offer_date',
@@ -47,6 +50,21 @@ class Offer
 		$this->cache = !defined('WP_DEBUG') || !WP_DEBUG;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
+		$this->months = [
+			'',
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+			_x('January', 'Month name', 'shp_gantrisch_adb'),
+		];
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
@@ -281,5 +299,49 @@ class Offer
 		}
 
 		return get_field('shp_gantrisch_adb_park_partner_label', 'options');
+	}
+
+	/**
+	 * Get park season information
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferSeason(int $offer_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT offer_id, season_months FROM {$this->tables['booking']} WHERE offer_id = %s LIMIT 1", $offer_id);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return '';
+		}
+
+		$season_months = $results[0]->season_months ?? '';
+		$season_months_array = array_filter(explode(',', $season_months));
+
+		if (empty($season_months_array)) {
+			return '';
+		}
+
+		$month_names = [];
+		$year = wp_date('Y');
+
+		foreach ($season_months_array as $month_number) {
+
+			if ($month_number < 10) {
+				$month_number = "0{$month_number}";
+			}
+
+			$dt = DateTime::createFromFormat(DateTime::ISO8601, "{$year}-{$month_number}-01T00:00:00Z");
+
+			if (!$dt instanceof DateTime) {
+				continue;
+			}
+
+			$month_names[] = wp_date('F', $dt->getTimestamp());
+		}
+
+		return $month_names;
 	}
 }
