@@ -98,6 +98,7 @@ class Plugin
 				Blocks\OfferDescriptionLong\Block::class,
 				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
+				Blocks\OfferPrice\Block::class,
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				Blocks\OfferSeason\Block::class,
 				Blocks\OfferSingle\Block::class,
