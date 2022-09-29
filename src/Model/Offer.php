@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
+use stdClass;
 
 class Offer
 {
@@ -379,6 +380,62 @@ class Offer
 	 */
 	public function getOfferTarget(int $offer_id)
 	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return '';
+		}
+
+		$return = [];
+
+		foreach ($results as $result) {
+			$return[] = $result->body;
+		}
+
+		return implode(chr(10), $return);
+	}
+
+	/**
+	 * Get offer subscription information
+	 *
+	 * @param integer $offer_id
+	 * @return mixed
+	 */
+	private function getOfferSubscription(int $offer_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT s.*, i.subscription_details FROM subscription s, subscription_i18n i WHERE s.offer_id = %s and s.offer_id = i.offer_id AND i.language = %s LIMIT 1", $offer_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results) || empty(array_filter($results))) {
+			return null;
+		}
+
+		return $results[0];
+	}
+
+	/**
+	 * Get offer target audience
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferSubscriptionText(int $offer_id)
+	{
+
+		$data = $this->getOfferSubscription((int) $offer_id);
+
+		if (
+			!$data instanceof stdClass
+			|| !($data->subscription_mandatory ?? false)
+		) {
+			return '';
+		}
+
+		dump($data, 1, 1);
+
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->language);
 		$results = $wpdb->get_results($sql);
