@@ -41,6 +41,9 @@ class Offer
 		'category' => 'category',
 		'category_i18n' => 'category_i18n',
 		'category_link' => 'category_link',
+		'target_group' => 'target_group',
+		'target_group_i18n' => 'target_group_i18n',
+		'target_group_link' => 'target_group_link',
 	];
 
 	private $date_format = 'Y/m/d';
@@ -366,5 +369,30 @@ class Offer
 		}
 
 		return $results[0]->price ?? '';
+	}
+
+	/**
+	 * Get offer target audience
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getOfferTarget(int $offer_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return '';
+		}
+
+		$return = [];
+
+		foreach ($results as $result) {
+			$return[] = $result->body;
+		}
+
+		return implode(chr(10), $return);
 	}
 }

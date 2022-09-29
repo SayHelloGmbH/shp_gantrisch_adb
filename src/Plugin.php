@@ -102,6 +102,7 @@ class Plugin
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				Blocks\OfferSeason\Block::class,
 				Blocks\OfferSingle\Block::class,
+				Blocks\OfferTarget\Block::class,
 				Blocks\OfferTitle\Block::class,
 			]
 		);
