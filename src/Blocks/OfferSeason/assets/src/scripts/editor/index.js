@@ -15,7 +15,7 @@ registerBlockType(block_name, {
 		return (
 			<div {...blockProps}>
 				<div
-					className={`${classNameBase}__title`}
+					className={`${classNameBase}__content`}
 					dangerouslySetInnerHTML={{
 						__html: _x(
 							'Single offer season information.',

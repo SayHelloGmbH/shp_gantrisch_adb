@@ -50,21 +50,6 @@ class Offer
 		$this->cache = !defined('WP_DEBUG') || !WP_DEBUG;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
-		$this->months = [
-			'',
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-			_x('January', 'Month name', 'shp_gantrisch_adb'),
-		];
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
