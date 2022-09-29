@@ -1,6 +1,6 @@
 <?php
 
-namespace SayHello\ShpGantrischAdb\Blocks\OfferSubscriptionText;
+namespace SayHello\ShpGantrischAdb\Blocks\OfferSubscription;
 
 use WP_Block;
 
@@ -34,9 +34,9 @@ class Block
 
 		$classNameBase = wp_get_block_default_classname($block->name);
 
-		$offer_subscription_text = $this->model->getOfferSubscriptionText((int) $offer_id, $attributes);
+		$offer_subscription = $this->model->getOfferSubscription((int) $offer_id, $attributes);
 
-		if (empty($offer_subscription_text)) {
+		if (empty($offer_subscription)) {
 			return '';
 		}
 
