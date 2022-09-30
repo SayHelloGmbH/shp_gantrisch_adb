@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
+use WP_Block;
+
 /**
  * Handles generic block stuff
  *
@@ -15,7 +17,7 @@ class Block
 		add_action('template_redirect', [$this, 'handleInvalidSingle']);
 	}
 
-	public function basicClasses(array $attributes)
+	private function basicClasses(array $attributes)
 	{
 		$class_names = [];
 
@@ -34,5 +36,11 @@ class Block
 		}
 
 		return $class_names;
+	}
+
+	public function classNames(WP_Block $block)
+	{
+		$classNameBase = wp_get_block_default_classname($block->name);
+		return implode(' ', array_merge([$classNameBase], $this->basicClasses($block->attributes)));
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferDescriptionLong;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -32,12 +33,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-		$align = $attributes['align'] ?? '';
-		if (!empty($align)) {
-			$align = "align{$align}";
-		}
-
 		if (!$this->model) {
 			$this->model = new OfferModel();
 		}
@@ -48,10 +43,13 @@ class Block
 			return '';
 		}
 
+		$block_controller = new BlockController();
+		$class_names = $block_controller->classNames($block);
+
 		ob_start();
 
 ?>
-		<div class="<?php echo $classNameBase; ?> <?php echo $align; ?>">
+		<div class="<?php echo $class_names; ?>">
 			<?php echo $offer_description_long; ?>
 		</div>
 <?php

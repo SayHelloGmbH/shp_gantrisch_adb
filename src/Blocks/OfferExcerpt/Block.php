@@ -45,12 +45,13 @@ class Block
 			return '';
 		}
 
+		$block_controller = new BlockController();
+		$class_names = $block_controller->classNames($block);
+
 		ob_start();
 
-		$block_controller = new BlockController();
-		$class_names = array_merge([$classNameBase], $block_controller->basicClasses($attributes));
 ?>
-		<div class="<?php echo implode(' ', $class_names); ?>">
+		<div class="<?php echo $class_names; ?>">
 			<?php echo $offer_excerpt; ?>
 		</div>
 <?php

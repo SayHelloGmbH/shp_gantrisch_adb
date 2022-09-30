@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferImages;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -32,12 +33,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-		$align = $attributes['align'] ?? '';
-		if (!empty($align)) {
-			$align = "align{$align}";
-		}
-
 		if (!$this->model) {
 			$this->model = new OfferModel();
 		}
@@ -60,9 +55,13 @@ class Block
 			wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
 		}
 
+		$classNameBase = wp_get_block_default_classname($block->name);
+		$block_controller = new BlockController();
+		$class_names = $block_controller->classNames($block);
+
 		ob_start();
 ?>
-		<div class="<?php echo $classNameBase; ?> <?php echo $align; ?>">
+		<div class="<?php echo $class_names; ?>">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
 					<?php foreach ($offer_images as $image) { ?>

@@ -47,9 +47,9 @@ class Block
 
 		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = array_merge([$classNameBase], $block_controller->basicClasses($attributes));
+		$class_names = $block_controller->classNames($block);
 ?>
-		<div class="<?php echo implode(' ', $class_names); ?>">
+		<div class="<?php echo $class_names; ?>">
 			<div class="<?php echo $classNameBase; ?>__content">
 				<?php
 				echo nl2br($benefits);

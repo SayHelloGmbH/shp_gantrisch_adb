@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSingle;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -32,11 +33,8 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-		$align = $attributes['align'] ?? '';
-		if (!empty($align)) {
-			$align = "align{$align}";
-		}
+		$block_controller = new BlockController();
+		$class_names = $block_controller->classNames($block);
 
 		if (!$this->model) {
 			$this->model = new OfferModel();
@@ -47,7 +45,7 @@ class Block
 		if (!$offer) {
 			ob_start();
 ?>
-			<div class="<?php echo $classNameBase; ?>">
+			<div class="<?php echo $class_names; ?>">
 				<div class="c-message c-message--error">
 					<p><?php _ex('Sorry, no matching offer found.', 'Frontend error message', 'shp_gantrisch_adb'); ?></p>
 				</div>
@@ -62,7 +60,7 @@ class Block
 		ob_start();
 
 		?>
-		<div class="<?php echo $classNameBase; ?> <?php echo $align; ?>">
+		<div class="<?php echo $class_names; ?>">
 			<?php
 			dump($offer);
 			?>

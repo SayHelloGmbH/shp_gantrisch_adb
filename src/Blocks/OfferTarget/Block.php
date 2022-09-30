@@ -45,12 +45,12 @@ class Block
 			return '';
 		}
 
-		ob_start();
-
 		$block_controller = new BlockController();
-		$class_names = array_merge([$classNameBase], $block_controller->basicClasses($attributes));
+		$class_names = $block_controller->classNames($block);
+
+		ob_start();
 ?>
-		<div class="<?php echo implode(' ', $class_names); ?>">
+		<div class="<?php echo $class_names; ?>">
 			<?php echo nl2br($target_audience); ?>
 		</div>
 <?php
