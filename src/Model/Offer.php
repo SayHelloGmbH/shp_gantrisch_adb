@@ -287,6 +287,23 @@ class Offer
 	}
 
 	/**
+	 * Get infrastructure
+	 *
+	 * @param integer $offer_id
+	 * @return string
+	 */
+	public function getInfrastructure(int $offer_id)
+	{
+		$data = $this->getOffer($offer_id);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		return strip_tags($data->other_infrastructure ?? '');
+	}
+
+	/**
 	 * Get long description
 	 *
 	 * @param integer $offer_id
