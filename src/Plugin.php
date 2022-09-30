@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb;
 
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 class Plugin
@@ -13,6 +14,8 @@ class Plugin
 	public $file = '';
 	public $path = '';
 	public $url = '';
+	private $controller = null;
+	private $model = null;
 
 	/**
 	 * Loads and initializes the provided classes.
@@ -86,10 +89,13 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
+				Controller\Offer::class,
+
 				Package\Fetch::class,
 				Package\Rewrites::class,
 
 				Plugin\ACF::class,
+				Plugin\Yoast::class,
 
 				Blocks\OfferBenefits\Block::class,
 				Blocks\OfferCategories\Block::class,
@@ -110,7 +116,7 @@ class Plugin
 
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
 		add_action('after_setup_theme', [$this, 'themeSupports']);
-		add_action('document_title_parts', [$this, 'pageTitle'], 10, 2);
+		add_action('the_title', [$this, 'offerTitle']);
 	}
 
 	public function activation()
@@ -136,22 +142,43 @@ class Plugin
 		add_theme_support('title-tag');
 	}
 
-	public function pageTitle($title_parts)
+	/**
+	 * The post title for e.g. page display or menu display.
+	 *
+	 * @param string $post_title
+	 * @return string
+	 */
+	public function offerTitle($post_title)
 	{
-		$single_id = preg_replace('/[^0-9]/', '', get_query_var($this->query_var));
 
-		if (!$single_id) {
-			return $title_parts;
+		if (is_admin()) {
+			return $post_title;
 		}
 
-		$model = new OfferModel();
-
-		$title = $model->getOfferTitle($single_id);
-
-		if (!empty($title)) {
-			$title_parts['title'] = $title;
+		if (!$this->controller) {
+			$this->controller = new OfferController();
 		}
 
-		return $title_parts;
+		if (!$this->controller->isConfiguredSinglePage()) {
+			return $post_title;
+		}
+
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
+
+		$offer_id = $this->model->requestedOfferID();
+
+		if (!$offer_id) {
+			return $post_title;
+		}
+
+		$offer_title = $this->model->getOfferTitle($offer_id);
+
+		if (empty($offer_title)) {
+			return $post_title;
+		}
+
+		return $offer_title;
 	}
 }
