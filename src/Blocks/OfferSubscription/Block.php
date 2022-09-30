@@ -77,6 +77,10 @@ class Block
 					$link = null;
 					$title = $this->model->getOfferTitle($offer_id);
 
+					if (is_wp_error($title)) {
+						$title = $title->get_error_message();
+					}
+
 					if (filter_var($data['link'], FILTER_VALIDATE_EMAIL)) {
 						$link = "mailto:{$data['link']}?subject={$title}";
 					} else if (filter_var($data['link'], FILTER_VALIDATE_URL)) {

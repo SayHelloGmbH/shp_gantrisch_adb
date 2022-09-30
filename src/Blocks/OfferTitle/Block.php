@@ -38,6 +38,10 @@ class Block
 
 		$offer_title = $this->model->getOfferTitle((int) $offer_id);
 
+		if (is_wp_error($offer_title)) {
+			$offer_title = $offer_title->get_error_message();
+		}
+
 		if (empty($offer_title)) {
 			return '';
 		}

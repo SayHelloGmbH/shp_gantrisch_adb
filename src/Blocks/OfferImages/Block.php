@@ -45,6 +45,11 @@ class Block
 		$image_size = $attributes['image_size'] ?? 'small';
 		$offer_title = $this->model->getOfferTitle((int) $offer_id);
 
+		if (is_wp_error($offer_title)) {
+			$offer_title = $offer_title->get_error_message();
+		}
+
+
 		// Use of viewScript in block.json allows us to enqueue the script as we want to.
 		// Here, we want to enqueue it in the footer so that we can do DOM manipulation
 		// and enqueue it with the file mod time as a version number

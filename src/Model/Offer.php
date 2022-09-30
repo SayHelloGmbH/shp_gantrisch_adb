@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
+use WP_Error;
 
 class Offer
 {
@@ -160,10 +161,8 @@ class Offer
 	{
 		$data = $this->getOffer($offer_id);
 
-		dump($data, 1, 1);
-
 		if (empty($data)) {
-			return null;
+			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
 		}
 
 		return strip_tags($data->title);

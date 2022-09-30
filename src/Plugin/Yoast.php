@@ -59,7 +59,7 @@ class Yoast
 
 		$offer_title = $this->model->getOfferTitle($offer_id);
 
-		if ($offer_title === $seo_title) {
+		if (is_wp_error($offer_title) || $offer_title === $seo_title) {
 			return $seo_title;
 		}
 
