@@ -101,6 +101,7 @@ class Plugin
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				Blocks\OfferTarget\Block::class,
+				Blocks\OfferTransportStop\Block::class,
 				Blocks\OfferTitle\Block::class,
 			]
 		);

@@ -33,6 +33,13 @@ class Offer
 		'de', 'fr', 'it', 'en'
 	];
 
+	private $sbb_timetable_urls = [
+		'de' => 'https://www.sbb.ch/de/kaufen/pages/fahrplan/fahrplan.xhtml?nach=%s',
+		'fr' => 'https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?nach=%s',
+		'it' => 'https://www.sbb.ch/it/acquistare/pages/fahrplan/fahrplan.xhtml?nach=%s',
+		'en' => 'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?nach=%s',
+	];
+
 	private $tables = [
 		'booking' => 'booking',
 		'offer' => 'offer',
@@ -66,6 +73,21 @@ class Offer
 	}
 
 	/**
+	 * Get the language-appropriate SBB timetable URL
+	 *
+	 * @return string
+	 */
+	public function getSBBTimetableURL()
+	{
+		return $this->sbb_timetable_urls[$this->getLanguage()] ?? '#%s';
+	}
+
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
 	 * Get all of the offer data by offer ID.
 	 * The dataset will contain the localised data from
 	 * the i18n table.
@@ -81,7 +103,7 @@ class Offer
 
 		if (empty($cached_result) || !$this->cache) {
 			global $wpdb;
-			$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = %s and offer.offer_id = i18n.offer_id and i18n.language = %s", $offer_id, $this->language);
+			$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = %s and offer.offer_id = i18n.offer_id and i18n.language = %s", $offer_id, $this->getLanguage());
 
 			$results = $wpdb->get_results($sql);
 
@@ -132,7 +154,7 @@ class Offer
 	public function getOfferCategories(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT i18n.category_id, i18n.body, c.parent_id, cl.offer_id, c.sort FROM {$this->tables['category_link']} cl, {$this->tables['category_i18n']} i18n, {$this->tables['category']} c WHERE cl.offer_id = %s AND cl.category_id = i18n.category_id AND cl.category_id = c.category_id AND i18n.language = %s ORDER BY c.sort", $offer_id, $this->language);
+		$sql = $wpdb->prepare("SELECT i18n.category_id, i18n.body, c.parent_id, cl.offer_id, c.sort FROM {$this->tables['category_link']} cl, {$this->tables['category_i18n']} i18n, {$this->tables['category']} c WHERE cl.offer_id = %s AND cl.category_id = i18n.category_id AND cl.category_id = c.category_id AND i18n.language = %s ORDER BY c.sort", $offer_id, $this->getLanguage());
 		$results = $wpdb->get_results($sql, ARRAY_A);
 
 		if (empty($results)) {
@@ -343,7 +365,7 @@ class Offer
 	public function getOfferBenefits(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer_id, benefits FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->language);
+		$sql = $wpdb->prepare("SELECT offer_id, benefits FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->getLanguage());
 		$results = $wpdb->get_results($sql);
 
 		if (empty($results)) {
@@ -362,7 +384,7 @@ class Offer
 	public function getOfferPrice(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer_id, price FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->language);
+		$sql = $wpdb->prepare("SELECT offer_id, price FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->getLanguage());
 		$results = $wpdb->get_results($sql);
 
 		if (empty($results)) {
@@ -381,7 +403,7 @@ class Offer
 	public function getOfferTarget(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->language);
+		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->getLanguage());
 		$results = $wpdb->get_results($sql);
 
 		if (empty($results)) {
@@ -417,7 +439,7 @@ class Offer
 
 		$data->subscription_details = '';
 
-		$sql_details = $wpdb->prepare("SELECT subscription_details FROM subscription_i18n WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->language);
+		$sql_details = $wpdb->prepare("SELECT subscription_details FROM subscription_i18n WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->getLanguage());
 		$results_details = $wpdb->get_results($sql_details);
 
 		if (!empty($results_details)) {
@@ -431,5 +453,28 @@ class Offer
 			'mandatory' => $data->subscription_mandatory ?? false,
 			'enabled' => $data->online_subscription_enabled ?? false,
 		];
+	}
+
+	public function getOfferTransportStop(int $offer_id, string $start_stop = 'start')
+	{
+
+
+		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
+		$results = get_transient($transient_key);
+
+		if (empty($results) || !$this->cache) {
+			global $wpdb;
+			$sql = $wpdb->prepare("SELECT public_transport_start, public_transport_stop FROM activity WHERE offer_id = %s LIMIT 1", $offer_id);
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			if (!empty($results)) {
+				set_transient($transient_key, $results, $this->transient_lives['single']);
+			}
+		}
+
+		if (empty($results)) {
+			return false;
+		}
+
+		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 }
