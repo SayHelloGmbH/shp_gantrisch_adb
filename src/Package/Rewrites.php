@@ -16,6 +16,8 @@ namespace SayHello\ShpGantrischAdb\Package;
 class Rewrites
 {
 
+	private $var_key = 'offer-id';
+
 	public function run()
 	{
 		add_action('init', [$this, 'rewriteEndpoint']);
@@ -23,15 +25,20 @@ class Rewrites
 		add_filter('query_vars', [$this, 'extraQueryVars']);
 	}
 
+	public function getVarKey()
+	{
+		return $this->var_key;
+	}
+
 	public function rewriteEndpoint()
 	{
-		add_rewrite_endpoint('offer-id', EP_PAGES);
+		add_rewrite_endpoint($this->var_key, EP_PAGES);
 	}
 
 	public function endpointVars($vars)
 	{
 
-		$offer_id = preg_replace('/[^0-9]/', '', trim($vars['offer-id'] ?? ''));
+		$offer_id = preg_replace('/[^0-9]/', '', trim($vars[$this->var_key] ?? ''));
 
 		if (!empty($offer_id)) {
 			$vars['adb_offer_id'] = $offer_id;
