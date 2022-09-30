@@ -20,6 +20,7 @@ class Offer
 	public function run()
 	{
 		add_action('template_redirect', [$this, 'handleInvalidSingle']);
+		add_action('the_title', [$this, 'offerTitle'], 10, 2);
 	}
 
 	public function queryVarName()
@@ -73,5 +74,50 @@ class Offer
 				header("HTTP/1.1 404 Not Found");
 			}
 		}
+	}
+
+	/**
+	 * The post title for e.g. page display or menu display.
+	 *
+	 * @param string $post_title
+	 * @param int $post_id
+	 * @return string
+	 */
+	public function offerTitle($post_title, $post_id)
+	{
+
+		if (is_admin()) {
+			return $post_title;
+		}
+
+		if (!$this->controller) {
+			$this->controller = new OfferController();
+		}
+
+		if (!$this->controller->isConfiguredSinglePage()) {
+			return $post_title;
+		}
+
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
+
+		if ($post_id !== $this->model->getSinglePageID()) {
+			return $post_title;
+		}
+
+		$offer_id = $this->model->requestedOfferID();
+
+		if (!$offer_id) {
+			return $post_title;
+		}
+
+		$offer_title = $this->model->getOfferTitle($offer_id);
+
+		if (empty($offer_title) || is_wp_error($offer_title)) {
+			return $post_title;
+		}
+
+		return $offer_title;
 	}
 }
