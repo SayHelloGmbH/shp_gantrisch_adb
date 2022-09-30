@@ -29,7 +29,11 @@ class Offer
 
 	public function isConfiguredSinglePage()
 	{
-		$single_page_id = (int) get_field('shp_gantrisch_adb_single_page', 'options');
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
+
+		$single_page_id = $this->model->getSinglePageID();
 		return $single_page_id && get_the_ID() && get_the_ID() === $single_page_id;
 	}
 

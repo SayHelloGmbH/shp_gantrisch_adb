@@ -62,6 +62,7 @@ class Offer
 		$this->cache = !defined('WP_DEBUG') || !WP_DEBUG;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
+		$this->single_page = get_field('shp_gantrisch_adb_single_page', 'options');
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
@@ -71,6 +72,11 @@ class Offer
 
 	public function run()
 	{
+	}
+
+	public function getSinglePageID()
+	{
+		return $this->single_page;
 	}
 
 	public function requestedOfferID()
