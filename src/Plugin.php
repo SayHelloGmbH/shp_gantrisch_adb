@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 class Plugin
 {
 	private static $instance;
@@ -107,6 +109,8 @@ class Plugin
 		);
 
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
+		add_action('after_setup_theme', [$this, 'themeSupports']);
+		add_action('document_title_parts', [$this, 'pageTitle'], 10, 2);
 	}
 
 	public function activation()
@@ -125,5 +129,29 @@ class Plugin
 	public function loadPluginTextdomain()
 	{
 		load_plugin_textdomain('shp_gantrisch_adb', false, dirname(plugin_basename($this->file)) . '/languages');
+	}
+
+	public function themeSupports()
+	{
+		add_theme_support('title-tag');
+	}
+
+	public function pageTitle($title_parts)
+	{
+		$single_id = preg_replace('/[^0-9]/', '', get_query_var($this->query_var));
+
+		if (!$single_id) {
+			return $title_parts;
+		}
+
+		$model = new OfferModel();
+
+		$title = $model->getOfferTitle($single_id);
+
+		if (!empty($title)) {
+			$title_parts['title'] = $title;
+		}
+
+		return $title_parts;
 	}
 }
