@@ -12,11 +12,6 @@ use WP_Block;
 
 class Block
 {
-	public function run()
-	{
-		add_action('template_redirect', [$this, 'handleInvalidSingle']);
-	}
-
 	private function basicClasses(array $attributes)
 	{
 		$class_names = [];
