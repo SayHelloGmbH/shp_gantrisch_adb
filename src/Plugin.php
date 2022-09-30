@@ -2,9 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb;
 
-use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 class Plugin
 {
 	private static $instance;
@@ -14,8 +11,6 @@ class Plugin
 	public $file = '';
 	public $path = '';
 	public $url = '';
-	private $controller = null;
-	private $model = null;
 
 	/**
 	 * Loads and initializes the provided classes.

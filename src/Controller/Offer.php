@@ -90,11 +90,7 @@ class Offer
 			return $post_title;
 		}
 
-		if (!$this->controller) {
-			$this->controller = new OfferController();
-		}
-
-		if (!$this->controller->isConfiguredSinglePage()) {
+		if (!$this->isConfiguredSinglePage()) {
 			return $post_title;
 		}
 
