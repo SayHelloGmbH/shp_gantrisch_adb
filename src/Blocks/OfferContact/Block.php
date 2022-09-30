@@ -36,13 +36,11 @@ class Block
 			return '';
 		}
 
-		$contact = $this->model->getOfferContact((int) $offer_id);
+		$contact = $this->model->getContact((int) $offer_id);
 
-		if (empty($contact)) {
+		if (empty($contact['contact'])) {
 			return '';
 		}
-
-		$partner_label = $this->model->getOfferPartnerText((int) $offer_id);
 
 		ob_start();
 
@@ -51,11 +49,15 @@ class Block
 ?>
 		<div class="<?php echo $block->shp->class_names; ?>">
 
-			<?php if (!empty($partner_label)) { ?>
-				<div class="<?php echo $block->shp->classNameBase; ?>__partnerlabel"><?php echo $partner_label; ?></div>
+			<?php if (!empty($attributes['title'] ?? '')) { ?>
+				<h2 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<div class="<?php echo $block->shp->classNameBase; ?>__contact"><?php echo $contact; ?></div>
+			<?php if (!empty($attributes['partner_label'] ?? '' && (bool) $contact['is_partner'])) { ?>
+				<div class="<?php echo $block->shp->classNameBase; ?>__partner_label"><?php echo esc_html($attributes['partner_label']); ?></div>
+			<?php } ?>
+
+			<div class="<?php echo $block->shp->classNameBase; ?>__contact"><?php echo $contact['contact']; ?></div>
 		</div>
 <?php
 		$html = ob_get_contents();
