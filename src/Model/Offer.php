@@ -68,7 +68,8 @@ class Offer
 
 	public function __construct()
 	{
-		$this->cache = !defined('WP_DEBUG') || !WP_DEBUG;
+		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
+		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 		$this->single_page = get_field('shp_gantrisch_adb_single_page', 'options');
