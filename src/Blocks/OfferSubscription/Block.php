@@ -34,9 +34,9 @@ class Block
 
 		$classNameBase = wp_get_block_default_classname($block->name);
 
-		$offer_subscription = $this->model->getOfferSubscription((int) $offer_id, $attributes);
+		$data = $this->model->getOfferSubscription((int) $offer_id, $attributes);
 
-		if (empty($offer_subscription)) {
+		if (!is_array($data)) {
 			return '';
 		}
 
@@ -61,11 +61,43 @@ class Block
 		<div class="<?php echo implode(' ', $class_names); ?>">
 			<div class="<?php echo $classNameBase; ?>__content">
 
-				<?php if (!empty($attributes['title'] ?? '')) { ?>
-					<h2 class="<?php echo $classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
+				<?php if (!empty($attributes['title_sub_required'] ?? '')) { ?>
+					<h2 class="<?php echo $classNameBase; ?>__subtitle--required"><?php echo esc_html($attributes['title_sub_required']); ?></h2>
 				<?php } ?>
 
-				<p><?php echo $offer_subscription_text; ?></p>
+				<?php if (!empty($attributes['message'] ?? '')) {
+					echo wpautop($attributes['message']);
+				} ?>
+
+				<?php if (!empty($data['contact'] ?? '')) { ?>
+
+					<?php if (!empty($attributes['title_sub_at'] ?? '')) { ?>
+						<h3 class="<?php echo $classNameBase; ?>__subtitle--at"><?php echo esc_html($attributes['title_sub_at']); ?></h3>
+					<?php } ?>
+
+				<?php
+					echo wpautop(make_clickable($data['contact']));
+				} ?>
+
+				<?php
+
+				if (!empty($attributes['button_text'] ?? '') && !empty($data['link'] ?? '')) {
+					$link = null;
+					$title = $this->model->getOfferTitle($offer_id);
+
+					if (filter_var($data['link'], FILTER_VALIDATE_EMAIL)) {
+						$link = "mailto:{$data['link']}?subject={$title}";
+					} else if (filter_var($data['link'], FILTER_VALIDATE_URL)) {
+						$link = $data['link'];
+					}
+
+					if ($link) {
+				?>
+						<p class="wp-block-button <?php echo $classNameBase; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $classNameBase; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
+				<?php }
+				} ?>
+
+
 			</div>
 		</div>
 <?php

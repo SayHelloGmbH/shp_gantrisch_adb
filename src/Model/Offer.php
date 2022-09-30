@@ -403,37 +403,33 @@ class Offer
 	 * @param integer $offer_id
 	 * @return mixed
 	 */
-	private function getOfferSubscription(int $offer_id)
+	public function getOfferSubscription(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT s.*, i.subscription_details FROM subscription s, subscription_i18n i WHERE s.offer_id = %s and s.offer_id = i.offer_id AND i.language = %s LIMIT 1", $offer_id, $this->language);
-		$results = $wpdb->get_results($sql);
+		$sql_subscription = $wpdb->prepare("SELECT * FROM subscription WHERE offer_id = %s LIMIT 1", $offer_id);
+		$results_subscription = $wpdb->get_results($sql_subscription);
 
-		if (empty($results) || empty(array_filter($results))) {
+		if (empty($results_subscription) || empty(array_filter($results_subscription))) {
 			return null;
 		}
 
-		return $results[0];
-	}
+		$data = $results_subscription[0];
 
-	/**
-	 * Get offer target audience
-	 *
-	 * @param integer $offer_id
-	 * @return string
-	 */
-	public function getOfferSubscriptionText(int $offer_id, array $block_attributes)
-	{
+		$data->subscription_details = '';
 
-		$data = $this->getOfferSubscription((int) $offer_id);
+		$sql_details = $wpdb->prepare("SELECT subscription_details FROM subscription_i18n WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->language);
+		$results_details = $wpdb->get_results($sql_details);
 
-		if (
-			!$data instanceof stdClass
-			|| !($data->subscription_mandatory ?? false)
-		) {
-			return '';
+		if (!empty($results_details)) {
+			$data->subscription_details = $results_details[0]->subscription_details;
 		}
 
-		return $block_attributes['message'] ?? '';
+		return [
+			'contact' => $data->subscription_contact ?? '',
+			'details' => $data->subscription_details ?? '',
+			'link' => $data->subscription_link ?? false,
+			'mandatory' => $data->subscription_mandatory ?? false,
+			'enabled' => $data->online_subscription_enabled ?? false,
+		];
 	}
 }
