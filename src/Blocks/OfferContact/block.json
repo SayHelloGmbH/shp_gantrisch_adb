@@ -17,6 +17,12 @@
 		},
 		"textColor": {
 			"type": "string"
+		},
+		"partner_label": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
 		}
 	},
 	"supports": {
