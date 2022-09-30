@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferContact;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use WP_Block;
 
 class Block
@@ -44,21 +45,8 @@ class Block
 
 		ob_start();
 
-		$class_names = [$classNameBase];
-
-		if (!empty($attributes['align'] ?? '')) {
-			$class_names[] = "align{$attributes['align']}";
-		}
-
-		if (!empty($attributes['backgroundColor'] ?? '')) {
-			$class_names[] = "has-background";
-			$class_names[] = "has-{$attributes['backgroundColor']}-background-color";
-		}
-
-		if (!empty($attributes['textColor'] ?? '')) {
-			$class_names[] = "has-text-color";
-			$class_names[] = "has-{$attributes['textColor']}-color";
-		}
+		$block_controller = new BlockController();
+		$class_names = array_merge([$classNameBase], $block_controller->basicClasses($attributes));
 ?>
 		<div class="<?php echo implode(' ', $class_names); ?>">
 
