@@ -2,14 +2,15 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
-use stdClass;
 
 class Offer
 {
 	private $locale = 'de_CH';
 	private $language = 'de';
 	private $cache = true;
+	private $single_page = false;
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -70,6 +71,19 @@ class Offer
 
 	public function run()
 	{
+	}
+
+	public function requestedOfferID()
+	{
+		$controller = new OfferController();
+		$var_name = $controller->queryVarName();
+		$var_value = get_query_var($var_name);
+
+		if (empty($var_value)) {
+			return null;
+		}
+
+		return preg_replace('/[^0-9]/', '', $var_value);
 	}
 
 	/**

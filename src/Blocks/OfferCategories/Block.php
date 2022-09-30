@@ -9,7 +9,6 @@ use WP_Block;
 class Block
 {
 
-	private $query_var = 'adb_offer_id';
 	private $model = null;
 
 	public function run()
@@ -27,14 +26,14 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_id = preg_replace('/[^0-9]/', '', get_query_var($this->query_var));
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
+
+		$offer_id = $this->model->requestedOfferID();
 
 		if (empty($offer_id)) {
 			return '';
-		}
-
-		if (!$this->model) {
-			$this->model = new OfferModel();
 		}
 
 		$offer_categories = $this->model->getOfferCategories((int) $offer_id);

@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 /**
  * Handles general request controlling for
  * the Angebotsdatenbank
@@ -13,10 +15,16 @@ class Offer
 {
 
 	private $query_var = 'adb_offer_id';
+	private $model = null;
 
 	public function run()
 	{
 		add_action('template_redirect', [$this, 'handleInvalidSingle']);
+	}
+
+	public function queryVarName()
+	{
+		return $this->query_var;
 	}
 
 	public function isConfiguredSinglePage()
@@ -37,23 +45,26 @@ class Offer
 	public function handleInvalidSingle()
 	{
 
-		$single_id = preg_replace('/[^0-9]/', '', get_query_var($this->query_var));
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
 
-		if (!$this->isConfiguredSinglePage() && $single_id) {
+		$offer_id = $this->model->requestedOfferID();
+
+		if (!$this->isConfiguredSinglePage() && $offer_id) {
 			header("HTTP/1.1 404 Not Found");
 			return;
 		}
 
 		// Has an ID been passed in?
-		if ($this->isConfiguredSinglePage() && !$single_id) {
+		if ($this->isConfiguredSinglePage() && !$offer_id) {
 			header("HTTP/1.1 404 Not Found");
 			return;
 		}
 
-		if ($this->isConfiguredSinglePage() && $single_id) {
+		if ($this->isConfiguredSinglePage() && $offer_id) {
 			// Is there a valid offer for the ID which has been passed in?
-			$model = shp_gantrisch_adb_get_instance()->Model->Offer;
-			$offer = $model->getOffer((int) $single_id);
+			$offer = $this->model->getOffer((int) $offer_id);
 			if (!$offer) {
 				header("HTTP/1.1 404 Not Found");
 			}
