@@ -1,0 +1,33 @@
+.wp-block-shp-gantrisch-adb-offer-categories {
+	> * + * {
+		margin-left: 1ch;
+		&::before {
+			margin-right: 1ch;
+			content: '|';
+		}
+	}
+
+	&__entries {
+		display: inline;
+		&--maincategory {
+			font-weight: 700;
+			> * + * {
+				margin-left: 0.5ch;
+				&::before {
+					margin-right: 0.5ch;
+					content: '/';
+				}
+			}
+		}
+
+		&--subcategory {
+			> * + * {
+				margin-left: 1ch;
+				&::before {
+					margin-right: 1ch;
+					content: '|';
+				}
+			}
+		}
+	}
+}
