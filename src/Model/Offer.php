@@ -41,7 +41,13 @@ class Offer
 		'en' => 'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?nach=%s',
 	];
 
+	/**
+	 * Database table names. Parametrised in case they change later.
+	 *
+	 * @var array
+	 */
 	private $tables = [
+		'activity' => 'activity',
 		'booking' => 'booking',
 		'offer' => 'offer',
 		'offer_image' => 'image',
@@ -50,6 +56,8 @@ class Offer
 		'category' => 'category',
 		'category_i18n' => 'category_i18n',
 		'category_link' => 'category_link',
+		'subscription' => 'subscription',
+		'subscription_i18n' => 'subscription_i18n',
 		'target_group' => 'target_group',
 		'target_group_i18n' => 'target_group_i18n',
 		'target_group_link' => 'target_group_link',
@@ -151,6 +159,8 @@ class Offer
 	public function getOfferTitle(int $offer_id)
 	{
 		$data = $this->getOffer($offer_id);
+
+		dump($data, 1, 1);
 
 		if (empty($data)) {
 			return null;
@@ -423,7 +433,7 @@ class Offer
 	public function getOfferTarget(int $offer_id)
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM target_group_link l, target_group_i18n i, target_group g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->getLanguage());
+		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM {$this->tables['target_group_link']} l, {$this->tables['target_group_i18n']} i, {$this->tables['target_group']} g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->getLanguage());
 		$results = $wpdb->get_results($sql);
 
 		if (empty($results)) {
@@ -448,7 +458,7 @@ class Offer
 	public function getOfferSubscription(int $offer_id)
 	{
 		global $wpdb;
-		$sql_subscription = $wpdb->prepare("SELECT * FROM subscription WHERE offer_id = %s LIMIT 1", $offer_id);
+		$sql_subscription = $wpdb->prepare("SELECT * FROM {$this->tables['subscription']} WHERE offer_id = %s LIMIT 1", $offer_id);
 		$results_subscription = $wpdb->get_results($sql_subscription);
 
 		if (empty($results_subscription) || empty(array_filter($results_subscription))) {
@@ -459,7 +469,7 @@ class Offer
 
 		$data->subscription_details = '';
 
-		$sql_details = $wpdb->prepare("SELECT subscription_details FROM subscription_i18n WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->getLanguage());
+		$sql_details = $wpdb->prepare("SELECT subscription_details FROM {$this->tables['subscription_i18n']} WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->getLanguage());
 		$results_details = $wpdb->get_results($sql_details);
 
 		if (!empty($results_details)) {
@@ -484,7 +494,7 @@ class Offer
 
 		if (empty($results) || !$this->cache) {
 			global $wpdb;
-			$sql = $wpdb->prepare("SELECT public_transport_start, public_transport_stop FROM activity WHERE offer_id = %s LIMIT 1", $offer_id);
+			$sql = $wpdb->prepare("SELECT public_transport_start, public_transport_stop FROM {$this->tables['activity']} WHERE offer_id = %s LIMIT 1", $offer_id);
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			if (!empty($results)) {
 				set_transient($transient_key, $results, $this->transient_lives['single']);
