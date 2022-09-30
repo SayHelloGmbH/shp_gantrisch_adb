@@ -51,8 +51,10 @@ class Block
 		// Use of viewScript in block.json allows us to enqueue the script as we want to.
 		// Here, we want to enqueue it in the footer so that we can do DOM manipulation
 		// and enqueue it with the file mod time as a version number
-		$viewScript = 'src/Blocks/OfferImages/assets/dist/scripts/viewScript.js';
-		wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
+		if (count($offer_images) > 1) {
+			$viewScript = 'src/Blocks/OfferImages/assets/dist/scripts/viewScript.js';
+			wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
+		}
 
 		ob_start();
 ?>
@@ -74,7 +76,9 @@ class Block
 						</div>
 					<?php } ?>
 				</div>
-				<div class="swiper-pagination"></div>
+				<?php if (count($offer_images) > 1) { ?>
+					<div class="swiper-pagination"></div>
+				<?php } ?>
 			</div>
 		</div>
 <?php
