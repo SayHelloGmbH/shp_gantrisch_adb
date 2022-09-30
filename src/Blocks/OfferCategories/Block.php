@@ -42,17 +42,18 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
+		$block_controller = new BlockController();
+		$block_controller->extend($block);
 
 		$main_categories = [];
 		$sub_categories = [];
 
 		foreach ($offer_categories as $category) {
-			$main_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--maincategory">%2$s</span>', $classNameBase, $category['body']);
+			$main_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--maincategory">%2$s</span>', $block->shp->classNameBase, $category['body']);
 
 			if (!empty($category['categories'])) {
 				foreach ($category['categories'] as $sub_category) {
-					$sub_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--subcategory">%2$s</span>', $classNameBase, $sub_category['body']);
+					$sub_categories[] = sprintf('<span class="%1$s__entry %1$s__entry--subcategory">%2$s</span>', $block->shp->classNameBase, $sub_category['body']);
 				}
 			}
 		}
@@ -60,24 +61,21 @@ class Block
 		$html = [];
 
 		if (!empty($main_categories)) {
-			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--maincategory">%2$s</div>', $classNameBase, implode('', $main_categories));
+			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--maincategory">%2$s</div>', $block->shp->classNameBase, implode('', $main_categories));
 		}
 
 		if (!empty($sub_categories)) {
-			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--subcategory">%2$s</div>', $classNameBase, implode('', $sub_categories));
+			$html[] = sprintf('<div class="%1$s__entries %1$s__entries--subcategory">%2$s</div>', $block->shp->classNameBase, implode('', $sub_categories));
 		}
 
 		if (empty($html)) {
 			return '';
 		}
 
-		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
-
 		ob_start();
 
 ?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 			<?php echo implode('', $html); ?>
 		</div>
 <?php

@@ -42,16 +42,15 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		ob_start();
 ?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 
 			<?php if (!empty($attributes['title'] ?? '')) { ?>
-				<h2 class="<?php echo $classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
+				<h2 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
 			<?php echo nl2br($target_audience); ?>

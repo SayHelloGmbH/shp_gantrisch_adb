@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
+use stdClass;
 use WP_Block;
 
 /**
@@ -35,7 +36,23 @@ class Block
 
 	public function classNames(WP_Block $block)
 	{
-		$classNameBase = wp_get_block_default_classname($block->name);
-		return implode(' ', array_merge([$classNameBase], $this->basicClasses($block->attributes)));
+		return implode(' ', array_merge([$block->shp->classNameBase], $this->basicClasses($block->attributes)));
+	}
+
+	/**
+	 * Add custom rendering data to the block
+	 * Pass block by reference - no return
+	 *
+	 * @param WP_Block $block
+	 * @return void
+	 */
+	public function extend(WP_Block &$block)
+	{
+		if (!isset($block->shp)) {
+			$block->shp = new stdClass;
+		}
+
+		$block->shp->classNameBase = wp_get_block_default_classname($block->name);
+		$block->shp->class_names = $this->classNames($block);
 	}
 }

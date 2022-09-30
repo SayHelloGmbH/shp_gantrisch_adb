@@ -36,8 +36,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-
 		$contact = $this->model->getOfferContact((int) $offer_id);
 
 		if (empty($contact)) {
@@ -48,17 +46,16 @@ class Block
 
 		ob_start();
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 ?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 
 			<?php if (!empty($partner_label)) { ?>
-				<div class="<?php echo $classNameBase; ?>__partnerlabel"><?php echo $partner_label; ?></div>
+				<div class="<?php echo $block->shp->classNameBase; ?>__partnerlabel"><?php echo $partner_label; ?></div>
 			<?php } ?>
 
-			<div class="<?php echo $classNameBase; ?>__contact"><?php echo $contact; ?></div>
+			<div class="<?php echo $block->shp->classNameBase; ?>__contact"><?php echo $contact; ?></div>
 		</div>
 <?php
 		$html = ob_get_contents();

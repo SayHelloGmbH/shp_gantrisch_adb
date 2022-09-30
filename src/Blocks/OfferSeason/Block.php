@@ -36,8 +36,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-
 		$months = $this->model->getOfferSeason((int) $offer_id);
 
 		if (empty($months) || !is_array($months)) {
@@ -46,12 +44,11 @@ class Block
 
 		ob_start();
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 ?>
-		<div class="<?php echo $class_names; ?>">
-			<div class="<?php echo $classNameBase; ?>__content">
+		<div class="<?php echo $block->shp->class_names; ?>">
+			<div class="<?php echo $block->shp->classNameBase; ?>__content">
 				<?php
 				echo implode('<br>', $months);
 				?>

@@ -36,8 +36,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-
 		$data = $this->model->getOfferSubscription((int) $offer_id, $attributes);
 
 		if (!is_array($data)) {
@@ -46,15 +44,14 @@ class Block
 
 		ob_start();
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 ?>
-		<div class="<?php echo $class_names; ?>">
-			<div class="<?php echo $classNameBase; ?>__content">
+		<div class="<?php echo $block->shp->class_names; ?>">
+			<div class="<?php echo $block->shp->classNameBase; ?>__content">
 
 				<?php if (!empty($attributes['title_sub_required'] ?? '')) { ?>
-					<h2 class="<?php echo $classNameBase; ?>__subtitle--required"><?php echo esc_html($attributes['title_sub_required']); ?></h2>
+					<h2 class="<?php echo $block->shp->classNameBase; ?>__subtitle--required"><?php echo esc_html($attributes['title_sub_required']); ?></h2>
 				<?php } ?>
 
 				<?php if (!empty($attributes['message'] ?? '')) {
@@ -64,7 +61,7 @@ class Block
 				<?php if (!empty($data['contact'] ?? '')) { ?>
 
 					<?php if (!empty($attributes['title_sub_at'] ?? '')) { ?>
-						<h3 class="<?php echo $classNameBase; ?>__subtitle--at"><?php echo esc_html($attributes['title_sub_at']); ?></h3>
+						<h3 class="<?php echo $block->shp->classNameBase; ?>__subtitle--at"><?php echo esc_html($attributes['title_sub_at']); ?></h3>
 					<?php } ?>
 
 				<?php
@@ -89,7 +86,7 @@ class Block
 
 					if ($link) {
 				?>
-						<p class="wp-block-button <?php echo $classNameBase; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $classNameBase; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
+						<p class="wp-block-button <?php echo $block->shp->classNameBase; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $block->shp->classNameBase; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
 				<?php }
 				} ?>
 

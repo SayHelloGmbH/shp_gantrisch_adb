@@ -37,14 +37,14 @@ class Block
 		}
 
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		$offer = $this->model->getOffer((int) $offer_id);
 
 		if (!$offer) {
 			ob_start();
 ?>
-			<div class="<?php echo $class_names; ?>">
+			<div class="<?php echo $block->shp->class_names; ?>">
 				<div class="c-message c-message--error">
 					<p><?php _ex('Sorry, no matching offer found.', 'Frontend error message', 'shp_gantrisch_adb'); ?></p>
 				</div>
@@ -59,7 +59,7 @@ class Block
 		ob_start();
 
 		?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 			<?php
 			dump($offer);
 			?>

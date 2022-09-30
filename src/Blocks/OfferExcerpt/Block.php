@@ -36,8 +36,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-
 		$offer_excerpt = $this->model->getOfferExcerpt((int) $offer_id);
 
 		if (empty($offer_excerpt)) {
@@ -45,12 +43,12 @@ class Block
 		}
 
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		ob_start();
 
 ?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 			<?php echo $offer_excerpt; ?>
 		</div>
 <?php

@@ -46,15 +46,14 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		ob_start();
 
 ?>
-		<div class="<?php echo $class_names; ?>">
-			<h1 class="<?php echo $classNameBase; ?>__title"><?php echo $offer_title; ?></h1>
+		<div class="<?php echo $block->shp->class_names; ?>">
+			<h1 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo $offer_title; ?></h1>
 		</div>
 <?php
 		$html = ob_get_contents();

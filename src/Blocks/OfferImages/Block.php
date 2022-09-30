@@ -58,24 +58,23 @@ class Block
 			wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		ob_start();
 ?>
-		<div class="<?php echo $class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
 					<?php foreach ($offer_images as $image) { ?>
 						<div class="swiper-slide">
-							<figure class="<?php echo $classNameBase; ?>__figure">
+							<figure class="<?php echo $block->shp->classNameBase; ?>__figure">
 								<?php
 								printf(
 									'<img src="%s" alt="%s" loading="lazy" class="%s__image" />',
 									$image->$image_size,
 									$offer_title,
-									$classNameBase
+									$block->shp->classNameBase
 								)
 								?>
 							</figure>

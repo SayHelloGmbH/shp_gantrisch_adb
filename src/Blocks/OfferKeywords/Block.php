@@ -36,8 +36,6 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-
 		$offer_keywords = $this->model->getOfferKeywords((int) $offer_id);
 
 		if (empty($offer_keywords)) {
@@ -47,7 +45,7 @@ class Block
 		$keywords = [];
 
 		foreach ($offer_keywords as $keyword) {
-			$keywords[] = sprintf('<span class="%s__entry">%s</span>', $classNameBase, $keyword);
+			$keywords[] = sprintf('<span class="%s__entry">%s</span>', $block->shp->classNameBase, $keyword);
 		}
 
 		if (empty($keywords)) {
@@ -55,13 +53,13 @@ class Block
 		}
 
 		$block_controller = new BlockController();
-		$class_names = $block_controller->classNames($block);
+		$block_controller->extend($block);
 
 		ob_start();
 
 ?>
-		<div class="<?php echo $class_names; ?>">
-			<div class="<?php echo $classNameBase; ?>__entries"><?php echo implode('', $keywords); ?></div>
+		<div class="<?php echo $block->shp->class_names; ?>">
+			<div class="<?php echo $block->shp->classNameBase; ?>__entries"><?php echo implode('', $keywords); ?></div>
 		</div>
 <?php
 		$html = ob_get_contents();
