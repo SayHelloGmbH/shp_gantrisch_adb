@@ -76,16 +76,52 @@ class Plugin
 	 */
 	private function run()
 	{
+		register_activation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'activation']);
+		register_deactivation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'deactivation']);
 
 		// Load individual pattern classes which contain
 		// grouped functionality. E.g. everything to do with a post type.
+		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
+				Controller\Offer::class,
+
 				Package\Fetch::class,
+				Package\Rewrites::class,
+
+				Plugin\ACF::class,
+				Plugin\Yoast::class,
+
+				Blocks\OfferBenefits\Block::class,
+				Blocks\OfferCategories\Block::class,
+				Blocks\OfferContact\Block::class,
+				Blocks\OfferDescriptionLong\Block::class,
+				Blocks\OfferExcerpt\Block::class,
+				Blocks\OfferImages\Block::class,
+				Blocks\OfferInfrastructure\Block::class,
+				Blocks\OfferPrice\Block::class,
+				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
+				Blocks\OfferSeason\Block::class,
+				Blocks\OfferSingle\Block::class,
+				Blocks\OfferSubscription\Block::class,
+				Blocks\OfferTarget\Block::class,
+				Blocks\OfferTransportStop\Block::class,
+				Blocks\OfferTitle\Block::class,
 			]
 		);
 
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
+		add_action('after_setup_theme', [$this, 'themeSupports']);
+	}
+
+	public function activation()
+	{
+		flush_rewrite_rules(true);
+	}
+
+	public function deactivation()
+	{
+		flush_rewrite_rules(false);
 	}
 
 	/**
@@ -94,5 +130,10 @@ class Plugin
 	public function loadPluginTextdomain()
 	{
 		load_plugin_textdomain('shp_gantrisch_adb', false, dirname(plugin_basename($this->file)) . '/languages');
+	}
+
+	public function themeSupports()
+	{
+		add_theme_support('title-tag');
 	}
 }

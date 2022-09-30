@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-subscription",
+	"title": "ADB Offer Subscription Text",
+	"category": "media",
+	"icon": "format-image",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"keywords": ["offer", "angebot", "anmeldung"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		},
+		"button_text": {
+			"type": "string"
+		},
+		"message": {
+			"type": "string"
+		},
+		"title_sub_required": {
+			"type": "string"
+		},
+		"title_sub_at": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js"
+}

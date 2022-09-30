@@ -1,0 +1,65 @@
+.wp-block-shp-gantrisch-adb-offer-images {
+	--shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
+	--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 3/2;
+
+	// Prop name makes use clearer. It's actually the bottom margin on .swiper-wrapper
+	--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top: 2rem;
+	--shp-block--gantrisch-adb-offer-images--swiper-bullet--gap: 8px;
+	--shp-block--gantrisch-adb-offer-images--swiper-bullet--color: currentColor;
+	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
+
+	&__figure {
+		padding: 0;
+		margin: 0;
+		background-color: var(
+			--shp-block--gantrisch-adb-offer-images--figure--background-color
+		);
+		aspect-ratio: var(
+			--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio
+		);
+
+		&--empty {
+			display: flex;
+			text-align: center;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	&__image {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.swiper-pagination {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet--gap);
+	}
+
+	.swiper-pagination-bullet {
+		background: currentColor;
+
+		&-active {
+			color: var(
+				--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color
+			);
+		}
+	}
+
+	.swiper-pagination-bullets {
+		bottom: 0;
+		color: var(
+			--shp-block--gantrisch-adb-offer-images--swiper-bullet--color
+		);
+	}
+
+	.swiper-wrapper {
+		margin-bottom: var(
+			--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top
+		);
+	}
+}

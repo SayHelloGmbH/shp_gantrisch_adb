@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-description-long",
+	"title": "ADB Offer Description Long",
+	"category": "media",
+	"icon": "format-image",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"keywords": ["offer", "angebot", "description"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js"
+}
