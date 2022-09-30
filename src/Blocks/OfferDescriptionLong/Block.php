@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferDescriptionLong;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
@@ -12,7 +13,6 @@ class Block
 
 	public function run()
 	{
-		$this->model = shp_gantrisch_adb_get_instance()->Model->Offer;
 		add_action('init', [$this, 'register']);
 	}
 
@@ -36,6 +36,10 @@ class Block
 		$align = $attributes['align'] ?? '';
 		if (!empty($align)) {
 			$align = "align{$align}";
+		}
+
+		if (!$this->model) {
+			$this->model = new OfferModel();
 		}
 
 		$offer_description_long = $this->model->getOfferDescriptionLong((int) $offer_id);

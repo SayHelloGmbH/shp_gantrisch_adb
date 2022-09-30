@@ -84,9 +84,6 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
-				Controller\Offer::class,
-				Model\Offer::class,
-
 				Package\Fetch::class,
 				Package\Rewrites::class,
 

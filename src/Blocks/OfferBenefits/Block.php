@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\OfferBenefits;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
@@ -13,7 +14,6 @@ class Block
 
 	public function run()
 	{
-		$this->model = shp_gantrisch_adb_get_instance()->Model->Offer;
 		add_action('init', [$this, 'register']);
 	}
 
@@ -33,7 +33,9 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
 
 		$benefits = $this->model->getOfferBenefits((int) $offer_id);
 
@@ -43,6 +45,7 @@ class Block
 
 		ob_start();
 
+		$classNameBase = wp_get_block_default_classname($block->name);
 		$block_controller = new BlockController();
 		$class_names = array_merge([$classNameBase], $block_controller->basicClasses($attributes));
 ?>

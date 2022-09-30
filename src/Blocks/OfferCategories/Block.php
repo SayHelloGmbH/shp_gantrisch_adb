@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferCategories;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
@@ -12,7 +13,6 @@ class Block
 
 	public function run()
 	{
-		$this->model = shp_gantrisch_adb_get_instance()->Model->Offer;
 		add_action('init', [$this, 'register']);
 	}
 
@@ -32,16 +32,20 @@ class Block
 			return '';
 		}
 
-		$classNameBase = wp_get_block_default_classname($block->name);
-		$align = $attributes['align'] ?? '';
-		if (!empty($align)) {
-			$align = "align{$align}";
+		if (!$this->model) {
+			$this->model = new OfferModel();
 		}
 
 		$offer_categories = $this->model->getOfferCategories((int) $offer_id);
 
 		if (empty($offer_categories)) {
 			return '';
+		}
+
+		$classNameBase = wp_get_block_default_classname($block->name);
+		$align = $attributes['align'] ?? '';
+		if (!empty($align)) {
+			$align = "align{$align}";
 		}
 
 		$main_categories = [];
