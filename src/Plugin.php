@@ -93,6 +93,7 @@ class Plugin
 				Plugin\ACF::class,
 				Plugin\Yoast::class,
 
+				Blocks\ListDefault\Block::class,
 				Blocks\OfferBenefits\Block::class,
 				Blocks\OfferCategories\Block::class,
 				Blocks\OfferContact\Block::class,

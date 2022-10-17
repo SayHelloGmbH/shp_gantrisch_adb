@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-list",
+	"title": "ADB List",
+	"category": "media",
+	"icon": "format-image",
+	"description": "A list view of all matching offer entries. Optionally filtered by category.",
+	"keywords": ["offer", "angebot", "list"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		},
+		"category": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js"
+}
