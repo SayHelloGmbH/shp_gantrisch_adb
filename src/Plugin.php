@@ -84,6 +84,7 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
+				Controller\Category::class,
 				Controller\Offer::class,
 
 				Package\Fetch::class,

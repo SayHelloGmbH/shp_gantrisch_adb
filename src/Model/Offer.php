@@ -506,4 +506,34 @@ class Offer
 
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
+
+	/**
+	 * Get list of categories for use in a SELECT
+	 * (e.g. Gutenberg editor). Only categories with
+	 * a label (body) set for the default language
+	 * in the i18n table are included.
+	 *
+	 * @return array
+	 */
+	public function getCategoriesForSelect()
+	{
+		global $wpdb;
+		$parents_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = 0 ORDER BY category.sort ASC", $this->language);
+		$parents = $wpdb->get_results($parents_sql, ARRAY_A);
+
+		if (empty($parents)) {
+			return $parents;
+		}
+
+		foreach ($parents as &$parent) {
+			$parent['children'] = [];
+			$child_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent['id']);
+			$children = $wpdb->get_results($child_sql, ARRAY_A);
+			if (!empty($children)) {
+				$parent['children'] = $children;
+			}
+		}
+
+		return $parents;
+	}
 }
