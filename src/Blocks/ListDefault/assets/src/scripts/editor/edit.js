@@ -2,7 +2,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
 	Disabled,
 	PanelBody,
-	SelectControl,
+	TreeSelect,
 	Spinner,
 } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
@@ -20,17 +20,17 @@ const Edit = ({ attributes, setAttributes, api_categories }) => {
 				<PanelBody title={_x('Settings')} initialOpen={true}>
 					{(!api_categories || !api_categories.length) && <Spinner />}
 					{!!api_categories.length && (
-						<SelectControl
+						<TreeSelect
 							label={_x(
 								'Select a category',
 								'SelectControl label',
 								'shp_gantrisch_adb'
 							)}
-							value={category}
+							selectedId={category}
 							onChange={(category) => {
 								setAttributes({ category });
 							}}
-							options={api_categories}
+							tree={api_categories}
 						/>
 					)}
 				</PanelBody>
@@ -60,9 +60,26 @@ export default withSelect((select, props) => {
 	).getCategories();
 
 	if (categoryEntries) {
-		categoryEntries.map((category) =>
-			api_categories.push({ value: category.id, label: category.label })
-		);
+		categoryEntries.map((category) => {
+			const entry = {
+				id: category.id,
+				name: category.label,
+				children: [],
+			};
+
+			if (category.children.length) {
+				category.children.map((child) => {
+					entry.children.push({
+						id: child.id,
+						name: child.label,
+					});
+				});
+			}
+
+			api_categories.push(entry);
+
+			return category;
+		});
 	}
 
 	return { ...props, api_categories: api_categories };
