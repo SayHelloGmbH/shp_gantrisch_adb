@@ -3,10 +3,15 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
 {
+
+	private $block_controller = null;
+	private $offer_controller = null;
 
 	public function run()
 	{
@@ -22,17 +27,42 @@ class Block
 
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		if (!$this->block_controller) {
+			$this->block_controller = new BlockController();
+		}
+
+		$this->block_controller->extend($block);
+
+		$offer_model = new OfferModel();
+
+		if (!empty($attributes['category'] ?? '')) {
+			$data = $offer_model->getByCategory((int) $attributes['category'], true);
+		} else {
+			$data = $offer_model->getAll(true);
+		}
+
+		if (empty($data)) {
+			return '';
+		}
+
+		if (!$this->offer_controller) {
+			$this->offer_controller = new OfferController();
+		}
 
 		ob_start();
 ?>
 		<div class="<?php echo $block->shp->class_names; ?>">
-			<?php
-
-			dump($attributes);
-
-			?>
+			<ul class="<?php echo $block->shp->classNameBase; ?>__entries">
+				<?php
+				foreach ($data as $offer) {
+				?>
+					<li class="<?php echo $block->shp->classNameBase; ?>__entry <?php echo $block->shp->classNameBase; ?>__entry--<?php echo $offer['id']; ?>">
+						<a href="<?php echo $this->offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
+					</li>
+				<?php
+				}
+				?>
+			</ul>
 		</div>
 <?php
 		$html = ob_get_contents();

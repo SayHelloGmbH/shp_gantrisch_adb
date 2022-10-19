@@ -486,8 +486,6 @@ class Offer
 
 	public function getOfferTransportStop(int $offer_id, string $start_stop = 'start')
 	{
-
-
 		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
 		$results = get_transient($transient_key);
 
@@ -516,24 +514,58 @@ class Offer
 	 * @return array
 	 */
 	public function getCategoriesForSelect()
+	public function getAll(bool $shuffle = false)
 	{
 		global $wpdb;
-		$parents_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = 0 ORDER BY category.sort ASC", $this->language);
-		$parents = $wpdb->get_results($parents_sql, ARRAY_A);
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s", $this->getLanguage());
+		$offers = @$wpdb->get_results($sql, ARRAY_A);
 
-		if (empty($parents)) {
-			return $parents;
+		if (!is_array($offers)) {
+			return new WP_Error(500, "Database error when requesting all offers.");
 		}
 
-		foreach ($parents as &$parent) {
-			$parent['children'] = [];
-			$child_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent['id']);
-			$children = $wpdb->get_results($child_sql, ARRAY_A);
-			if (!empty($children)) {
-				$parent['children'] = $children;
-			}
+		if (empty($offers)) {
+			return [];
+		}
+
+		// Optionally shuffle array entries
+		if ($shuffle) {
+			shuffle($offers);
+		}
+
+		$this->extendOffersData($offers);
+
+		return $offers;
+	}
+
 		}
 
 		return $parents;
+	/**
+	 * Extend data from database with custom stuff
+	 * Offers array passed by reference, no return needed.
+	 *
+	 * @param array $offers
+	 * @return void
+	 */
+	private function extendOffersData(&$offers)
+	{
+		foreach ($offers as &$offer) {
+			$this->extendOfferData($offer);
+		}
+	}
+
+	/**
+	 * Extend data from database with custom stuff
+	 * Offer passed by reference, no return needed.
+	 *
+	 * @param array $offer
+	 * @return void
+	 */
+	private function extendOfferData(&$offer)
+	{
+		if (is_array($offer) && isset($offer['offer_id']) && !isset($offer['id'])) {
+			$offer['id'] = $offer['offer_id'];
+		}
 	}
 }

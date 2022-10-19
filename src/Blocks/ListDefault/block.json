@@ -30,5 +30,9 @@
 			"background": true
 		}
 	},
-	"editorScript": "file:./assets/dist/scripts/editor.js"
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-offer-list-shared"
+	]
 }
