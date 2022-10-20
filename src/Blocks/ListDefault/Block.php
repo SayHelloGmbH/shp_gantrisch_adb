@@ -49,6 +49,14 @@ class Block
 			$this->offer_controller = new OfferController();
 		}
 
+		$offer_model = new OfferModel();
+
+		if (!empty($attributes['category'] ?? '')) {
+			$data = $offer_model->getByCategory((int) $attributes['category'], true);
+		} else {
+			$data = $offer_model->getAll();
+		}
+
 		ob_start();
 ?>
 		<div class="<?php echo $block->shp->class_names; ?>">

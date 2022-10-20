@@ -505,6 +505,19 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
+	private function getCategoriesHierarchical($parent_id, $level)
+	{
+
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT category.*, i18n.body AS i18n_label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent_id);
+		$results = $wpdb->get_results($sql, ARRAY_A);
+
+		foreach ($results as $result) {
+			echo str_repeat('-', $level) . ' ' . $result['i18n_label'] . "<br/>";
+			//$this->getCategoriesHierarchical($result['parent_id'], $level + 1);
+		}
+	}
+
 	/**
 	 * Get list of categories for use in a SELECT
 	 * (e.g. Gutenberg editor). Only categories with
@@ -516,6 +529,81 @@ class Offer
 	public function getCategoriesForSelect()
 	public function getAll(bool $shuffle = false)
 	{
+
+		$this->getCategoriesHierarchical(0, 0);
+
+		exit;
+
+		$categories = [];
+
+
+		// function display_children($category_id, $level)
+		// {
+		// 	// retrieve all children
+		// 	$result = mysql_query("SELECT * FROM category WHERE parent_id='$category_id'");
+
+		// 	// display each child
+		// 	while ($row = mysql_fetch_array($result)) {
+		// 		// indent and display the title of this child
+		// 		// if you want to save the hierarchy, replace the following line with your code
+		// 		echo str_repeat('  ', $level) . $row['category_name'] . "<br/>";
+
+		// 		// call this function again to display this child's children
+		// 		display_children($row['category_id'], $level + 1);
+		// 	}
+		// }
+
+
+		// global $wpdb;
+		// $sql = $wpdb->prepare("SELECT category.*, i18n.body AS i18n_label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
+		// $results = $wpdb->get_results($sql, ARRAY_A);
+
+		// if (empty($results)) {
+		// 	return [];
+		// }
+
+		// $categories = [];
+
+		// foreach ($results as $result) {
+		// 	if ($result['parent_id'] === '0') {
+		// 		$categories["category_{$result['category_id']}"] = $result;
+		// 		$categories["category_{$result['category_id']}"]['children'] = [];
+		// 	}
+		// }
+
+		// dump($categories, 1, 1);
+
+		// return $results;
+
+
+
+
+		// global $wpdb;
+		// $parents_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = 0 ORDER BY category.sort ASC", $this->language);
+		// $parents = $wpdb->get_results($parents_sql, ARRAY_A);
+
+		// if (empty($parents)) {
+		// 	return $parents;
+		// }
+
+		// foreach ($parents as &$parent) {
+		// 	$parent['children'] = [];
+		// 	$child_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent['id']);
+		// 	$children = $wpdb->get_results($child_sql, ARRAY_A);
+		// 	if (!empty($children)) {
+		// 		$parent['children'] = $children;
+		// 	}
+		// }
+
+		return $categories;
+	}
+
+	public function getByCategory(int $category_id, bool $shuffle = false)
+	{
+		if (!$category_id) {
+			return [];
+		}
+
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s", $this->getLanguage());
 		$offers = @$wpdb->get_results($sql, ARRAY_A);
@@ -538,9 +626,6 @@ class Offer
 		return $offers;
 	}
 
-		}
-
-		return $parents;
 	/**
 	 * Extend data from database with custom stuff
 	 * Offers array passed by reference, no return needed.
