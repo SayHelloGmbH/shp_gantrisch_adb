@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
+use stdClass;
 use WP_Error;
 
 class Offer
@@ -505,99 +506,85 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	private function getCategoriesHierarchical($parent_id, $level)
+	private function getCategoriesHierarchical()
 	{
 
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT category.*, i18n.body AS i18n_label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent_id);
+		$sql = $wpdb->prepare("SELECT category.category_id as id, category.parent_id as parent_id, i18n.body AS name FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
 		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		foreach ($results as $result) {
-			echo str_repeat('-', $level) . ' ' . $result['i18n_label'] . "<br/>";
-			//$this->getCategoriesHierarchical($result['parent_id'], $level + 1);
-		}
-	}
-
-	/**
-	 * Get list of categories for use in a SELECT
-	 * (e.g. Gutenberg editor). Only categories with
-	 * a label (body) set for the default language
-	 * in the i18n table are included.
-	 *
-	 * @return array
-	 */
-	public function getCategoriesForSelect()
-	public function getAll(bool $shuffle = false)
-	{
-
-		$this->getCategoriesHierarchical(0, 0);
-
-		exit;
 
 		$categories = [];
 
+		foreach ($results as $result) {
+			if ($result['parent_id'] === '0') {
+				$categories["category_{$result['id']}"] = $result;
+				$categories["category_{$result['id']}"]['level'] = 1;
+				$categories["category_{$result['id']}"]['children'] = [];
+				foreach ($results as $level2_result) {
+					if ($level2_result['parent_id'] === $result['id']) {
+						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"] = [];
+						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['id'] = $level2_result['id'];
+						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['name'] = $level2_result['name'];
+						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['level'] = 2;
+						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children'] = [];
 
-		// function display_children($category_id, $level)
-		// {
-		// 	// retrieve all children
-		// 	$result = mysql_query("SELECT * FROM category WHERE parent_id='$category_id'");
+						foreach ($results as $level3_result) {
+							if ($level3_result['parent_id'] === $level2_result['id']) {
+								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"] = [];
+								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['id'] = $level3_result['id'];
+								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['name'] = $level3_result['name'];
+								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['level'] = 3;
+								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children'] = [];
 
-		// 	// display each child
-		// 	while ($row = mysql_fetch_array($result)) {
-		// 		// indent and display the title of this child
-		// 		// if you want to save the hierarchy, replace the following line with your code
-		// 		echo str_repeat('  ', $level) . $row['category_name'] . "<br/>";
-
-		// 		// call this function again to display this child's children
-		// 		display_children($row['category_id'], $level + 1);
-		// 	}
-		// }
-
-
-		// global $wpdb;
-		// $sql = $wpdb->prepare("SELECT category.*, i18n.body AS i18n_label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
-		// $results = $wpdb->get_results($sql, ARRAY_A);
-
-		// if (empty($results)) {
-		// 	return [];
-		// }
-
-		// $categories = [];
-
-		// foreach ($results as $result) {
-		// 	if ($result['parent_id'] === '0') {
-		// 		$categories["category_{$result['category_id']}"] = $result;
-		// 		$categories["category_{$result['category_id']}"]['children'] = [];
-		// 	}
-		// }
-
-		// dump($categories, 1, 1);
-
-		// return $results;
-
-
-
-
-		// global $wpdb;
-		// $parents_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = 0 ORDER BY category.sort ASC", $this->language);
-		// $parents = $wpdb->get_results($parents_sql, ARRAY_A);
-
-		// if (empty($parents)) {
-		// 	return $parents;
-		// }
-
-		// foreach ($parents as &$parent) {
-		// 	$parent['children'] = [];
-		// 	$child_sql = $wpdb->prepare("SELECT category.category_id AS id, i18n.body AS label FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s AND category.parent_id = %s ORDER BY category.sort ASC", $this->language, $parent['id']);
-		// 	$children = $wpdb->get_results($child_sql, ARRAY_A);
-		// 	if (!empty($children)) {
-		// 		$parent['children'] = $children;
-		// 	}
-		// }
+								foreach ($results as $level4_result) {
+									if ($level4_result['parent_id'] === $level3_result['id']) {
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['children'] = [];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['id'] = $level4_result['id'];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['name'] = $level4_result['name'];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['level'] = 4;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		return $categories;
 	}
 
+	public function getAll(bool $shuffle = false)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s", $this->getLanguage());
+		$offers = @$wpdb->get_results($sql, ARRAY_A);
+
+		if (!is_array($offers)) {
+			return new WP_Error(500, "Database error when requesting all offers.");
+		}
+
+		if (empty($offers)) {
+			return [];
+		}
+
+		$this->extendOffersData($offers);
+
+		// Optionally shuffle array entries
+		if ($shuffle) {
+			shuffle($offers);
+		}
+
+		return $offers;
+	}
+
+	/**
+	 * Get offers from the indicated category
+	 *
+	 * @param integer $category_id
+	 * @param boolean $shuffle
+	 * @return array
+	 */
 	public function getByCategory(int $category_id, bool $shuffle = false)
 	{
 		if (!$category_id) {

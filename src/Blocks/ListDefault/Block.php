@@ -54,7 +54,7 @@ class Block
 		if (!empty($attributes['category'] ?? '')) {
 			$data = $offer_model->getByCategory((int) $attributes['category'], true);
 		} else {
-			$data = $offer_model->getAll();
+			$data = $offer_model->getAll(true);
 		}
 
 		ob_start();
