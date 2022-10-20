@@ -4,7 +4,6 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
-use stdClass;
 use WP_Error;
 
 class Offer
@@ -85,6 +84,36 @@ class Offer
 	{
 	}
 
+	/**
+	 * Getter for the private tables obkect
+	 *
+	 * @return array
+	 */
+	public function getTables()
+	{
+		return $this->tables;
+	}
+
+	/**
+	 * Getter for the private language object
+	 *
+	 * @return array
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
+	 * Getter for the private tables object
+	 *
+	 * @return array
+	 */
+	public function getSupportedLanguages()
+	{
+		return $this->supported_languages;
+	}
+
 	public function getSinglePageID()
 	{
 		return $this->single_page;
@@ -111,11 +140,6 @@ class Offer
 	public function getSBBTimetableURL()
 	{
 		return $this->sbb_timetable_urls[$this->getLanguage()] ?? '#%s';
-	}
-
-	public function getLanguage()
-	{
-		return $this->language;
 	}
 
 	/**
@@ -506,55 +530,6 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	private function getCategoriesHierarchical()
-	{
-
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT category.category_id as id, category.parent_id as parent_id, i18n.body AS name FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
-		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		$categories = [];
-
-		foreach ($results as $result) {
-			if ($result['parent_id'] === '0') {
-				$categories["category_{$result['id']}"] = $result;
-				$categories["category_{$result['id']}"]['level'] = 1;
-				$categories["category_{$result['id']}"]['children'] = [];
-				foreach ($results as $level2_result) {
-					if ($level2_result['parent_id'] === $result['id']) {
-						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"] = [];
-						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['id'] = $level2_result['id'];
-						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['name'] = html_entity_decode($level2_result['name']);
-						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['level'] = 2;
-						$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children'] = [];
-
-						foreach ($results as $level3_result) {
-							if ($level3_result['parent_id'] === $level2_result['id']) {
-								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"] = [];
-								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['id'] = $level3_result['id'];
-								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['name'] = html_entity_decode($level3_result['name']);
-								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['level'] = 3;
-								$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children'] = [];
-
-								foreach ($results as $level4_result) {
-									if ($level4_result['parent_id'] === $level3_result['id']) {
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"] = [];
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['id'] = $level4_result['id'];
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['name'] = html_entity_decode($level4_result['name']);
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['level'] = 4;
-										// $categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level3_result['id']}"]['children'] = [];
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return $categories;
-	}
-
 	public function getAll(bool $shuffle = false)
 	{
 		global $wpdb;
@@ -640,15 +615,5 @@ class Offer
 		if (is_array($offer) && isset($offer['offer_id']) && !isset($offer['id'])) {
 			$offer['id'] = $offer['offer_id'];
 		}
-	}
-
-	/**
-	 * Get the categories for use in a React select element
-	 *
-	 * @return array
-	 */
-	public function getCategoriesForSelect()
-	{
-		return $this->getCategoriesHierarchical();
 	}
 }

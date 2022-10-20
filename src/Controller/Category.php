@@ -2,7 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
-use SayHello\ShpGantrischAdb\Model\Offer as Model;
+use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
 use WP_REST_Server;
 
 /**
@@ -21,15 +21,14 @@ class Category
 
 	public function restRoutes()
 	{
-
 		register_rest_route('shp_gantrisch_adb', 'categories_for_select', [
 			'methods'  => WP_REST_Server::READABLE,
 			'permission_callback' => function () {
 				return true;
 			},
 			'callback' => function () {
-				$model = new Model();
-				$categories = $model->getCategoriesForSelect();
+				$model = new CategoryModel();
+				$categories = $model->getForSelect();
 				return $categories;
 			}
 		]);
