@@ -25,6 +25,9 @@
 		"color": {
 			"text": true,
 			"background": true
+		},
+		"spacing": {
+			"padding": true
 		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js"
