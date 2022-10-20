@@ -36,7 +36,7 @@ class Category
 
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT category.category_id as id, category.parent_id as parent_id, i18n.body AS name FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
-		$results = $wpdb->get_results($sql, ARRAY_A);
+		$results = $wpdb->get_results($sql);
 
 		$categories = [];
 
@@ -88,5 +88,24 @@ class Category
 	public function getForSelect()
 	{
 		return $this->getAllHierarchical();
+	}
+
+	/**
+	 * Get the translated category title by category ID
+	 *
+	 * @param int $category_id
+	 * @return string
+	 */
+	public function getTitle($category_id)
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT category.category_id as id, i18n.body AS name FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id= %s AND category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC LIMIT 1", $category_id, $this->language);
+		$results = $wpdb->get_results($sql);
+
+		if (empty($results)) {
+			return '';
+		}
+
+		return $results[0]->name ?? '';
 	}
 }

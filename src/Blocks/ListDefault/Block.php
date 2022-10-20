@@ -2,8 +2,10 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
+use Advanced_Sidebar_Menu\Menus\Category;
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -53,13 +55,16 @@ class Block
 
 		if (!empty($attributes['category'] ?? '')) {
 			$data = $offer_model->getByCategory((int) $attributes['category'], true);
+			$category_model = new CategoryModel();
+			$category_name = $category_model->getTitle($attributes['category']);
 		} else {
 			$data = $offer_model->getAll(true);
+			$category_name = '';
 		}
 
 		ob_start();
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
+		<div class="<?php echo $block->shp->class_names; ?>" data-category="<?php echo $category_name; ?>">
 			<ul class="<?php echo $block->shp->classNameBase; ?>__entries">
 				<?php
 				foreach ($data as $offer) {
