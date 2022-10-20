@@ -64,43 +64,14 @@ export default withSelect((select, props) => {
 			const entry = {
 				id: category.id,
 				name: category.name,
-				children: [],
+				children: category.children,
 			};
-
-			if (Object.values(category.children).length) {
-				Object.values(category.children).map((child) => {
-					entry.children.push({
-						id: child.id,
-						name: child.name,
-						children: child.children,
-					});
-
-					// if (Object.values(child.children).length) {
-					// 	console.log(child.name);
-					// 	// 	console.log(child.name);
-					// 	// 	console.log(Object.values(child.children));
-
-					// 	// 	Object.values(child.children).map((grandchild) => {
-					// 	// 		console.log(grandchild);
-					// 	// 		child.children.push({
-					// 	// 			id: grandchild.id,
-					// 	// 			name: grandchild.name,
-					// 	// 			children: [],
-					// 	// 		});
-					// 	// 	});
-
-					// 	// 	console.log(child.children);
-					// }
-				});
-			}
 
 			api_categories.push(entry);
 
 			return category;
 		});
 	}
-
-	// console.log(api_categories);
 
 	return { ...props, api_categories: api_categories };
 })(Edit);
