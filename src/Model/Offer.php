@@ -641,4 +641,14 @@ class Offer
 			$offer['id'] = $offer['offer_id'];
 		}
 	}
+
+	/**
+	 * Get the categories for use in a React select element
+	 *
+	 * @return array
+	 */
+	public function getCategoriesForSelect()
+	{
+		return $this->getCategoriesHierarchical();
+	}
 }
