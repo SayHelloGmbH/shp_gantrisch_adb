@@ -538,10 +538,11 @@ class Offer
 
 								foreach ($results as $level4_result) {
 									if ($level4_result['parent_id'] === $level3_result['id']) {
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['children'] = [];
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['id'] = $level4_result['id'];
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['name'] = $level4_result['name'];
-										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level4_result['id']}"]['level'] = 4;
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"] = [];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['id'] = $level4_result['id'];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['name'] = $level4_result['name'];
+										$categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level4_result['id']}"]['level'] = 4;
+										// $categories["category_{$result['id']}"]['children']["category_{$level2_result['id']}"]['children']["category_{$level3_result['id']}"]['children']["category_{$level3_result['id']}"]['children'] = [];
 									}
 								}
 							}
