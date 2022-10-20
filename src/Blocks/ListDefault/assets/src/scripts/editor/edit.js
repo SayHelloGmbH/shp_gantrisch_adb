@@ -50,8 +50,8 @@ const Edit = ({ attributes, setAttributes, api_categories }) => {
 export default withSelect((select, props) => {
 	let api_categories = [
 		{
-			id: 0,
-			label: __('Select'),
+			id: '0',
+			name: __('No selection'),
 		},
 	];
 

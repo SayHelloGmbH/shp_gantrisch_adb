@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Controller;
 
 use SayHello\ShpGantrischAdb\Model\Offer as Model;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**
@@ -28,7 +27,7 @@ class Category
 			'permission_callback' => function () {
 				return true;
 			},
-			'callback' => function (WP_REST_Request $request) {
+			'callback' => function () {
 				$model = new Model();
 				$categories = $model->getCategoriesForSelect();
 				return $categories;
