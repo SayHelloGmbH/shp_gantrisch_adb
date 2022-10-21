@@ -19,7 +19,7 @@
 
 	--block--entry-title-line-height: 1.222222;
 	--block--entry-title-size: 18px;
-	--block--entry-title-transition: all 300ms ease;
+	--block--entry-header-transition: all 300ms ease;
 	--block--entry-title-weight: 700;
 
 	&__entry {
@@ -28,6 +28,15 @@
 		word-break: break-word;
 		background-color: var(--block--entry-background);
 		padding-left: var(--block--entry-padding-left);
+		transition: all 300ms ease;
+
+		&.is--hidden {
+			body.page & {
+				display: none;
+				max-height: 0;
+				overflow: hidden;
+			}
+		}
 
 		> * {
 			margin-top: 0;
@@ -81,6 +90,7 @@
 
 		&-header {
 			padding: var(--block--entry-header-padding);
+			transition: var(--block--entry-header-transition);
 
 			> * {
 				margin-top: 0;
@@ -116,7 +126,6 @@
 			font-size: var(--block--entry-title-size);
 			line-height: var(--block--entry-title-line-height);
 			font-weight: var(--block--entry-title-weight);
-			transition: var(--block--entry-title-transition);
 
 			a {
 				text-decoration: none !important;
@@ -136,5 +145,17 @@
 		@media screen and (min-width: 48rem) {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
+
+		@media screen and (min-width: 80rem) {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+
+	&__loadbutton {
+		grid-column: 1/-1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--wp--custom--spacing--unit, 1rem);
 	}
 }

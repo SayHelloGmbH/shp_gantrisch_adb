@@ -36,7 +36,7 @@ class Category
 
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT category.category_id as id, category.parent_id as parent_id, i18n.body AS name FROM {$this->tables['category']} category, {$this->tables['category_i18n']} i18n WHERE category.category_id = i18n.category_id AND i18n.language = %s ORDER BY category.sort ASC", $this->language);
-		$results = $wpdb->get_results($sql);
+		$results = $wpdb->get_results($sql, ARRAY_A);
 
 		$categories = [];
 

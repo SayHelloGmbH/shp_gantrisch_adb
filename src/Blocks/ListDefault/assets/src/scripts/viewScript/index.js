@@ -1,4 +1,94 @@
 import 'jquery-match-height';
 
+if (window.NodeList && !NodeList.prototype.forEach) {
+	NodeList.prototype.forEach = function (callback, thisArg) {
+		var i;
+		var len = this.length;
+
+		thisArg = thisArg || window;
+
+		for (i = 0; i < len; i++) {
+			callback.call(thisArg, this[i], i, this);
+		}
+	};
+}
+
+if (window.Element && !Element.prototype.closest) {
+	Element.prototype.closest = function (s) {
+		var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+			i,
+			el = this;
+		do {
+			i = matches.length;
+			while (--i >= 0 && matches.item(i) !== el) {}
+		} while (i < 0 && (el = el.parentElement));
+		return el;
+	};
+}
+
+const makeVisible = (button, elements) => {
+	const wrapper = button.parentNode;
+
+	wrapper.parentNode.removeChild(wrapper);
+
+	elements.forEach((element) => {
+		element.classList.remove('is--hidden');
+	});
+};
+
+/**
+ * Apply lazy-load button to each list block
+ * and unhide the first 12 entries.
+ */
+const blocks = document.querySelectorAll(
+	'.wp-block-shp-gantrisch-adb-offer-list'
+);
+
+const initial_count = Math.max(
+	parseInt(shp_gantrisch_adb_block_list_default.initial_count),
+	1
+);
+console.log(initial_count);
+
+blocks.forEach((block) => {
+	const elements_on = block.querySelectorAll(
+		`.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(-n+${initial_count})`
+	);
+
+	const elements_off = block.querySelectorAll(
+		`.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(n+${
+			initial_count + 1
+		})`
+	);
+
+	elements_on.forEach((element) => {
+		element.classList.remove('is--hidden');
+	});
+
+	const entry_before = block.querySelector(
+		'.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(13)'
+	);
+
+	const button_wrapper = document.createElement('div');
+
+	button_wrapper.classList.add(
+		'wp-block-shp-gantrisch-adb-offer-list__loadbutton'
+	);
+
+	if (!!shp_gantrisch_adb_block_list_default) {
+		const button = document.createElement('button');
+		button.innerHTML = shp_gantrisch_adb_block_list_default.load_more_text;
+		button.addEventListener('click', (event) => {
+			event.preventDefault();
+			event.currentTarget.blur();
+			makeVisible(event.currentTarget, elements_off);
+		});
+
+		button_wrapper.appendChild(button);
+
+		entry_before.parentNode.insertBefore(button_wrapper, entry_before);
+	}
+});
+
 jQuery.fn.matchHeight._throttle = 350;
-jQuery('.wp-block-shp-gantrisch-adb-offer-list__entry-title').matchHeight({});
+jQuery('.wp-block-shp-gantrisch-adb-offer-list__entry-header').matchHeight({});

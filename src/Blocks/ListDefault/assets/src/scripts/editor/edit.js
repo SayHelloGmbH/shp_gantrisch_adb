@@ -6,6 +6,7 @@ import {
 	Spinner,
 	SelectControl,
 	TextControl,
+	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 import { __, _x } from '@wordpress/i18n';
@@ -15,7 +16,8 @@ import metadata from '../../../../block.json';
 import image_sizes from '../../../../../../../.build/gutenberg/_components/image-sizes';
 
 const Edit = ({ attributes, setAttributes, api_categories }) => {
-	const { category, buttonText, image_size } = attributes;
+	const { category, button_text, load_more_text, image_size, initial_count } =
+		attributes;
 
 	let image_label = 'Undefined';
 
@@ -44,14 +46,30 @@ const Edit = ({ attributes, setAttributes, api_categories }) => {
 							tree={api_categories}
 						/>
 					)}
+					<NumberControl
+						label={_x(
+							'Number of entries in initial view',
+							'SelectControl label',
+							'shp_gantrisch_adb'
+						)}
+						isShiftStepEnabled={true}
+						shiftStep={3}
+						min={1}
+						value={initial_count}
+						onChange={(initial_count) =>
+							setAttributes({ initial_count })
+						}
+					/>
 					<TextControl
 						label={_x(
 							'Button text',
 							'TextControl label',
 							'shp_gantrisch_adb'
 						)}
-						value={buttonText}
-						onChange={(buttonText) => setAttributes({ buttonText })}
+						value={button_text}
+						onChange={(button_text) =>
+							setAttributes({ button_text })
+						}
 					/>
 					<SelectControl
 						label={_x(
@@ -64,6 +82,17 @@ const Edit = ({ attributes, setAttributes, api_categories }) => {
 						onChange={(image_size) => {
 							setAttributes({ image_size });
 						}}
+					/>
+					<TextControl
+						label={_x(
+							'Load more button text',
+							'TextControl label',
+							'shp_gantrisch_adb'
+						)}
+						value={load_more_text}
+						onChange={(load_more_text) =>
+							setAttributes({ load_more_text })
+						}
 					/>
 				</PanelBody>
 			</InspectorControls>

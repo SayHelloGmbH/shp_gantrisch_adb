@@ -70,8 +70,17 @@ class Block
 		// Random order as requested by client
 		shuffle($data);
 
+		$load_more_text = $attributes['load_more_text'] ?? '';
+		if (empty($load_more_text)) {
+			$load_more_text = _x('Load more', 'List block default button text', 'shp_gantrisch_adb');
+		}
+
 		$viewScript = 'src/Blocks/ListDefault/assets/dist/scripts/viewScript.js';
 		wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, [], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
+		wp_localize_script($block->block_type->view_script, 'shp_gantrisch_adb_block_list_default', [
+			'load_more_text' => $load_more_text,
+			'initial_count' => (int) ($attributes['initial_count'] ?? false),
+		]);
 
 		ob_start();
 ?>
@@ -79,7 +88,7 @@ class Block
 			<ul class="<?php echo $block->shp->classNameBase; ?>__entries">
 				<?php
 				foreach ($data as $offer) {
-					$button_text = esc_html($attributes['buttonText'] ?? '');
+					$button_text = esc_html($attributes['button_text'] ?? '');
 
 					if (!$this->offer_model) {
 						$this->offer_model = new OfferModel();
@@ -102,7 +111,7 @@ class Block
 						);
 					}
 				?>
-					<li class="<?php echo $block->shp->classNameBase; ?>__entry <?php echo $block->shp->classNameBase; ?>__entry--<?php echo $offer['id']; ?>">
+					<li class="<?php echo $block->shp->classNameBase; ?>__entry <?php echo $block->shp->classNameBase; ?>__entry--<?php echo $offer['id']; ?> is--hidden">
 
 						<div class="<?php echo $block->shp->classNameBase; ?>__entry-header">
 							<div class="<?php echo $block->shp->classNameBase; ?>__entry-title">
