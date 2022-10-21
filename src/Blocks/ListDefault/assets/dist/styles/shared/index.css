@@ -1,0 +1,142 @@
+.wp-block-shp-gantrisch-adb-offer-list {
+  --block--entry-background: var(--wp--preset--color--white);
+  --block--entry-padding-left: 40px;
+  --block--entry-button-background: var(--wp--preset--color--dark);
+  --block--entry-button-color: var(--wp--preset--color--white);
+  --block--entry-button-line-height: calc(32 / 16);
+  --block--entry-button-padding: 0.4375em 0.84375em;
+  --block--entry-button-size: 16px;
+  --block--entry-button-weight: 500;
+  --block--entry-header-padding: 21px 10px 12px 0;
+  --block--entry-header-sibling-offset: 12px;
+  --block--entry-location-color: var(--wp--preset--color--petrol);
+  --block--entry-location-line-height: calc(14 / 12);
+  --block--entry-location-size: 12px;
+  --block--entry-location-weight: 500;
+  --block--entry-title-line-height: 1.222222;
+  --block--entry-title-size: 18px;
+  --block--entry-header-transition: all 300ms ease;
+  --block--entry-title-weight: 700;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry {
+  position: relative;
+  -webkit-hyphens: auto;
+          hyphens: auto;
+  word-break: break-word;
+  background-color: var(--block--entry-background);
+  padding-left: var(--block--entry-padding-left);
+  transition: all 300ms ease;
+}
+body.page .wp-block-shp-gantrisch-adb-offer-list__entry.is--hidden {
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-button {
+  display: inline-block;
+  text-decoration: none !important;
+  padding: var(--block--entry-button-padding);
+  color: var(--block--entry-button-color) !important;
+  background-color: var(--block--entry-button-background) !important;
+  font-size: var(--block--entry-button-size) !important;
+  line-height: var(--block--entry-button-line-height) !important;
+  font-weight: var(--block--entry-button-weight) !important;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-buttonwrapper {
+  margin-top: 0;
+  text-align: right;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-figure {
+  margin-left: 0;
+  margin-right: 0;
+  height: 0;
+  padding-bottom: 66.6666666667%;
+  overflow: hidden;
+}
+@supports (aspect-ratio: 3/2) {
+  .wp-block-shp-gantrisch-adb-offer-list__entry-figure {
+    height: auto;
+    padding-bottom: 0;
+    aspect-ratio: 3/2;
+  }
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-figure--empty {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-floodlink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  text-indent: -999rem;
+  font-size: 0;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-header {
+  padding: var(--block--entry-header-padding);
+  transition: var(--block--entry-header-transition);
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-header > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-header > * + * {
+  margin-top: var(--block--entry-header-sibling-offset);
+}
+@supports (aspect-ratio: 3/2) {
+  .wp-block-shp-gantrisch-adb-offer-list__entry-image {
+    -o-object-fit: cover;
+       object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-location {
+  font-size: var(--block--entry-location-size);
+  line-height: var(--block--entry-location-line-height);
+  font-weight: var(--block--entry-location-weight);
+  color: var(--block--entry-location-color);
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-location > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-title {
+  font-size: var(--block--entry-title-size);
+  line-height: var(--block--entry-title-line-height);
+  font-weight: var(--block--entry-title-weight);
+}
+.wp-block-shp-gantrisch-adb-offer-list__entry-title a {
+  text-decoration: none !important;
+  color: currentColor !important;
+  font-weight: inherit !important;
+  font-size: 1em;
+}
+.wp-block-shp-gantrisch-adb-offer-list__entries {
+  list-style: none;
+  display: grid;
+  gap: var(--wp--custom--spacing--unit, 1rem);
+  padding: 0;
+}
+@media screen and (min-width: 48rem) {
+  .wp-block-shp-gantrisch-adb-offer-list__entries {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media screen and (min-width: 80rem) {
+  .wp-block-shp-gantrisch-adb-offer-list__entries {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.wp-block-shp-gantrisch-adb-offer-list__loadbutton {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--wp--custom--spacing--unit, 1rem);
+}

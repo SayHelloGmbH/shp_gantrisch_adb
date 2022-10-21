@@ -84,6 +84,36 @@ class Offer
 	{
 	}
 
+	/**
+	 * Getter for the private tables obkect
+	 *
+	 * @return array
+	 */
+	public function getTables()
+	{
+		return $this->tables;
+	}
+
+	/**
+	 * Getter for the private language object
+	 *
+	 * @return array
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
+	 * Getter for the private tables object
+	 *
+	 * @return array
+	 */
+	public function getSupportedLanguages()
+	{
+		return $this->supported_languages;
+	}
+
 	public function getSinglePageID()
 	{
 		return $this->single_page;
@@ -110,11 +140,6 @@ class Offer
 	public function getSBBTimetableURL()
 	{
 		return $this->sbb_timetable_urls[$this->getLanguage()] ?? '#%s';
-	}
-
-	public function getLanguage()
-	{
-		return $this->language;
 	}
 
 	/**
@@ -262,7 +287,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getOfferImages(int $offer_id)
+	public function getImages(int $offer_id)
 	{
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT i.offer_id, i.small, i.medium, i.large, i.original, i.copyright FROM {$this->tables['offer']} o, {$this->tables['offer_image']} i WHERE o.offer_id = %s AND o.offer_id = i.offer_id", $offer_id);
@@ -486,8 +511,6 @@ class Offer
 
 	public function getOfferTransportStop(int $offer_id, string $start_stop = 'start')
 	{
-
-
 		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
 		$results = get_transient($transient_key);
 
@@ -505,5 +528,82 @@ class Offer
 		}
 
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
+	}
+
+	public function getAll()
+	{
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
+		$offers = @$wpdb->get_results($sql, ARRAY_A);
+
+		if (!is_array($offers)) {
+			return new WP_Error(500, "Database error when requesting all offers.");
+		}
+
+		if (empty($offers)) {
+			return [];
+		}
+
+		$this->extendOffersData($offers);
+
+		return $offers;
+	}
+
+	/**
+	 * Get offers from the indicated category
+	 *
+	 * @param integer $category_id
+	 * @param boolean $shuffle
+	 * @return array
+	 */
+	public function getByCategory(int $category_id)
+	{
+		if (!$category_id) {
+			return [];
+		}
+
+		global $wpdb;
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
+		$offers = @$wpdb->get_results($sql, ARRAY_A);
+
+		if (!is_array($offers)) {
+			return new WP_Error(500, "Database error when requesting all offers.");
+		}
+
+		if (empty($offers)) {
+			return [];
+		}
+
+		$this->extendOffersData($offers);
+
+		return $offers;
+	}
+
+	/**
+	 * Extend data from database with custom stuff
+	 * Offers array passed by reference, no return needed.
+	 *
+	 * @param array $offers
+	 * @return void
+	 */
+	private function extendOffersData(&$offers)
+	{
+		foreach ($offers as &$offer) {
+			$this->extendOfferData($offer);
+		}
+	}
+
+	/**
+	 * Extend data from database with custom stuff
+	 * Offer passed by reference, no return needed.
+	 *
+	 * @param array $offer
+	 * @return void
+	 */
+	private function extendOfferData(&$offer)
+	{
+		if (is_array($offer) && isset($offer['offer_id']) && !isset($offer['id'])) {
+			$offer['id'] = $offer['offer_id'];
+		}
 	}
 }
