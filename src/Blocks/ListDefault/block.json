@@ -15,6 +15,13 @@
 		"backgroundColor": {
 			"type": "string"
 		},
+		"buttonText": {
+			"type": "string"
+		},
+		"image_size": {
+			"type": "string",
+			"default": "small"
+		},
 		"textColor": {
 			"type": "string"
 		},
@@ -34,6 +41,7 @@
 		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/viewScript.js",
 	"style": [
 		"file:./assets/dist/styles/shared/index.min.css",
 		"shp-gantrisch-adb-offer-list-shared"

@@ -287,7 +287,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getOfferImages(int $offer_id)
+	public function getImages(int $offer_id)
 	{
 		global $wpdb;
 		$sql = $wpdb->prepare("SELECT i.offer_id, i.small, i.medium, i.large, i.original, i.copyright FROM {$this->tables['offer']} o, {$this->tables['offer_image']} i WHERE o.offer_id = %s AND o.offer_id = i.offer_id", $offer_id);
@@ -530,10 +530,10 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	public function getAll(bool $shuffle = false)
+	public function getAll()
 	{
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s", $this->getLanguage());
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
 		$offers = @$wpdb->get_results($sql, ARRAY_A);
 
 		if (!is_array($offers)) {
@@ -546,11 +546,6 @@ class Offer
 
 		$this->extendOffersData($offers);
 
-		// Optionally shuffle array entries
-		if ($shuffle) {
-			shuffle($offers);
-		}
-
 		return $offers;
 	}
 
@@ -561,14 +556,14 @@ class Offer
 	 * @param boolean $shuffle
 	 * @return array
 	 */
-	public function getByCategory(int $category_id, bool $shuffle = false)
+	public function getByCategory(int $category_id)
 	{
 		if (!$category_id) {
 			return [];
 		}
 
 		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s", $this->getLanguage());
+		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
 		$offers = @$wpdb->get_results($sql, ARRAY_A);
 
 		if (!is_array($offers)) {
@@ -577,11 +572,6 @@ class Offer
 
 		if (empty($offers)) {
 			return [];
-		}
-
-		// Optionally shuffle array entries
-		if ($shuffle) {
-			shuffle($offers);
 		}
 
 		$this->extendOffersData($offers);

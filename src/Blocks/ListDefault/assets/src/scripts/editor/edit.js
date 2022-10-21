@@ -4,15 +4,26 @@ import {
 	PanelBody,
 	TreeSelect,
 	Spinner,
+	SelectControl,
+	TextControl,
 } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 import { __, _x } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 
 import metadata from '../../../../block.json';
+import image_sizes from '../../../../../../../.build/gutenberg/_components/image-sizes';
 
 const Edit = ({ attributes, setAttributes, api_categories }) => {
-	const { category } = attributes;
+	const { category, buttonText, image_size } = attributes;
+
+	let image_label = 'Undefined';
+
+	if (!!image_sizes && !!image_size) {
+		image_label = image_sizes.find(
+			(entry) => entry.value === image_size
+		).label;
+	}
 
 	return (
 		<>
@@ -33,6 +44,27 @@ const Edit = ({ attributes, setAttributes, api_categories }) => {
 							tree={api_categories}
 						/>
 					)}
+					<TextControl
+						label={_x(
+							'Button text',
+							'TextControl label',
+							'shp_gantrisch_adb'
+						)}
+						value={buttonText}
+						onChange={(buttonText) => setAttributes({ buttonText })}
+					/>
+					<SelectControl
+						label={_x(
+							'Select an image size',
+							'SelectControl label',
+							'shp_gantrisch_adb'
+						)}
+						value={image_size}
+						options={image_sizes}
+						onChange={(image_size) => {
+							setAttributes({ image_size });
+						}}
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<div {...useBlockProps()}>
