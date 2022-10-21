@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Controller;
 
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+use SayHello\ShpGantrischAdb\Package\Rewrites as RewritesPackage;
 
 /**
  * Handles general request controlling for
@@ -115,5 +116,38 @@ class Offer
 		}
 
 		return $offer_title;
+	}
+
+	public function singleUrl(array $offer)
+	{
+
+		if (!$this->model) {
+			$this->model = new OfferModel();
+		}
+
+		if (!isset($offer['id'])) {
+			$this->model->extendOfferData($offer);
+		}
+
+		$single_page = $this->model->getSinglePageID();
+
+		if (!$single_page) {
+			return '#';
+		}
+
+		$rewrites_package = new RewritesPackage();
+		$rewrite_key = $rewrites_package->getVarKey();
+		$permalink = get_permalink($single_page);
+
+		if (!$permalink || empty($permalink)) {
+			return '#';
+		}
+
+		return sprintf(
+			'%s%s/%s/',
+			$permalink,
+			$rewrite_key,
+			$offer['id']
+		);
 	}
 }

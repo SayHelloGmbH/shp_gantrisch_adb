@@ -19,7 +19,14 @@
 	},
 	"supports": {
 		"align": ["wide", "full"],
-		"html": false
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"padding": true
+		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"viewScript": "file:./assets/dist/scripts/viewScript.js",

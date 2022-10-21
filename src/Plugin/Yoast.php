@@ -105,7 +105,7 @@ class Yoast
 	 * @param string $seo_url
 	 * @return string
 	 */
-	public function seoUrl(string $seo_url = '')
+	public function seoUrl($seo_url = '')
 	{
 
 		if (!function_exists('YoastSEO')) {

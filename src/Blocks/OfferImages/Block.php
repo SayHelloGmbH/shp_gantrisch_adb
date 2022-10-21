@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_images = $this->model->getOfferImages((int) $offer_id);
+		$offer_images = $this->model->getImages((int) $offer_id);
 
 		if (empty($offer_images)) {
 			return '';

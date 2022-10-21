@@ -84,14 +84,17 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
+				Controller\Category::class,
 				Controller\Offer::class,
 
+				Package\Gutenberg::class,
 				Package\Fetch::class,
 				Package\Rewrites::class,
 
 				Plugin\ACF::class,
 				Plugin\Yoast::class,
 
+				Blocks\ListDefault\Block::class,
 				Blocks\OfferBenefits\Block::class,
 				Blocks\OfferCategories\Block::class,
 				Blocks\OfferContact\Block::class,
