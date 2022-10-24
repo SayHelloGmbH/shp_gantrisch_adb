@@ -86,6 +86,7 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
+				Controller\API::class,
 				Controller\Category::class,
 				Controller\Offer::class,
 
