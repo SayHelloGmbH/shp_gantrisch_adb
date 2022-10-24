@@ -134,7 +134,7 @@ class Plugin
 	 */
 	public function loadPluginTextdomain()
 	{
-		load_plugin_textdomain('shp_gantrisch_adb', false, dirname(plugin_basename($this->file)) . '/languages');
+		load_plugin_textdomain('shp_gantrisch_adb', false, dirname(plugin_basename(shp_gantrisch_adb_get_instance()->file)) . '/languages');
 	}
 
 	public function themeSupports()
