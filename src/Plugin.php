@@ -79,6 +79,8 @@ class Plugin
 		register_activation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'activation']);
 		register_deactivation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'deactivation']);
 
+		add_action('init', [$this, 'maybeLoadParks']);
+
 		// Load individual pattern classes which contain
 		// grouped functionality. E.g. everything to do with a post type.
 		// LOADING ORDER IS CRITICAL
@@ -138,5 +140,12 @@ class Plugin
 	public function themeSupports()
 	{
 		add_theme_support('title-tag');
+	}
+
+	public function maybeLoadParks()
+	{
+		if (!is_admin()) {
+			require_once(shp_gantrisch_adb_get_instance()->path . 'vendor/parks_api/autoload.php');
+		}
 	}
 }
