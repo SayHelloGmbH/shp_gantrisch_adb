@@ -58,7 +58,3 @@ function shp_gantrisch_adb_get_instance()
 }
 
 shp_gantrisch_adb_get_instance();
-
-if (!is_admin()) {
-	require_once(shp_gantrisch_adb_get_instance()->path . 'vendor/parks_api/autoload.php');
-}
