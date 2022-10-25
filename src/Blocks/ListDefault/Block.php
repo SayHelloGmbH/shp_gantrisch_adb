@@ -87,10 +87,6 @@ class Block
 
 					$button_text = esc_html($attributes['button_text'] ?? '');
 
-					if (!$this->offer_model) {
-						$this->offer_model = new OfferModel();
-					}
-
 					$images = $this->getOfferModel()->getImages($offer['offer_id']);
 					$selected_size = $attributes['image_size'] ?? 'small';
 
