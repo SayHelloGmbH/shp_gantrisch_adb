@@ -145,8 +145,6 @@ class Plugin
 
 	public function maybeLoadParks()
 	{
-		if (!is_admin()) {
-			require_once(shp_gantrisch_adb_get_instance()->path . 'vendor/parks_api/autoload.php');
-		}
+		require_once(shp_gantrisch_adb_get_instance()->path . 'vendor/parks_api/autoload.php');
 	}
 }
