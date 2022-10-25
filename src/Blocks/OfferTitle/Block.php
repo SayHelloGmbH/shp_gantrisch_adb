@@ -52,8 +52,8 @@ class Block
 		ob_start();
 
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<h1 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo $offer_title; ?></h1>
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<h1 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo $offer_title; ?></h1>
 		</div>
 <?php
 		$html = ob_get_contents();

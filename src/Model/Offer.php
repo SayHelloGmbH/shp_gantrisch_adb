@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
+use ParksAPI;
 use stdClass;
 use WP_Error;
 
@@ -157,6 +158,11 @@ class Offer
 	public function getOffer(int $offer_id)
 	{
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+
+		if (!$api instanceof ParksAPI) {
+			return null;
+		}
+
 		return $api->model->get_offer($offer_id);
 	}
 
@@ -276,7 +282,6 @@ class Offer
 	 */
 	public function getImages(int $offer_id)
 	{
-
 		$offer = $this->getOffer($offer_id);
 
 		if (!$offer instanceof stdClass) {
@@ -508,16 +513,15 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	public function getAll($category_id = '')
+	public function getAll($category_ids = [])
 	{
-
-		$category_id = (int) $category_id;
-		$transient_key = $category_id ? "shp_gantrisch_adb_offer_cat_{$category_id}" : "shp_gantrisch_adb_offer_all";
+		$transient_hash = md5(implode('', $category_ids));
+		$transient_key = !empty($category_ids) ? "adb_offer_cats_{$transient_hash}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 
 		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
-			$offers = $api->get_offers();
+			$offers = $api->get_offers(null, $category_ids);
 
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
 				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);

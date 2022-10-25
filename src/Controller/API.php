@@ -18,7 +18,7 @@ class API
 
 	public function getApi()
 	{
-		if (!$this->api) {
+		if (!$this->api && class_exists('ParksAPI')) {
 			$offer_model = new OfferModel();
 			$language = $offer_model->getLanguage();
 			$this->api = new ParksAPI($language);

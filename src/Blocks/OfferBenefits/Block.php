@@ -42,13 +42,14 @@ class Block
 			return '';
 		}
 
-		ob_start();
-
 		$block_controller = new BlockController();
 		$block_controller->extend($block);
+
+		ob_start();
+
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<div class="<?php echo $block->shp->classNameBase; ?>__content">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 				<?php
 				echo nl2br($benefits);
 				?>

@@ -49,32 +49,31 @@ class Block
 			$offer_title = $offer_title->get_error_message();
 		}
 
+		$block_controller = new BlockController();
+		$block_controller->extend($block);
 
 		// Use of viewScript in block.json allows us to enqueue the script as we want to.
 		// Here, we want to enqueue it in the footer so that we can do DOM manipulation
 		// and enqueue it with the file mod time as a version number
 		if (count($offer_images) > 1) {
 			$viewScript = 'src/Blocks/OfferImages/assets/dist/scripts/viewScript.js';
-			wp_enqueue_script($block->block_type->view_script, shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
+			wp_enqueue_script($block['shp']['classNameBase'], shp_gantrisch_adb_get_instance()->url . $viewScript, ['jquery', 'swiper'], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
 		}
-
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
 
 		ob_start();
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
 					<?php foreach ($offer_images as $image) { ?>
 						<div class="swiper-slide">
-							<figure class="<?php echo $block->shp->classNameBase; ?>__figure">
+							<figure class="<?php echo $block['shp']['classNameBase']; ?>__figure">
 								<?php
 								printf(
 									'<img src="%s" alt="%s" loading="lazy" class="%s__image" />',
 									$image->$image_size,
 									$offer_title,
-									$block->shp->classNameBase
+									$block['shp']['classNameBase']
 								)
 								?>
 							</figure>
