@@ -44,7 +44,7 @@ class Block
 
 		$this->block_controller->extend($block);
 
-		if (!empty($attributes['category'] ?? '')) {
+		if ((int) ($attributes['category'] ?? false)) {
 			$data = $this->getOfferModel()->getByCategory((int) $attributes['category']);
 		} else {
 			$data = $this->getOfferModel()->getAll();
