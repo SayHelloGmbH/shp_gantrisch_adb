@@ -125,7 +125,7 @@ class Offer
 			$this->model = new OfferModel();
 		}
 
-		if (!isset($offer['id'])) {
+		if (!isset($offer['offer_id'])) {
 			$this->model->extendOfferData($offer);
 		}
 
@@ -147,7 +147,7 @@ class Offer
 			'%s%s/%s/',
 			$permalink,
 			$rewrite_key,
-			$offer['id']
+			$offer['offer_id']
 		);
 	}
 }
