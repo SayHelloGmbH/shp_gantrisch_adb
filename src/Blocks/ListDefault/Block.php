@@ -76,6 +76,7 @@ class Block
 			'initial_count' => (int) ($attributes['initial_count'] ?? false),
 		]);
 
+		$count = 1;
 		ob_start();
 ?>
 		<div class="<?php echo $block->shp->class_names; ?>" data-category="<?php echo $category_name; ?>">
@@ -92,10 +93,11 @@ class Block
 
 					if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 						$image_html = sprintf(
-							'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image" src="%2$s" alt="%3$s" loading="lazy"></figure>',
+							'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
 							$block->shp->classNameBase,
 							$images[0]->{$selected_size},
-							esc_html($offer['title'])
+							esc_html($offer['title']),
+							$count > 12 ? 'lazy' : 'eager'
 						);
 					} else {
 						$image_html = sprintf(
@@ -131,6 +133,7 @@ class Block
 						<a class="<?php echo $block->shp->classNameBase; ?>__entry-floodlink" href="<?php echo $this->offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 					</li>
 				<?php
+					$count++;
 				}
 				?>
 			</ul>
