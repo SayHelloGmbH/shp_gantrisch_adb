@@ -125,10 +125,6 @@ class Offer
 			$this->model = new OfferModel();
 		}
 
-		if (!isset($offer['offer_id'])) {
-			$this->model->extendOfferData($offer);
-		}
-
 		$single_page = $this->model->getSinglePageID();
 
 		if (!$single_page) {
