@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$price = $this->model->getOfferPrice((int) $offer_id);
+		$price = $this->model->getPrice((int) $offer_id);
 
 		if (empty($price)) {
 			return '';

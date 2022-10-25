@@ -109,7 +109,7 @@ class Offer
 			return $post_title;
 		}
 
-		$offer_title = $this->model->getOfferTitle($offer_id);
+		$offer_title = $this->model->getTitle($offer_id);
 
 		if (empty($offer_title) || is_wp_error($offer_title)) {
 			return $post_title;
@@ -123,10 +123,6 @@ class Offer
 
 		if (!$this->model) {
 			$this->model = new OfferModel();
-		}
-
-		if (!isset($offer['id'])) {
-			$this->model->extendOfferData($offer);
 		}
 
 		$single_page = $this->model->getSinglePageID();
@@ -147,7 +143,7 @@ class Offer
 			'%s%s/%s/',
 			$permalink,
 			$rewrite_key,
-			$offer['id']
+			$offer['offer_id']
 		);
 	}
 }

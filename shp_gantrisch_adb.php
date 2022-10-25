@@ -4,7 +4,7 @@
  * Plugin URI:        https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/
  * Description:       Plugin für die Ausgabe der Angebote auf der Website vom Naturpark Gantrisch.
  * Author:            Say Hello GmbH
- * Version:           0.3.1
+ * Version:           0.4.0
  * Author URI:        https://sayhello.ch/
  * Text Domain:       shp_gantrisch_adb
  * Domain Path:       /languages
@@ -56,4 +56,5 @@ function shp_gantrisch_adb_get_instance()
 {
 	return SayHello\ShpGantrischAdb\Plugin::getInstance(__FILE__);
 }
+
 shp_gantrisch_adb_get_instance();

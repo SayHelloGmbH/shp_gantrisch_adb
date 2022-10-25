@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
+use stdClass;
 use WP_Error;
 
 class Offer
@@ -23,7 +24,10 @@ class Offer
 	 *
 	 * @var array
 	 */
-	private $transient_lives = ['single' => 10];
+	private $transient_lives = [
+		'single' => 10,
+		'all_offers' => HOUR_IN_SECONDS
+	];
 
 	/**
 	 * Which languages are available in the data which
@@ -152,65 +156,46 @@ class Offer
 	 */
 	public function getOffer(int $offer_id)
 	{
-
-		$transient_key = "shp_gantrisch_adb_offer_{$offer_id}";
-		$cached_result = get_transient($transient_key);
-
-		if (empty($cached_result) || !$this->cache) {
-			global $wpdb;
-			$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = %s and offer.offer_id = i18n.offer_id and i18n.language = %s", $offer_id, $this->getLanguage());
-
-			$results = $wpdb->get_results($sql);
-
-			if (empty($results)) {
-				return null;
-			}
-
-			$result = $results[0];
-			if (!empty($result)) {
-				set_transient($transient_key, $result, $this->transient_lives['single']);
-			}
-		}
-
-		if (empty($result)) {
-			return null;
-		}
-
-		unset($result->park);
-		unset($result->park_id);
-		unset($result->route_url);
-
-		return $result;
+		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+		return $api->model->get_offer($offer_id);
 	}
 
-	public function getOfferTitle(int $offer_id)
+	public function getTitle(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
+		if (!$offer instanceof stdClass || !isset($offer->title) || empty($offer->title)) {
 			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
 		}
 
-		return strip_tags($data->title);
+		return strip_tags($offer->title);
 	}
 
-	public function getOfferKeywords(int $offer_id)
+	public function getKeywords(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
+		if (!$offer instanceof stdClass || !isset($offer->keywords)) {
+			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
+		}
+
+		if (empty($offer->keywords)) {
 			return null;
 		}
 
-		$data->keywords = explode(PHP_EOL, $data->keywords);
-		return array_map('strip_tags', $data->keywords);
+		$keywords = explode(PHP_EOL, $offer->keywords);
+		return array_map('strip_tags', $keywords);
 	}
 
-	public function getOfferCategories(int $offer_id)
+	public function getCategories(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT i18n.category_id, i18n.body, c.parent_id, cl.offer_id, c.sort FROM {$this->tables['category_link']} cl, {$this->tables['category_i18n']} i18n, {$this->tables['category']} c WHERE cl.offer_id = %s AND cl.category_id = i18n.category_id AND cl.category_id = c.category_id AND i18n.language = %s ORDER BY c.sort", $offer_id, $this->getLanguage());
-		$results = $wpdb->get_results($sql, ARRAY_A);
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return [];
+		}
+
+		$results = $offer->categories ?? [];
 
 		if (empty($results)) {
 			return null;
@@ -219,14 +204,15 @@ class Offer
 		$categories = [];
 
 		foreach ($results as $result) {
+			$result = (array) $result;
 			if (!array_key_exists("category{$result['category_id']}", $categories)) {
 				$categories["category{$result['category_id']}"] = $result;
 				$categories["category{$result['category_id']}"]['categories'] = [];
 			}
 		}
 
-
 		foreach ($results as $result) {
+			$result = (array) $result;
 			if (isset($categories["category{$result['parent_id']}"])) {
 				$categories["category{$result['parent_id']}"]['categories'][] = (array) $result;
 			}
@@ -248,37 +234,38 @@ class Offer
 	 * @param boolean $formatted Return format: raw, legible or integer
 	 * @return void
 	 */
-	public function getOfferDates(int $offer_id, $format = 'raw')
+	public function getDates(int $offer_id, $format = 'raw')
 	{
 
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT * FROM {$this->tables['offer_date']} WHERE offer_id = %s", $offer_id);
-		$results = $wpdb->get_results($sql);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($results)) {
-			return null;
+		if (!$offer instanceof stdClass) {
+			return [];
 		}
 
-		foreach ($results as &$result) {
-			unset($result->offer_date_id);
+		$return = [];
 
-			// Default format is raw, which will return the
-			// unmanipulated value from the database table
-			switch ($format) {
-				case 'legible': {
-						$result->date_from = wp_date($this->date_format, strtotime($result->date_from));
-						$result->date_to = wp_date($this->date_format, strtotime($result->date_to));
-						break;
-					}
-				case 'integer': {
-						$result->date_from = strtotime($result->date_from);
-						$result->date_to = strtotime($result->date_to);
-						break;
-					}
-			}
+		// Default format is raw, which will return the
+		// unmanipulated value from the database table
+		switch ($format) {
+			case 'legible': {
+					$return['date_from'] = wp_date($this->date_format, strtotime($offer->date_from ?? 0));
+					$return['date_to'] = wp_date($this->date_format, strtotime($offer->date_to ?? 0));
+					break;
+				}
+			case 'integer': {
+					$return['date_from'] = strtotime($offer->date_from ?? 0);
+					$return['date_to'] = strtotime($offer->date_to ?? 0);
+					break;
+				}
+			case 'raw': {
+					$return['date_from'] = $offer->date_from ?? 0;
+					$return['date_to'] = $offer->date_to ?? 0;
+					break;
+				}
 		}
 
-		return $results;
+		return $return;
 	}
 
 	/**
@@ -289,10 +276,14 @@ class Offer
 	 */
 	public function getImages(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT i.offer_id, i.small, i.medium, i.large, i.original, i.copyright FROM {$this->tables['offer']} o, {$this->tables['offer_image']} i WHERE o.offer_id = %s AND o.offer_id = i.offer_id", $offer_id);
-		$results = $wpdb->get_results($sql);
-		return $results;
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return [];
+		}
+
+		return $offer->images ?? [];
 	}
 
 	/**
@@ -301,15 +292,15 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferExcerpt(int $offer_id)
+	public function getExcerpt(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
-			return null;
+		if (!$offer instanceof stdClass || !isset($offer->description_medium)) {
+			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
 		}
 
-		return strip_tags($data->description_medium);
+		return strip_tags($offer->description_medium ?? '');
 	}
 
 	/**
@@ -320,13 +311,13 @@ class Offer
 	 */
 	public function getInfrastructure(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
+		if (!$offer instanceof stdClass) {
 			return null;
 		}
 
-		return strip_tags($data->other_infrastructure ?? '');
+		return strip_tags($offer->other_infrastructure ?? '');
 	}
 
 	/**
@@ -335,15 +326,15 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferDescriptionLong(int $offer_id)
+	public function getDescriptionLong(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
+		if (!$offer instanceof stdClass) {
 			return null;
 		}
 
-		return strip_tags($data->description_long);
+		return strip_tags($offer->description_long ?? '');
 	}
 
 	/**
@@ -354,15 +345,15 @@ class Offer
 	 */
 	public function getContact(int $offer_id)
 	{
-		$data = $this->getOffer($offer_id);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($data)) {
+		if (!$offer instanceof stdClass) {
 			return null;
 		}
 
 		return [
-			'contact' => nl2br(make_clickable(strip_tags($data->contact))),
-			'is_partner' => (bool) $data->contact_is_park_partner,
+			'contact' => nl2br(make_clickable(strip_tags($offer->contact ?? ''))),
+			'is_partner' => (bool) $offer->contact_is_park_partner,
 		];
 	}
 
@@ -372,17 +363,15 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferSeason(int $offer_id)
+	public function getSeason(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer_id, season_months FROM {$this->tables['booking']} WHERE offer_id = %s LIMIT 1", $offer_id);
-		$results = $wpdb->get_results($sql);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($results)) {
-			return '';
+		if (!$offer instanceof stdClass) {
+			return [];
 		}
 
-		$season_months = $results[0]->season_months ?? '';
+		$season_months = $offer->season_months ?? '';
 		$season_months_array = array_filter(explode(',', $season_months));
 
 		if (empty($season_months_array)) {
@@ -416,17 +405,15 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferBenefits(int $offer_id)
+	public function getBenefits(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer_id, benefits FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->getLanguage());
-		$results = $wpdb->get_results($sql);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($results)) {
-			return '';
+		if (!$offer instanceof stdClass) {
+			return [];
 		}
 
-		return $results[0]->benefits ?? '';
+		return $offer->benefits ?? '';
 	}
 
 	/**
@@ -435,17 +422,15 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferPrice(int $offer_id)
+	public function getPrice(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer_id, price FROM {$this->tables['offer_i18n']} WHERE offer_id = %s and language = %s LIMIT 1", $offer_id, $this->getLanguage());
-		$results = $wpdb->get_results($sql);
+		$offer = $this->getOffer($offer_id);
 
-		if (empty($results)) {
-			return '';
+		if (!$offer instanceof stdClass) {
+			return [];
 		}
 
-		return $results[0]->price ?? '';
+		return $offer->price ?? '';
 	}
 
 	/**
@@ -454,23 +439,16 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getOfferTarget(int $offer_id)
+	public function getTarget(int $offer_id)
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT l.offer_id, i.body FROM {$this->tables['target_group_link']} l, {$this->tables['target_group_i18n']} i, {$this->tables['target_group']} g WHERE l.offer_id = %s AND l.target_group_id = g.target_group_id AND l.target_group_id = i.target_group_id AND i.body != '' AND i.language = %s ORDER BY g.sort ASC", $offer_id, $this->getLanguage());
-		$results = $wpdb->get_results($sql);
 
-		if (empty($results)) {
-			return '';
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return [];
 		}
 
-		$return = [];
-
-		foreach ($results as $result) {
-			$return[] = $result->body;
-		}
-
-		return implode(chr(10), $return);
+		return $offer->target_groups ?? [];
 	}
 
 	/**
@@ -479,7 +457,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return mixed
 	 */
-	public function getOfferSubscription(int $offer_id)
+	public function getSubscription(int $offer_id)
 	{
 		global $wpdb;
 		$sql_subscription = $wpdb->prepare("SELECT * FROM {$this->tables['subscription']} WHERE offer_id = %s LIMIT 1", $offer_id);
@@ -509,7 +487,7 @@ class Offer
 		];
 	}
 
-	public function getOfferTransportStop(int $offer_id, string $start_stop = 'start')
+	public function getTransportStop(int $offer_id, string $start_stop = 'start')
 	{
 		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
 		$results = get_transient($transient_key);
@@ -530,11 +508,23 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	public function getAll()
+	public function getAll($category_id = '')
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
-		$offers = @$wpdb->get_results($sql, ARRAY_A);
+
+		$category_id = (int) $category_id;
+		$transient_key = $category_id ? "shp_gantrisch_adb_offer_cat_{$category_id}" : "shp_gantrisch_adb_offer_all";
+		$offers = get_transient($transient_key);
+
+		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
+			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+			$offers = $api->get_offers();
+
+			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
+				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);
+			}
+		}
+
+		$offers = $offers['data'] ?? [];
 
 		if (!is_array($offers)) {
 			return new WP_Error(500, "Database error when requesting all offers.");
@@ -543,8 +533,6 @@ class Offer
 		if (empty($offers)) {
 			return [];
 		}
-
-		$this->extendOffersData($offers);
 
 		return $offers;
 	}
@@ -574,36 +562,6 @@ class Offer
 			return [];
 		}
 
-		$this->extendOffersData($offers);
-
 		return $offers;
-	}
-
-	/**
-	 * Extend data from database with custom stuff
-	 * Offers array passed by reference, no return needed.
-	 *
-	 * @param array $offers
-	 * @return void
-	 */
-	private function extendOffersData(&$offers)
-	{
-		foreach ($offers as &$offer) {
-			$this->extendOfferData($offer);
-		}
-	}
-
-	/**
-	 * Extend data from database with custom stuff
-	 * Offer passed by reference, no return needed.
-	 *
-	 * @param array $offer
-	 * @return void
-	 */
-	private function extendOfferData(&$offer)
-	{
-		if (is_array($offer) && isset($offer['offer_id']) && !isset($offer['id'])) {
-			$offer['id'] = $offer['offer_id'];
-		}
 	}
 }

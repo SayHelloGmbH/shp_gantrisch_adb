@@ -44,11 +44,7 @@ class Block
 
 		$this->block_controller->extend($block);
 
-		if (!empty($attributes['category'] ?? '')) {
-			$data = $this->getOfferModel()->getByCategory((int) $attributes['category']);
-		} else {
-			$data = $this->getOfferModel()->getAll();
-		}
+		$data = $this->getOfferModel()->getAll((int) $attributes['category'] ?? false);
 
 		if (empty($data)) {
 			return '';
@@ -59,11 +55,9 @@ class Block
 		}
 
 		if (!empty($attributes['category'] ?? '')) {
-			$data = $this->getOfferModel()->getByCategory((int) $attributes['category']);
 			$category_model = new CategoryModel();
 			$category_name = $category_model->getTitle($attributes['category']);
 		} else {
-			$data = $this->getOfferModel()->getAll();
 			$category_name = '';
 		}
 
@@ -88,13 +82,12 @@ class Block
 			<ul class="<?php echo $block->shp->classNameBase; ?>__entries">
 				<?php
 				foreach ($data as $offer) {
+
+					$offer = (array) $offer;
+
 					$button_text = esc_html($attributes['button_text'] ?? '');
 
-					if (!$this->offer_model) {
-						$this->offer_model = new OfferModel();
-					}
-
-					$images = $this->getOfferModel()->getImages($offer['id']);
+					$images = $this->getOfferModel()->getImages($offer['offer_id']);
 					$selected_size = $attributes['image_size'] ?? 'small';
 
 					if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
@@ -111,7 +104,7 @@ class Block
 						);
 					}
 				?>
-					<li class="<?php echo $block->shp->classNameBase; ?>__entry <?php echo $block->shp->classNameBase; ?>__entry--<?php echo $offer['id']; ?> is--hidden">
+					<li class="<?php echo $block->shp->classNameBase; ?>__entry <?php echo $block->shp->classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> is--hidden">
 
 						<div class="<?php echo $block->shp->classNameBase; ?>__entry-header">
 							<div class="<?php echo $block->shp->classNameBase; ?>__entry-title">
