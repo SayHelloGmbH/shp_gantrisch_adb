@@ -47,11 +47,11 @@ class Block
 		$block_controller = new BlockController();
 		$block_controller->extend($block);
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<div class="<?php echo $block->shp->classNameBase; ?>__content">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 
 				<?php if (!empty($attributes['title_sub_required'] ?? '')) { ?>
-					<h2 class="<?php echo $block->shp->classNameBase; ?>__subtitle--required"><?php echo esc_html($attributes['title_sub_required']); ?></h2>
+					<h2 class="<?php echo $block['shp']['classNameBase']; ?>__subtitle--required"><?php echo esc_html($attributes['title_sub_required']); ?></h2>
 				<?php } ?>
 
 				<?php if (!empty($attributes['message'] ?? '')) {
@@ -61,7 +61,7 @@ class Block
 				<?php if (!empty($data['contact'] ?? '')) { ?>
 
 					<?php if (!empty($attributes['title_sub_at'] ?? '')) { ?>
-						<h3 class="<?php echo $block->shp->classNameBase; ?>__subtitle--at"><?php echo esc_html($attributes['title_sub_at']); ?></h3>
+						<h3 class="<?php echo $block['shp']['classNameBase']; ?>__subtitle--at"><?php echo esc_html($attributes['title_sub_at']); ?></h3>
 					<?php } ?>
 
 				<?php
@@ -86,7 +86,7 @@ class Block
 
 					if ($link) {
 				?>
-						<p class="wp-block-button <?php echo $block->shp->classNameBase; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $block->shp->classNameBase; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
+						<p class="wp-block-button <?php echo $block['shp']['classNameBase']; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $block['shp']['classNameBase']; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
 				<?php }
 				} ?>
 

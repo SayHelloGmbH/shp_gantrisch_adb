@@ -53,15 +53,15 @@ class Block
 
 		ob_start();
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<div class="<?php echo $block->shp->classNameBase; ?>__content">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 
 				<?php if (!empty($attributes['title'] ?? '')) { ?>
-					<h2 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
+					<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 				<?php } ?>
 
-				<p class="<?php echo $block->shp->classNameBase; ?>__link-wrapper">
-					<a class="<?php echo $block->shp->classNameBase; ?>__link" href="<?php echo $link; ?>">
+				<p class="<?php echo $block['shp']['classNameBase']; ?>__link-wrapper">
+					<a class="<?php echo $block['shp']['classNameBase']; ?>__link" href="<?php echo $link; ?>">
 						<?php
 						$label = $stop_name;
 

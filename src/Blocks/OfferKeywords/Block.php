@@ -45,7 +45,7 @@ class Block
 		$keywords = [];
 
 		foreach ($offer_keywords as $keyword) {
-			$keywords[] = sprintf('<span class="%s__entry">%s</span>', $block->shp->classNameBase, $keyword);
+			$keywords[] = sprintf('<span class="%s__entry">%s</span>', $block['shp']['classNameBase'], $keyword);
 		}
 
 		if (empty($keywords)) {
@@ -58,8 +58,8 @@ class Block
 		ob_start();
 
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<div class="<?php echo $block->shp->classNameBase; ?>__entries"><?php echo implode('', $keywords); ?></div>
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__entries"><?php echo implode('', $keywords); ?></div>
 		</div>
 <?php
 		$html = ob_get_contents();

@@ -50,11 +50,17 @@ class Block
 	 * Add custom rendering data to the block
 	 * Pass block by reference - no return
 	 *
-	 * @param array $block
+	 * @param array|WP_Block $block
 	 * @return void
 	 */
-	public function extend(array &$block)
+	public function extend(&$block)
 	{
+
+		// Convert object type in order to maintain extender compatibility
+		// The incoming object is an array or a WP_Block, depending on whether
+		// it's been registered using Core or ACF.
+		$block = (array) $block;
+
 		if (!isset($block['shp'])) {
 			$block['shp'] = [];
 		}

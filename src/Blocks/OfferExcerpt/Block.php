@@ -48,7 +48,7 @@ class Block
 		ob_start();
 
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
 			<?php echo $offer_excerpt; ?>
 		</div>
 <?php

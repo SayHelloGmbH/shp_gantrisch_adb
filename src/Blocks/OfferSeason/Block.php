@@ -47,8 +47,8 @@ class Block
 		$block_controller = new BlockController();
 		$block_controller->extend($block);
 ?>
-		<div class="<?php echo $block->shp->class_names; ?>">
-			<div class="<?php echo $block->shp->classNameBase; ?>__content">
+		<div class="<?php echo $block['shp']['class_names']; ?>">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 				<?php
 				echo implode('<br>', $months);
 				?>
