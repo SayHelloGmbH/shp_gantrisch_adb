@@ -29,7 +29,9 @@ if (window.Element && !Element.prototype.closest) {
 const makeVisible = (button, elements) => {
 	const wrapper = button.parentNode;
 
-	wrapper.parentNode.removeChild(wrapper);
+	if (!!wrapper && !!wrapper.parentNode) {
+		wrapper.parentNode.removeChild(wrapper);
+	}
 
 	elements.forEach((element) => {
 		element.classList.remove('is--hidden');
