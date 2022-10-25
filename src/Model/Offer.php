@@ -544,8 +544,6 @@ class Offer
 			return [];
 		}
 
-		$this->extendOffersData($offers);
-
 		return $offers;
 	}
 
@@ -574,36 +572,6 @@ class Offer
 			return [];
 		}
 
-		$this->extendOffersData($offers);
-
 		return $offers;
-	}
-
-	/**
-	 * Extend data from database with custom stuff
-	 * Offers array passed by reference, no return needed.
-	 *
-	 * @param array $offers
-	 * @return void
-	 */
-	private function extendOffersData(&$offers)
-	{
-		foreach ($offers as &$offer) {
-			$this->extendOfferData($offer);
-		}
-	}
-
-	/**
-	 * Extend data from database with custom stuff
-	 * Offer passed by reference, no return needed.
-	 *
-	 * @param array $offer
-	 * @return void
-	 */
-	private function extendOfferData(&$offer)
-	{
-		if (is_array($offer) && isset($offer['offer_id']) && !isset($offer['id'])) {
-			$offer['id'] = $offer['offer_id'];
-		}
 	}
 }
