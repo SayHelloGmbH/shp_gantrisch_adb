@@ -95,8 +95,9 @@ class Block
 		]);
 
 		$count = 1;
+
 		ob_start();
-?>
+		?>
 		<div class="<?php echo $block->shp->class_names; ?>" data-category="<?php echo $category_name; ?>">
 			<ul class="<?php echo $block->shp->classNameBase; ?>__entries">
 				<?php
@@ -115,7 +116,7 @@ class Block
 							$block->shp->classNameBase,
 							$images[0]->{$selected_size},
 							esc_html($offer['title']),
-							$count > 12 ? 'lazy' : 'eager'
+							$count > (int) ($attributes['initial_count'] ?? false) ? 'lazy' : 'eager'
 						);
 					} else {
 						$image_html = sprintf(
