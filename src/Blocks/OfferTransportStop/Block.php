@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$stop_name = $this->model->getOfferTransportStop((int) $offer_id, 'start');
+		$stop_name = $this->model->getTransportStop((int) $offer_id, 'start');
 
 		if (empty($stop_name)) {
 			return '';

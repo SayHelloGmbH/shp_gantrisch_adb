@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$data = $this->model->getOfferSubscription((int) $offer_id, $attributes);
+		$data = $this->model->getSubscription((int) $offer_id, $attributes);
 
 		if (!is_array($data)) {
 			return '';
@@ -72,7 +72,7 @@ class Block
 
 				if (!empty($attributes['button_text'] ?? '') && !empty($data['link'] ?? '')) {
 					$link = null;
-					$title = $this->model->getOfferTitle($offer_id);
+					$title = $this->model->getTitle($offer_id);
 
 					if (is_wp_error($title)) {
 						$title = $title->get_error_message();

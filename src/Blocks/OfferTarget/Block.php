@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$target_audience = $this->model->getOfferTarget((int) $offer_id);
+		$target_audience = $this->model->getTarget((int) $offer_id);
 
 		if (empty($target_audience)) {
 			return '';

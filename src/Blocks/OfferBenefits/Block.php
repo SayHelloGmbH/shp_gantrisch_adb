@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$benefits = $this->model->getOfferBenefits((int) $offer_id);
+		$benefits = $this->model->getBenefits((int) $offer_id);
 
 		if (empty($benefits)) {
 			return '';
