@@ -23,7 +23,10 @@ class Offer
 	 *
 	 * @var array
 	 */
-	private $transient_lives = ['single' => 10];
+	private $transient_lives = [
+		'single' => 10,
+		'all_offers' => HOUR_IN_SECONDS
+	];
 
 	/**
 	 * Which languages are available in the data which
@@ -530,11 +533,23 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	public function getAll()
+	public function getAll($category_id = '')
 	{
-		global $wpdb;
-		$sql = $wpdb->prepare("SELECT offer.*,i18n.* FROM {$this->tables['offer']} offer, {$this->tables['offer_i18n']} i18n WHERE offer.offer_id = i18n.offer_id and i18n.language = %s ORDER BY offer.offer_id DESC", $this->getLanguage());
-		$offers = @$wpdb->get_results($sql, ARRAY_A);
+
+		$category_id = (int) $category_id;
+		$transient_key = $category_id ? "shp_gantrisch_adb_offer_cat_{$category_id}" : "shp_gantrisch_adb_offer_all";
+		$offers = get_transient($transient_key);
+
+		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
+			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+			$offers = $api->get_offers();
+
+			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
+				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);
+			}
+		}
+
+		$offers = $offers['data'] ?? [];
 
 		if (!is_array($offers)) {
 			return new WP_Error(500, "Database error when requesting all offers.");
