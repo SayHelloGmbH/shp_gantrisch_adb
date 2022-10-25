@@ -53,7 +53,7 @@ class Block
 				<h2 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<?php echo nl2br($target_audience); ?>
+			<?php echo implode('<br>', $target_audience); ?>
 		</div>
 <?php
 		$html = ob_get_contents();
