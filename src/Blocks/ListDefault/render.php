@@ -34,22 +34,15 @@ if ($is_preview === true) {
 	return;
 }
 
-$category_id = (int) ($block['data']['category'] ?? false);
+$category_ids = $block['data']['adb_categories'] ?? [];
 $offer_model = new OfferModel();
-$offers = $offer_model->getAll($category_id);
+$offers = $offer_model->getAll($category_ids);
 
 if (empty($offers)) {
 	return '';
 }
 
 $offer_controller = new OfferController();
-
-$category_name = '';
-
-if ($category_id) {
-	$category_model = new CategoryModel();
-	$category_name = $category_model->getTitle($category_id);
-}
 
 // Random order as requested by client
 shuffle($offers);
@@ -70,7 +63,7 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 $count = 1;
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>" data-category="<?php echo $category_name; ?>">
+<div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo implode(', ', $category_ids); ?>">
 	<ul class="<?php echo $classNameBase; ?>__entries">
 		<?php
 		foreach ($offers as $offer) {
