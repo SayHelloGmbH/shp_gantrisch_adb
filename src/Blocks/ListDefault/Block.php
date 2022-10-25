@@ -38,11 +38,29 @@ class Block
 
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
+
+
 		if (!$this->block_controller) {
 			$this->block_controller = new BlockController();
 		}
 
 		$this->block_controller->extend($block);
+
+		if (shp_gantrisch_adb_get_instance()->Package->Gutenberg->isContextEdit()) {
+			ob_start();
+?>
+			<div class="<?php echo $block->shp->class_names; ?>">
+				<div class="c-message c-message--info">
+					<p><?php _ex('Placeholder for List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+				</div>
+			</div>
+
+		<?php
+			$html = ob_get_contents();
+			ob_end_clean();
+
+			return $html;
+		}
 
 		$data = $this->getOfferModel()->getAll((int) $attributes['category'] ?? false);
 
