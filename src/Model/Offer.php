@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
+use ParksAPI;
 use stdClass;
 use WP_Error;
 
@@ -157,6 +158,11 @@ class Offer
 	public function getOffer(int $offer_id)
 	{
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+
+		if (!$api instanceof ParksAPI) {
+			return null;
+		}
+
 		return $api->model->get_offer($offer_id);
 	}
 
@@ -276,7 +282,6 @@ class Offer
 	 */
 	public function getImages(int $offer_id)
 	{
-
 		$offer = $this->getOffer($offer_id);
 
 		if (!$offer instanceof stdClass) {
