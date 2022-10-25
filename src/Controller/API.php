@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use ParksAPI;
 
 /**
@@ -18,7 +19,9 @@ class API
 	public function getApi()
 	{
 		if (!$this->api) {
-			$this->api = new ParksAPI('de');
+			$offer_model = new OfferModel();
+			$language = $offer_model->getLanguage();
+			$this->api = new ParksAPI($language);
 		}
 
 		return $this->api;
