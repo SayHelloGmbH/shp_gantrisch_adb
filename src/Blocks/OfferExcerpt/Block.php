@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_excerpt = $this->model->getOfferExcerpt((int) $offer_id);
+		$offer_excerpt = $this->model->getExcerpt((int) $offer_id);
 
 		if (empty($offer_excerpt)) {
 			return '';

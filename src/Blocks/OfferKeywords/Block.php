@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_keywords = $this->model->getOfferKeywords((int) $offer_id);
+		$offer_keywords = $this->model->getKeywords((int) $offer_id);
 
 		if (empty($offer_keywords)) {
 			return '';

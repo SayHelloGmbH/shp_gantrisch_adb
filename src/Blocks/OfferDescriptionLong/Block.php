@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_description_long = $this->model->getOfferDescriptionLong((int) $offer_id);
+		$offer_description_long = $this->model->getDescriptionLong((int) $offer_id);
 
 		if (empty($offer_description_long)) {
 			return '';

@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_title = $this->model->getOfferTitle((int) $offer_id);
+		$offer_title = $this->model->getTitle((int) $offer_id);
 
 		if (is_wp_error($offer_title)) {
 			$offer_title = $offer_title->get_error_message();

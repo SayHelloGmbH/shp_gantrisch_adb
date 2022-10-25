@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$offer_categories = $this->model->getOfferCategories((int) $offer_id);
+		$offer_categories = $this->model->getCategories((int) $offer_id);
 
 		if (empty($offer_categories)) {
 			return '';

@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$target_audience = $this->model->getOfferTarget((int) $offer_id);
+		$target_audience = $this->model->getTarget((int) $offer_id);
 
 		if (empty($target_audience)) {
 			return '';
@@ -53,7 +53,7 @@ class Block
 				<h2 class="<?php echo $block->shp->classNameBase; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<?php echo nl2br($target_audience); ?>
+			<?php echo implode('<br>', $target_audience); ?>
 		</div>
 <?php
 		$html = ob_get_contents();

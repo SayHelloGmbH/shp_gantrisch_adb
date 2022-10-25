@@ -21,7 +21,7 @@ class Yoast
 		//add_filter('wpseo_schema_graph', [$this, 'schemaGraph'], 11);
 	}
 
-	private function getOfferId()
+	private function getId()
 	{
 		if (!$this->controller) {
 			$this->controller = new OfferController();
@@ -51,13 +51,13 @@ class Yoast
 			return $seo_title;
 		}
 
-		$offer_id = $this->getOfferId();
+		$offer_id = $this->getId();
 
 		if (!$offer_id) {
 			return $seo_title;
 		}
 
-		$offer_title = $this->model->getOfferTitle($offer_id);
+		$offer_title = $this->model->getTitle($offer_id);
 
 		if (is_wp_error($offer_title) || $offer_title === $seo_title) {
 			return $seo_title;
@@ -82,13 +82,13 @@ class Yoast
 			return $seo_description;
 		}
 
-		$offer_id = $this->getOfferId();
+		$offer_id = $this->getId();
 
 		if (!$offer_id) {
 			return $seo_description;
 		}
 
-		$offer_excerpt = $this->model->getOfferExcerpt((int) $offer_id);
+		$offer_excerpt = $this->model->getExcerpt((int) $offer_id);
 
 		if (!$offer_excerpt) {
 			return $seo_description;
@@ -112,7 +112,7 @@ class Yoast
 			return $seo_url;
 		}
 
-		$offer_id = $this->getOfferId();
+		$offer_id = $this->getId();
 
 		if (!$offer_id) {
 			return $seo_url;

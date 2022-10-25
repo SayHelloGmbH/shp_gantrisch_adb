@@ -36,7 +36,7 @@ class Block
 			return '';
 		}
 
-		$months = $this->model->getOfferSeason((int) $offer_id);
+		$months = $this->model->getSeason((int) $offer_id);
 
 		if (empty($months) || !is_array($months)) {
 			return '';
