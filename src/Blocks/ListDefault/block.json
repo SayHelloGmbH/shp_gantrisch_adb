@@ -1,50 +1,21 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
-	"name": "shp/gantrisch-adb-offer-list",
+	"name": "shp-adb-list-default",
 	"title": "ADB List",
+	"description": "List view of all offers, optionally filtered by category.",
 	"category": "media",
-	"icon": "format-image",
-	"description": "A list view of all matching offer entries. Optionally filtered by category.",
+	"icon": "admin-comments",
+	"apiVersion": 2,
 	"keywords": ["offer", "angebot", "list"],
-	"textdomain": "shp_gantrisch_adb",
-	"attributes": {
-		"align": {
-			"type": "string"
-		},
-		"backgroundColor": {
-			"type": "string"
-		},
-		"button_text": {
-			"type": "string"
-		},
-		"image_size": {
-			"type": "string",
-			"default": "small"
-		},
-		"initial_count": {
-			"type": "number",
-			"default": 12
-		},
-		"load_more_text": {
-			"type": "string"
-		},
-		"textColor": {
-			"type": "string"
-		},
-		"category": {
-			"type": "string"
-		}
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"postTypes": ["page"]
 	},
 	"supports": {
-		"align": ["wide", "full"],
-		"html": false
+		"align": true
 	},
-	"editorStyle": "file:./assets/dist/styles/editor/index.min.css",
-	"editorScript": "file:./assets/dist/scripts/editor.js",
-	"viewScript": "file:./assets/dist/scripts/viewScript.js",
 	"style": [
 		"file:./assets/dist/styles/shared/index.min.css",
-		"shp-gantrisch-adb-offer-list-shared"
+		"shp-gantrisch-adb-offer-list-default"
 	]
 }
