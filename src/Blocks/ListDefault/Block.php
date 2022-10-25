@@ -44,11 +44,7 @@ class Block
 
 		$this->block_controller->extend($block);
 
-		if ((int) ($attributes['category'] ?? false)) {
-			$data = $this->getOfferModel()->getByCategory((int) $attributes['category']);
-		} else {
-			$data = $this->getOfferModel()->getAll();
-		}
+		$data = $this->getOfferModel()->getAll((int) $attributes['category'] ?? false);
 
 		if (empty($data)) {
 			return '';
@@ -59,11 +55,9 @@ class Block
 		}
 
 		if (!empty($attributes['category'] ?? '')) {
-			$data = $this->getOfferModel()->getByCategory((int) $attributes['category']);
 			$category_model = new CategoryModel();
 			$category_name = $category_model->getTitle($attributes['category']);
 		} else {
-			$data = $this->getOfferModel()->getAll();
 			$category_name = '';
 		}
 
