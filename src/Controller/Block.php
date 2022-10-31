@@ -16,19 +16,20 @@ class Block
 	private function basicClasses($attributes)
 	{
 		$class_names = [];
+		$attributes =  (array) $attributes;
 
-		if (!empty($attributes->align ?? '')) {
-			$class_names[] = "align{$attributes->align}";
+		if (!empty($attributes['align'] ?? '')) {
+			$class_names[] = "align{$attributes['align']}";
 		}
 
-		if (!empty($attributes->backgroundColor ?? '')) {
+		if (!empty($attributes['backgroundColor'] ?? '')) {
 			$class_names[] = "has-background";
-			$class_names[] = "has-{$attributes->backgroundColor}-background-color";
+			$class_names[] = "has-{$attributes['backgroundColor']}-background-color";
 		}
 
-		if (!empty($attributes->textColor ?? '')) {
+		if (!empty($attributes['textColor'] ?? '')) {
 			$class_names[] = "has-text-color";
-			$class_names[] = "has-{$attributes->textColor}-color";
+			$class_names[] = "has-{$attributes['textColor']}-color";
 		}
 
 		return $class_names;
@@ -39,7 +40,7 @@ class Block
 
 		// ACF block
 		if (isset($block['acf_block_version'])) {
-			return implode(' ', array_merge([$block['shp']['classNameBase']], $this->basicClasses($block['data'])));
+			return implode(' ', array_merge([$block['shp']['classNameBase']], $this->basicClasses($block)));
 		}
 
 		// Core block

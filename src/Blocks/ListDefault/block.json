@@ -12,8 +12,14 @@
 		"postTypes": ["page"]
 	},
 	"supports": {
-		"align": true
+		"align": true,
+		"color": {
+			"text": false,
+			"background": true,
+			"link": false
+		}
 	},
+	"editorStyle": ["file:./assets/dist/styles/editor/index.min.css"],
 	"style": [
 		"file:./assets/dist/styles/shared/index.min.css",
 		"shp-gantrisch-adb-offer-list-default"
