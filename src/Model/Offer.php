@@ -515,6 +515,10 @@ class Offer
 
 	public function getAll($category_ids = [])
 	{
+		if (!is_array($category_ids)) {
+			$category_ids = [];
+		}
+
 		$transient_hash = md5(implode('', $category_ids));
 		$transient_key = !empty($category_ids) ? "adb_offer_cats_{$transient_hash}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
