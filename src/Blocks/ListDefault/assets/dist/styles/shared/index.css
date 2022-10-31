@@ -26,6 +26,15 @@
   --block--loadbutton-line-height: calc(32 / 26);
   --block--loadbutton-size: 26px;
   --block--loadbutton-weight: 500;
+  --block--padding-left: var(--block--entries-column-gap);
+  --block--padding-right: var(--block--entries-column-gap);
+  --block--padding-top: 0;
+  --block--padding-bottom: 0;
+  padding: var(--block--padding-top) var(--block--padding-right) var(--block--padding-bottom) var(--block--padding-left);
+}
+.wp-block-acf-shp-adb-list-default.has-background {
+  --block--padding-top: var(--block--entries-row-gap);
+  --block--padding-bottom: var(--block--entries-row-gap);
 }
 @media screen and (min-width: 80em) {
   .wp-block-acf-shp-adb-list-default {
