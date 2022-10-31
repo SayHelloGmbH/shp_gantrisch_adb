@@ -513,19 +513,32 @@ class Offer
 		return $results[0]["public_transport_{$start_stop}"] ?? '';
 	}
 
-	public function getAll($category_ids = [])
+	public function getAll($category_ids = [], $keywords = [])
 	{
+
 		if (!is_array($category_ids)) {
-			$category_ids = [];
+			$category_ids = (array) $category_ids;
 		}
 
-		$transient_hash = md5(implode('', $category_ids));
-		$transient_key = !empty($category_ids) ? "adb_offer_cats_{$transient_hash}" : "adb_offer_all";
+		if (!is_array($keywords)) {
+			$keywords = (array) $keywords;
+		}
+
+		$transient_cat = md5(implode('', $category_ids));
+		$transient_keywords = md5(implode('', $keywords));
+		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 
 		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
-			$offers = $api->get_offers(null, $category_ids);
+
+			if (!empty($keywords)) {
+				$offers = $api->_get_offers(NULL, $category_ids, NULL, NULL, ['keywords' => implode(' ', $keywords)]);
+			} else {
+				$offers = $api->_get_offers(NULL, $category_ids);
+			}
+
+
 
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
 				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);
@@ -571,5 +584,27 @@ class Offer
 		}
 
 		return $offers;
+	}
+
+	/**
+	 * Pass by reference. Clean and convert the input to a trimmed array
+	 *
+	 * @param mixed $keywords
+	 * @return array
+	 */
+	public function prepareKeywords($keywords)
+	{
+		if (is_string($keywords)) {
+			$keywords = preg_split('/([\r\n\t\s])/', trim($keywords));
+		}
+
+		if (is_array($keywords)) {
+			$keywords = array_slice(array_filter($keywords), 0); // Remove empties
+			array_walk($keywords, function (&$keyword) {
+				preg_replace('/([\r\n\t])/', '', trim($keyword));
+			});
+		}
+
+		return $keywords;
 	}
 }
