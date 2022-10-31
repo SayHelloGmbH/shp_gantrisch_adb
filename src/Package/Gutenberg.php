@@ -47,4 +47,9 @@ class Gutenberg
 	{
 		wp_set_script_translations('sht-gutenberg-script', 'sht', get_template_directory() . '/languages');
 	}
+
+	public function isContextEdit()
+	{
+		return array_key_exists('context', $_GET) && $_GET['context'] === 'edit';
+	}
 }

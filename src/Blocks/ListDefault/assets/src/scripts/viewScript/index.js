@@ -1,5 +1,7 @@
 import 'jquery-match-height';
 
+// START polyfill
+
 if (window.NodeList && !NodeList.prototype.forEach) {
 	NodeList.prototype.forEach = function (callback, thisArg) {
 		var i;
@@ -26,10 +28,16 @@ if (window.Element && !Element.prototype.closest) {
 	};
 }
 
+// END polyfill
+
+const classNameBase = 'wp-block-acf-shp-adb-list-default';
+
 const makeVisible = (button, elements) => {
 	const wrapper = button.parentNode;
 
-	wrapper.parentNode.removeChild(wrapper);
+	if (!!wrapper && !!wrapper.parentNode) {
+		wrapper.parentNode.removeChild(wrapper);
+	}
 
 	elements.forEach((element) => {
 		element.classList.remove('is--hidden');
@@ -38,11 +46,9 @@ const makeVisible = (button, elements) => {
 
 /**
  * Apply lazy-load button to each list block
- * and unhide the first 12 entries.
+ * and unhide the first n entries.
  */
-const blocks = document.querySelectorAll(
-	'.wp-block-shp-gantrisch-adb-offer-list'
-);
+const blocks = document.querySelectorAll(`.${classNameBase}`);
 
 const initial_count = Math.max(
 	parseInt(shp_gantrisch_adb_block_list_default.initial_count),
@@ -52,13 +58,11 @@ console.log(initial_count);
 
 blocks.forEach((block) => {
 	const elements_on = block.querySelectorAll(
-		`.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(-n+${initial_count})`
+		`.${classNameBase}__entry:nth-child(-n+${initial_count})`
 	);
 
 	const elements_off = block.querySelectorAll(
-		`.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(n+${
-			initial_count + 1
-		})`
+		`.${classNameBase}__entry:nth-child(n+${initial_count + 1})`
 	);
 
 	elements_on.forEach((element) => {
@@ -66,14 +70,12 @@ blocks.forEach((block) => {
 	});
 
 	const entry_before = block.querySelector(
-		'.wp-block-shp-gantrisch-adb-offer-list__entry:nth-child(13)'
+		`.${classNameBase}__entry:nth-child(13)`
 	);
 
 	const button_wrapper = document.createElement('div');
 
-	button_wrapper.classList.add(
-		'wp-block-shp-gantrisch-adb-offer-list__loadbutton'
-	);
+	button_wrapper.classList.add(`${classNameBase}__loadbutton`);
 
 	if (!!shp_gantrisch_adb_block_list_default) {
 		const button = document.createElement('button');
@@ -91,4 +93,4 @@ blocks.forEach((block) => {
 });
 
 jQuery.fn.matchHeight._throttle = 350;
-jQuery('.wp-block-shp-gantrisch-adb-offer-list__entry-header').matchHeight({});
+jQuery(`.${classNameBase}__entry-header`).matchHeight({});

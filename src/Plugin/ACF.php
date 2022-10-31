@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Plugin;
 
+use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
 
 class ACF
 {
@@ -9,6 +10,7 @@ class ACF
 	{
 		add_action('acf/init', [$this, 'optionsPage']);
 		add_action('acf/init', [$this, 'optionsFields']);
+		add_action('acf/load_field/name=adb_categories', [$this, 'adbCategories']);
 	}
 
 	public function optionsPage()
@@ -118,5 +120,17 @@ class ACF
 			));
 
 		endif;
+	}
+
+	public function adbCategories($field)
+	{
+		$category_model = new CategoryModel();
+		$choices = $category_model->getForSelect();
+
+		if (is_array($choices)) {
+			$field['choices'] = $choices;
+		}
+
+		return $field;
 	}
 }

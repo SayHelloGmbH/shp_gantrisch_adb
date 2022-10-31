@@ -13,9 +13,10 @@ use WP_Block;
 
 class Block
 {
-	private function basicClasses(array $attributes)
+	private function basicClasses($attributes)
 	{
 		$class_names = [];
+		$attributes =  (array) $attributes;
 
 		if (!empty($attributes['align'] ?? '')) {
 			$class_names[] = "align{$attributes['align']}";
@@ -34,25 +35,38 @@ class Block
 		return $class_names;
 	}
 
-	public function classNames(WP_Block $block)
+	public function classNames($block)
 	{
-		return implode(' ', array_merge([$block->shp->classNameBase], $this->basicClasses($block->attributes)));
+
+		// ACF block
+		if (isset($block['acf_block_version'])) {
+			return implode(' ', array_merge([$block['shp']['classNameBase']], $this->basicClasses($block)));
+		}
+
+		// Core block
+		return implode(' ', array_merge([$block['shp']['classNameBase']], $this->basicClasses($block['attributes'])));
 	}
 
 	/**
 	 * Add custom rendering data to the block
 	 * Pass block by reference - no return
 	 *
-	 * @param WP_Block $block
+	 * @param array|WP_Block $block
 	 * @return void
 	 */
-	public function extend(WP_Block &$block)
+	public function extend(&$block)
 	{
-		if (!isset($block->shp)) {
-			$block->shp = new stdClass;
+
+		// Convert object type in order to maintain extender compatibility
+		// The incoming object is an array or a WP_Block, depending on whether
+		// it's been registered using Core or ACF.
+		$block = (array) $block;
+
+		if (!isset($block['shp'])) {
+			$block['shp'] = [];
 		}
 
-		$block->shp->classNameBase = wp_get_block_default_classname($block->name);
-		$block->shp->class_names = $this->classNames($block);
+		$block['shp']['classNameBase'] = wp_get_block_default_classname($block['name']);
+		$block['shp']['class_names'] = $this->classNames($block);
 	}
 }

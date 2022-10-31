@@ -2,8 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-use WP_Error;
 
 class Category
 {
@@ -87,7 +87,9 @@ class Category
 	 */
 	public function getForSelect()
 	{
-		return $this->getAllHierarchical();
+		$api_controller = new APIController();
+		$api = $api_controller->getApi();
+		return $api->model->get_category_tree();
 	}
 
 	/**
