@@ -13,7 +13,6 @@ namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 // Convert to stdClass
@@ -62,8 +61,10 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 
 $count = 1;
 
+$categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
+
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo implode(', ', $category_ids); ?>">
+<div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo $categories_info; ?>">
 	<ul class="<?php echo $classNameBase; ?>__entries">
 		<?php
 		foreach ($offers as $offer) {
