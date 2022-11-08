@@ -90,64 +90,74 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 			$api->show_offers_filter([], $filter);
 			?>
 		</div>
-	<?php } ?>
+	<?php }
+
+	$api->show_offers_list($categories, $filter);
+	$api->show_offers_pagination();
 
 
-	<ul class="<?php echo $classNameBase; ?>__entries">
-		<?php
-		foreach ($offers as $offer) {
+	if (false) {
 
-			$offer = (array) $offer;
+	?>
 
-			$button_text = esc_html($block['data']['button_text'] ?? '');
 
-			$images = $offer_model->getImages($offer['offer_id']);
-			$selected_size = $block['data']['image_size'] ?? 'small';
+		<ul class="<?php echo $classNameBase; ?>__entries">
+			<?php
+			foreach ($offers as $offer) {
 
-			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
-				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
-					$classNameBase,
-					$images[0]->{$selected_size},
-					esc_html($offer['title']),
-					$count > (int) ($block['data']['initial_count'] ?? false) ? 'lazy' : 'eager'
-				);
-			} else {
-				$image_html = sprintf(
-					'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
-					$classNameBase
-				);
-			}
-		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> is--hidden">
+				$offer = (array) $offer;
 
-				<div class="<?php echo $classNameBase; ?>__entry-header">
-					<div class="<?php echo $classNameBase; ?>__entry-title">
-						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
-					</div>
+				$button_text = esc_html($block['data']['button_text'] ?? '');
 
-					<?php if (!empty($offer['location_details'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location">
-							<p><?php echo esc_html($offer['location_details']); ?></p>
+				$images = $offer_model->getImages($offer['offer_id']);
+				$selected_size = $block['data']['image_size'] ?? 'small';
+
+				if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
+					$image_html = sprintf(
+						'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+						$classNameBase,
+						$images[0]->{$selected_size},
+						esc_html($offer['title']),
+						$count > (int) ($block['data']['initial_count'] ?? false) ? 'lazy' : 'eager'
+					);
+				} else {
+					$image_html = sprintf(
+						'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
+						$classNameBase
+					);
+				}
+			?>
+				<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> is--hidden">
+
+					<div class="<?php echo $classNameBase; ?>__entry-header">
+						<div class="<?php echo $classNameBase; ?>__entry-title">
+							<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 						</div>
-					<?php
-					}
-					?>
-				</div>
 
-				<?php echo $image_html; ?>
-
-				<?php if (!empty($button_text)) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper">
-						<a class="<?php echo $classNameBase; ?>__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
+						<?php if (!empty($offer['location_details'])) { ?>
+							<div class="<?php echo $classNameBase; ?>__entry-location">
+								<p><?php echo esc_html($offer['location_details']); ?></p>
+							</div>
+						<?php
+						}
+						?>
 					</div>
-				<?php } ?>
 
-				<a class="<?php echo $classNameBase; ?>__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
-			</li>
-		<?php
-			$count++;
-		}
-		?>
-	</ul>
+					<?php echo $image_html; ?>
+
+					<?php if (!empty($button_text)) { ?>
+						<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper">
+							<a class="<?php echo $classNameBase; ?>__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
+						</div>
+					<?php } ?>
+
+					<a class="<?php echo $classNameBase; ?>__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
+				</li>
+			<?php
+				$count++;
+			}
+			?>
+		</ul>
+
+	<?php } ?>
 </div>
