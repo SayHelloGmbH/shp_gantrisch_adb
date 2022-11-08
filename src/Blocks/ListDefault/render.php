@@ -95,13 +95,12 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 	<?php if ((bool) get_field('adb_show_filter')) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter">
 			<?php
-			//$api->show_offers_filter($category_ids, $filter);
-			$api->show_offers_filter([], $filter);
+			$api->show_offers_filter($category_ids, $filters);
 			?>
 		</div>
 	<?php }
 
-	$api->show_offers_list($categories, $filter);
+	$api->show_offers_list($category_ids, $filters);
 	$api->show_offers_pagination();
 
 
