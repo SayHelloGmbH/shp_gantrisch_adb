@@ -54,7 +54,6 @@ const initial_count = Math.max(
 	parseInt(shp_gantrisch_adb_block_list_default.initial_count),
 	1
 );
-console.log(initial_count);
 
 blocks.forEach((block) => {
 	const elements_on = block.querySelectorAll(
@@ -72,6 +71,10 @@ blocks.forEach((block) => {
 	const entry_before = block.querySelector(
 		`.${classNameBase}__entry:nth-child(13)`
 	);
+
+	if (!entry_before) {
+		return;
+	}
 
 	const button_wrapper = document.createElement('div');
 
