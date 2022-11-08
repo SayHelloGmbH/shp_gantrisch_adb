@@ -21,6 +21,16 @@ $block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
+$offer_model = new OfferModel();
+
+$keywords = $block['data']['adb_keywords'] ?? '';
+
+if (!empty($keywords)) {
+	$keywords = $offer_model->prepareKeywords($keywords);
+}
+
+$category_ids = $block['data']['adb_categories'] ?? [];
+
 if ($is_preview === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
@@ -33,9 +43,7 @@ if ($is_preview === true) {
 	return;
 }
 
-$category_ids = $block['data']['adb_categories'] ?? [];
-$offer_model = new OfferModel();
-$offers = $offer_model->getAll($category_ids);
+$offers = $offer_model->getAll($category_ids, $keywords);
 
 if (empty($offers)) {
 	return '';
