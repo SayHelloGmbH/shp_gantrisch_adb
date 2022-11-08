@@ -20,16 +20,25 @@ $block_controller = new BlockController();
 $block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
+$show_filter = (bool) get_field('adb_show_filter');
 
 $offer_model = new OfferModel();
 
-$keywords = $block['data']['adb_keywords'] ?? '';
+$category_ids = $block['data']['adb_categories'] ?? [];
 
-if (!empty($keywords)) {
-	$keywords = $offer_model->prepareKeywords($keywords);
+// If filter is visible, don't constrain category selection
+if ($show_filter) {
+	$category_ids = [];
 }
 
-$category_ids = $block['data']['adb_categories'] ?? [];
+$filters = [];
+
+$keywords = $block['data']['adb_keywords'] ?? '';
+
+if (!empty($keywords) && !$show_filter) {
+	$keywords = $offer_model->prepareKeywords($keywords);
+	$filters['keywords'] = $keywords;
+}
 
 if ($is_preview === true) {
 ?>
