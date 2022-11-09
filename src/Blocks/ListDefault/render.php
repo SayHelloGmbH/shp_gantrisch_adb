@@ -94,7 +94,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo $categories_info; ?>">
 
-	<?php if ((bool) get_field('adb_show_filter')) { ?>
+	<?php if ($show_filter) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter">
 			<?php
 			//$api->show_offers_filter($category_ids, $filters);
