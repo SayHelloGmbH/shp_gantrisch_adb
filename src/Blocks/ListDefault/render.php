@@ -15,7 +15,6 @@ use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
-// Convert to stdClass
 $block_controller = new BlockController();
 $block_controller->extend($block);
 

@@ -12,7 +12,7 @@ class Block
 
 	public function register()
 	{
-		register_block_type(dirname(__FILE__) . '/block.json');
+		register_block_type(__DIR__);
 	}
 
 	public function registerFields()
@@ -160,14 +160,7 @@ class Block
 						array(
 							'param' => 'block',
 							'operator' => '==',
-							'value' => 'all',
-						),
-					),
-					array(
-						array(
-							'param' => 'block',
-							'operator' => '==',
-							'value' => 'all',
+							'value' => 'acf/shp-adb-list-default',
 						),
 					),
 				),
