@@ -45,7 +45,7 @@ if ($is_preview === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--info">
-			<p><?php _ex('Placeholder for List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+			<p><?php _ex('Placeholder for ADB List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
 		</div>
 	</div>
 
