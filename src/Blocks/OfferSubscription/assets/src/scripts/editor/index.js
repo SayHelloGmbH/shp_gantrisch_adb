@@ -26,7 +26,7 @@ registerBlockType(block_name, {
 					<PanelBody title={_x('Settings')} initialOpen={true}>
 						<TextControl
 							label={_x(
-								'Title (only if subscription required)',
+								'Title',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
@@ -37,7 +37,7 @@ registerBlockType(block_name, {
 						/>
 						<TextControl
 							label={_x(
-								'Text (if subscription is required)',
+								'Text',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
