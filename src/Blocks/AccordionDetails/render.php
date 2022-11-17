@@ -79,7 +79,23 @@ if (!empty($leistungen)) {
 
 
 // PRICE
+$price = $offer_model->getPrice($offer_id);
 
+if (!empty($price)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--price">
+
+		<?php if (!empty($attributes['title_price'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--price"><?php echo $attributes['title_price']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--price"><?php echo wpautop($price); ?></div>
+	</div>
+<?php
+	$entries[] = ob_get_contents();
+	ob_end_clean();
+}
 
 // PLACE
 
