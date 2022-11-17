@@ -105,13 +105,13 @@ class Plugin
 				Blocks\OfferDescriptionLong\Block::class,
 				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
-				Blocks\OfferInfrastructure\Block::class,
+				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferPrice\Block::class,
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
-				Blocks\OfferTarget\Block::class,
+				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferTransportStop\Block::class,
 				Blocks\OfferTitle\Block::class,
 			]

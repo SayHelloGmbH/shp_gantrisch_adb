@@ -442,7 +442,7 @@ class Offer
 	 * Get offer target audience
 	 *
 	 * @param integer $offer_id
-	 * @return string
+	 * @return array
 	 */
 	public function getTarget(int $offer_id)
 	{

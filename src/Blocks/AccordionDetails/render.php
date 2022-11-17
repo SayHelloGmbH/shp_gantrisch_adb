@@ -28,25 +28,98 @@ $offer_model = new OfferModel();
 $offer_id = $offer_model->requestedOfferID();
 
 if (empty($offer_id)) {
-
-	return '';
+	return;
 }
 
 $offer = $offer_model->getOffer((int) $offer_id);
 
 if (!$offer) {
-	return '';
+	return;
 }
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
-if (!empty($months = $offer_model->getSeason((int) $offer_id))) {
+
+// SEASON
+$months = $offer_model->getSeason((int) $offer_id);
+
+if (!empty($months)) {
 	ob_start();
 ?>
 	<div class="<?php echo $classNameBase; ?>__entry">
-		<h3 class="<?php echo $classNameBase; ?>__entry-title"><?php echo $attributes['title_season'] ?? 'SEASON TITLE'; ?></h3>
-		<div class="<?php echo $classNameBase; ?>__entry-entries"><?php echo implode(', ', $months); ?></div>
+
+		<?php if (!empty($attributes['title_season'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title"><?php echo $attributes['title_season']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content"><?php echo implode(', ', $months); ?></div>
+	</div>
+<?php
+	$entry = ob_get_contents();
+	ob_end_clean();
+
+	$entries[] = $entry;
+}
+
+
+// INFRASTRUCTURE
+$offer_infrastructure = $offer_model->getInfrastructure((int) $offer_id);
+
+if (!empty($offer_infrastructure)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry">
+
+		<?php if (!empty($attributes['title_infrastructure'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title"><?php echo $attributes['title_infrastructure']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content"><?php echo wpautop($offer_infrastructure); ?></div>
+	</div>
+<?php
+	$entry = ob_get_contents();
+	ob_end_clean();
+
+	$entries[] = $entry;
+}
+
+
+// ADDITIONAL INFORMATION
+$additional_information = $offer->additional_informations ?? '';
+
+if (!empty($additional_information)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry">
+
+		<?php if (!empty($attributes['title_additional'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title"><?php echo $attributes['title_additional']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content"><?php echo wpautop($additional_information); ?></div>
+	</div>
+<?php
+	$entry = ob_get_contents();
+	ob_end_clean();
+
+	$entries[] = $entry;
+}
+
+
+// SUITABLE FOR / TARGET AUDIENCE
+$target_audience = $offer_model->getTarget((int) $offer_id) ?? '';
+
+if (!empty($target_audience)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry">
+
+		<?php if (!empty($attributes['title_additional'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title"><?php echo $attributes['title_additional']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content"><?php echo implode('<br>', $target_audience); ?></div>
 	</div>
 <?php
 	$entry = ob_get_contents();
