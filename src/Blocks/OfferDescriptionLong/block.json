@@ -4,7 +4,7 @@
 	"name": "shp/gantrisch-adb-offer-description-long",
 	"title": "ADB Offer Description Long",
 	"category": "media",
-	"icon": "format-image",
+	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
 	"keywords": ["offer", "angebot", "description"],
 	"textdomain": "shp_gantrisch_adb",

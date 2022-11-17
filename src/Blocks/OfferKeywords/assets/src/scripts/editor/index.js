@@ -6,10 +6,7 @@ import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
 const classNameBase = getBlockDefaultClassName(block_name);
 
-import icon from './icon';
-
 registerBlockType(block_name, {
-	icon,
 	edit: () => {
 		const blockProps = useBlockProps();
 		return (

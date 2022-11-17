@@ -4,7 +4,7 @@
 	"name": "shp/gantrisch-adb-offer-categories",
 	"title": "ADB Offer Categories",
 	"category": "media",
-	"icon": "format-image",
+	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed. Add each keyword on a new line in the original database.",
 	"keywords": ["offer", "angebot", "category"],
 	"textdomain": "shp_gantrisch_adb",

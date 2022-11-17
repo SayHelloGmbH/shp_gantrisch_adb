@@ -5,16 +5,13 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { PanelBody, TextControl } from '@wordpress/components';
-
 import { __, _x } from '@wordpress/i18n';
+
 import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
 const classNameBase = getBlockDefaultClassName(block_name);
 
-import icon from './icon';
-
 registerBlockType(block_name, {
-	icon,
 	edit: ({ attributes, setAttributes }) => {
 		const blockProps = useBlockProps();
 		const { button_text, message, title_sub_at, title_sub_required } =
