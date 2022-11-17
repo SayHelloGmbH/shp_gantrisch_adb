@@ -3,7 +3,7 @@
 	"apiVersion": 2,
 	"name": "shp/gantrisch-adb-accordion-details",
 	"title": "ADB Details (Accordion)",
-	"description": "Includes Season, Infrastructure, additional information and suitability.",
+	"description": "Saison, Termindetails, Leistungen, Preis-Infos, Orts-Details, Öffnungsdetails, Infrastruktur, Zusatzinformation und Eignung.",
 	"category": "media",
 	"icon": "database",
 	"keywords": ["offer", "angebot", "accordion", "details"],
@@ -16,7 +16,27 @@
 			"type": "string",
 			"default": "Details"
 		},
-		"title_additional": {
+		"title_termin": {
+			"type": "string",
+			"default": "Termindetails"
+		},
+		"title_leistungen": {
+			"type": "string",
+			"default": "Leistungen"
+		},
+		"title_price": {
+			"type": "string",
+			"default": "Preis-Infos"
+		},
+		"title_place": {
+			"type": "string",
+			"default": "Orts-Details"
+		},
+		"title_opening": {
+			"type": "string",
+			"default": "Öffnungsdetails"
+		},
+		"title_season": {
 			"type": "string",
 			"default": "Saison"
 		},
@@ -24,7 +44,7 @@
 			"type": "string",
 			"default": "Infrastruktur"
 		},
-		"title_season": {
+		"title_additional": {
 			"type": "string",
 			"default": "Zusatzinformationen"
 		},

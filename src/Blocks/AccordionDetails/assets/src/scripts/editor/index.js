@@ -11,9 +11,14 @@ registerBlockType(block_name, {
 	edit: ({ attributes, setAttributes }) => {
 		const {
 			title_block,
-			title_additional,
-			title_infrastructure,
+			title_termin,
+			title_leistungen,
+			title_price,
+			title_place,
+			title_opening,
 			title_season,
+			title_infrastructure,
+			title_additional,
 			title_suitability,
 		} = attributes;
 		const blockProps = useBlockProps();
@@ -35,7 +40,62 @@ registerBlockType(block_name, {
 						/>
 						<TextControl
 							label={_x(
-								'Season title',
+								'Überschrift Termin',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title_termin}
+							onChange={(title_termin) =>
+								setAttributes({ title_termin })
+							}
+						/>
+						<TextControl
+							label={_x(
+								'Überschrift Leistungen',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title_leistungen}
+							onChange={(title_leistungen) =>
+								setAttributes({ title_leistungen })
+							}
+						/>
+						<TextControl
+							label={_x(
+								'Überschrift Preis',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title_price}
+							onChange={(title_price) =>
+								setAttributes({ title_price })
+							}
+						/>
+						<TextControl
+							label={_x(
+								'Überschrift Ort',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title_place}
+							onChange={(title_place) =>
+								setAttributes({ title_place })
+							}
+						/>
+						<TextControl
+							label={_x(
+								'Überschrift Öffnungszeiten',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={title_opening}
+							onChange={(title_opening) =>
+								setAttributes({ title_opening })
+							}
+						/>
+						<TextControl
+							label={_x(
+								'Überschrift Saison',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
@@ -46,7 +106,7 @@ registerBlockType(block_name, {
 						/>
 						<TextControl
 							label={_x(
-								'Infrastructure title',
+								'Überschrift Infrastruktur',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
@@ -57,7 +117,7 @@ registerBlockType(block_name, {
 						/>
 						<TextControl
 							label={_x(
-								'Additional info title',
+								'Überschrift Zusatzinformation',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
@@ -68,7 +128,7 @@ registerBlockType(block_name, {
 						/>
 						<TextControl
 							label={_x(
-								'Suitability title',
+								'Überschrift Eignung',
 								'TextControl label',
 								'shp_gantrisch_adb'
 							)}
