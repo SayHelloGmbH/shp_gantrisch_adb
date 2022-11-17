@@ -1,6 +1,6 @@
 @media screen {
 	[data-shp-accordion-entry-trigger][aria-expanded] {
-		--shp-accordion--trigger-color: var(--e-global-color-primary);
+		--shp-accordion--trigger-color: currentColor;
 
 		display: grid;
 		grid-template-columns: 1fr 30px;
