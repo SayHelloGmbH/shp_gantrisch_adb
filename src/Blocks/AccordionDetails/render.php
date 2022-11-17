@@ -137,7 +137,7 @@ if (empty($entries)) {
 	<div class="<?php echo $classNameBase; ?>__header">
 		<h2 class="<?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'Details'; ?></h2>
 	</div>
-	<div class="<?php echo $classNameBase; ?>__entries">
+	<div class="<?php echo $classNameBase; ?>__entries" data-shp-accordion-entry-content>
 		<?php echo implode('', $entries); ?>
 	</div>
 </div>

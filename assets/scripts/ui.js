@@ -1,0 +1,1 @@
+((e,t)=>{if(!!document.querySelectorAll("[data-shp-accordion-entry]").length){const e=shp_gantrisch_adb.debug?"":".min";let t=document.createElement("script");t.setAttribute("src",`${shp_gantrisch_adb.url}/assets/scripts/accordion${e}.js?version=${shp_gantrisch_adb.version}`),document.head.appendChild(t)}})();
