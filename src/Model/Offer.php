@@ -644,4 +644,15 @@ class Offer
 
 		return $offer->location_details ?? '';
 	}
+
+	public function getOpeningTimes(int $offer_id)
+	{
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return '';
+		}
+
+		return $offer->opening_hours ?? '';
+	}
 }

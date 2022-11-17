@@ -117,7 +117,23 @@ if (!empty($place)) {
 }
 
 // ÖFFNUNGSZEITEN
+$opening = $offer_model->getOpeningTimes($offer_id);
 
+if (!empty($opening)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--opening">
+
+		<?php if (!empty($attributes['title_opening'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--opening"><?php echo $attributes['title_opening']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--opening"><?php echo wpautop($opening); ?></div>
+	</div>
+<?php
+	$entries[] = ob_get_contents();
+	ob_end_clean();
+}
 
 // SEASON
 $months = $offer_model->getSeason((int) $offer_id);
