@@ -135,6 +135,7 @@ if (!empty($opening)) {
 	ob_end_clean();
 }
 
+
 // SEASON
 $months = $offer_model->getSeason((int) $offer_id);
 
