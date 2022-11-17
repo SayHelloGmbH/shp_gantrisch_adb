@@ -90,7 +90,7 @@ class Yoast
 
 		$offer_excerpt = $this->model->getExcerpt((int) $offer_id);
 
-		if (!$offer_excerpt) {
+		if (!$offer_excerpt || !is_string($offer_excerpt)) {
 			return $seo_description;
 		}
 
