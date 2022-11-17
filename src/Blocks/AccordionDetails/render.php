@@ -98,7 +98,23 @@ if (!empty($price)) {
 }
 
 // PLACE
+$place = $offer_model->getPlace($offer_id);
 
+if (!empty($place)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--place">
+
+		<?php if (!empty($attributes['title_place'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--place"><?php echo $attributes['title_place']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--place"><?php echo wpautop($place); ?></div>
+	</div>
+<?php
+	$entries[] = ob_get_contents();
+	ob_end_clean();
+}
 
 // ÖFFNUNGSZEITEN
 

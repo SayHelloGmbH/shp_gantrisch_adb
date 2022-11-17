@@ -633,4 +633,15 @@ class Offer
 			'date_to' => parks_mysql2form($date_to)
 		]);
 	}
+
+	public function getPlace(int $offer_id)
+	{
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return '';
+		}
+
+		return $offer->location_details ?? '';
+	}
 }
