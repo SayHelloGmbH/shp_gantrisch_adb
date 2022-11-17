@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-accordion-details",
+	"title": "ADB Details (Accordion)",
+	"description": "Saison, Termindetails, Leistungen, Preis-Infos, Orts-Details, Öffnungsdetails, Infrastruktur, Zusatzinformation und Eignung.",
+	"category": "media",
+	"icon": "database",
+	"keywords": ["offer", "angebot", "accordion", "details"],
+	"textdomain": "shp_gantrisch_adb",
+	"supports": {
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"title_block": {
+			"type": "string",
+			"default": "Details"
+		},
+		"title_termin": {
+			"type": "string",
+			"default": "Termindetails"
+		},
+		"title_leistungen": {
+			"type": "string",
+			"default": "Leistungen"
+		},
+		"title_price": {
+			"type": "string",
+			"default": "Preis-Infos"
+		},
+		"title_place": {
+			"type": "string",
+			"default": "Orts-Details"
+		},
+		"title_opening": {
+			"type": "string",
+			"default": "Öffnungsdetails"
+		},
+		"title_season": {
+			"type": "string",
+			"default": "Saison"
+		},
+		"title_infrastructure": {
+			"type": "string",
+			"default": "Infrastruktur"
+		},
+		"title_additional": {
+			"type": "string",
+			"default": "Zusatzinformationen"
+		},
+		"title_suitability": {
+			"type": "string",
+			"default": "Das Angebot ist geeignet für"
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
+}

@@ -4,7 +4,7 @@
 	"name": "shp/gantrisch-adb-offer-single",
 	"title": "ADB Offer Single",
 	"category": "media",
-	"icon": "format-image",
+	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
 	"keywords": ["offer", "angebot"],
 	"version": "0.0.0",

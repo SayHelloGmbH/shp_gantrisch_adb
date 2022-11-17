@@ -4,7 +4,7 @@
 	"name": "shp/gantrisch-adb-offer-season",
 	"title": "ADB Offer Season",
 	"category": "media",
-	"icon": "format-image",
+	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
 	"keywords": ["offer", "angebot", "season"],
 	"textdomain": "shp_gantrisch_adb",
