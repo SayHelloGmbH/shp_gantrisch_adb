@@ -366,7 +366,7 @@ class Offer
 	 * Get park season information
 	 *
 	 * @param integer $offer_id
-	 * @return string
+	 * @return array
 	 */
 	public function getSeason(int $offer_id)
 	{

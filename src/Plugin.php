@@ -97,6 +97,7 @@ class Plugin
 				Plugin\ACF::class,
 				Plugin\Yoast::class,
 
+				Blocks\AccordionDetails\Block::class,
 				Blocks\ListDefault\Block::class,
 				Blocks\OfferBenefits\Block::class,
 				Blocks\OfferCategories\Block::class,
@@ -107,7 +108,7 @@ class Plugin
 				Blocks\OfferInfrastructure\Block::class,
 				Blocks\OfferPrice\Block::class,
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
-				Blocks\OfferSeason\Block::class,
+				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				Blocks\OfferTarget\Block::class,

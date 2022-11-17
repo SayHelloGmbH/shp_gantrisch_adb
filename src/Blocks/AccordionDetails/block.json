@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-accordion-details",
+	"title": "ADB Details (Accordion)",
+	"description": "Includes Season, Infrastructure, additional information and suitability.",
+	"category": "media",
+	"icon": "database",
+	"keywords": ["offer", "angebot", "accordion", "details"],
+	"textdomain": "shp_gantrisch_adb",
+	"supports": {
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"title_block": {
+			"type": "string",
+			"default": "Details"
+		},
+		"title_additional": {
+			"type": "string",
+			"default": "Saison"
+		},
+		"title_infrastructure": {
+			"type": "string",
+			"default": "Infrastruktur"
+		},
+		"title_season": {
+			"type": "string",
+			"default": "Zusatzinformationen"
+		},
+		"title_suitability": {
+			"type": "string",
+			"default": "Das Angebot ist geeignet für"
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
+}
