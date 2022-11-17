@@ -38,7 +38,7 @@ class Block
 
 		$offer_excerpt = $this->model->getExcerpt((int) $offer_id);
 
-		if (empty($offer_excerpt)) {
+		if (empty($offer_excerpt) || !is_string($offer_excerpt)) {
 			return '';
 		}
 

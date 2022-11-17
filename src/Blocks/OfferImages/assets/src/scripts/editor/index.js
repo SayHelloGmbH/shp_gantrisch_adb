@@ -9,10 +9,7 @@ const classNameBase = getBlockDefaultClassName(block_name);
 
 import image_sizes from '../../../../../../../.build/gutenberg/_components/image-sizes';
 
-import icon from './icon';
-
 registerBlockType(block_name, {
-	icon,
 	edit: (props) => {
 		const blockProps = useBlockProps();
 

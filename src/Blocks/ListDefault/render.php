@@ -19,22 +19,32 @@ $block_controller = new BlockController();
 $block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
+$show_filter = false; // Temporary hard-coding
+//$show_filter = (bool) get_field('adb_show_filter');
 
 $offer_model = new OfferModel();
 
-$keywords = $block['data']['adb_keywords'] ?? '';
+$category_ids = $block['data']['adb_categories'] ?? [];
 
-if (!empty($keywords)) {
-	$keywords = $offer_model->prepareKeywords($keywords);
+// If filter is visible, don't constrain category selection
+if ($show_filter) {
+	$category_ids = [];
 }
 
-$category_ids = $block['data']['adb_categories'] ?? [];
+$filters = [];
+
+$keywords = $block['data']['adb_keywords'] ?? '';
+
+if (!empty($keywords) && !$show_filter) {
+	$keywords = $offer_model->prepareKeywords($keywords);
+	$filters['keywords'] = $keywords;
+}
 
 if ($is_preview === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--info">
-			<p><?php _ex('Placeholder for List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+			<p><?php _ex('Placeholder for ADB List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
 		</div>
 	</div>
 
@@ -66,12 +76,35 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
 ]);
 
+$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+
+if ($show_filter) {
+	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
+	wp_enqueue_script("{$classNameBase}_jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
+	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", [], null, false);
+	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ['jquery'], null, true);
+	wp_enqueue_style("{$classNameBase}_parkapp-api", "https://angebote.paerke.ch/api/lib/api-17/api.css", [], null);
+}
+
 $count = 1;
 
 $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
 
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo $categories_info; ?>">
+
+	<?php if ($show_filter) { ?>
+		<div class="<?php echo $classNameBase; ?>__filter">
+			<?php
+			//$api->show_offers_filter($category_ids, $filters);
+			?>
+		</div>
+	<?php }
+
+	//$api->show_offers_list($category_ids, $filters);
+	//$api->show_offers_pagination();
+	?>
+
 	<ul class="<?php echo $classNameBase; ?>__entries">
 		<?php
 		foreach ($offers as $offer) {

@@ -20,17 +20,17 @@ $api = new ParksAPI('de');
 <html lang="de">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<title>parks.swiss API Example</title>
 
-	<!-- Viewport, reponsive design -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<!-- Parks API CSS  -->
+	<link href="https://angebote.paerke.ch/api/lib/api-17/api.css" rel="stylesheet">
 
-	<!-- Important CSS styles and javascripts for using the parks.swiss API -->
-	<link href="https://angebote.paerke.ch/css/frontend/api.css?v=10" rel="stylesheet">
-	<script src="https://angebote.paerke.ch/js/i18n/<?php echo $api->lang_id; ?>.js"></script>
-	<script src="https://angebote.paerke.ch/addons/jquery/jquery.js"></script>
-	<script src="https://angebote.paerke.ch/addons/jquery/jquery-ui.js"></script>
-	<script src="https://angebote.paerke.ch/js/frontend/ParkApp.js?v=10"></script>
+	<!-- Parks API JS -->
+	<script src="https://angebote.paerke.ch/api/lib/api-17/<?php echo $api->lang_id; ?>.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-17/jquery.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js"></script>
 
 </head>
 <body>

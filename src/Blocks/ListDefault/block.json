@@ -3,7 +3,7 @@
 	"title": "ADB List",
 	"description": "List view of all offers, optionally filtered by category.",
 	"category": "media",
-	"icon": "admin-comments",
+	"icon": "database",
 	"apiVersion": 2,
 	"keywords": ["offer", "angebot", "list"],
 	"acf": {

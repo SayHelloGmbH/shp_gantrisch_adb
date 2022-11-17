@@ -24,10 +24,12 @@ const config = {
 };
 
 import { task as taskGutenberg } from './.build/gulp/task-gutenberg';
+import { task as taskScripts } from './.build/gulp/task-scripts';
 import { task as taskBlockScripts } from './.build/gulp/task-block-scripts';
 import { task as taskBlockStyles } from './.build/gulp/task-block-styles';
 
 export const gutenberg = () => taskGutenberg(config);
+export const scripts = () => taskScripts(config);
 export const block_scripts = () => taskBlockScripts(config);
 export const block_styles = () => taskBlockStyles(config);
 
@@ -46,6 +48,12 @@ export const watch = () => {
 		`${config.buildSrc}/gutenberg/**/*.{scss,js}`,
 		settings,
 		gulp.series(gutenberg)
+	);
+
+	gulp.watch(
+		`${config.buildSrc}/scripts/**/*.{scss,js}`,
+		settings,
+		gulp.series(scripts)
 	);
 };
 

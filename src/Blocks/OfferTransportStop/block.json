@@ -4,7 +4,7 @@
 	"name": "shp/gantrisch-adb-offer-transport-stop",
 	"title": "ADB Offer Transport Stop",
 	"category": "media",
-	"icon": "format-image",
+	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
 	"keywords": ["offer", "angebot", "öV"],
 	"textdomain": "shp_gantrisch_adb",
