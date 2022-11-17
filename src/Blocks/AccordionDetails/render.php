@@ -5,7 +5,6 @@ namespace SayHello\ShpGantrischAdb\Blocks\AccordionDetails;
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
-use SayHello\ShpGantrischAdb\Blocks\OfferSeason\Block as OfferSeasonBlock;
 
 $block_controller = new BlockController();
 $block_controller->extend($block);
@@ -40,6 +39,24 @@ if (!$offer) {
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
+// TERMIN
+$termin = $offer_model->getTermin($offer_id);
+
+if (!empty($termin)) {
+	ob_start();
+?>
+	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--termin">
+
+		<?php if (!empty($attributes['title_termin'] ?? '')) { ?>
+			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--termin"><?php echo $attributes['title_termin']; ?></h3>
+		<?php } ?>
+
+		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin"><?php echo $termin; ?></div>
+	</div>
+<?php
+	$entries[] = ob_get_contents();
+	ob_end_clean();
+}
 
 // SEASON
 $months = $offer_model->getSeason((int) $offer_id);

@@ -607,4 +607,30 @@ class Offer
 
 		return $keywords;
 	}
+
+	public function getTermin(int $offer_id)
+	{
+
+		if (!function_exists('parks_mysql2date') || !function_exists('parks_show_date') || !function_exists('parks_mysql2form')) {
+			return '';
+		}
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return '';
+		}
+
+		if (empty($offer->date_from) && empty($offer->date_to)) {
+			return '';
+		}
+
+		$date_from = parks_mysql2date($offer->date_from, TRUE);
+		$date_to = parks_mysql2date($offer->date_to, TRUE);
+
+		return parks_show_date([
+			'date_from' => parks_mysql2form($date_from),
+			'date_to' => parks_mysql2form($date_to)
+		]);
+	}
 }
