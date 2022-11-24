@@ -3,10 +3,12 @@
  **/
 
 .shb-accordion {
+	@extend %h-stack;
+	--stack-size: 30px;
+
 	.shb-accordion {
 		&__entries {
 			@extend %h-stack;
-			--stack-size: 30px;
 		}
 
 		&__entry {
@@ -29,6 +31,14 @@
 				border-bottom: 3px solid var(--e-global-color-8234216);
 				padding-bottom: var(--stack-size);
 			}
+		}
+
+		&__title {
+			font-size: 1.875rem;
+			line-height: calc(36 / 30);
+			font-family: var(--e-global-typography-primary-font-family);
+			color: var(--e-global-color-primary);
+			font-weight: var(--e-global-typography-secondary-font-weight);
 		}
 	}
 }
