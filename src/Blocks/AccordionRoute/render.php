@@ -311,7 +311,7 @@ if (empty($entries)) {
 }
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entryX>
+<div class="<?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
 	<div class="<?php echo $classNameBase; ?>__header">
 		<h2 class="<?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'NO TITLE'; ?></h2>
 	</div>
