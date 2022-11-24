@@ -328,7 +328,7 @@ if (empty($entries)) {
 }
 
 ?>
-<div class="shb-accordion <?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entryX>
+<div class="shb-accordion <?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
 	<div class="shb-accordion__header <?php echo $classNameBase; ?>__header">
 		<h2 class="shb-accordion__title <?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'NO TITLE'; ?></h2>
 	</div>
