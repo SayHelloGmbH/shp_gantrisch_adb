@@ -1,15 +1,15 @@
-.shb-accordion .shb-accordion__entry-content > *, .shb-accordion .shb-accordion__entry > *, .shb-accordion .shb-accordion__entries > * {
+.shb-accordion .shb-accordion__entry-content > *, .shb-accordion .shb-accordion__entry > *, .shb-accordion .shb-accordion__entries > *, .shb-accordion > * {
   margin-top: 0;
   margin-bottom: 0;
 }
-.shb-accordion .shb-accordion__entry-content > * + *, .shb-accordion .shb-accordion__entry > * + *, .shb-accordion .shb-accordion__entries > * + * {
+.shb-accordion .shb-accordion__entry-content > * + *, .shb-accordion .shb-accordion__entry > * + *, .shb-accordion .shb-accordion__entries > * + *, .shb-accordion > * + * {
   margin-top: var(--stack-size);
 }
 
 /**
  * Extra specificity to override Elementor styles
  **/
-.shb-accordion .shb-accordion__entries {
+.shb-accordion {
   --stack-size: 30px;
 }
 .shb-accordion .shb-accordion__entry * {
@@ -24,4 +24,11 @@
   border-bottom: 3px solid var(--e-global-color-8234216);
   padding-bottom: var(--stack-size);
 }
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIl9zdGFjay5zY3NzIiwiX2ItYWNjb3JkaW9uLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0M7RUFDQztFQUNBOztBQUNBO0VBQ0M7OztBQ0xIO0FBQUE7QUFBQTtBQU1FO0VBRUM7O0FBTUE7RUFDQzs7QUFPRDtFQUNDO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBIiwiZmlsZSI6InVpLmNzcyJ9 */
+.shb-accordion .shb-accordion__title {
+  font-size: 1.875rem;
+  line-height: 1.2;
+  font-family: var(--e-global-typography-primary-font-family);
+  color: var(--e-global-color-primary);
+  font-weight: var(--e-global-typography-secondary-font-weight);
+}
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIl9zdGFjay5zY3NzIiwiX3NoYi1hY2NvcmRpb24uc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQztFQUNDO0VBQ0E7O0FBQ0E7RUFDQzs7O0FDTEg7QUFBQTtBQUFBO0FBSUE7RUFFQzs7QUFVRTtFQUNDOztBQU9EO0VBQ0M7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBSUY7RUFDQztFQUNBO0VBQ0E7RUFDQTtFQUNBIiwiZmlsZSI6InVpLmNzcyJ9 */
