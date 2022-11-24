@@ -1,8 +1,8 @@
-.shb-accordion .shb-accordion__entry-content > *, .shb-accordion .shb-accordion__entry > *, .shb-accordion .shb-accordion__entries > *, .shb-accordion > * {
+.h-stack > *, .shb-accordion .shb-accordion__entry-content > *, .shb-accordion .shb-accordion__entry > *, .shb-accordion .shb-accordion__entries > *, .shb-accordion > * {
   margin-top: 0;
   margin-bottom: 0;
 }
-.shb-accordion .shb-accordion__entry-content > * + *, .shb-accordion .shb-accordion__entry > * + *, .shb-accordion .shb-accordion__entries > * + *, .shb-accordion > * + * {
+.h-stack > * + *, .shb-accordion .shb-accordion__entry-content > * + *, .shb-accordion .shb-accordion__entry > * + *, .shb-accordion .shb-accordion__entries > * + *, .shb-accordion > * + * {
   margin-top: var(--stack-size);
 }
 

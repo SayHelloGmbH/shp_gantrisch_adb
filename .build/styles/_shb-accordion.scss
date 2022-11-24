@@ -3,23 +3,23 @@
  **/
 
 .shb-accordion {
-	@extend %h-stack;
+	@extend .h-stack;
 	--stack-size: 30px;
 
 	.shb-accordion {
 		&__entries {
-			@extend %h-stack;
+			@extend .h-stack;
 		}
 
 		&__entry {
-			@extend %h-stack;
+			@extend .h-stack;
 
 			* {
 				--stack-size: 20px;
 			}
 
 			&-content {
-				@extend %h-stack;
+				@extend .h-stack;
 			}
 
 			&-title {

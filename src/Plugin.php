@@ -106,6 +106,7 @@ class Plugin
 				Blocks\OfferCategories\Block::class,
 				Blocks\OfferContact\Block::class,
 				Blocks\OfferDescriptionLong\Block::class,
+				Blocks\OfferDocuments\Block::class,
 				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
 				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022

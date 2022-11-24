@@ -15,7 +15,7 @@ if ($gutenberg_package->isContextEdit()) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--info">
-			<p><?php _ex('Placeholder for ADB Details accordion.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+			<p><?php _ex('Placeholder for ADB Travel accordion.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
 		</div>
 	</div>
 <?php
