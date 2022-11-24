@@ -43,3 +43,25 @@ entries.forEach((entry) => {
 });
 
 close_all();
+
+if ('customElements' in window) {
+	class ListEntry extends HTMLDivElement {
+		constructor() {
+			super();
+		}
+	}
+
+	class ListEntryTitle extends HTMLHeadingElement {
+		constructor() {
+			super();
+		}
+	}
+
+	customElements.define('shp-accordion-list-entry', ListEntry, {
+		extends: 'div',
+	});
+
+	customElements.define('shp-accordion-list-entry-title', ListEntryTitle, {
+		extends: 'h3',
+	});
+}

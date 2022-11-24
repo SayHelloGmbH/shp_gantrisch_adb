@@ -1,3 +1,8 @@
+shp-accordion-list-entry,
+shp-accordion-list-entry-title {
+	display: block;
+}
+
 @media screen {
 	[data-shp-accordion-entry-trigger][aria-expanded] {
 		--shp-accordion--trigger-color: currentColor;

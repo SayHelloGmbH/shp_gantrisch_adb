@@ -15,7 +15,7 @@
 	"attributes": {
 		"title_block": {
 			"type": "string",
-			"default": "Route information"
+			"default": "Routeninformationen"
 		},
 		"title_routelength": {
 			"type": "string",
@@ -63,5 +63,10 @@
 		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/view.js",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-accordion-route"
+	],
 	"render": "file:./render.php"
 }
