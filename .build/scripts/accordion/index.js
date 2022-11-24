@@ -1,5 +1,6 @@
 console.log('%cshp-accordion script loaded', 'color: #77adbf');
 
+import './custom-elements';
 import './index.scss';
 
 const entries = document.querySelectorAll('[data-shp-accordion-entry]');
