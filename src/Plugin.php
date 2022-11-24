@@ -100,6 +100,7 @@ class Plugin
 
 				Blocks\AccordionDetails\Block::class,
 				Blocks\AccordionRoute\Block::class,
+				Blocks\AccordionTravel\Block::class,
 				Blocks\ListDefault\Block::class,
 				// Blocks\OfferBenefits\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferCategories\Block::class,
