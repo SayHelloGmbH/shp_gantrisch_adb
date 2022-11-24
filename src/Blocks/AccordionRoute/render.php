@@ -44,8 +44,6 @@ if (!$offer) {
 	return;
 }
 
-dump($offer);
-
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
