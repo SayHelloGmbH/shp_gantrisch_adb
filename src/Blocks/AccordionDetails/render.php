@@ -45,13 +45,13 @@ $termin = $offer_model->getTermin($offer_id);
 if (!empty($termin)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--termin">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--termin">
 
 		<?php if (!empty($attributes['title_termin'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--termin"><?php echo $attributes['title_termin']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--termin"><?php echo $attributes['title_termin']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin"><?php echo $termin; ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin"><?php echo $termin; ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -64,13 +64,13 @@ $leistungen = $offer_model->getBenefits($offer_id);
 if (!empty($leistungen)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--leistungen">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--leistungen">
 
 		<?php if (!empty($attributes['title_leistungen'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--leistungen"><?php echo $attributes['title_leistungen']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title  <?php echo $classNameBase; ?>__entry-title--leistungen"><?php echo $attributes['title_leistungen']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--leistungen"><?php echo wpautop($leistungen); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--leistungen"><?php echo wpautop($leistungen); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -84,13 +84,13 @@ $price = $offer_model->getPrice($offer_id);
 if (!empty($price)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--price">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--price">
 
 		<?php if (!empty($attributes['title_price'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--price"><?php echo $attributes['title_price']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--price"><?php echo $attributes['title_price']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--price"><?php echo wpautop($price); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--price"><?php echo wpautop($price); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -103,13 +103,13 @@ $place = $offer_model->getPlace($offer_id);
 if (!empty($place)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--place">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--place">
 
 		<?php if (!empty($attributes['title_place'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--place"><?php echo $attributes['title_place']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--place"><?php echo $attributes['title_place']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--place"><?php echo wpautop($place); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--place"><?php echo wpautop($place); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -122,13 +122,13 @@ $opening = $offer_model->getOpeningTimes($offer_id);
 if (!empty($opening)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--opening">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--opening">
 
 		<?php if (!empty($attributes['title_opening'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--opening"><?php echo $attributes['title_opening']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--opening"><?php echo $attributes['title_opening']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--opening"><?php echo wpautop($opening); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--opening"><?php echo wpautop($opening); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -142,13 +142,13 @@ $months = $offer_model->getSeason((int) $offer_id);
 if (!empty($months)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--season">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--season">
 
 		<?php if (!empty($attributes['title_season'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--season"><?php echo $attributes['title_season']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--season"><?php echo $attributes['title_season']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--season"><?php echo implode(', ', $months); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--season"><?php echo implode(', ', $months); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -163,13 +163,13 @@ $offer_infrastructure = $offer_model->getInfrastructure((int) $offer_id);
 if (!empty($offer_infrastructure)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--infrastructure">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--infrastructure">
 
 		<?php if (!empty($attributes['title_infrastructure'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--infrastructure"><?php echo $attributes['title_infrastructure']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--infrastructure"><?php echo $attributes['title_infrastructure']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--infrastructure"><?php echo wpautop($offer_infrastructure); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--infrastructure"><?php echo wpautop($offer_infrastructure); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -183,13 +183,13 @@ $additional_information = $offer->additional_informations ?? '';
 if (!empty($additional_information)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--additionalinfo">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--additionalinfo">
 
 		<?php if (!empty($attributes['title_additional'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--additionalinfo"><?php echo $attributes['title_additional']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--additionalinfo"><?php echo $attributes['title_additional']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--additionalinfo"><?php echo wpautop($additional_information); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--additionalinfo"><?php echo wpautop($additional_information); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -203,13 +203,13 @@ $target_audience = $offer_model->getTarget((int) $offer_id) ?? '';
 if (!empty($target_audience)) {
 	ob_start();
 ?>
-	<div class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--suitability">
+	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--suitability">
 
 		<?php if (!empty($attributes['title_suitability'] ?? '')) { ?>
-			<h3 class="<?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--suitability"><?php echo $attributes['title_suitability']; ?></h3>
+			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--suitability"><?php echo $attributes['title_suitability']; ?></h3>
 		<?php } ?>
 
-		<div class="<?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability"><?php echo implode('<br>', $target_audience); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability"><?php echo implode('<br>', $target_audience); ?></div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -221,11 +221,11 @@ if (empty($entries)) {
 }
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
-	<div class="<?php echo $classNameBase; ?>__header">
-		<h2 class="<?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'Details'; ?></h2>
+<div class="shb-accordion <?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
+	<div class="shb-accordion__header <?php echo $classNameBase; ?>__header">
+		<h2 class="shb-accordion__title <?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'Details'; ?></h2>
 	</div>
-	<div class="<?php echo $classNameBase; ?>__entries" data-shp-accordion-entry-content>
+	<div class="shb-accordion__entries <?php echo $classNameBase; ?>__entries" data-shp-accordion-entry-content>
 		<?php echo implode('', $entries); ?>
 	</div>
 </div>

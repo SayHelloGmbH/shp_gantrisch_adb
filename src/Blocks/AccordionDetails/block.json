@@ -9,7 +9,8 @@
 	"keywords": ["offer", "angebot", "accordion", "details"],
 	"textdomain": "shp_gantrisch_adb",
 	"supports": {
-		"align": ["wide", "full"]
+		"align": ["wide", "full"],
+		"multiple": false
 	},
 	"attributes": {
 		"title_block": {

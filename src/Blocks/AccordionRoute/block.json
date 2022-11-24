@@ -1,0 +1,68 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-accordion-route",
+	"title": "ADB Route Information (Accordion)",
+	"description": "Routeninformation zu einem ADB-Eintrag.",
+	"category": "media",
+	"icon": "database",
+	"keywords": ["offer", "angebot", "accordion", "route"],
+	"textdomain": "shp_gantrisch_adb",
+	"supports": {
+		"align": ["wide", "full"],
+		"multiple": false
+	},
+	"attributes": {
+		"title_block": {
+			"type": "string",
+			"default": "Routeninformationen"
+		},
+		"title_routelength": {
+			"type": "string",
+			"default": "Routenlänge"
+		},
+		"title_ascent": {
+			"type": "string",
+			"default": "Höhenmeter Aufstieg"
+		},
+		"title_descent": {
+			"type": "string",
+			"default": "Höhenmeter Abstieg"
+		},
+		"title_unpaved": {
+			"type": "string",
+			"default": "Anteil ungeteerter Wegstrecke"
+		},
+		"title_heightdifference": {
+			"type": "string",
+			"default": "Höhendifferenz"
+		},
+		"title_time": {
+			"type": "string",
+			"default": "Zeitbedarf"
+		},
+		"title_difficulty_technical": {
+			"type": "string",
+			"default": "Schwierigkeitsgrad Technik"
+		},
+		"title_difficulty_condition": {
+			"type": "string",
+			"default": "Schwierigkeitsgrad Kondition"
+		},
+		"title_equipmentrental": {
+			"type": "string",
+			"default": "Materialmiete"
+		},
+		"title_safety": {
+			"type": "string",
+			"default": "Sicherheitshinweise"
+		},
+		"title_signals": {
+			"type": "string",
+			"default": "Signalisation"
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/view.js",
+	"render": "file:./render.php"
+}
