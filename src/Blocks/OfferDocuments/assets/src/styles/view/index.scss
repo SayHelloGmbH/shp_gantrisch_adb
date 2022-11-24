@@ -1,0 +1,34 @@
+.wp-block-shp-gantrisch-adb-offer-documents {
+	padding: 20px;
+	color: var(--wp--preset--color--white);
+	background-color: var(--wp--preset--color--softpetrol);
+	--stack-size: 10px;
+
+	.wp-block-shp-gantrisch-adb-offer-documents {
+		&__entries {
+			list-style: none;
+			padding-left: 0;
+		}
+
+		&__entry {
+			font-size: 1.875rem;
+			line-height: calc(36 / 30);
+
+			a,
+			a:hover {
+				color: var(--e-global-color-accent);
+			}
+		}
+
+		&__title {
+			font-size: 1.25rem;
+			line-height: calc(26 / 20);
+			color: inherit;
+		}
+
+		.c-message {
+			color: inherit;
+			background-color: inherit;
+		}
+	}
+}

@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-documents",
+	"title": "ADB Offer Documents",
+	"category": "media",
+	"icon": "database",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"keywords": ["offer", "angebot", "documents"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"linkColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"padding": true
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"style": [
+		"file:./assets/dist/styles/view/index.min.css",
+		"shp-gantrisch-adb-offer-documents-shared"
+	],
+	"render": "file:./render.php"
+}
