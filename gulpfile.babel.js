@@ -17,19 +17,17 @@ const config = {
 			this.emit('end');
 		}
 	},
-	reload: [
-		'*.php',
-		'{Classes,inc,partials,templates,includes}/**/*.{php,html,twig}',
-	],
 };
 
 import { task as taskGutenberg } from './.build/gulp/task-gutenberg';
 import { task as taskScripts } from './.build/gulp/task-scripts';
+import { task as taskStyles } from './.build/gulp/task-styles';
 import { task as taskBlockScripts } from './.build/gulp/task-block-scripts';
 import { task as taskBlockStyles } from './.build/gulp/task-block-styles';
 
 export const gutenberg = () => taskGutenberg(config);
 export const scripts = () => taskScripts(config);
+export const styles = () => taskStyles(config);
 export const block_scripts = () => taskBlockScripts(config);
 export const block_styles = () => taskBlockStyles(config);
 
@@ -54,6 +52,12 @@ export const watch = () => {
 		`${config.buildSrc}/scripts/**/*.{scss,js}`,
 		settings,
 		gulp.series(scripts)
+	);
+
+	gulp.watch(
+		`${config.buildSrc}/styles/**/*.scss`,
+		settings,
+		gulp.series(styles)
 	);
 };
 

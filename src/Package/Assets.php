@@ -21,14 +21,16 @@ class Assets
 	public function registerAssets()
 	{
 
-		$deps = [];
+		$js_deps = [];
 		$min = defined('WP_DEBUG') && WP_DEBUG ? false : true;
 
-		wp_enqueue_script('shp_gantrisch_adb-ui', shp_gantrisch_adb_get_instance()->url . 'assets/scripts/ui' . ($min ? '.min' : '') . '.js', $deps, filemtime(shp_gantrisch_adb_get_instance()->path . 'assets/scripts/ui' . ($min ? '.min' : '') . '.js'), true);
+		wp_enqueue_script('shp_gantrisch_adb-ui', shp_gantrisch_adb_get_instance()->url . 'assets/scripts/ui' . ($min ? '.min' : '') . '.js', $js_deps, filemtime(shp_gantrisch_adb_get_instance()->path . 'assets/scripts/ui' . ($min ? '.min' : '') . '.js'), true);
 		wp_localize_script('shp_gantrisch_adb-ui', 'shp_gantrisch_adb', [
 			'debug' => defined('WP_DEBUG') && WP_DEBUG,
 			'url' => untrailingslashit(shp_gantrisch_adb_get_instance()->url),
 			'version' => filemtime(shp_gantrisch_adb_get_instance()->path . 'assets/scripts/ui' . ($min ? '.min' : '') . '.js')
 		]);
+
+		wp_enqueue_style('shp_gantrisch_adb-ui', shp_gantrisch_adb_get_instance()->url . 'assets/styles/ui' . ($min ? '.min' : '') . '.css', [], filemtime(shp_gantrisch_adb_get_instance()->path . 'assets/styles/ui' . ($min ? '.min' : '') . '.css'));
 	}
 }
