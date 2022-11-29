@@ -61,7 +61,7 @@ class Block
 				<?php } ?>
 
 				<div class="<?php echo $block['shp']['classNameBase']; ?>__link-wrapper h-stack c-offer-detail-box__entry">
-					<a class="<?php echo $block['shp']['classNameBase']; ?>__link" href="<?php echo $link; ?>">
+					<a target="_blank" class="<?php echo $block['shp']['classNameBase']; ?>__link" href="<?php echo $link; ?>">
 						<?php
 						$label = $stop_name;
 
