@@ -1,0 +1,10 @@
+.wp-block-shp-gantrisch-adb-offer-condition {
+	.wp-block-shp-gantrisch-adb-offer-condition {
+		&__content {
+			@media screen and (min-width: 48rem) {
+				display: flex;
+				gap: 0.5ch;
+			}
+		}
+	}
+}

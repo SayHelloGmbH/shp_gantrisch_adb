@@ -104,6 +104,7 @@ class Plugin
 				Blocks\ListDefault\Block::class,
 				// Blocks\OfferBenefits\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferCategories\Block::class,
+				Blocks\OfferCondition\Block::class,
 				Blocks\OfferContact\Block::class,
 				Blocks\OfferDescriptionLong\Block::class,
 				Blocks\OfferDocuments\Block::class,
