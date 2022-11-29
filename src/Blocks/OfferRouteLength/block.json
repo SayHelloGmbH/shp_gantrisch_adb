@@ -1,12 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
-	"name": "shp/gantrisch-adb-offer-time",
-	"title": "ADB Offer Time required",
+	"name": "shp/gantrisch-adb-offer-route-length",
+	"title": "ADB Offer Route Length",
 	"category": "media",
 	"icon": "database",
 	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
-	"keywords": ["offer", "angebot", "time"],
+	"keywords": ["offer", "angebot", "route length"],
 	"textdomain": "shp_gantrisch_adb",
 	"attributes": {
 		"align": {
@@ -14,7 +14,7 @@
 		},
 		"prefix": {
 			"type": "string",
-			"default": "Zeitbedarf:"
+			"default": "Routenlänge:"
 		}
 	},
 	"supports": {
@@ -24,7 +24,7 @@
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"style": [
 		"file:./assets/dist/styles/shared/index.min.css",
-		"shp-gantrisch-adb-offer-time"
+		"shp-gantrisch-adb-offer-route-length"
 	],
 	"render": "file:./render.php"
 }

@@ -104,6 +104,7 @@ class Plugin
 				Blocks\ListDefault\Block::class,
 				// Blocks\OfferBenefits\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferCategories\Block::class,
+				Blocks\OfferCondition\Block::class,
 				Blocks\OfferContact\Block::class,
 				Blocks\OfferDescriptionLong\Block::class,
 				Blocks\OfferDocuments\Block::class,
@@ -114,6 +115,7 @@ class Plugin
 				// Blocks\OfferPrice\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
+				Blocks\OfferRouteLength\Block::class,
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
