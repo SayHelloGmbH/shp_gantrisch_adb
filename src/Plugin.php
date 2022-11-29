@@ -109,6 +109,7 @@ class Plugin
 				Blocks\OfferDocuments\Block::class,
 				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
+				Blocks\OfferLinks\Block::class,
 				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferPrice\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
