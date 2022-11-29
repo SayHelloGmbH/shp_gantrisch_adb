@@ -18,7 +18,7 @@
 		}
 	},
 	"supports": {
-		"align": ["wide", "full"],
+		"align": false,
 		"html": false
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
