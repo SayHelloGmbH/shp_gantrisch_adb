@@ -118,6 +118,7 @@ class Plugin
 				Blocks\OfferSubscription\Block::class,
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferTransportStop\Block::class,
+				Blocks\OfferTime\Block::class,
 				Blocks\OfferTitle\Block::class,
 			]
 		);

@@ -154,53 +154,9 @@ if ((int)$altitude_differential > 0) {
 	ob_end_clean();
 }
 
-// time_required
-$time_required = $offer->time_required_minutes ?? '';
+$time_required = $offer_model->getTimeRequired((int) $offer_id);
 
-if ((int) $time_required > 0) {
-
-	$time_required_hours = intdiv($time_required, 60);
-	$time_required_minutes = $time_required % 60;
-
-	if ($time_required_minutes < 1) {
-		$time_required = sprintf(
-			_nx(
-				'%1$s Stunde',
-				'%1$s Stunden',
-				$time_required_hours,
-				'ADB time required',
-				'shp-gantrisch_adb'
-			),
-			$time_required_hours
-		);
-	} else {
-		if ($time_required_minutes > 1) {
-			$time_required = sprintf(
-				_nx(
-					'%1$s Stunde %2$s Minuten',
-					'%1$s Stunden %2$s Minuten',
-					$time_required_hours,
-					'ADB time required',
-					'shp-gantrisch_adb'
-				),
-				$time_required_hours,
-				$time_required_minutes
-			);
-		} else {
-			$time_required = sprintf(
-				_nx(
-					'%1$s Stunde %2$s Minute',
-					'%1$s Stunden %2$s Minute',
-					$time_required_hours,
-					'ADB time required',
-					'shp-gantrisch_adb'
-				),
-				$time_required_hours,
-				$time_required_minutes
-			);
-		}
-	}
-
+if (!empty($time_required)) {
 	ob_start();
 ?>
 	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--time_required">
