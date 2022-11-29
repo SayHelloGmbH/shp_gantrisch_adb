@@ -35,14 +35,14 @@
 
 	a {
 		color: var(--shb-offer-detail-link-color) !important;
-		text-decoration: underline;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
+		text-decoration: underline !important;
+		text-decoration-thickness: 1px !important;
+		text-underline-offset: 3px !important;
 
 		&::hover {
-			text-decoration: underline;
-			text-decoration-thickness: 1px;
-			text-underline-offset: 3px;
+			text-decoration: underline !important;
+			text-decoration-thickness: 1px !important;
+			text-underline-offset: 3px !important;
 		}
 	}
 }
