@@ -100,11 +100,13 @@ class Plugin
 
 				Blocks\AccordionDetails\Block::class,
 				Blocks\AccordionRoute\Block::class,
+				Blocks\AccordionTravel\Block::class,
 				Blocks\ListDefault\Block::class,
 				// Blocks\OfferBenefits\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferCategories\Block::class,
 				Blocks\OfferContact\Block::class,
 				Blocks\OfferDescriptionLong\Block::class,
+				Blocks\OfferDocuments\Block::class,
 				Blocks\OfferExcerpt\Block::class,
 				Blocks\OfferImages\Block::class,
 				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022

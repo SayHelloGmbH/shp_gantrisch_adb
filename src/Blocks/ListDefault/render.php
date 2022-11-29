@@ -138,9 +138,9 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 					</div>
 
-					<?php if (!empty($offer['location_details'])) { ?>
+					<?php if (!empty($offer['institution_location'])) { ?>
 						<div class="<?php echo $classNameBase; ?>__entry-location">
-							<p><?php echo esc_html($offer['location_details']); ?></p>
+							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
 					<?php
 					}

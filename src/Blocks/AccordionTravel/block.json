@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-accordion-travel",
+	"title": "ADB Travel (Accordion)",
+	"description": "Startort, Zielort, ÖV-Haltestellen.",
+	"category": "media",
+	"icon": "database",
+	"keywords": ["offer", "angebot", "accordion", "travel"],
+	"textdomain": "shp_gantrisch_adb",
+	"supports": {
+		"align": ["wide", "full"],
+		"multiple": false
+	},
+	"attributes": {
+		"title_block": {
+			"type": "string",
+			"default": "Details"
+		},
+		"title_start": {
+			"type": "string",
+			"default": "Startort"
+		},
+		"title_start_stop": {
+			"type": "string",
+			"default": "ÖV-Haltestelle"
+		},
+		"title_goal": {
+			"type": "string",
+			"default": "Zielort"
+		},
+		"title_goal_stop": {
+			"type": "string",
+			"default": "ÖV-Haltestelle"
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
+}

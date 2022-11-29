@@ -1,0 +1,20 @@
+.wp-block-shp-gantrisch-adb-offer-documents {
+	.wp-block-shp-gantrisch-adb-offer-documents {
+		&__entries {
+			--shb-offer-detail-link-color: var(--e-global-color-accent);
+			--stack-size: 0;
+			list-style: none;
+			padding-left: 0;
+		}
+
+		&__entry {
+			font-size: 1.875rem;
+			line-height: calc(36 / 30);
+		}
+
+		.c-message {
+			color: inherit;
+			background-color: inherit;
+		}
+	}
+}
