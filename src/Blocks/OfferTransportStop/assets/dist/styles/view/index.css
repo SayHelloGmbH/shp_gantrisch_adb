@@ -1,0 +1,6 @@
+.wp-block-shp-gantrisch-adb-offer-transport-stop {
+  --shb-offer-detail-box-background-color: var(--e-global-color-text);
+}
+.wp-block-shp-gantrisch-adb-offer-transport-stop .wp-block-shp-gantrisch-adb-offer-transport-stop__link-wrapper {
+  --shb-offer-detail-link-color: var(--e-global-color-accent);
+}

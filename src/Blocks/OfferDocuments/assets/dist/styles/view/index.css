@@ -1,25 +1,12 @@
-.wp-block-shp-gantrisch-adb-offer-documents {
-  padding: 20px;
-  color: var(--wp--preset--color--white);
-  background-color: var(--wp--preset--color--softpetrol);
-  --stack-size: 10px;
-}
 .wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents__entries {
+  --shb-offer-detail-link-color: var(--e-global-color-accent);
+  --stack-size: 0;
   list-style: none;
   padding-left: 0;
 }
 .wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents__entry {
   font-size: 1.875rem;
   line-height: 1.2;
-}
-.wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents__entry a,
-.wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents__entry a:hover {
-  color: var(--e-global-color-accent);
-}
-.wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents__title {
-  font-size: 1.25rem;
-  line-height: 1.3;
-  color: inherit;
 }
 .wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents .c-message {
   color: inherit;

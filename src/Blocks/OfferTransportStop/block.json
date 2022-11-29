@@ -36,5 +36,9 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:./assets/dist/scripts/editor.js"
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"style": [
+		"file:./assets/dist/styles/view/index.min.css",
+		"shp-gantrisch-adb-offer-transport-stop-view"
+	]
 }
