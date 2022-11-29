@@ -59,13 +59,13 @@ class Offer
 
 		if (!$this->isConfiguredSinglePage() && $offer_id) {
 			header("HTTP/1.1 404 Not Found");
-			return;
+			exit;
 		}
 
 		// Has an ID been passed in?
 		if ($this->isConfiguredSinglePage() && !$offer_id) {
 			header("HTTP/1.1 404 Not Found");
-			return;
+			exit;
 		}
 
 		if ($this->isConfiguredSinglePage() && $offer_id) {
@@ -73,6 +73,7 @@ class Offer
 			$offer = $this->model->getOffer((int) $offer_id);
 			if (!$offer) {
 				header("HTTP/1.1 404 Not Found");
+				exit;
 			}
 		}
 	}
