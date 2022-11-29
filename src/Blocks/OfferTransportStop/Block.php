@@ -53,14 +53,14 @@ class Block
 
 		ob_start();
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?>">
-			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
+		<div class="<?php echo $block['shp']['class_names']; ?> c-offer-detail-box">
+			<div class="<?php echo $block['shp']['classNameBase']; ?>__content h-stack">
 
 				<?php if (!empty($attributes['title'] ?? '')) { ?>
-					<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
+					<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title c-offer-detail-box__title"><?php echo esc_html($attributes['title']); ?></h2>
 				<?php } ?>
 
-				<p class="<?php echo $block['shp']['classNameBase']; ?>__link-wrapper">
+				<div class="<?php echo $block['shp']['classNameBase']; ?>__link-wrapper h-stack c-offer-detail-box__entry">
 					<a class="<?php echo $block['shp']['classNameBase']; ?>__link" href="<?php echo $link; ?>">
 						<?php
 						$label = $stop_name;
@@ -72,7 +72,7 @@ class Block
 						echo esc_html($label);
 						?>
 					</a>
-				</p>
+				</div>
 
 			</div>
 		</div>

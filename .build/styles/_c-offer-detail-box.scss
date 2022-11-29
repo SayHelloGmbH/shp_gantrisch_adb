@@ -1,0 +1,48 @@
+.c-offer-detail-box {
+	--shb-offer-detail-box-color: var(--wp--preset--color--white);
+	--shb-offer-detail-box-background-color: var(
+		--wp--preset--color--softpetrol
+	);
+	--shb-offer-detail-title-color: var(--wp--preset--color--white);
+	--shb-offer-detail-link-color: var(--wp--preset--color--white);
+	--shb-offer-detail-box-padding: 20px;
+	--shb-offer-detail-box-stack-size: 10px;
+	--stack-size: var(--shb-offer-detail-box-stack-size) !important;
+
+	padding: var(--shb-offer-detail-box-padding) !important;
+
+	&:not(.has-text-color) {
+		color: var(--shb-offer-detail-box-color) !important;
+	}
+
+	&:not(.has-background) {
+		background-color: var(
+			--shb-offer-detail-box-background-color
+		) !important;
+	}
+
+	&__entry {
+		font-size: 1.875rem !important;
+		line-height: 1.2 !important;
+	}
+
+	&__title {
+		color: var(--shb-offer-detail-title-color) !important;
+		font-size: 1.25rem !important;
+		line-height: calc(26 / 20) !important;
+		color: inherit !important;
+	}
+
+	a {
+		color: var(--shb-offer-detail-link-color) !important;
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+
+		&::hover {
+			text-decoration: underline;
+			text-decoration-thickness: 1px;
+			text-underline-offset: 3px;
+		}
+	}
+}
