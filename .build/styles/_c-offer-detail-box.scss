@@ -21,6 +21,12 @@
 		) !important;
 	}
 
+	&__entries {
+		--stack-size: 0;
+		list-style: none;
+		padding-left: 0;
+	}
+
 	&__entry {
 		font-size: 1.875rem !important;
 		line-height: 1.2 !important;

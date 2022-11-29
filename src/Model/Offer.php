@@ -655,4 +655,64 @@ class Offer
 
 		return $offer->opening_hours ?? '';
 	}
+
+	public function getTimeRequired(int $offer_id)
+	{
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return '';
+		}
+
+		$time_required = $offer->time_required_minutes ?? '';
+
+		if ((int) $time_required < 1) {
+			return '';
+		}
+
+		$time_required_hours = intdiv($time_required, 60);
+		$time_required_minutes = $time_required % 60;
+
+		if ($time_required_minutes < 1) {
+			$time_required = sprintf(
+				_nx(
+					'%1$s Stunde',
+					'%1$s Stunden',
+					$time_required_hours,
+					'ADB time required',
+					'shp-gantrisch_adb'
+				),
+				$time_required_hours
+			);
+		} else {
+			if ($time_required_minutes > 1) {
+				$time_required = sprintf(
+					_nx(
+						'%1$s Stunde %2$s Minuten',
+						'%1$s Stunden %2$s Minuten',
+						$time_required_hours,
+						'ADB time required',
+						'shp-gantrisch_adb'
+					),
+					$time_required_hours,
+					$time_required_minutes
+				);
+			} else {
+				$time_required = sprintf(
+					_nx(
+						'%1$s Stunde %2$s Minute',
+						'%1$s Stunden %2$s Minute',
+						$time_required_hours,
+						'ADB time required',
+						'shp-gantrisch_adb'
+					),
+					$time_required_hours,
+					$time_required_minutes
+				);
+			}
+		}
+
+		return $time_required;
+	}
 }

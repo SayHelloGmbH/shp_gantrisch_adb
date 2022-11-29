@@ -35,7 +35,7 @@
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"style": [
 		"file:./assets/dist/styles/view/index.min.css",
-		"shp-gantrisch-adb-offer-documents-shared"
+		"shp-gantrisch-adb-offer-documents-view"
 	],
 	"render": "file:./render.php"
 }
