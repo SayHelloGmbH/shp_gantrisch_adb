@@ -23,24 +23,17 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-		$offer_id = $offer_model->getRequestedOfferID();
-
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$offer_images = $offer_model->getImages((int) $offer_id);
+		$offer_images = shp_gantrisch_adb_get_instance()->Model->Offer->getImages();
 
 		if (empty($offer_images)) {
 			return '';
 		}
 
 		$image_size = $attributes['image_size'] ?? 'small';
-		$offer_title = $offer_model->getTitle((int) $offer_id);
+		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
-		if (is_wp_error($offer_title)) {
-			$offer_title = $offer_title->get_error_message();
+		if (!$offer_title) {
+			$offer_title = '';
 		}
 
 		$block_controller = new BlockController();

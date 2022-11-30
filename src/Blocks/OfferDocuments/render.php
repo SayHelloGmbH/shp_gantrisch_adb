@@ -21,15 +21,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-
-$offer_id = $offer_model->getRequestedOfferID();
-
-if (empty($offer_id)) {
-	return;
-}
-
-$offer = $offer_model->getOffer((int) $offer_id);
+$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer();
 
 if (!$offer || !is_array($offer->documents ?? null)) {
 	return;

@@ -30,7 +30,7 @@ class Block
 			return '';
 		}
 
-		$stop_name = $offer_model->getTransportStop((int) $offer_id, 'start');
+		$stop_name = $offer_model->getTransportStop('start');
 
 		if (empty($stop_name)) {
 			return '';

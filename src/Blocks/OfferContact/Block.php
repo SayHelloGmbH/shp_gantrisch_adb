@@ -24,15 +24,9 @@ class Block
 	{
 
 		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-		$offer_id = $offer_model->getRequestedOfferID();
+		$contact = $offer_model->getContact();
 
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$contact = $offer_model->getContact((int) $offer_id);
-
-		if (empty($contact['contact'])) {
+		if (empty($contact['contact'] ?? '')) {
 			return '';
 		}
 

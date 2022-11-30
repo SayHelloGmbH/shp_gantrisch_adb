@@ -21,21 +21,9 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer((int) $offer_id);
 
-$offer_id = $offer_model->getRequestedOfferID();
-
-if (empty($offer_id)) {
-	return '';
-}
-
-$offer = $offer_model->getOffer((int) $offer_id);
-
-if (!$offer) {
-	return;
-}
-
-if (empty($offer->hyperlinks ?? [])) {
+if (!$offer || empty($offer->hyperlinks ?? [])) {
 	return '';
 }
 

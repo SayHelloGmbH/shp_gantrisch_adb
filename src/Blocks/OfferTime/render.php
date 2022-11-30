@@ -21,15 +21,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-
-$offer_id = $offer_model->getRequestedOfferID();
-
-if (empty($offer_id)) {
-	return '';
-}
-
-$time_required = $offer_model->getTimeRequired((int) $offer_id);
+$time_required = shp_gantrisch_adb_get_instance()->Model->Offer->getTimeRequired();
 
 if (empty($time_required)) {
 	return;

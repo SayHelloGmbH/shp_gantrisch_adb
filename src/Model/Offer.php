@@ -194,7 +194,7 @@ class Offer
 		return strip_tags($offer->title);
 	}
 
-	public function getKeywords(int $offer_id)
+	public function getKeywords($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -210,7 +210,7 @@ class Offer
 		return array_map('strip_tags', $keywords);
 	}
 
-	public function getCategories(int $offer_id)
+	public function getCategories($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -257,7 +257,7 @@ class Offer
 	 * @param boolean $formatted Return format: raw, legible or integer
 	 * @return void
 	 */
-	public function getDates(int $offer_id, $format = 'raw')
+	public function getDates($offer_id = null, $format = 'raw')
 	{
 
 		$offer = $this->getOffer($offer_id);
@@ -297,7 +297,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getImages(int $offer_id)
+	public function getImages($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -331,7 +331,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getInfrastructure(int $offer_id)
+	public function getInfrastructure($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -348,7 +348,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getDescriptionLong(int $offer_id)
+	public function getDescriptionLong($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -365,7 +365,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getContact(int $offer_id)
+	public function getContact($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -385,7 +385,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getSeason(int $offer_id)
+	public function getSeason($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -427,7 +427,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getBenefits(int $offer_id)
+	public function getBenefits($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -444,7 +444,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getPrice(int $offer_id)
+	public function getPrice($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -461,7 +461,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getTarget(int $offer_id)
+	public function getTarget($offer_id = null)
 	{
 
 		$offer = $this->getOffer($offer_id);
@@ -479,7 +479,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return mixed
 	 */
-	public function getSubscription(int $offer_id)
+	public function getSubscription($offer_id = null)
 	{
 		global $wpdb;
 		$sql_subscription = $wpdb->prepare("SELECT * FROM {$this->tables['subscription']} WHERE offer_id = %s LIMIT 1", $offer_id);
@@ -509,25 +509,18 @@ class Offer
 		];
 	}
 
-	public function getTransportStop(int $offer_id, string $start_stop = 'start')
+	public function getTransportStop(string $start_stop = 'start')
 	{
-		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
-		$results = get_transient($transient_key);
 
-		if (empty($results) || !$this->cache) {
-			global $wpdb;
-			$sql = $wpdb->prepare("SELECT public_transport_start, public_transport_stop FROM {$this->tables['activity']} WHERE offer_id = %s LIMIT 1", $offer_id);
-			$results = $wpdb->get_results($sql, ARRAY_A);
-			if (!empty($results)) {
-				set_transient($transient_key, $results, $this->transient_lives['single']);
-			}
+		$offer = $this->getOffer();
+
+		if (!$offer) {
+			return '';
 		}
 
-		if (empty($results)) {
-			return false;
-		}
+		$property_name = "public_transport_{$start_stop}";
 
-		return $results[0]["public_transport_{$start_stop}"] ?? '';
+		return $offer->{$property_name} ?? '';
 	}
 
 	public function getAll($category_ids = [], $keywords = [])
@@ -625,7 +618,7 @@ class Offer
 		return $keywords;
 	}
 
-	public function getTermin(int $offer_id)
+	public function getTermin($offer_id = null)
 	{
 
 		if (!function_exists('parks_mysql2date') || !function_exists('parks_show_date') || !function_exists('parks_mysql2form')) {
@@ -651,7 +644,7 @@ class Offer
 		]);
 	}
 
-	public function getPlace(int $offer_id)
+	public function getPlace($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -662,7 +655,7 @@ class Offer
 		return $offer->location_details ?? '';
 	}
 
-	public function getOpeningTimes(int $offer_id)
+	public function getOpeningTimes($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -673,7 +666,7 @@ class Offer
 		return $offer->opening_hours ?? '';
 	}
 
-	public function getTimeRequired(int $offer_id)
+	public function getTimeRequired($offer_id = null)
 	{
 
 		$offer = $this->getOffer($offer_id);
