@@ -33,5 +33,10 @@ if (empty($institution)) {
 
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>">
+
+	<?php if (!empty($attributes['title'] ?? '')) { ?>
+		<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo strip_tags($attributes['title']); ?></h2>
+	<?php } ?>
+
 	<div class="<?php echo $block['shp']['classNameBase']; ?>__content"><?php echo wpautop($institution); ?></div>
 </div>
