@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
-use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
 use ParksAPI;
 use stdClass;
@@ -15,6 +14,7 @@ class Offer
 	private $cache = true;
 	private $single_page = false;
 	private $offers = [];
+	private $requested_id = null;
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -123,15 +123,21 @@ class Offer
 
 	public function getRequestedOfferID()
 	{
-		$controller = new OfferController();
-		$var_name = $controller->queryVarName();
+
+		if ($this->requested_id !== null) {
+			return $this->requested_id;
+		}
+
+		$var_name = shp_gantrisch_adb_get_instance()->Controller->Offer->queryVarName();
 		$var_value = get_query_var($var_name);
 
 		if (empty($var_value)) {
 			return null;
 		}
 
-		return preg_replace('/[^0-9]/', '', $var_value);
+		$this->requested_id = preg_replace('/[^0-9]/', '', $var_value);
+
+		return $this->requested_id;
 	}
 
 	/**
@@ -163,8 +169,8 @@ class Offer
 			return null;
 		}
 
-		if (isset($offers[$offer_id])) {
-			return $offers[$offer_id];
+		if (isset($this->offers[$offer_id])) {
+			return $this->offers[$offer_id];
 		}
 
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
@@ -173,8 +179,8 @@ class Offer
 			return null;
 		}
 
-		$offers[$offer_id] = $api->model->get_offer($offer_id);
-		return $offers[$offer_id];
+		$this->offers[$offer_id] = $api->model->get_offer($offer_id);
+		return $this->offers[$offer_id];
 	}
 
 	public function getTitle($offer_id = null)
