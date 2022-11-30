@@ -8,9 +8,16 @@
 			font-size: 1.875rem;
 			line-height: calc(36 / 30);
 		}
+	}
 
+	&.has-text-color {
 		.c-message {
 			color: inherit;
+		}
+	}
+
+	&.has-background {
+		.c-message {
 			background-color: inherit;
 		}
 	}
