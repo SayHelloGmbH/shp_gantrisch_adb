@@ -152,11 +152,20 @@ class Offer
 	 * The dataset will contain the localised data from
 	 * the i18n table.
 	 *
-	 * @param integer $offer_id
+	 * @param integer $offer_id Optional - if not defined, the model class will try and find the current order_id
 	 * @return mixed The database result.
 	 */
-	public function getOffer(int $offer_id)
+	public function getOffer($offer_id = null)
 	{
+
+		if (!$offer_id) {
+			$offer_id = $this->requestedOfferID();
+		}
+
+		if (!$offer_id) {
+			return null;
+		}
+
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
 		if (!$api instanceof ParksAPI) {
