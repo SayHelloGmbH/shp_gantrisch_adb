@@ -39,7 +39,7 @@ if (!$offer) {
 
 $routecondition = $offer->route_condition ?? '';
 
-if (!empty($routecondition)) {
+if (empty($routecondition)) {
 	return;
 }
 
