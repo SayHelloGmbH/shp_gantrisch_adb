@@ -120,6 +120,7 @@ class Plugin
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferRouteLength\Block::class,
+				Blocks\OfferSameCategory\Block::class,
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022

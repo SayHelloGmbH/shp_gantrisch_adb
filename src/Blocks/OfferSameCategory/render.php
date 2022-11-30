@@ -1,19 +1,20 @@
 <?php
 
-/**
- * ADB List Default block render template
- *
- * @param   array $block The block settings and attributes.
- * @param   string $content The block inner HTML (empty).
- * @param   bool $is_preview True during AJAX preview.
- * @param   (int|string) $post_id The post ID this block is saved to.
- */
-
-namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
-
-use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+namespace SayHello\ShpGantrischAdb\Blocks\OfferSameCategory;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+
+if ($is_preview === true) {
+?>
+	<div class="<?php echo $block['shp']['class_names']; ?>">
+		<div class="c-message c-message--info">
+			<p><?php _ex('Placeholder - offers in the same category as the current offer.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+		</div>
+	</div>
+
+<?php
+	return;
+}
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = false; // Temporary hard-coding
@@ -21,7 +22,24 @@ $show_filter = false; // Temporary hard-coding
 
 $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
-$category_ids = $block['data']['adb_categories'] ?? [];
+$offer_categories =	$offer_model->getCategories();
+
+if (empty($offer_categories)) {
+	return '';
+}
+
+// Convert array keys to
+$category_ids = array_map(function ($entry) {
+	$category_id = str_replace('category', '', $entry);
+	return (int) $category_id;
+}, array_keys($offer_categories));
+
+// Remove null or empty entries
+$category_ids = array_filter($category_ids);
+
+if (empty($category_ids)) {
+	return '';
+}
 
 // If filter is visible, don't constrain category selection
 if ($show_filter) {
@@ -30,48 +48,28 @@ if ($show_filter) {
 
 $filters = [];
 
-$keywords = $block['data']['adb_keywords'] ?? '';
-
-if (!empty($keywords) && !$show_filter) {
-	$keywords = $offer_model->prepareKeywords($keywords);
-	$filters['keywords'] = $keywords;
-}
-
-if ($is_preview === true) {
-?>
-	<div class="<?php echo $block['shp']['class_names']; ?>">
-		<div class="c-message c-message--info">
-			<p><?php _ex('Placeholder for ADB List Block.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
-		</div>
-	</div>
-
-<?php
-	return;
-}
-
 $offers = $offer_model->getAll($category_ids, $keywords);
 
 if (empty($offers)) {
 	return '';
 }
 
-$offer_controller = new OfferController();
+$offer_controller = shp_gantrisch_adb_get_instance()->Controller->Offer;
 
 // Random order as requested by client
 shuffle($offers);
 
-$load_more_text = $block['data']['load_more_text'] ?? '';
-if (empty($load_more_text)) {
-	$load_more_text = _x('Load more', 'List block default button text', 'shp_gantrisch_adb');
+if (count($offers) > 4) {
+	$offers = array_slice($offers, 0, 4);
 }
 
 // Enqueued here manually so that we can load the script in the footer
-$viewScript = 'src/Blocks/ListDefault/assets/dist/scripts/viewScript.js';
-wp_enqueue_script($classNameBase, shp_gantrisch_adb_get_instance()->url . $viewScript, [], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
-wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
-	'load_more_text' => $load_more_text,
-	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
-]);
+// $viewScript = 'src/Blocks/ListDefault/assets/dist/scripts/viewScript.js';
+// wp_enqueue_script($classNameBase, shp_gantrisch_adb_get_instance()->url . $viewScript, [], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
+// wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
+// 	'load_more_text' => $load_more_text,
+// 	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
+// ]);
 
 $api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
@@ -88,10 +86,10 @@ $count = 1;
 $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>">
+<div class="<?php echo $block['shp']['class_names']; ?> c-adb-list" data-categories="<?php echo $categories_info; ?>">
 
 	<?php if ($show_filter) { ?>
-		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
+		<div class="<?php echo $classNameBase; ?>__filter">
 			<?php
 			//$api->show_offers_filter($category_ids, $filters);
 			?>
@@ -115,7 +113,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
 					$classNameBase,
 					$images[0]->{$selected_size},
 					esc_html($offer['title']),
@@ -123,12 +121,12 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 				);
 			} else {
 				$image_html = sprintf(
-					'<div class="%1$s__entry-figure %1$s__entry-figure--empty c-adb-list__figure  c-adb-list__figure--empty"></div>',
+					'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
 					$classNameBase
 				);
 			}
 		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry is--hidden">
+			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry">
 
 				<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
 					<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
@@ -136,7 +134,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 					</div>
 
 					<?php if (!empty($offer['institution_location'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__location">
+						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
 							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
 					<?php

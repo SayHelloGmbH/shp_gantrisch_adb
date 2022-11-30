@@ -1,0 +1,19 @@
+{
+	"name": "shp/adb-offer-same-category",
+	"title": "ADB More Offers",
+	"description": "List view of all offers in the same category as the current single offer.",
+	"category": "media",
+	"icon": "database",
+	"apiVersion": 2,
+	"keywords": ["offer", "angebot", "list", "more"],
+	"supports": {
+		"align": true,
+		"color": {
+			"text": false,
+			"background": true,
+			"link": false
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
+}

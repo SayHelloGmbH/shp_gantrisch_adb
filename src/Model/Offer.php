@@ -214,8 +214,8 @@ class Offer
 	{
 		$offer = $this->getOffer($offer_id);
 
-		if (!$offer instanceof stdClass) {
-			return [];
+		if (!$offer) {
+			return null;
 		}
 
 		$results = $offer->categories ?? [];
@@ -241,11 +241,11 @@ class Offer
 			}
 		}
 
-		foreach ($categories as $key => $category) {
-			if (empty($category['categories'])) {
-				unset($categories[$key]);
-			}
-		}
+		// foreach ($categories as $key => $category) {
+		// 	if (empty($category['categories'])) {
+		// 		unset($categories[$key]);
+		// 	}
+		// }
 
 		return $categories;
 	}
