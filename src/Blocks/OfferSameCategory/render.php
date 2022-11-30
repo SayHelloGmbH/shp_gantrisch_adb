@@ -113,7 +113,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
 					$classNameBase,
 					$images[0]->{$selected_size},
 					esc_html($offer['title']),
