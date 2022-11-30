@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSeason;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use WP_Block;
 
 class Block
@@ -31,8 +30,7 @@ class Block
 
 		ob_start();
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
 		<div class="<?php echo $block['shp']['class_names']; ?>">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">

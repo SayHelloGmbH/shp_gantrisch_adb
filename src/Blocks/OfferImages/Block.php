@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferImages;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use WP_Block;
 
 class Block
@@ -36,8 +35,7 @@ class Block
 			$offer_title = '';
 		}
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 		// Use of viewScript in block.json allows us to enqueue the script as we want to.
 		// Here, we want to enqueue it in the footer so that we can do DOM manipulation

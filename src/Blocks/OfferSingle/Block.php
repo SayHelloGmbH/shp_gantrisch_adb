@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSingle;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use WP_Block;
 
 class Block
@@ -25,9 +24,7 @@ class Block
 
 		$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer();
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
-
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 		if (!$offer) {
 			ob_start();

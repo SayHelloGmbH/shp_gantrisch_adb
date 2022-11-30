@@ -11,11 +11,9 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 
-$block_controller = new BlockController();
-$block_controller->extend($block);
+shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = false; // Temporary hard-coding
