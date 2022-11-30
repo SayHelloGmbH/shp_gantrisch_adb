@@ -1,14 +1,14 @@
 <?php
 /*
- * Plugin Name:       Angebotsdatenbank Naturpark Gantrisch
+ * Plugin Name:       Offer database for Naturpark Gantrisch
  * Plugin URI:        https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/
- * Description:       Plugin für die Ausgabe der Angebote auf der Website vom Naturpark Gantrisch.
+ * Description:       Plugin for the output of offers from the Swiss Parks database.
  * Author:            Say Hello GmbH
- * Version:           0.11.1
+ * Version:           0.12.0
  * Author URI:        https://sayhello.ch/
  * Text Domain:       shp_gantrisch_adb
  * Domain Path:       /languages
- * Requires at least: 6.0
+ * Requires at least: 6.1.1
  * Requires PHP:      8.0
  * License:           GPL v3 or later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
