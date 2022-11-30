@@ -20,7 +20,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer($offer_id);
+$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer();
 
 if (!$offer) {
 	return;

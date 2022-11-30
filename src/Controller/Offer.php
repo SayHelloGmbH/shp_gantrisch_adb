@@ -60,7 +60,7 @@ class Offer
 
 		if ($this->isConfiguredSinglePage() && $offer_id) {
 			// Is there a valid offer for the ID which has been passed in?
-			$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer((int) $offer_id);
+			$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer($offer_id);
 			if (!$offer) {
 				header("HTTP/1.1 404 Not Found");
 				exit;
