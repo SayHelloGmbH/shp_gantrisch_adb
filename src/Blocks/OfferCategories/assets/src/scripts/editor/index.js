@@ -8,7 +8,9 @@ const classNameBase = getBlockDefaultClassName(block_name);
 
 registerBlockType(block_name, {
 	edit: () => {
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps({
+			className: 'c-message c-message--info',
+		});
 		return (
 			<div {...blockProps}>
 				<div

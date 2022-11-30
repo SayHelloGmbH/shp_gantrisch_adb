@@ -109,8 +109,10 @@ class Plugin
 				Blocks\OfferDescriptionLong\Block::class,
 				Blocks\OfferDocuments\Block::class,
 				Blocks\OfferExcerpt\Block::class,
+				Blocks\OfferEventLocation\Block::class,
 				Blocks\OfferImages\Block::class,
 				Blocks\OfferLinks\Block::class,
+				// Blocks\OfferMap\Block::class, // In development 30.11.2022
 				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferPrice\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
@@ -121,6 +123,7 @@ class Plugin
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferTransportStop\Block::class,
 				Blocks\OfferTime\Block::class,
+				Blocks\OfferTimeTermin\Block::class,
 				Blocks\OfferTitle\Block::class,
 			]
 		);
