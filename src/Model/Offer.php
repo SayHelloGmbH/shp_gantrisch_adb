@@ -72,7 +72,7 @@ class Offer
 
 	private $date_format = 'Y/m/d';
 
-	public function __construct()
+	public function run()
 	{
 		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
 		$this->cache = false;
@@ -84,10 +84,6 @@ class Offer
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
 		}
-	}
-
-	public function run()
-	{
 	}
 
 	/**
@@ -122,10 +118,10 @@ class Offer
 
 	public function getSinglePageID()
 	{
-		return $this->single_page;
+		return (int) $this->single_page ?? null;
 	}
 
-	public function requestedOfferID()
+	public function getRequestedOfferID()
 	{
 		$controller = new OfferController();
 		$var_name = $controller->queryVarName();
@@ -159,19 +155,14 @@ class Offer
 	public function getOffer($offer_id = null)
 	{
 
-
-		die($offer_id);
-
 		if (!$offer_id) {
-			$offer_id = $this->requestedOfferID();
+			$offer_id = $this->getRequestedOfferID();
 		}
-
 
 		if (!$offer_id) {
 			return null;
 		}
 
-		dump($offer_id, 1, 1);
 		if (isset($offers[$offer_id])) {
 			return $offers[$offer_id];
 		}
@@ -317,7 +308,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getExcerpt(int $offer_id)
+	public function getExcerpt($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 

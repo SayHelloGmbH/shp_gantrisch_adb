@@ -23,14 +23,7 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-		$offer_id = $offer_model->requestedOfferID();
-
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$offer_excerpt = $offer_model->getExcerpt((int) $offer_id);
+		$offer_excerpt = shp_gantrisch_adb_get_instance()->Model->Offer->getExcerpt();
 
 		if (empty($offer_excerpt) || !is_string($offer_excerpt)) {
 			return '';

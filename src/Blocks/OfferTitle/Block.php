@@ -23,9 +23,6 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-		dump($offer_model->getTitle(), 1, 1);
-
 		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
 		if (!$offer_title) {

@@ -45,7 +45,7 @@ class Offer
 	public function handleInvalidSingle()
 	{
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->requestedOfferID();
+		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
 		if (!$this->isConfiguredSinglePage() && $offer_id) {
 			header("HTTP/1.1 404 Not Found");
@@ -92,7 +92,7 @@ class Offer
 			return $post_title;
 		}
 
-		$offer_id = $offer_model->requestedOfferID();
+		$offer_id = $offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $post_title;

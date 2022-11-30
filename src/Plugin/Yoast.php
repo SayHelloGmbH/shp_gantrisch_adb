@@ -77,7 +77,7 @@ class Yoast
 			return $seo_url;
 		}
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedId();
+		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $seo_url;

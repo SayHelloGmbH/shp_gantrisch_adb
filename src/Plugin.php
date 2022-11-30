@@ -84,8 +84,8 @@ class Plugin
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
-				Model\Category::class,
 				Model\Offer::class,
+				Model\Category::class,
 
 				Controller\API::class,
 				Controller\Block::class,
@@ -129,6 +129,7 @@ class Plugin
 				Blocks\OfferTitle\Block::class,
 			]
 		);
+
 
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
 		add_action('after_setup_theme', [$this, 'themeSupports']);
