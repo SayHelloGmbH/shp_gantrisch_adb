@@ -58,7 +58,7 @@ $helpers = new HelpersPackage();
 		<?php } ?>
 
 		<div class="<?php echo $classNameBase; ?>__value">
-			<p><?php printf(_x('%s Km.', 'ADB route length', 'shp_gantrisch_adb'), $helpers->formatAmount($routelength, 1)); ?></p>
+			<p><?php printf(_x('%1$s Km.', 'ADB route length', 'shp_gantrisch_adb'), $helpers->formatAmount($routelength, 1)); ?></p>
 		</div>
 	</div>
 </div>
