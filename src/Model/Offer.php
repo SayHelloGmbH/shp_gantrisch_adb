@@ -188,7 +188,7 @@ class Offer
 		$offer = $this->getOffer($offer_id);
 
 		if (!$offer || !isset($offer->title) || empty($offer->title)) {
-			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
+			return null;
 		}
 
 		return strip_tags($offer->title);
