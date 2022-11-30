@@ -5,7 +5,9 @@
   font-size: 1.875rem;
   line-height: 1.2;
 }
-.wp-block-shp-gantrisch-adb-offer-documents .wp-block-shp-gantrisch-adb-offer-documents .c-message {
+.wp-block-shp-gantrisch-adb-offer-documents.has-text-color .c-message {
   color: inherit;
+}
+.wp-block-shp-gantrisch-adb-offer-documents.has-background .c-message {
   background-color: inherit;
 }

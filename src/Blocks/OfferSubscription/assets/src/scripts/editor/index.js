@@ -13,7 +13,9 @@ const classNameBase = getBlockDefaultClassName(block_name);
 
 registerBlockType(block_name, {
 	edit: ({ attributes, setAttributes }) => {
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps({
+			className: 'c-message c-message--info',
+		});
 		const { button_text, message, title_sub_at, title_sub_required } =
 			attributes;
 
