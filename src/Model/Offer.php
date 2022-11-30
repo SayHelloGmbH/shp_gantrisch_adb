@@ -14,6 +14,7 @@ class Offer
 	private $language = 'de';
 	private $cache = true;
 	private $single_page = false;
+	private $offers = [];
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -158,12 +159,21 @@ class Offer
 	public function getOffer($offer_id = null)
 	{
 
+
+		die($offer_id);
+
 		if (!$offer_id) {
 			$offer_id = $this->requestedOfferID();
 		}
 
+
 		if (!$offer_id) {
 			return null;
+		}
+
+		dump($offer_id, 1, 1);
+		if (isset($offers[$offer_id])) {
+			return $offers[$offer_id];
 		}
 
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
@@ -172,14 +182,15 @@ class Offer
 			return null;
 		}
 
-		return $api->model->get_offer($offer_id);
+		$offers[$offer_id] = $api->model->get_offer($offer_id);
+		return $offers[$offer_id];
 	}
 
-	public function getTitle(int $offer_id)
+	public function getTitle($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
-		if (!$offer instanceof stdClass || !isset($offer->title) || empty($offer->title)) {
+		if (!$offer || !isset($offer->title) || empty($offer->title)) {
 			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
 		}
 

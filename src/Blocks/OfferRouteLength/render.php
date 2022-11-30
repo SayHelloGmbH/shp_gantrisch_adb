@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Blocks\OfferRouteLength;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
 
@@ -23,7 +22,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = new OfferModel();
+$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
 $offer_id = $offer_model->requestedOfferID();
 

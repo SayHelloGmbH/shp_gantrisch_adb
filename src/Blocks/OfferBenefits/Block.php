@@ -3,13 +3,10 @@
 namespace SayHello\ShpGantrischAdb\Blocks\OfferBenefits;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
 {
-
-	private $model = null;
 
 	public function run()
 	{
@@ -25,18 +22,14 @@ class Block
 
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
-
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$offer_id = $this->model->requestedOfferID();
+		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+		$offer_id = $offer_model->requestedOfferID();
 
 		if (empty($offer_id)) {
 			return '';
 		}
 
-		$benefits = $this->model->getBenefits((int) $offer_id);
+		$benefits = $offer_model->getBenefits((int) $offer_id);
 
 		if (empty($benefits)) {
 			return '';

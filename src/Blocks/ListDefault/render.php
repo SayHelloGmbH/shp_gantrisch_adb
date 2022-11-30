@@ -13,7 +13,6 @@ namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $block_controller = new BlockController();
 $block_controller->extend($block);
@@ -22,7 +21,7 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = false; // Temporary hard-coding
 //$show_filter = (bool) get_field('adb_show_filter');
 
-$offer_model = new OfferModel();
+$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
 $category_ids = $block['data']['adb_categories'] ?? [];
 

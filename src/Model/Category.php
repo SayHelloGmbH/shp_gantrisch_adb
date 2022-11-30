@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 class Category
 {
@@ -22,7 +21,7 @@ class Category
 		$this->cache = false;
 		$this->date_format = get_option('date_format');
 
-		$this->offer_model = new OfferModel();
+		$this->offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 		$this->tables = $this->offer_model->getTables();
 		$this->language = $this->offer_model->getLanguage();
 	}
