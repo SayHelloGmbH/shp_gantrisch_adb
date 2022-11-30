@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "shp/gantrisch-adb-offer-map",
+	"title": "ADB Offer Map",
+	"category": "media",
+	"icon": "database",
+	"description": "The actual content will be loaded dynamically by passing an offer ID to the page on which this block has been placed.",
+	"keywords": ["offer", "angebot", "map"],
+	"textdomain": "shp_gantrisch_adb",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string",
+			"default": "Karte"
+		}
+	},
+	"supports": {
+		"align": false,
+		"html": false,
+		"multiple": false
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
+}
