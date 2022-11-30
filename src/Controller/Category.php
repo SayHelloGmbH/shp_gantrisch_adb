@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
-use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
 use WP_REST_Server;
 
 /**
@@ -27,8 +26,7 @@ class Category
 				return true;
 			},
 			'callback' => function () {
-				$model = new CategoryModel();
-				$categories = $model->getForSelect();
+				$categories = shp_gantrisch_adb_get_instance()->Model->Category->getForSelect();
 				return $categories;
 			}
 		]);

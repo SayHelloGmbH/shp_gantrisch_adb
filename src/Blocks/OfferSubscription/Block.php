@@ -2,15 +2,10 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSubscription;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
 {
-
-	private $model = null;
-
 	public function run()
 	{
 		add_action('init', [$this, 'register']);
@@ -26,17 +21,7 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$offer_id = $this->model->requestedOfferID();
-
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$data = $this->model->getSubscription((int) $offer_id, $attributes);
+		$data = shp_gantrisch_adb_get_instance()->Model->Offer->getSubscription($attributes);
 
 		if (!is_array($data)) {
 			return '';
@@ -44,8 +29,7 @@ class Block
 
 		ob_start();
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
 		<div class="<?php echo $block['shp']['class_names']; ?>">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
@@ -72,7 +56,7 @@ class Block
 
 				if (!empty($attributes['button_text'] ?? '') && !empty($data['link'] ?? '')) {
 					$link = null;
-					$title = $this->model->getTitle($offer_id);
+					$title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
 					if (is_wp_error($title)) {
 						$title = $title->get_error_message();

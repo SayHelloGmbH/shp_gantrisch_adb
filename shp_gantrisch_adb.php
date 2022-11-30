@@ -15,14 +15,20 @@
  * Update URI:        https://sayhello.ch/
  */
 
-/*
- * This lot auto-loads a class or trait just when you need it. You don't need to
- * use require, include or anything to get the class/trait files, as long
- * as they are stored in the correct folder and use the correct namespaces.
- *
- * See http://www.php-fig.org/psr/psr-4/ for an explanation of the file structure
- * and https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md for usage examples.
- */
+
+if (!function_exists('dump')) {
+	function dump($var, $exit = false)
+	{
+		echo '<pre>';
+		var_dump($var);
+		echo '</pre>';
+
+		if ($exit) {
+			exit;
+		}
+	}
+}
+
 spl_autoload_register(function ($class) {
 
 	// project-specific namespace prefix
@@ -58,3 +64,4 @@ function shp_gantrisch_adb_get_instance()
 }
 
 shp_gantrisch_adb_get_instance();
+require_once('vendor/parks_api/autoload.php');

@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Package\Rewrites as RewritesPackage;
 
 /**
@@ -16,7 +15,6 @@ class Offer
 {
 
 	private $query_var = 'adb_offer_id';
-	private $model = null;
 
 	public function run()
 	{
@@ -31,11 +29,7 @@ class Offer
 
 	public function isConfiguredSinglePage()
 	{
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$single_page_id = $this->model->getSinglePageID();
+		$single_page_id = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
 		return $single_page_id && get_the_ID() && get_the_ID() === $single_page_id;
 	}
 
@@ -51,11 +45,7 @@ class Offer
 	public function handleInvalidSingle()
 	{
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$offer_id = $this->model->requestedOfferID();
+		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
 		if (!$this->isConfiguredSinglePage() && $offer_id) {
 			header("HTTP/1.1 404 Not Found");
@@ -70,7 +60,7 @@ class Offer
 
 		if ($this->isConfiguredSinglePage() && $offer_id) {
 			// Is there a valid offer for the ID which has been passed in?
-			$offer = $this->model->getOffer((int) $offer_id);
+			$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer((int) $offer_id);
 			if (!$offer) {
 				header("HTTP/1.1 404 Not Found");
 				exit;
@@ -96,21 +86,19 @@ class Offer
 			return $post_title;
 		}
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
+		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
-		if ($post_id !== $this->model->getSinglePageID()) {
+		if ($post_id !== $offer_model->getSinglePageID()) {
 			return $post_title;
 		}
 
-		$offer_id = $this->model->requestedOfferID();
+		$offer_id = $offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $post_title;
 		}
 
-		$offer_title = $this->model->getTitle($offer_id);
+		$offer_title = $offer_model->getTitle($offer_id);
 
 		if (empty($offer_title) || is_wp_error($offer_title)) {
 			return $post_title;
@@ -122,11 +110,7 @@ class Offer
 	public function singleUrl(array $offer)
 	{
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$single_page = $this->model->getSinglePageID();
+		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
 
 		if (!$single_page) {
 			return '#';

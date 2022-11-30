@@ -11,6 +11,10 @@
 	"attributes": {
 		"align": {
 			"type": "string"
+		},
+		"title": {
+			"type": "string",
+			"default": "Veranstaltungsort"
 		}
 	},
 	"supports": {
