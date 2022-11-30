@@ -2,14 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Plugin;
 
-use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 class Yoast
 {
-	private $controller = null;
-	private $model = null;
-
 	public function run()
 	{
 		add_action('wpseo_title', [$this, 'seoTitle']);
@@ -19,23 +13,6 @@ class Yoast
 		add_action('wpseo_opengraph_show_publish_date', '__return_false');
 		add_filter('wpseo_json_ld_output', '__return_false');
 		//add_filter('wpseo_schema_graph', [$this, 'schemaGraph'], 11);
-	}
-
-	private function getId()
-	{
-		if (!$this->controller) {
-			$this->controller = new OfferController();
-		}
-
-		if (!$this->controller->isConfiguredSinglePage()) {
-			return null;
-		}
-
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		return (int) $this->model->requestedOfferID();
 	}
 
 	/**
@@ -51,15 +28,9 @@ class Yoast
 			return $seo_title;
 		}
 
-		$offer_id = $this->getId();
+		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
-		if (!$offer_id) {
-			return $seo_title;
-		}
-
-		$offer_title = $this->model->getTitle($offer_id);
-
-		if (is_wp_error($offer_title) || $offer_title === $seo_title) {
+		if (!$offer_title || $offer_title === $seo_title) {
 			return $seo_title;
 		}
 
@@ -82,13 +53,7 @@ class Yoast
 			return $seo_description;
 		}
 
-		$offer_id = $this->getId();
-
-		if (!$offer_id) {
-			return $seo_description;
-		}
-
-		$offer_excerpt = $this->model->getExcerpt((int) $offer_id);
+		$offer_excerpt = shp_gantrisch_adb_get_instance()->Model->Offer->getExcerpt();
 
 		if (!$offer_excerpt || !is_string($offer_excerpt)) {
 			return $seo_description;
@@ -112,7 +77,7 @@ class Yoast
 			return $seo_url;
 		}
 
-		$offer_id = $this->getId();
+		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $seo_url;

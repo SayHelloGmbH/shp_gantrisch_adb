@@ -2,14 +2,10 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSeason;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
 {
-
-	private $model = null;
 
 	public function run()
 	{
@@ -26,17 +22,7 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$offer_id = $this->model->requestedOfferID();
-
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$months = $this->model->getSeason((int) $offer_id);
+		$months = shp_gantrisch_adb_get_instance()->Model->Offer->getSeason();
 
 		if (empty($months) || !is_array($months)) {
 			return '';
@@ -44,8 +30,7 @@ class Block
 
 		ob_start();
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
 		<div class="<?php echo $block['shp']['class_names']; ?>">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">

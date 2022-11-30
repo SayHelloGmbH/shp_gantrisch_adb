@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
-use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DateTime;
 use ParksAPI;
 use stdClass;
@@ -14,6 +13,8 @@ class Offer
 	private $language = 'de';
 	private $cache = true;
 	private $single_page = false;
+	private $offers = [];
+	private $requested_id = null;
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -71,7 +72,7 @@ class Offer
 
 	private $date_format = 'Y/m/d';
 
-	public function __construct()
+	public function run()
 	{
 		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
 		$this->cache = false;
@@ -83,10 +84,6 @@ class Offer
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
 		}
-	}
-
-	public function run()
-	{
 	}
 
 	/**
@@ -121,20 +118,26 @@ class Offer
 
 	public function getSinglePageID()
 	{
-		return $this->single_page;
+		return (int) $this->single_page ?? null;
 	}
 
-	public function requestedOfferID()
+	public function getRequestedOfferID()
 	{
-		$controller = new OfferController();
-		$var_name = $controller->queryVarName();
+
+		if ($this->requested_id !== null) {
+			return $this->requested_id;
+		}
+
+		$var_name = shp_gantrisch_adb_get_instance()->Controller->Offer->queryVarName();
 		$var_value = get_query_var($var_name);
 
 		if (empty($var_value)) {
 			return null;
 		}
 
-		return preg_replace('/[^0-9]/', '', $var_value);
+		$this->requested_id = preg_replace('/[^0-9]/', '', $var_value);
+
+		return $this->requested_id;
 	}
 
 	/**
@@ -152,32 +155,46 @@ class Offer
 	 * The dataset will contain the localised data from
 	 * the i18n table.
 	 *
-	 * @param integer $offer_id
+	 * @param integer $offer_id Optional - if not defined, the model class will try and find the current order_id
 	 * @return mixed The database result.
 	 */
-	public function getOffer(int $offer_id)
+	public function getOffer($offer_id = null)
 	{
+
+		if (!$offer_id) {
+			$offer_id = $this->getRequestedOfferID();
+		}
+
+		if (!$offer_id) {
+			return null;
+		}
+
+		if (isset($this->offers[$offer_id])) {
+			return $this->offers[$offer_id];
+		}
+
 		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
 		if (!$api instanceof ParksAPI) {
 			return null;
 		}
 
-		return $api->model->get_offer($offer_id);
+		$this->offers[$offer_id] = $api->model->get_offer($offer_id);
+		return $this->offers[$offer_id];
 	}
 
-	public function getTitle(int $offer_id)
+	public function getTitle($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
-		if (!$offer instanceof stdClass || !isset($offer->title) || empty($offer->title)) {
-			return new WP_Error(404, _x('There is no localised title available for this entry', 'Fallback title', 'shp_gantrisch_adb'));
+		if (!$offer || !isset($offer->title) || empty($offer->title)) {
+			return null;
 		}
 
 		return strip_tags($offer->title);
 	}
 
-	public function getKeywords(int $offer_id)
+	public function getKeywords($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -193,7 +210,7 @@ class Offer
 		return array_map('strip_tags', $keywords);
 	}
 
-	public function getCategories(int $offer_id)
+	public function getCategories($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -240,7 +257,7 @@ class Offer
 	 * @param boolean $formatted Return format: raw, legible or integer
 	 * @return void
 	 */
-	public function getDates(int $offer_id, $format = 'raw')
+	public function getDates($offer_id = null, $format = 'raw')
 	{
 
 		$offer = $this->getOffer($offer_id);
@@ -280,7 +297,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getImages(int $offer_id)
+	public function getImages($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -297,7 +314,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getExcerpt(int $offer_id)
+	public function getExcerpt($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -314,7 +331,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getInfrastructure(int $offer_id)
+	public function getInfrastructure($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -331,7 +348,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getDescriptionLong(int $offer_id)
+	public function getDescriptionLong($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -348,7 +365,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getContact(int $offer_id)
+	public function getContact($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -368,7 +385,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getSeason(int $offer_id)
+	public function getSeason($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -410,7 +427,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getBenefits(int $offer_id)
+	public function getBenefits($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -427,7 +444,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return string
 	 */
-	public function getPrice(int $offer_id)
+	public function getPrice($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -444,7 +461,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return array
 	 */
-	public function getTarget(int $offer_id)
+	public function getTarget($offer_id = null)
 	{
 
 		$offer = $this->getOffer($offer_id);
@@ -462,7 +479,7 @@ class Offer
 	 * @param integer $offer_id
 	 * @return mixed
 	 */
-	public function getSubscription(int $offer_id)
+	public function getSubscription($offer_id = null)
 	{
 		global $wpdb;
 		$sql_subscription = $wpdb->prepare("SELECT * FROM {$this->tables['subscription']} WHERE offer_id = %s LIMIT 1", $offer_id);
@@ -492,25 +509,18 @@ class Offer
 		];
 	}
 
-	public function getTransportStop(int $offer_id, string $start_stop = 'start')
+	public function getTransportStop(string $start_stop = 'start')
 	{
-		$transient_key = "shp_gantrisch_adb_offer_startstop_{$offer_id}";
-		$results = get_transient($transient_key);
 
-		if (empty($results) || !$this->cache) {
-			global $wpdb;
-			$sql = $wpdb->prepare("SELECT public_transport_start, public_transport_stop FROM {$this->tables['activity']} WHERE offer_id = %s LIMIT 1", $offer_id);
-			$results = $wpdb->get_results($sql, ARRAY_A);
-			if (!empty($results)) {
-				set_transient($transient_key, $results, $this->transient_lives['single']);
-			}
+		$offer = $this->getOffer();
+
+		if (!$offer) {
+			return '';
 		}
 
-		if (empty($results)) {
-			return false;
-		}
+		$property_name = "public_transport_{$start_stop}";
 
-		return $results[0]["public_transport_{$start_stop}"] ?? '';
+		return $offer->{$property_name} ?? '';
 	}
 
 	public function getAll($category_ids = [], $keywords = [])
@@ -608,7 +618,7 @@ class Offer
 		return $keywords;
 	}
 
-	public function getTermin(int $offer_id)
+	public function getTermin($offer_id = null)
 	{
 
 		if (!function_exists('parks_mysql2date') || !function_exists('parks_show_date') || !function_exists('parks_mysql2form')) {
@@ -634,7 +644,7 @@ class Offer
 		]);
 	}
 
-	public function getPlace(int $offer_id)
+	public function getPlace($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -645,7 +655,7 @@ class Offer
 		return $offer->location_details ?? '';
 	}
 
-	public function getOpeningTimes(int $offer_id)
+	public function getOpeningTimes($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);
 
@@ -656,7 +666,7 @@ class Offer
 		return $offer->opening_hours ?? '';
 	}
 
-	public function getTimeRequired(int $offer_id)
+	public function getTimeRequired($offer_id = null)
 	{
 
 		$offer = $this->getOffer($offer_id);

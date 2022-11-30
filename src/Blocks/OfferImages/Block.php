@@ -2,14 +2,10 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferImages;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
 {
-
-	private $model = null;
 
 	public function run()
 	{
@@ -26,31 +22,20 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		if (!$this->model) {
-			$this->model = new OfferModel();
-		}
-
-		$offer_id = $this->model->requestedOfferID();
-
-		if (empty($offer_id)) {
-			return '';
-		}
-
-		$offer_images = $this->model->getImages((int) $offer_id);
+		$offer_images = shp_gantrisch_adb_get_instance()->Model->Offer->getImages();
 
 		if (empty($offer_images)) {
 			return '';
 		}
 
 		$image_size = $attributes['image_size'] ?? 'small';
-		$offer_title = $this->model->getTitle((int) $offer_id);
+		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
-		if (is_wp_error($offer_title)) {
-			$offer_title = $offer_title->get_error_message();
+		if (!$offer_title) {
+			$offer_title = '';
 		}
 
-		$block_controller = new BlockController();
-		$block_controller->extend($block);
+		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 		// Use of viewScript in block.json allows us to enqueue the script as we want to.
 		// Here, we want to enqueue it in the footer so that we can do DOM manipulation

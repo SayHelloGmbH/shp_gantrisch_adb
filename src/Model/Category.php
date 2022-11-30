@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 class Category
 {
@@ -16,19 +15,13 @@ class Category
 	 */
 	private $tables = [];
 
-	public function __construct()
+	public function run()
 	{
 		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
 		$this->cache = false;
 		$this->date_format = get_option('date_format');
-
-		$this->offer_model = new OfferModel();
-		$this->tables = $this->offer_model->getTables();
-		$this->language = $this->offer_model->getLanguage();
-	}
-
-	public function run()
-	{
+		$this->tables = shp_gantrisch_adb_get_instance()->Model->Offer->getTables();
+		$this->language = shp_gantrisch_adb_get_instance()->Model->Offer->getLanguage();
 	}
 
 	private function getAllHierarchical()
