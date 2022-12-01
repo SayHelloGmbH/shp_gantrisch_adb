@@ -120,6 +120,7 @@ class Plugin
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
 				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferRouteLength\Block::class,
+				Blocks\OfferSameCategory\Block::class,
 				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
@@ -130,9 +131,15 @@ class Plugin
 			]
 		);
 
-
+		add_action('init', [$this, 'autoloadAPI']);
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
 		add_action('after_setup_theme', [$this, 'themeSupports']);
+	}
+
+	public function autoloadAPI()
+	{
+		$dir = dirname(shp_gantrisch_adb_get_instance()->file);
+		require_once("{$dir}/vendor/parks_api/autoload.php");
 	}
 
 	public function activation()

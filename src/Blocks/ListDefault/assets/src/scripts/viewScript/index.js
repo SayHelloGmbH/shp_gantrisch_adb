@@ -1,4 +1,4 @@
-import 'jquery-match-height';
+// jquery-match-height is loaded as one of the main scripts as it's used in several places
 
 // START polyfill
 
@@ -78,7 +78,10 @@ blocks.forEach((block) => {
 
 	const button_wrapper = document.createElement('div');
 
-	button_wrapper.classList.add(`${classNameBase}__loadbutton`);
+	button_wrapper.classList.add(
+		`${classNameBase}__loadbutton`,
+		`c-adb-list__loadbutton`
+	);
 
 	if (!!shp_gantrisch_adb_block_list_default) {
 		const button = document.createElement('button');

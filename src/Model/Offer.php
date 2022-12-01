@@ -78,7 +78,7 @@ class Offer
 		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
-		$this->single_page = get_field('shp_gantrisch_adb_single_page', 'options');
+		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
@@ -214,8 +214,8 @@ class Offer
 	{
 		$offer = $this->getOffer($offer_id);
 
-		if (!$offer instanceof stdClass) {
-			return [];
+		if (!$offer) {
+			return null;
 		}
 
 		$results = $offer->categories ?? [];
@@ -241,11 +241,11 @@ class Offer
 			}
 		}
 
-		foreach ($categories as $key => $category) {
-			if (empty($category['categories'])) {
-				unset($categories[$key]);
-			}
-		}
+		// foreach ($categories as $key => $category) {
+		// 	if (empty($category['categories'])) {
+		// 		unset($categories[$key]);
+		// 	}
+		// }
 
 		return $categories;
 	}
@@ -253,16 +253,23 @@ class Offer
 	/**
 	 * Get the from and to dates for a specific offer.
 	 *
-	 * @param integer $offer_id
+	 * @param mixed $offer
 	 * @param boolean $formatted Return format: raw, legible or integer
 	 * @return void
 	 */
-	public function getDates($offer_id = null, $format = 'raw')
+	public function getDates($offer = null, $format = 'raw')
 	{
 
-		$offer = $this->getOffer($offer_id);
+		if (is_int($offer)) {
+			$offer = $this->getOffer($offer);
+		}
 
-		if (!$offer instanceof stdClass) {
+		if (is_array($offer)) {
+			// Convert to stdClass
+			$offer = json_decode(json_encode($offer));
+		}
+
+		if (!$offer instanceof stdClass || empty($offer)) {
 			return [];
 		}
 
@@ -523,7 +530,18 @@ class Offer
 		return $offer->{$property_name} ?? '';
 	}
 
-	public function getAll($category_ids = [], $keywords = [])
+	/**
+	 * Get all offers. Random sort, then pull tips and
+	 * park partners to the top of the list.
+	 * If $number_required is passed, then splice the
+	 * result set and return only those offers.
+	 *
+	 * @param array $category_ids
+	 * @param array $keywords
+	 * @param integer $number_required
+	 * @return array
+	 */
+	public function getAll($category_ids = [], $keywords = [], $number_required = 0)
 	{
 
 		if (!is_array($category_ids)) {
@@ -548,8 +566,6 @@ class Offer
 				$offers = $api->_get_offers(NULL, $category_ids);
 			}
 
-
-
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
 				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);
 			}
@@ -565,7 +581,59 @@ class Offer
 			return [];
 		}
 
-		return $offers;
+		$offers_sorted = [];
+
+		// Pull hints to the top of the list
+		foreach ($offers as $offer) {
+			if ($offer->is_hint) {
+				$offers_sorted["offer{$offer->offer_id}"] = $offer;
+			}
+		}
+
+		$offers_with_dates = [];
+		foreach ($offers as $offer) {
+			$timestamps = $this->getDates($offer, 'integer');
+			if ((int) $timestamps['date_from']) {
+				$offers_with_dates["ts{$timestamps['date_from']}"] = $offer;
+			}
+		}
+
+		if (!empty($offers_with_dates)) {
+			ksort($offers_with_dates);
+			foreach (array_values($offers_with_dates) as $offer_with_date) {
+				if (!array_key_exists("offer{$offer_with_date->offer_id}", $offers_sorted)) {
+					$offers_sorted["offer{$offer_with_date->offer_id}"] = $offer_with_date;
+				}
+			}
+		}
+
+		unset($offers_with_dates);
+
+		// Fill the array with the remaining entries
+		$the_rest = [];
+		foreach ($offers as $offer) {
+			if (!array_key_exists("offer{$offer->offer_id}", $the_rest)) {
+				$the_rest["offer{$offer->offer_id}"] = $offer;
+			}
+		}
+
+		if (!empty($the_rest)) {
+			shuffle($the_rest);
+			foreach ($the_rest as $the_rest_entry) {
+				if (!array_key_exists("offer{$the_rest_entry->offer_id}", $offers_sorted)) {
+					$offers_sorted["offer{$the_rest_entry->offer_id}"] = $the_rest_entry;
+				}
+			}
+		}
+
+		// Now trim down the array if necessary
+		if ($number_required > 0) {
+			if (count($offers_sorted) > $number_required) {
+				$offers_sorted = array_splice($offers_sorted, 0, $number_required);
+			}
+		}
+
+		return $offers_sorted;
 	}
 
 	/**

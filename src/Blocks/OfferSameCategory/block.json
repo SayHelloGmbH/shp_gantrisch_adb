@@ -1,0 +1,34 @@
+{
+	"name": "shp/adb-offer-same-category",
+	"title": "ADB More Offers",
+	"description": "List view of all offers in the same category as the current single offer.",
+	"category": "media",
+	"icon": "database",
+	"apiVersion": 2,
+	"keywords": ["offer", "angebot", "list", "more"],
+	"supports": {
+		"align": true,
+		"color": {
+			"text": false,
+			"background": true,
+			"link": false
+		}
+	},
+	"attributes": {
+		"button_text": {
+			"type": "string",
+			"default": "Entdecken"
+		},
+		"title": {
+			"type": "string",
+			"default": "Weitere Angebote"
+		}
+	},
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/view.js",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-offer-same-category"
+	],
+	"render": "file:./render.php"
+}
