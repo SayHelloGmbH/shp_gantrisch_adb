@@ -1,4 +1,4 @@
-import 'jquery-match-height';
+// jquery-match-height is loaded as one of the main scripts as it's used in several places
 
 // START polyfill
 
