@@ -39,7 +39,7 @@ if (empty($category_ids)) {
 }
 
 // Get all offers. The method pre-sorts the results.
-$offers = $offer_model->getAll($category_ids, null, 4);
+$offers = $offer_model->getAll($category_ids, null, 4, true);
 
 if (empty($offers)) {
 	return '';
