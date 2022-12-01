@@ -523,7 +523,18 @@ class Offer
 		return $offer->{$property_name} ?? '';
 	}
 
-	public function getAll($category_ids = [], $keywords = [])
+	/**
+	 * Get all offers. Random sort, then pull tips and
+	 * park partners to the top of the list.
+	 * If $number_required is passed, then splice the
+	 * result set and return only those offers.
+	 *
+	 * @param array $category_ids
+	 * @param array $keywords
+	 * @param integer $number_required
+	 * @return array
+	 */
+	public function getAll($category_ids = [], $keywords = [], $number_required = 0)
 	{
 
 		if (!is_array($category_ids)) {
@@ -548,8 +559,6 @@ class Offer
 				$offers = $api->_get_offers(NULL, $category_ids);
 			}
 
-
-
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
 				set_transient($transient_key, $offers, $this->transient_lives['all_offers']);
 			}
@@ -565,7 +574,42 @@ class Offer
 			return [];
 		}
 
-		return $offers;
+		// Random order first
+		shuffle($offers);
+
+		$offers_sorted = [];
+
+		// Pull hints to the top of the list
+		foreach ($offers as $offer) {
+			if ($offer->is_hint) {
+				$offers_sorted[] = $offer;
+			}
+		}
+
+		// Then pull park partners to the top of the list
+		foreach ($offers as $offer) {
+			if ($offer->is_park_partner && !$offer->is_hint) {
+				$offers_sorted[] = $offer;
+			}
+		}
+
+		// Fill the array with the remaining entries
+		if (count($offers_sorted) < $number_required) {
+			foreach ($offers as $offer) {
+				if (!$offer->is_park_partner && !$offer->is_hint) {
+					$offers_sorted[] = $offer;
+				}
+			}
+		}
+
+		// Now trim down the array if necessary
+		if ($number_required > 0) {
+			if (count($offers_sorted) > $number_required) {
+				$offers_sorted = array_splice($offers_sorted, 0, $number_required);
+			}
+		}
+
+		return $offers_sorted;
 	}
 
 	/**

@@ -57,9 +57,6 @@ if (empty($offers)) {
 
 $offer_controller = new OfferController();
 
-// Random order as requested by client
-shuffle($offers);
-
 $load_more_text = $block['data']['load_more_text'] ?? '';
 if (empty($load_more_text)) {
 	$load_more_text = _x('Load more', 'List block default button text', 'shp_gantrisch_adb');
