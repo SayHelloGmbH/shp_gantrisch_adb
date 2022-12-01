@@ -226,6 +226,7 @@ class Offer
 
 		$categories = [];
 
+		// Create all top-level categories
 		foreach ($results as $result) {
 			$result = (array) $result;
 			if (!array_key_exists("category{$result['category_id']}", $categories)) {
@@ -234,13 +235,20 @@ class Offer
 			}
 		}
 
+		// Create all second-level categories
 		foreach ($results as $result) {
 			$result = (array) $result;
 			if (isset($categories["category{$result['parent_id']}"])) {
 				$categories["category{$result['parent_id']}"]['categories'][] = (array) $result;
+
+				// Remove second-level categories from top level
+				if (isset($categories["category{$result['category_id']}"])) {
+					unset($categories["category{$result['category_id']}"]);
+				}
 			}
 		}
 
+		// Don't know what this is for… 1.12.2022
 		// foreach ($categories as $key => $category) {
 		// 	if (empty($category['categories'])) {
 		// 		unset($categories[$key]);

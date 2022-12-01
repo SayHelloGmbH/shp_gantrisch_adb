@@ -121,7 +121,6 @@ class Plugin
 				// Blocks\OfferSeason\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferRouteLength\Block::class,
 				Blocks\OfferSameCategory\Block::class,
-				Blocks\OfferSingle\Block::class,
 				Blocks\OfferSubscription\Block::class,
 				// Blocks\OfferTarget\Block::class, // In details accordion 17.11.2022
 				Blocks\OfferTransportStop\Block::class,
