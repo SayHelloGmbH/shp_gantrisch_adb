@@ -131,9 +131,15 @@ class Plugin
 			]
 		);
 
-
+		add_action('init', [$this, 'autoloadAPI']);
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
 		add_action('after_setup_theme', [$this, 'themeSupports']);
+	}
+
+	public function autoloadAPI()
+	{
+		$dir = dirname(shp_gantrisch_adb_get_instance()->file);
+		require_once("{$dir}/vendor/parks_api/autoload.php");
 	}
 
 	public function activation()
