@@ -38,5 +38,7 @@ if (empty($institution)) {
 		<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo strip_tags($attributes['title']); ?></h2>
 	<?php } ?>
 
-	<div class="<?php echo $block['shp']['classNameBase']; ?>__content"><?php echo wpautop($institution); ?></div>
+	<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
+		<?php echo wpautop(make_clickable($institution)); ?>
+	</div>
 </div>
