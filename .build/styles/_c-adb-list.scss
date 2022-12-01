@@ -215,6 +215,10 @@
 			}
 		}
 
+		&__inner {
+			--stack-size: 60px;
+		}
+
 		&__loadbutton {
 			grid-column: 1/-1;
 			display: flex;

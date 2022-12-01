@@ -9,7 +9,7 @@ const { name: block_name } = block_json;
 registerBlockType(block_name, {
 	edit: ({ attributes, setAttributes }) => {
 		const blockProps = useBlockProps();
-		const { title } = attributes;
+		const { button_text, title } = attributes;
 
 		return (
 			<>
@@ -23,6 +23,17 @@ registerBlockType(block_name, {
 							)}
 							value={title}
 							onChange={(title) => setAttributes({ title })}
+						/>
+						<TextControl
+							label={_x(
+								'Button text',
+								'TextControl label',
+								'shp_gantrisch_adb'
+							)}
+							value={button_text}
+							onChange={(button_text) =>
+								setAttributes({ button_text })
+							}
 						/>
 					</PanelBody>
 				</InspectorControls>

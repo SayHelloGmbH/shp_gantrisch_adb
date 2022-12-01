@@ -15,6 +15,10 @@
 		}
 	},
 	"attributes": {
+		"button_text": {
+			"type": "string",
+			"default": "Entdecken"
+		},
 		"title": {
 			"type": "string",
 			"default": "Weitere Angebote"

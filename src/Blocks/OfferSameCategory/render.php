@@ -51,78 +51,87 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?> c-adb-list">
-	<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
+	<div class="<?php echo $classNameBase; ?>__inner c-adb-list__inner h-stack">
+
 		<?php
+		$title = esc_html($attributes['title'] ?? '');
+		if (!empty($title)) { ?>
+			<h2 class="<?php echo $classNameBase; ?>__title c-adb-list__title"><?php echo $title; ?></h2>
+		<?php } ?>
 
-		foreach ($offers as $offer) {
+		<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
+			<?php
 
-			$offer = (array) $offer;
+			foreach ($offers as $offer) {
 
-			$button_text = esc_html($block['data']['button_text'] ?? '');
+				$offer = (array) $offer;
 
-			$images = $offer_model->getImages($offer['offer_id']);
-			$selected_size = $block['data']['image_size'] ?? 'small';
+				$images = $offer_model->getImages($offer['offer_id']);
+				$selected_size = $attributes['image_size'] ?? 'large';
 
-			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
-				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="lazy"></figure>',
-					$classNameBase,
-					$images[0]->{$selected_size},
-					esc_html($offer['title'])
-				);
-			} else {
-				$image_html = sprintf(
-					'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
-					$classNameBase
-				);
-			}
+				if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
+					$image_html = sprintf(
+						'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="lazy"></figure>',
+						$classNameBase,
+						$images[0]->{$selected_size},
+						esc_html($offer['title'])
+					);
+				} else {
+					$image_html = sprintf(
+						'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
+						$classNameBase
+					);
+				}
 
-			$is_hint = (bool) ($offer['is_hint'] ?? false);
-			$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
+				$is_hint = (bool) ($offer['is_hint'] ?? false);
+				$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
 
-			$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
-			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
+				$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
+				$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
 
-		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?>">
+			?>
+				<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?>">
 
-				<?php if ($is_hint) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
-						<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
-					</div>
-				<?php } else if ($park_partner) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
-						<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
-					</div>
-				<?php } ?>
-
-				<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
-
-					<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
-						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
-					</div>
-
-					<?php if (!empty($offer['institution_location'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
-							<p><?php echo esc_html($offer['institution_location']); ?></p>
+					<?php if ($is_hint) { ?>
+						<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
+							<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
 						</div>
-					<?php
-					}
-					?>
-				</div>
+					<?php } else if ($park_partner) { ?>
+						<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
+							<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
+						</div>
+					<?php } ?>
 
-				<?php echo $image_html; ?>
+					<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
 
-				<?php if (!empty($button_text)) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper c-adb-list__entry-buttonwrapper">
-						<a class="<?php echo $classNameBase; ?>__entry-button c-adb-list__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
+						<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
+							<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
+						</div>
+
+						<?php if (!empty($offer['institution_location'])) { ?>
+							<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
+								<p><?php echo esc_html($offer['institution_location']); ?></p>
+							</div>
+						<?php
+						}
+						?>
 					</div>
-				<?php } ?>
 
-				<a class="<?php echo $classNameBase; ?>__entry-floodlink c-adb-list__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
-			</li>
-		<?php
-		}
-		?>
-	</ul>
+					<?php echo $image_html; ?>
+
+					<?php
+					$button_text = esc_html($attributes['button_text'] ?? '');
+					if (!empty($button_text)) { ?>
+						<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper c-adb-list__entry-buttonwrapper">
+							<a class="<?php echo $classNameBase; ?>__entry-button c-adb-list__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
+						</div>
+					<?php } ?>
+
+					<a class="<?php echo $classNameBase; ?>__entry-floodlink c-adb-list__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
+				</li>
+			<?php
+			}
+			?>
+		</ul>
+	</div>
 </div>
