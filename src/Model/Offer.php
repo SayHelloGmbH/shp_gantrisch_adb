@@ -539,9 +539,10 @@ class Offer
 	 * @param array $category_ids
 	 * @param array $keywords
 	 * @param integer $number_required
+	 * @param boolean $exclude_current
 	 * @return array
 	 */
-	public function getAll($category_ids = [], $keywords = [], $number_required = 0)
+	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false)
 	{
 
 		if (!is_array($category_ids)) {
@@ -579,6 +580,18 @@ class Offer
 
 		if (empty($offers)) {
 			return [];
+		}
+
+		// Don't include the current post in a list -- e.g. on a single view
+		if ($exclude_current) {
+			$current_id = (int) $this->getRequestedOfferID();
+			if ($current_id) {
+				foreach ($offers as $key => $offer) {
+					if ((int) $offer->offer_id === $current_id) {
+						unset($offers[$key]);
+					}
+				}
+			}
 		}
 
 		$offers_sorted = [];
