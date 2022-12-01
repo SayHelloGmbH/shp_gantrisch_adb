@@ -253,16 +253,23 @@ class Offer
 	/**
 	 * Get the from and to dates for a specific offer.
 	 *
-	 * @param integer $offer_id
+	 * @param mixed $offer
 	 * @param boolean $formatted Return format: raw, legible or integer
 	 * @return void
 	 */
-	public function getDates($offer_id = null, $format = 'raw')
+	public function getDates($offer = null, $format = 'raw')
 	{
 
-		$offer = $this->getOffer($offer_id);
+		if (is_int($offer)) {
+			$offer = $this->getOffer($offer);
+		}
 
-		if (!$offer instanceof stdClass) {
+		if (is_array($offer)) {
+			// Convert to stdClass
+			$offer = json_decode(json_encode($offer));
+		}
+
+		if (!$offer instanceof stdClass || empty($offer)) {
 			return [];
 		}
 
@@ -574,30 +581,47 @@ class Offer
 			return [];
 		}
 
-		// Random order first
-		shuffle($offers);
-
 		$offers_sorted = [];
 
 		// Pull hints to the top of the list
 		foreach ($offers as $offer) {
 			if ($offer->is_hint) {
-				$offers_sorted[] = $offer;
+				$offers_sorted["offer{$offer->offer_id}"] = $offer;
 			}
 		}
 
-		// Then pull park partners to the top of the list
+		$offers_with_dates = [];
 		foreach ($offers as $offer) {
-			if ($offer->is_park_partner && !$offer->is_hint) {
-				$offers_sorted[] = $offer;
+			$timestamps = $this->getDates($offer, 'integer');
+			if ((int) $timestamps['date_from']) {
+				$offers_with_dates["ts{$timestamps['date_from']}"] = $offer;
 			}
 		}
+
+		if (!empty($offers_with_dates)) {
+			ksort($offers_with_dates);
+			foreach (array_values($offers_with_dates) as $offer_with_date) {
+				if (!array_key_exists("offer{$offer_with_date->offer_id}", $offers_sorted)) {
+					$offers_sorted["offer{$offer_with_date->offer_id}"] = $offer_with_date;
+				}
+			}
+		}
+
+		unset($offers_with_dates);
 
 		// Fill the array with the remaining entries
-		if (count($offers_sorted) < $number_required) {
-			foreach ($offers as $offer) {
-				if (!$offer->is_park_partner && !$offer->is_hint) {
-					$offers_sorted[] = $offer;
+		$the_rest = [];
+		foreach ($offers as $offer) {
+			if (!array_key_exists("offer{$offer->offer_id}", $the_rest)) {
+				$the_rest["offer{$offer->offer_id}"] = $offer;
+			}
+		}
+
+		if (!empty($the_rest)) {
+			shuffle($the_rest);
+			foreach ($the_rest as $the_rest_entry) {
+				if (!array_key_exists("offer{$the_rest_entry->offer_id}", $offers_sorted)) {
+					$offers_sorted["offer{$the_rest_entry->offer_id}"] = $the_rest_entry;
 				}
 			}
 		}

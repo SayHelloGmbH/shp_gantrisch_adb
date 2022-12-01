@@ -153,9 +153,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
 							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
-					<?php
-					}
-					?>
+					<?php } ?>
 				</div>
 
 				<?php echo $image_html; ?>
