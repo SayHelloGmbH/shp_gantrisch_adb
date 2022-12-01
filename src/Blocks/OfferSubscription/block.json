@@ -42,5 +42,6 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:./assets/dist/scripts/editor.js"
+	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"render": "file:./render.php"
 }

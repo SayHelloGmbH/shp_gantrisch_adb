@@ -488,31 +488,19 @@ class Offer
 	 */
 	public function getSubscription($offer_id = null)
 	{
-		global $wpdb;
-		$sql_subscription = $wpdb->prepare("SELECT * FROM {$this->tables['subscription']} WHERE offer_id = %s LIMIT 1", $offer_id);
-		$results_subscription = $wpdb->get_results($sql_subscription);
 
-		if (empty($results_subscription) || empty(array_filter($results_subscription))) {
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer) {
 			return null;
 		}
 
-		$data = $results_subscription[0];
-
-		$data->subscription_details = '';
-
-		$sql_details = $wpdb->prepare("SELECT subscription_details FROM {$this->tables['subscription_i18n']} WHERE offer_id = %s AND language = %s AND subscription_details != '' LIMIT 1", $offer_id, $this->getLanguage());
-		$results_details = $wpdb->get_results($sql_details);
-
-		if (!empty($results_details)) {
-			$data->subscription_details = $results_details[0]->subscription_details;
-		}
-
 		return [
-			'contact' => $data->subscription_contact ?? '',
-			'details' => $data->subscription_details ?? '',
-			'link' => $data->subscription_link ?? false,
-			'mandatory' => $data->subscription_mandatory ?? false,
-			'enabled' => $data->online_subscription_enabled ?? false,
+			'subscription_contact' => $offer->subscription_contact ?? '',
+			'subscription_details' => $offer->subscription_details ?? '',
+			'subscription_link' => $offer->subscription_link ?? false,
+			'subscription_mandatory' => $offer->subscription_mandatory ?? false,
+			'online_subscription_enabled' => $offer->online_subscription_enabled ?? false,
 		];
 	}
 
