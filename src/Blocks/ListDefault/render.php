@@ -2,6 +2,7 @@
 
 /**
  * ADB List Default block render template
+ * ACF block, so following data available
  *
  * @param   array $block The block settings and attributes.
  * @param   string $content The block inner HTML (empty).

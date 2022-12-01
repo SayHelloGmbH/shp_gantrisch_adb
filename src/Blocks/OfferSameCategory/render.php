@@ -4,7 +4,7 @@ namespace SayHello\ShpGantrischAdb\Blocks\OfferSameCategory;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
-if ($is_preview === true) {
+if (shp_gantrisch_adb_get_instance()->Package->Gutenberg->isContextEdit() === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--info">

@@ -14,6 +14,12 @@
 			"link": false
 		}
 	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Weitere Angebote"
+		}
+	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"viewScript": "file:./assets/dist/scripts/view.js",
 	"style": [

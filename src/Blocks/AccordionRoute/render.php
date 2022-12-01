@@ -144,7 +144,7 @@ if ((int)$altitude_differential > 0) {
 	ob_end_clean();
 }
 
-$time_required = $offer_model->getTimeRequired((int) $offer_id);
+$time_required = $offer_model->getTimeRequired();
 
 if (!empty($time_required)) {
 	ob_start();
