@@ -53,6 +53,7 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 <div class="<?php echo $block['shp']['class_names']; ?> c-adb-list">
 	<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
 		<?php
+
 		foreach ($offers as $offer) {
 
 			$offer = (array) $offer;
@@ -76,13 +77,21 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 				);
 			}
 
-			$park_partner = (bool) ($offer['is_park_partner'] ?? false);
-			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
-		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class; ?>">
+			$is_hint = (bool) ($offer['is_hint'] ?? false);
+			$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
 
-				<?php if ($park_partner) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel">
+			$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
+			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
+
+		?>
+			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?>">
+
+				<?php if ($is_hint) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
+						<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } else if ($park_partner) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
 						<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
 					</div>
 				<?php } ?>

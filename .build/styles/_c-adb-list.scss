@@ -25,8 +25,10 @@
 	--block--entry-header-transition: all 300ms ease;
 	--block--entry-title-weight: 700;
 
-	--block--entry-parkpartner-font-size: 16px;
-	--block--entry-parkpartner-line-height: calc(26 / 16);
+	--block--entry-postit-font-size: 16px;
+	--block--entry-postit-line-height: calc(26 / 16);
+
+	--block--entry-hint-background-color: var(--e-global-color-accent);
 	--block--entry-parkpartner-background-color: var(
 		--wp--preset--color--softgrey
 	);
@@ -58,164 +60,178 @@
 	padding: var(--block--padding-top) var(--block--padding-right)
 		var(--block--padding-bottom) var(--block--padding-left);
 
-	&__entry {
-		position: relative;
-		hyphens: auto;
-		word-break: break-word;
-		background-color: var(--block--entry-background);
-		padding-left: var(--block--entry-padding-left);
-		transition: all 300ms ease;
+	.c-adb-list {
+		&__entry {
+			position: relative;
+			hyphens: auto;
+			word-break: break-word;
+			background-color: var(--block--entry-background);
+			padding-left: var(--block--entry-padding-left);
+			transition: all 300ms ease;
 
-		&.is--hidden {
-			body.page & {
-				display: none;
-				max-height: 0;
-				overflow: hidden;
+			&.is--hidden {
+				body.page & {
+					display: none;
+					max-height: 0;
+					overflow: hidden;
+				}
 			}
-		}
-
-		> * {
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-
-		&-button {
-			display: inline-block;
-			text-decoration: none !important;
-			padding: var(--block--entry-button-padding);
-			color: var(--block--entry-button-color) !important;
-			background-color: var(--block--entry-button-background) !important;
-			font-size: var(--block--entry-button-size) !important;
-			line-height: var(--block--entry-button-line-height) !important;
-			font-weight: var(--block--entry-button-weight) !important;
-		}
-
-		&-buttonwrapper {
-			margin-top: 0;
-			text-align: right;
-		}
-
-		&-figure {
-			margin-left: 0;
-			margin-right: 0;
-			height: 0;
-			padding-bottom: percentage(calc(2 / 3));
-			overflow: hidden;
-
-			@supports (aspect-ratio: 3/2) {
-				height: auto;
-				padding-bottom: 0;
-				aspect-ratio: 3/2;
-			}
-
-			&--empty {
-				background-color: rgba(0, 0, 0, 0.1);
-			}
-		}
-
-		&-floodlink {
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
-			z-index: 1;
-			text-indent: -999rem;
-			font-size: 0;
-		}
-
-		&-header {
-			padding: var(--block--entry-header-padding);
-			transition: var(--block--entry-header-transition);
 
 			> * {
 				margin-top: 0;
 				margin-bottom: 0;
+			}
 
-				& + * {
-					margin-top: var(--block--entry-header-sibling-offset);
+			&-button {
+				display: inline-block;
+				text-decoration: none !important;
+				padding: var(--block--entry-button-padding);
+				color: var(--block--entry-button-color) !important;
+				background-color: var(
+					--block--entry-button-background
+				) !important;
+				font-size: var(--block--entry-button-size) !important;
+				line-height: var(--block--entry-button-line-height) !important;
+				font-weight: var(--block--entry-button-weight) !important;
+			}
+
+			&-buttonwrapper {
+				margin-top: 0;
+				text-align: right;
+			}
+
+			&-figure {
+				margin-left: 0;
+				margin-right: 0;
+				height: 0;
+				padding-bottom: percentage(calc(2 / 3));
+				overflow: hidden;
+
+				@supports (aspect-ratio: 3/2) {
+					height: auto;
+					padding-bottom: 0;
+					aspect-ratio: 3/2;
+				}
+
+				&--empty {
+					background-color: rgba(0, 0, 0, 0.1);
+				}
+			}
+
+			&-floodlink {
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				z-index: 1;
+				text-indent: -999rem;
+				font-size: 0;
+			}
+
+			&-header {
+				padding: var(--block--entry-header-padding);
+				transition: var(--block--entry-header-transition);
+
+				> * {
+					margin-top: 0;
+					margin-bottom: 0;
+
+					& + * {
+						margin-top: var(--block--entry-header-sibling-offset);
+					}
+				}
+			}
+
+			&-image {
+				@supports (aspect-ratio: 3/2) {
+					object-fit: cover;
+					width: 100%;
+					height: 100% !important;
+				}
+			}
+
+			&-location {
+				> * {
+					margin-top: 0;
+					margin-bottom: 0;
+				}
+
+				font-size: var(--block--entry-location-size);
+				line-height: var(--block--entry-location-line-height);
+				font-weight: var(--block--entry-location-weight);
+				color: var(--block--entry-location-color);
+			}
+
+			&-postit {
+				display: inline-block;
+				position: absolute;
+				top: 0;
+				transform: translateY(-50%);
+				padding: 0.25em 0.5em;
+				font-weight: 500;
+				transform: translateY(-50%);
+				pointer-events: none;
+				font-size: var(--block--entry-postit-font-size);
+				line-height: var(--block--entry-postit-line-height);
+			}
+
+			&-partnerlabel {
+				background-color: var(
+					--block--entry-parkpartner-background-color
+				);
+			}
+
+			&-hintlabel {
+				background-color: var(--block--entry-hint-background-color);
+			}
+
+			&-title {
+				font-size: var(--block--entry-title-size);
+				line-height: var(--block--entry-title-line-height);
+				font-weight: var(--block--entry-title-weight);
+
+				a {
+					text-decoration: none !important;
+					color: currentColor !important;
+					font-weight: inherit !important;
+					font-size: 1em;
 				}
 			}
 		}
 
-		&-image {
-			@supports (aspect-ratio: 3/2) {
-				object-fit: cover;
-				width: 100%;
-				height: 100% !important;
+		&__entries {
+			list-style: none;
+			display: grid;
+			gap: var(--block--entries-column-gap) var(--block--entries-row-gap);
+			padding: 0;
+
+			@media screen and (min-width: 48rem) {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+			}
+
+			@media screen and (min-width: 80rem) {
+				grid-template-columns: repeat(4, minmax(0, 1fr));
 			}
 		}
 
-		&-location {
-			> * {
-				margin-top: 0;
-				margin-bottom: 0;
+		&__loadbutton {
+			grid-column: 1/-1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: var(--block--loadbutton-padding);
+
+			button {
+				border: var(--block--loadbutton-border) !important;
+				color: var(--block--loadbutton-color) !important;
+				background-color: var(
+					--block--loadbutton-background
+				) !important;
+				font-size: var(--block--loadbutton-size) !important;
+				line-height: var(--block--loadbutton-line-height) !important;
+				font-weight: var(--block--loadbutton-weight) !important;
 			}
-
-			font-size: var(--block--entry-location-size);
-			line-height: var(--block--entry-location-line-height);
-			font-weight: var(--block--entry-location-weight);
-			color: var(--block--entry-location-color);
-		}
-
-		&-partnerlabel {
-			background-color: var(--block--entry-parkpartner-background-color);
-			display: inline-block;
-			position: absolute;
-			top: 0;
-			transform: translateY(-50%);
-			padding: 0.25em 0.5em;
-			margin-left: -0.5em;
-			font-weight: 500;
-			transform: translateY(-50%);
-			pointer-events: none;
-			font-size: var(--block--entry-parkpartner-font-size);
-			line-height: var(--block--entry-parkpartner-line-height);
-		}
-
-		&-title {
-			font-size: var(--block--entry-title-size);
-			line-height: var(--block--entry-title-line-height);
-			font-weight: var(--block--entry-title-weight);
-
-			a {
-				text-decoration: none !important;
-				color: currentColor !important;
-				font-weight: inherit !important;
-				font-size: 1em;
-			}
-		}
-	}
-
-	&__entries {
-		list-style: none;
-		display: grid;
-		gap: var(--block--entries-column-gap) var(--block--entries-row-gap);
-		padding: 0;
-
-		@media screen and (min-width: 48rem) {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-
-		@media screen and (min-width: 80rem) {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
-	}
-
-	&__loadbutton {
-		grid-column: 1/-1;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: var(--block--loadbutton-padding);
-
-		button {
-			border: var(--block--loadbutton-border) !important;
-			color: var(--block--loadbutton-color) !important;
-			background-color: var(--block--loadbutton-background) !important;
-			font-size: var(--block--loadbutton-size) !important;
-			line-height: var(--block--loadbutton-line-height) !important;
-			font-weight: var(--block--loadbutton-weight) !important;
 		}
 	}
 }
