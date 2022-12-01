@@ -78,7 +78,7 @@ class Offer
 		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
-		$this->single_page = get_field('shp_gantrisch_adb_single_page', 'options');
+		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {

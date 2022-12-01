@@ -113,7 +113,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+					'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
 					$classNameBase,
 					$images[0]->{$selected_size},
 					esc_html($offer['title']),
@@ -121,12 +121,28 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 				);
 			} else {
 				$image_html = sprintf(
-					'<div class="%1$s__entry-figure %1$s__entry-figure--empty c-adb-list__figure  c-adb-list__figure--empty"></div>',
+					'<div class="%1$s__entry-figure %1$s__entry-figure--empty c-adb-list__entry-figure c-adb-list__entry-figure--empty"></div>',
 					$classNameBase
 				);
 			}
+
+			$is_hint = (bool) ($offer['is_hint'] ?? false);
+			$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
+
+			$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
+			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
 		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry is--hidden">
+			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?> is--hidden">
+
+				<?php if ($is_hint) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
+						<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } else if ($park_partner) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
+						<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } ?>
 
 				<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
 					<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
@@ -134,7 +150,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 					</div>
 
 					<?php if (!empty($offer['institution_location'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__location">
+						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
 							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
 					<?php
