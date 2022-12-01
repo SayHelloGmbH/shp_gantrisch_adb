@@ -66,6 +66,9 @@ export const task = (config) => {
 					output: {
 						filename: '[name].js',
 					},
+					externals: {
+						jquery: 'jQuery',
+					},
 				})
 			)
 			.on('error', config.errorLog)

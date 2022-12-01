@@ -2,6 +2,7 @@
 
 /**
  * ADB List Default block render template
+ * ACF block, so following data available
  *
  * @param   array $block The block settings and attributes.
  * @param   string $content The block inner HTML (empty).
@@ -57,9 +58,6 @@ if (empty($offers)) {
 
 $offer_controller = new OfferController();
 
-// Random order as requested by client
-shuffle($offers);
-
 $load_more_text = $block['data']['load_more_text'] ?? '';
 if (empty($load_more_text)) {
 	$load_more_text = _x('Load more', 'List block default button text', 'shp_gantrisch_adb');
@@ -88,10 +86,10 @@ $count = 1;
 $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>" data-categories="<?php echo $categories_info; ?>">
+<div class="<?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>">
 
 	<?php if ($show_filter) { ?>
-		<div class="<?php echo $classNameBase; ?>__filter">
+		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
 			<?php
 			//$api->show_offers_filter($category_ids, $filters);
 			?>
@@ -102,7 +100,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 	//$api->show_offers_pagination();
 	?>
 
-	<ul class="<?php echo $classNameBase; ?>__entries">
+	<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
 		<?php
 		foreach ($offers as $offer) {
 
@@ -115,7 +113,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+					'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
 					$classNameBase,
 					$images[0]->{$selected_size},
 					esc_html($offer['title']),
@@ -123,36 +121,50 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 				);
 			} else {
 				$image_html = sprintf(
-					'<div class="%1$s__entry-figure %1$s__entry-figure--empty"></div>',
+					'<div class="%1$s__entry-figure %1$s__entry-figure--empty c-adb-list__entry-figure c-adb-list__entry-figure--empty"></div>',
 					$classNameBase
 				);
 			}
-		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> is--hidden">
 
-				<div class="<?php echo $classNameBase; ?>__entry-header">
-					<div class="<?php echo $classNameBase; ?>__entry-title">
+			$is_hint = (bool) ($offer['is_hint'] ?? false);
+			$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
+
+			$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
+			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
+		?>
+			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?> is--hidden">
+
+				<?php if ($is_hint) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
+						<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } else if ($park_partner) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
+						<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } ?>
+
+				<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
+					<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
 						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 					</div>
 
 					<?php if (!empty($offer['institution_location'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location">
+						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
 							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
-					<?php
-					}
-					?>
+					<?php } ?>
 				</div>
 
 				<?php echo $image_html; ?>
 
 				<?php if (!empty($button_text)) { ?>
-					<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper">
-						<a class="<?php echo $classNameBase; ?>__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
+					<div class="<?php echo $classNameBase; ?>__entry-buttonwrapper c-adb-list__entry-buttonwrapper">
+						<a class="<?php echo $classNameBase; ?>__entry-button c-adb-list__entry-button" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo $button_text; ?></a>
 					</div>
 				<?php } ?>
 
-				<a class="<?php echo $classNameBase; ?>__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
+				<a class="<?php echo $classNameBase; ?>__entry-floodlink c-adb-list__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 			</li>
 		<?php
 			$count++;

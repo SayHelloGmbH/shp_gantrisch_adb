@@ -19,9 +19,5 @@
 			"link": false
 		}
 	},
-	"editorStyle": ["file:./assets/dist/styles/editor/index.min.css"],
-	"style": [
-		"file:./assets/dist/styles/shared/index.min.css",
-		"shp-gantrisch-adb-offer-list-default"
-	]
+	"editorStyle": ["file:./assets/dist/styles/editor/index.min.css"]
 }

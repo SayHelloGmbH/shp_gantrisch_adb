@@ -1,3 +1,5 @@
+import 'jquery-match-height';
+
 const conditionalLoadScript = (filename, condition) => {
 	if (!!condition) {
 		const min = shp_gantrisch_adb.debug ? '' : '.min';

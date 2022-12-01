@@ -64,4 +64,3 @@ function shp_gantrisch_adb_get_instance()
 }
 
 shp_gantrisch_adb_get_instance();
-require_once('vendor/parks_api/autoload.php');

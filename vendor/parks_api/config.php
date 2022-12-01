@@ -28,7 +28,9 @@ $config = array();
 | put your Hashkey in here.
 |
 */
-$config['api_hash'] = get_field('shp_gantrisch_adb_api_hash', 'options');
+
+// Using get_option because we can't use ACF get_field at the point when this code is loaded
+$config['api_hash'] = get_option('options_shp_gantrisch_adb_api_hash');
 
 
 /*
@@ -39,7 +41,9 @@ $config['api_hash'] = get_field('shp_gantrisch_adb_api_hash', 'options');
 | Set your park ID here.
 |
 */
-$config['park_id'] = (int) get_field('shp_gantrisch_adb_park_id', 'options');
+
+// Using get_option because we can't use ACF get_field at the point when this code is loaded
+$config['park_id'] = (int) get_option('options_shp_gantrisch_adb_park_id');
 
 
 /*

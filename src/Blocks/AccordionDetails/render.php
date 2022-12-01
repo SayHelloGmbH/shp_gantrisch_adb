@@ -30,7 +30,7 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
 // TERMIN
-$termin = $offer_model->getTermin($offer_id);
+$termin = $offer_model->getTermin();
 
 if (!empty($termin)) {
 	ob_start();
@@ -49,7 +49,7 @@ if (!empty($termin)) {
 }
 
 // LEISTUNGEN
-$leistungen = $offer_model->getBenefits($offer_id);
+$leistungen = $offer_model->getBenefits();
 
 if (!empty($leistungen)) {
 	ob_start();
@@ -69,7 +69,7 @@ if (!empty($leistungen)) {
 
 
 // PRICE
-$price = $offer_model->getPrice($offer_id);
+$price = $offer_model->getPrice();
 
 if (!empty($price)) {
 	ob_start();
@@ -88,7 +88,7 @@ if (!empty($price)) {
 }
 
 // PLACE
-$place = $offer_model->getPlace($offer_id);
+$place = $offer_model->getPlace();
 
 if (!empty($place)) {
 	ob_start();
@@ -107,7 +107,7 @@ if (!empty($place)) {
 }
 
 // ÖFFNUNGSZEITEN
-$opening = $offer_model->getOpeningTimes($offer_id);
+$opening = $offer_model->getOpeningTimes();
 
 if (!empty($opening)) {
 	ob_start();
@@ -127,7 +127,7 @@ if (!empty($opening)) {
 
 
 // SEASON
-$months = $offer_model->getSeason((int) $offer_id);
+$months = $offer_model->getSeason();
 
 if (!empty($months)) {
 	ob_start();
@@ -148,7 +148,7 @@ if (!empty($months)) {
 
 
 // INFRASTRUCTURE
-$offer_infrastructure = $offer_model->getInfrastructure((int) $offer_id);
+$offer_infrastructure = $offer_model->getInfrastructure();
 
 if (!empty($offer_infrastructure)) {
 	ob_start();
@@ -188,7 +188,7 @@ if (!empty($additional_information)) {
 
 
 // SUITABLE FOR / TARGET AUDIENCE
-$target_audience = $offer_model->getTarget((int) $offer_id) ?? '';
+$target_audience = $offer_model->getTarget() ?? '';
 
 if (!empty($target_audience)) {
 	ob_start();
