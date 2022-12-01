@@ -16,19 +16,16 @@ if ($is_preview === true) {
 	return;
 }
 
-$classNameBase = $block['shp']['classNameBase'] ?? '';
-$show_filter = false; // Temporary hard-coding
-//$show_filter = (bool) get_field('adb_show_filter');
-
 $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
+// Get the categories of the current requested offer
 $offer_categories =	$offer_model->getCategories();
 
 if (empty($offer_categories)) {
 	return '';
 }
 
-// Convert array keys to
+// Use top-level categories only. Convert them to ID numbers.
 $category_ids = array_map(function ($entry) {
 	$category_id = str_replace('category', '', $entry);
 	return (int) $category_id;
@@ -41,65 +38,19 @@ if (empty($category_ids)) {
 	return '';
 }
 
-// If filter is visible, don't constrain category selection
-if ($show_filter) {
-	$category_ids = [];
-}
-
-$filters = [];
-
-$offers = $offer_model->getAll($category_ids, $keywords);
+// Get all offers. The method pre-sorts the results.
+$offers = $offer_model->getAll($category_ids, null, 4);
 
 if (empty($offers)) {
 	return '';
 }
 
 $offer_controller = shp_gantrisch_adb_get_instance()->Controller->Offer;
-
-// Random order as requested by client
-shuffle($offers);
-
-if (count($offers) > 4) {
-	$offers = array_slice($offers, 0, 4);
-}
-
-// Enqueued here manually so that we can load the script in the footer
-// $viewScript = 'src/Blocks/ListDefault/assets/dist/scripts/viewScript.js';
-// wp_enqueue_script($classNameBase, shp_gantrisch_adb_get_instance()->url . $viewScript, [], filemtime(shp_gantrisch_adb_get_instance()->path . $viewScript), true);
-// wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
-// 	'load_more_text' => $load_more_text,
-// 	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
-// ]);
-
 $api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
-
-if ($show_filter) {
-	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
-	wp_enqueue_script("{$classNameBase}_jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ['jquery'], null, true);
-	wp_enqueue_style("{$classNameBase}_parkapp-api", "https://angebote.paerke.ch/api/lib/api-17/api.css", [], null);
-}
-
-$count = 1;
-
-$categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
+$classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?> c-adb-list" data-categories="<?php echo $categories_info; ?>">
-
-	<?php if ($show_filter) { ?>
-		<div class="<?php echo $classNameBase; ?>__filter">
-			<?php
-			//$api->show_offers_filter($category_ids, $filters);
-			?>
-		</div>
-	<?php }
-
-	//$api->show_offers_list($category_ids, $filters);
-	//$api->show_offers_pagination();
-	?>
-
+<div class="<?php echo $block['shp']['class_names']; ?> c-adb-list">
 	<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
 		<?php
 		foreach ($offers as $offer) {
@@ -113,11 +64,10 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
 				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
+					'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="lazy"></figure>',
 					$classNameBase,
 					$images[0]->{$selected_size},
-					esc_html($offer['title']),
-					$count > (int) ($block['data']['initial_count'] ?? false) ? 'lazy' : 'eager'
+					esc_html($offer['title'])
 				);
 			} else {
 				$image_html = sprintf(
@@ -125,10 +75,20 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 					$classNameBase
 				);
 			}
+
+			$park_partner = (bool) ($offer['is_park_partner'] ?? false);
+			$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
 		?>
-			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry">
+			<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class; ?>">
+
+				<?php if ($park_partner) { ?>
+					<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel">
+						<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
+					</div>
+				<?php } ?>
 
 				<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
+
 					<div class="<?php echo $classNameBase; ?>__entry-title c-adb-list__entry-title">
 						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 					</div>
@@ -153,7 +113,6 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 				<a class="<?php echo $classNameBase; ?>__entry-floodlink c-adb-list__entry-floodlink" href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 			</li>
 		<?php
-			$count++;
 		}
 		?>
 	</ul>

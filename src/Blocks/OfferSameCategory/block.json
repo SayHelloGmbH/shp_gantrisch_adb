@@ -15,5 +15,10 @@
 		}
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"viewScript": "file:./assets/dist/scripts/view.js",
+	"style": [
+		"file:./assets/dist/styles/shared/index.min.css",
+		"shp-gantrisch-adb-offer-same-category"
+	],
 	"render": "file:./render.php"
 }

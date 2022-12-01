@@ -1,1 +1,1 @@
-document.querySelectorAll(".wp-block-shp-gantrisch-adb-offer-list").forEach((l=>{const e=l.querySelectorAll(".wp-block-shp-gantrisch-adb-offer-list__entry-title");console.log(e)}));
+jQuery.fn.matchHeight._throttle=350,jQuery(".wp-block-shp-adb-offer-same-category__entry-title").matchHeight({}),jQuery(".wp-block-shp-adb-offer-same-category__entry-header").matchHeight({});
