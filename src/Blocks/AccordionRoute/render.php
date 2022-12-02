@@ -52,7 +52,7 @@ if ((int) $routelength > 0) {
 		<?php } ?>
 
 		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--routelength">
-			<p><?php printf(_x('%s Km.', 'ADB route length', 'shp_gantrisch_adb'), $helpers->formatAmount($routelength, 1)); ?></p>
+			<p><?php printf(_x('%1$s Km.', 'ADB route length', 'shp_gantrisch_adb'), $helpers->formatAmount($routelength, 1)); ?></p>
 		</div>
 	</div>
 <?php
@@ -115,7 +115,7 @@ if ((int) $untarred_route_length > 0) {
 		<?php } ?>
 
 		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--untarred_route_length">
-			<p><?php printf(_x('%s Km.', 'Anteil ungeteerter Wegstrecke', 'shp_gantrisch_adb'), $helpers->formatAmount($untarred_route_length, 1)); ?></p>
+			<p><?php printf(_x('%1$s Km.', 'Anteil ungeteerter Wegstrecke', 'shp_gantrisch_adb'), $helpers->formatAmount($untarred_route_length, 1)); ?></p>
 		</div>
 	</div>
 <?php
