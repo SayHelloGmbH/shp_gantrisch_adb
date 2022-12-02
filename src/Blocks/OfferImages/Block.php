@@ -55,7 +55,7 @@ class Block
 							<figure class="<?php echo $block['shp']['classNameBase']; ?>__figure">
 								<?php
 								printf(
-									'<img src="%s" alt="%s" loading="lazy" class="%s__image" />',
+									'<img src="%1$s" alt="%2$s" loading="lazy" class="%3$s__image" />',
 									$image->$image_size,
 									$offer_title,
 									$block['shp']['classNameBase']

@@ -37,7 +37,7 @@ if (!empty($start_place_info)) {
 	$start_place_height = $offer->start_place_altitude ?? '';
 
 	if (!empty($start_place_height)) {
-		$start_place_info = sprintf(_x('%s (Höhe: %2$s m)', 'Startpoint and height', '', 'shp_gantrisch_adb'), $start_place_info, $start_place_height);
+		$start_place_info = sprintf(_x('%1$s (Höhe: %2$s m)', 'Startpoint and height', '', 'shp_gantrisch_adb'), $start_place_info, $start_place_height);
 	}
 
 	ob_start();
@@ -89,7 +89,7 @@ if (!empty($goal_place_info)) {
 	$goal_place_height = $offer->goal_place_altitude ?? '';
 
 	if (!empty($goal_place_height)) {
-		$goal_place_info = sprintf(_x('%s (Höhe: %2$s m)', 'Goal point and height', '', 'shp_gantrisch_adb'), $goal_place_info, $goal_place_height);
+		$goal_place_info = sprintf(_x('%1$s (Höhe: %2$s m)', 'Goal point and height', '', 'shp_gantrisch_adb'), $goal_place_info, $goal_place_height);
 	}
 
 	ob_start();

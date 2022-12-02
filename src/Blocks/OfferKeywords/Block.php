@@ -31,7 +31,7 @@ class Block
 		$keywords = [];
 
 		foreach ($offer_keywords as $keyword) {
-			$keywords[] = sprintf('<span class="%s__entry">%s</span>', $block['shp']['classNameBase'], $keyword);
+			$keywords[] = sprintf('<span class="%1$s__entry">%2$s</span>', $block['shp']['classNameBase'], $keyword);
 		}
 
 		if (empty($keywords)) {
