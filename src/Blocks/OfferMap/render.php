@@ -20,25 +20,27 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer();
+$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
-if (!$offer) {
+if (!$offer_id) {
 	return;
 }
 
 $api_controller = new APIController();
 $api = $api_controller->getApi();
 
-dump($offer->park_id);
+ob_start();
+$api->show_offers_map([], ['offers' => [(int) $offer_id]]);
+$html = ob_get_contents();
+ob_end_clean();
 
-// Set selected park
-$api->_set_selected_park($offer->park_id);
-
-// Load view
-echo $api->_load_maps_api();
-return;
+if (empty($html)) {
+	return;
+}
 
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>">
-	<div class="<?php echo $block['shp']['classNameBase']; ?>__content"><?php echo wpautop($institution); ?></div>
+	<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
+		<?php echo $html; ?>
+	</div>
 </div>
