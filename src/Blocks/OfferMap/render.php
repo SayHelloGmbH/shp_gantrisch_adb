@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTimeTermin;
 
-use SayHello\ShpGantrischAdb\Controller\API as APIController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
@@ -26,8 +25,8 @@ if (!$offer_id) {
 	return;
 }
 
-$api_controller = new APIController();
-$api = $api_controller->getApi();
+$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+shp_gantrisch_adb_get_instance()->Controller->API->enqueueRemoteAssets();
 
 ob_start();
 $api->show_offers_map([], ['offers' => [(int) $offer_id]]);
