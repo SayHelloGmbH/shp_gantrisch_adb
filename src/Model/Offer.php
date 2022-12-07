@@ -557,10 +557,10 @@ class Offer
 		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
-			if (!empty($keywords)) {
-				$offers = $api->_get_offers(NULL, $category_ids, NULL, NULL, ['keywords' => implode(' ', $keywords)]);
+			if (!empty($filters['keywords'])) {
+				$offers = $api->_get_offers(null, $category_ids, null, null, ['keywords' => implode(' ', $filters['keywords'])]);
 			} else {
-				$offers = $api->_get_offers(NULL, $category_ids);
+				$offers = $api->_get_offers(null, $category_ids);
 			}
 
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
@@ -712,8 +712,8 @@ class Offer
 			return '';
 		}
 
-		$date_from = parks_mysql2date($offer->date_from, TRUE);
-		$date_to = parks_mysql2date($offer->date_to, TRUE);
+		$date_from = parks_mysql2date($offer->date_from, true);
+		$date_to = parks_mysql2date($offer->date_to, true);
 
 		return parks_show_date([
 			'date_from' => parks_mysql2form($date_from),
