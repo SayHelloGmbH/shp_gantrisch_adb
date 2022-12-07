@@ -549,19 +549,23 @@ class Offer
 	 * @param boolean $exclude_current
 	 * @return array
 	 */
-	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false)
+	public function getAll($category_ids = [], $filters = [], $number_required = 0, $exclude_current = false)
 	{
 
 		if (!is_array($category_ids)) {
 			$category_ids = (array) $category_ids;
 		}
 
-		if (!is_array($keywords)) {
-			$keywords = (array) $keywords;
+		if (!is_array($filters)) {
+			$filters = [];
+		}
+
+		if (!is_array($filters['keywords'])) {
+			$filters['keywords'] = [];
 		}
 
 		$transient_cat = md5(implode('', $category_ids));
-		$transient_keywords = md5(implode('', $keywords));
+		$transient_keywords = md5(implode('', $filters['keywords']));
 		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 

@@ -50,7 +50,7 @@ if ($is_preview === true) {
 	return;
 }
 
-$offers = $offer_model->getAll($category_ids, $keywords);
+$offers = $offer_model->getAll($category_ids, $filters);
 
 if (empty($offers)) {
 	return '';
