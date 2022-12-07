@@ -32,6 +32,17 @@ class Offer
 	];
 
 	/**
+	 * Read transient for the list query?
+	 * Deactivate when WP_DEBUG is on.
+	 * Values will always be saved to a transient,
+	 * even if the value is then not read in.
+	 *
+	 *
+	 * @var boolean
+	 */
+	private $use_list_transient = defined('WP_DEBUG') && WP_DEBUG ? false : true;
+
+	/**
 	 * Which languages are available in the data which
 	 * is delivered by the remote API?
 	 *
@@ -554,7 +565,7 @@ class Offer
 		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 
-		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
+		if (!$this->use_list_transient || empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
 			if (!empty($filters['keywords'])) {
@@ -674,7 +685,7 @@ class Offer
 	}
 
 	/**
-	 * Pass by reference. Clean and convert the input to a trimmed array
+	 * Pass by reference. Clean and convert the input to a trimmed array.
 	 *
 	 * @param mixed $keywords
 	 * @return array
