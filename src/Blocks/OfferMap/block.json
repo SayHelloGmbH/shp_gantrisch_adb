@@ -21,7 +21,8 @@
 		}
 	},
 	"supports": {
-		"align": false,
+		"align": ["wide", "full"],
+		"color": { "background": true },
 		"html": false,
 		"multiple": false
 	},

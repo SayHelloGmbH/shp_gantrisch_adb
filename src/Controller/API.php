@@ -29,4 +29,15 @@ class API
 
 		return $this->api;
 	}
+
+	public function enqueueRemoteAssets()
+	{
+		$api = $this->getApi();
+
+		wp_enqueue_style("parks_offers_parkapp-api", "https://angebote.paerke.ch/api/lib/api-17/api.css", [], null);
+		wp_enqueue_script("parks_offers_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
+		// wp_enqueue_script("parks_offers_jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
+		// wp_enqueue_script("parks_offers_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", [], null, false);
+		wp_enqueue_script("parks_offers_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ['jquery'], null, true);
+	}
 }
