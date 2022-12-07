@@ -12,12 +12,17 @@ if ($gutenberg_package->isContextEdit()) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--error">
-			<p><?php _ex('Placeholder for ADB map.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
+			<p><?php _ex('Placeholder for ADB map. Output currently disabled.', 'Editor preview message', 'shp_gantrisch_adb'); ?></p>
 		</div>
 	</div>
 <?php
 	return;
 }
+
+return '<!-- map output currently disabled  -->';
+
+
+/*
 
 $offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
 
@@ -43,3 +48,6 @@ if (empty($html)) {
 		<?php echo $html; ?>
 	</div>
 </div>
+<?php
+
+*/

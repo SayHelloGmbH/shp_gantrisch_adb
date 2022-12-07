@@ -12,10 +12,10 @@ registerBlockType(block_name, {
 		return (
 			<div {...blockProps}>
 				<div
-					className={`${classNameBase}__content`}
+					className={`${classNameBase}__content c-message c-message--error`}
 					dangerouslySetInnerHTML={{
 						__html: _x(
-							'ADB Single offer map.',
+							'ADB Single offer map. Output currently disabled.',
 							'Editor message',
 							'shp_gantrisch_adb'
 						),
