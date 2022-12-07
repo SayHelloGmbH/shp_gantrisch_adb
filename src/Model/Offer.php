@@ -565,7 +565,7 @@ class Offer
 			$filters = [];
 		}
 
-		if (!is_array($filters['keywords'])) {
+		if (!isset($filters['keywords']) || !is_array($filters['keywords'])) {
 			$filters['keywords'] = [];
 		}
 
