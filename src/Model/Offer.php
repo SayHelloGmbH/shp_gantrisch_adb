@@ -40,7 +40,7 @@ class Offer
 	 *
 	 * @var boolean
 	 */
-	private $use_list_transient = defined('WP_DEBUG') && WP_DEBUG ? false : true;
+	private $use_list_transient = true;
 
 	/**
 	 * Which languages are available in the data which
@@ -85,6 +85,11 @@ class Offer
 
 	public function run()
 	{
+
+		if (defined('WP_DEBUG') && WP_DEBUG) {
+			$this->use_list_transient = false;
+		}
+
 		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
 		$this->cache = false;
 		$this->date_format = get_option('date_format');
