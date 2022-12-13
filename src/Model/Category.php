@@ -17,8 +17,6 @@ class Category
 
 	public function run()
 	{
-		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
-		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->tables = shp_gantrisch_adb_get_instance()->Model->Offer->getTables();
 		$this->language = shp_gantrisch_adb_get_instance()->Model->Offer->getLanguage();
