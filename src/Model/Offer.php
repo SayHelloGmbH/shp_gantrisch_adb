@@ -11,7 +11,6 @@ class Offer
 {
 	private $locale = 'de_CH';
 	private $language = 'de';
-	private $cache = true;
 	private $single_page = false;
 	private $offers = [];
 	private $requested_id = null;
@@ -74,8 +73,6 @@ class Offer
 
 	public function run()
 	{
-		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
-		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
