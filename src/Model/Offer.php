@@ -546,6 +546,8 @@ class Offer
 			$keywords = (array) $keywords;
 		}
 
+		$keywords = array_filter($keywords);
+
 		$transient_cat = md5(implode('', $category_ids));
 		$transient_keywords = md5(implode('', $keywords));
 		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
