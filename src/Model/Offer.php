@@ -71,11 +71,14 @@ class Offer
 
 	private $date_format = 'Y/m/d';
 
+	private $debug = false;
+
 	public function run()
 	{
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
+		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
@@ -553,7 +556,7 @@ class Offer
 		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 
-		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
+		if ($this->debug || empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
 			if (!empty($keywords)) {
