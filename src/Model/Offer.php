@@ -593,11 +593,17 @@ class Offer
 		}
 
 		$offers_sorted = [];
+		$exclude_from_rest = [];
 
 		// Pull hints to the top of the list
 		foreach ($offers as $offer) {
 			if ($offer->is_hint) {
 				$offers_sorted["offer{$offer->offer_id}"] = $offer;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($offer->offer_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $offer->offer_id;
+				}
 			}
 		}
 
@@ -606,6 +612,11 @@ class Offer
 			$timestamps = $this->getDates($offer, 'integer');
 			if ((int) $timestamps['date_from']) {
 				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($offer->offer_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $offer->offer_id;
+				}
 			}
 		}
 
@@ -622,13 +633,13 @@ class Offer
 		$the_rest = [];
 		$the_rest_iterator = 0;
 		foreach ($offers as $offer) {
-			$the_rest_key = "offer{$offer->offer_id}-iterator-{$the_rest_iterator}";
 
-			if (array_key_exists($the_rest_key, $the_rest)) {
+			// Exclude entries from $exclude_from_rest
+			if (in_array($offer->offer_id, $exclude_from_rest)) {
 				continue;
 			}
 
-			$the_rest[$the_rest_key] = $offer;
+			$the_rest[] = $offer;
 			$the_rest_iterator++;
 		}
 
