@@ -98,6 +98,8 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 	//$api->show_offers_list($category_ids, $filters);
 	//$api->show_offers_pagination();
+
+	$shown_termine = [];
 	?>
 
 	<ul class="<?php echo $classNameBase; ?>__entries c-adb-list__entries">
@@ -149,11 +151,36 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 						<a href="<?php echo $offer_controller->singleUrl($offer); ?>"><?php echo esc_html($offer['title']); ?></a>
 					</div>
 
+					<?php
+
+					$termin_key = "{$offer['offer_id']}-{$offer['date_from']}";
+					if (!in_array($termin_key, $shown_termine) && (strtotime($offer['date_from']) || strtotime($offer['date_to']))) {
+
+						$date_from = parks_mysql2date($offer['date_from'], TRUE);
+						$date_to = parks_mysql2date($offer['date_to'], TRUE);
+
+						$termin_dates = parks_show_date([
+							'date_from' => parks_mysql2form($date_from),
+							'date_to' => parks_mysql2form($date_to)
+						]);
+
+						if (!empty($termin_dates)) {
+					?>
+							<div class="<?php echo $classNameBase; ?>__entry-termin c-adb-list__entry-termin c-adb-list__entry-meta">
+								<p><?php echo $termin_dates; ?></p>
+							</div>
+					<?php
+							$shown_termine[] = $termin_key;
+						}
+					}
+					?>
+
 					<?php if (!empty($offer['institution_location'])) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
+						<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location c-adb-list__entry-meta">
 							<p><?php echo esc_html($offer['institution_location']); ?></p>
 						</div>
-					<?php } ?>
+					<?php
+					} ?>
 				</div>
 
 				<?php echo $image_html; ?>
