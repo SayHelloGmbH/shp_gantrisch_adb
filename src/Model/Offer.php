@@ -11,7 +11,6 @@ class Offer
 {
 	private $locale = 'de_CH';
 	private $language = 'de';
-	private $cache = true;
 	private $single_page = false;
 	private $offers = [];
 	private $requested_id = null;
@@ -72,13 +71,14 @@ class Offer
 
 	private $date_format = 'Y/m/d';
 
+	private $debug = false;
+
 	public function run()
 	{
-		//$this->cache = !defined('WP_DEBUG') || !WP_DEBUG; // Buggy 30.9.2022 mhm
-		$this->cache = false;
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
+		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
@@ -549,12 +549,14 @@ class Offer
 			$keywords = (array) $keywords;
 		}
 
+		$keywords = array_filter($keywords);
+
 		$transient_cat = md5(implode('', $category_ids));
 		$transient_keywords = md5(implode('', $keywords));
 		$transient_key = !empty($category_ids) ? "adb_offers_cat_{$transient_cat}_key_{$transient_keywords}" : "adb_offer_all";
 		$offers = get_transient($transient_key);
 
-		if (empty($offers) || (bool)($_GET['force'] ?? '') === true) {
+		if ($this->debug || empty($offers) || (bool)($_GET['force'] ?? '') === true) {
 			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 
 			if (!empty($keywords)) {
@@ -591,11 +593,17 @@ class Offer
 		}
 
 		$offers_sorted = [];
+		$exclude_from_rest = [];
 
 		// Pull hints to the top of the list
 		foreach ($offers as $offer) {
 			if ($offer->is_hint) {
 				$offers_sorted["offer{$offer->offer_id}"] = $offer;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($offer->offer_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $offer->offer_id;
+				}
 			}
 		}
 
@@ -603,16 +611,19 @@ class Offer
 		foreach ($offers as $offer) {
 			$timestamps = $this->getDates($offer, 'integer');
 			if ((int) $timestamps['date_from']) {
-				$offers_with_dates["ts{$timestamps['date_from']}"] = $offer;
+				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($offer->offer_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $offer->offer_id;
+				}
 			}
 		}
 
 		if (!empty($offers_with_dates)) {
 			ksort($offers_with_dates);
-			foreach (array_values($offers_with_dates) as $offer_with_date) {
-				if (!array_key_exists("offer{$offer_with_date->offer_id}", $offers_sorted)) {
-					$offers_sorted["offer{$offer_with_date->offer_id}"] = $offer_with_date;
-				}
+			foreach ($offers_with_dates as $offer_with_date_key => $offer_with_date_value) {
+				$offers_sorted["offer{$offer_with_date_key}"] = $offer_with_date_value;
 			}
 		}
 
@@ -620,10 +631,16 @@ class Offer
 
 		// Fill the array with the remaining entries
 		$the_rest = [];
+		$the_rest_iterator = 0;
 		foreach ($offers as $offer) {
-			if (!array_key_exists("offer{$offer->offer_id}", $the_rest)) {
-				$the_rest["offer{$offer->offer_id}"] = $offer;
+
+			// Exclude entries from $exclude_from_rest
+			if (in_array($offer->offer_id, $exclude_from_rest)) {
+				continue;
 			}
+
+			$the_rest[] = $offer;
+			$the_rest_iterator++;
 		}
 
 		if (!empty($the_rest)) {
@@ -642,7 +659,7 @@ class Offer
 			}
 		}
 
-		return $offers_sorted;
+		return array_values($offers_sorted);
 	}
 
 	/**

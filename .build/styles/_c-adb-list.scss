@@ -17,10 +17,10 @@
 	--block--entry-header-padding: 24px 10px 12px 0;
 	--block--entry-header-sibling-offset: 12px;
 
-	--block--entry-location-color: var(--wp--preset--color--petrol);
-	--block--entry-location-line-height: calc(14 / 12);
-	--block--entry-location-size: 12px;
-	--block--entry-location-weight: 500;
+	--block--entry-meta-color: var(--wp--preset--color--petrol);
+	--block--entry-meta-line-height: calc(14 / 12);
+	--block--entry-meta-size: 12px;
+	--block--entry-meta-weight: 500;
 
 	--block--entry-title-line-height: 1.222222;
 	--block--entry-title-size: 18px;
@@ -153,16 +153,24 @@
 				}
 			}
 
-			&-location {
+			&-meta {
+				font-size: var(--block--entry-meta-size);
+				line-height: var(--block--entry-meta-line-height);
+				font-weight: var(--block--entry-meta-weight);
+				color: var(--block--entry-meta-color);
+
 				> * {
 					margin-top: 0;
 					margin-bottom: 0;
 				}
 
-				font-size: var(--block--entry-location-size);
-				line-height: var(--block--entry-location-line-height);
-				font-weight: var(--block--entry-location-weight);
-				color: var(--block--entry-location-color);
+				strong {
+					font-weight: inherit;
+				}
+
+				& + .c-adb-list__entry-meta {
+					margin-top: 0.5em;
+				}
 			}
 
 			&-postit {
