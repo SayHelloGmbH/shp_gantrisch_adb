@@ -605,16 +605,14 @@ class Offer
 		foreach ($offers as $offer) {
 			$timestamps = $this->getDates($offer, 'integer');
 			if ((int) $timestamps['date_from']) {
-				$offers_with_dates["ts{$timestamps['date_from']}"] = $offer;
+				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
 			}
 		}
 
 		if (!empty($offers_with_dates)) {
 			ksort($offers_with_dates);
-			foreach (array_values($offers_with_dates) as $offer_with_date) {
-				if (!array_key_exists("offer{$offer_with_date->offer_id}", $offers_sorted)) {
-					$offers_sorted["offer{$offer_with_date->offer_id}"] = $offer_with_date;
-				}
+			foreach ($offers_with_dates as $offer_with_date_key => $offer_with_date_value) {
+				$offers_sorted["offer{$offer_with_date_key}"] = $offer_with_date_value;
 			}
 		}
 
@@ -644,7 +642,7 @@ class Offer
 			}
 		}
 
-		return $offers_sorted;
+		return array_values($offers_sorted);
 	}
 
 	/**
