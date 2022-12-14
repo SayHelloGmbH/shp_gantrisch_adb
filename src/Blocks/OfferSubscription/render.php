@@ -31,7 +31,7 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 		<?php
 
-		if (!empty($attributes['button_text'] ?? '') && !empty($data['link'] ?? '')) {
+		if (!empty($attributes['button_text'] ?? '') && !empty($data['subscription_link'] ?? '')) {
 			$link = null;
 			$title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
@@ -42,7 +42,7 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 			if (filter_var($data['subscription_link'], FILTER_VALIDATE_EMAIL)) {
 				$link = "mailto:{$data['subscription_link']}?subject={$title}";
 			} else if (filter_var($data['subscription_link'], FILTER_VALIDATE_URL)) {
-				$link = $data['link'];
+				$link = $data['subscription_link'];
 			}
 
 			if ($link) {
