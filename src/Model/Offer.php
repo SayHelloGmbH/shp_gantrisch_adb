@@ -620,10 +620,16 @@ class Offer
 
 		// Fill the array with the remaining entries
 		$the_rest = [];
+		$the_rest_iterator = 0;
 		foreach ($offers as $offer) {
-			if (!array_key_exists("offer{$offer->offer_id}", $the_rest)) {
-				$the_rest["offer{$offer->offer_id}"] = $offer;
+			$the_rest_key = "offer{$offer->offer_id}-iterator-{$the_rest_iterator}";
+
+			if (array_key_exists($the_rest_key, $the_rest)) {
+				continue;
 			}
+
+			$the_rest[$the_rest_key] = $offer;
+			$the_rest_iterator++;
 		}
 
 		if (!empty($the_rest)) {
