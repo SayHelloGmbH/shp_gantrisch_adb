@@ -111,17 +111,49 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 			$button_text = esc_html($block['data']['button_text'] ?? '');
 
 			$images = $offer_model->getImages($offer['offer_id']);
-			$selected_size = $block['data']['image_size'] ?? 'small';
 
-			if (!empty($images) && isset($images[0]->{$selected_size}) && filter_var($images[0]->{$selected_size}, FILTER_VALIDATE_URL) !== false) {
-				$image_html = sprintf(
-					'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s" alt="%3$s" loading="%4$s"></figure>',
-					$classNameBase,
-					$images[0]->{$selected_size},
-					esc_html($offer['title']),
-					$count > (int) ($block['data']['initial_count'] ?? false) ? 'lazy' : 'eager'
-				);
-			} else {
+			$image_html = '';
+
+			if (!empty($images)) {
+
+				$srcset = [];
+
+				// Image sizes are hard-coded and based on the JPGs returned on 15.12.2022
+				// Using getimagesize for the real sizes overloads the server.
+
+				// if (filter_var($images[0]->small ?? '', FILTER_VALIDATE_URL) !== false) {
+				// 	$srcset[] = "{$images[0]->small} 180w";
+				// }
+
+				if (filter_var($images[0]->medium ?? '', FILTER_VALIDATE_URL) !== false) {
+					$srcset[] = "{$images[0]->medium}?size=medium 300w";
+				}
+
+				if (filter_var($images[0]->large ?? '', FILTER_VALIDATE_URL) !== false) {
+					$srcset[] = "{$images[0]->large}?size=large 800w";
+				}
+
+				// Large images can be absolutely massive
+				// if (filter_var($images[0]->original ?? '', FILTER_VALIDATE_URL) !== false) {
+				// 	$srcset[] = "{$images[0]->original} 2560w";
+				// }
+
+				if (!empty($srcset)) {
+
+					$srcset = implode(', ', $srcset);
+
+					$image_html = sprintf(
+						'<figure class="%1$s__entry-figure c-adb-list__entry-figure"><img class="%1$s__entry-image c-adb-list__entry-image" src="%2$s?size=default" srcset="%3$s" alt="%4$s" loading="%5$s"></figure>',
+						$classNameBase,
+						$images[0]->medium ?? '',
+						$srcset,
+						esc_html($offer['title']),
+						$count > (int) ($block['data']['initial_count'] ?? false) ? 'lazy' : 'eager'
+					);
+				}
+			}
+
+			if (empty($image_html)) {
 				$image_html = sprintf(
 					'<div class="%1$s__entry-figure %1$s__entry-figure--empty c-adb-list__entry-figure c-adb-list__entry-figure--empty"></div>',
 					$classNameBase
