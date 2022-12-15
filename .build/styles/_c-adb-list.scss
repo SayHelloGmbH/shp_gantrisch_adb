@@ -148,7 +148,7 @@
 			&-image {
 				@supports (aspect-ratio: 3/2) {
 					object-fit: cover;
-					width: 100%;
+					width: 100% !important;
 					height: 100% !important;
 				}
 			}
@@ -212,11 +212,13 @@
 
 		&__entries {
 			list-style: none;
-			display: grid;
 			gap: var(--block--entries-column-gap) var(--block--entries-row-gap);
 			padding: 0;
+			display: flex;
+			flex-direction: column;
 
 			@media screen and (min-width: 48rem) {
+				display: grid;
 				grid-template-columns: repeat(3, minmax(0, 1fr));
 			}
 
