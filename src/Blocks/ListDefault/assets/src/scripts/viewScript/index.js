@@ -98,5 +98,30 @@ blocks.forEach((block) => {
 	}
 });
 
+function throttle(fn, wait) {
+	var time = Date.now();
+	return function () {
+		if (time + wait - Date.now() < 0) {
+			fn();
+			time = Date.now();
+		}
+	};
+}
+
+const setImageSizes = () => {
+	const images = document.querySelectorAll(`.${classNameBase}__entry-image`);
+
+	if (images.length) {
+		const image_width = getComputedStyle(images[0]).width;
+		images.forEach((image) => {
+			image.setAttribute('sizes', image_width);
+		});
+	}
+};
+
+setImageSizes();
+window.addEventListener('load', setImageSizes);
+window.addEventListener('resize', throttle(setImageSizes, 350));
+
 jQuery.fn.matchHeight._throttle = 350;
 jQuery(`.${classNameBase}__entry-header`).matchHeight({});
