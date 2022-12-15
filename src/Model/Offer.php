@@ -738,6 +738,34 @@ class Offer
 		]);
 	}
 
+	public function getTermine($offer_id = null)
+	{
+
+		if (!function_exists('parks_mysql2date') || !function_exists('parks_show_date') || !function_exists('parks_mysql2form')) {
+			return '';
+		}
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer instanceof stdClass) {
+			return [];
+		}
+
+		$return = [];
+
+		foreach ($offer->dates as $termin) {
+			$date_from = parks_mysql2date(wp_date('Y-m-d H:i:s', strtotime($termin->date_from)), TRUE);
+			$date_to = parks_mysql2date(wp_date('Y-m-d H:i:s', strtotime($termin->date_to)), TRUE);
+
+			$return[] = parks_show_date([
+				'date_from' => parks_mysql2form($date_from),
+				'date_to' => parks_mysql2form($date_to)
+			]);
+		}
+
+		return $return;
+	}
+
 	public function getPlace($offer_id = null)
 	{
 		$offer = $this->getOffer($offer_id);

@@ -1,4 +1,6 @@
 .wp-block-shp-gantrisch-adb-offer-time-termin {
-	.wp-block-shp-gantrisch-adb-offer-termin {
+	&__entries {
+		list-style: none;
+		padding-left: 0;
 	}
 }

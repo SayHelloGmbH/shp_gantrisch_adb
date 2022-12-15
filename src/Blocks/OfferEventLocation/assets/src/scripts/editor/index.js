@@ -43,7 +43,7 @@ registerBlockType(block_name, {
 							/>
 						)}
 						<div
-							className={`${classNameBase}__title`}
+							className={`${classNameBase}__content`}
 							dangerouslySetInnerHTML={{
 								__html: _x(
 									'Offer event location.',

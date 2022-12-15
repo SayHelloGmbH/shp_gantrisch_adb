@@ -20,5 +20,29 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-// API: season_months is always empty
-return '';
+$classNameBase = $block['shp']['classNameBase'] ?? '';
+$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+$termine = $offer_model->getTermine();
+
+if (empty($termine)) {
+	return;
+}
+
+?>
+<div class="<?php echo $classNameBase; ?>">
+
+	<?php if (!empty($attributes['title'] ?? '')) { ?>
+		<h3 class="<?php echo $classNameBase; ?>__title"><?php echo $attributes['title']; ?></h3>
+	<?php } ?>
+
+	<div class="<?php echo $classNameBase; ?>__content">
+		<ul class="<?php echo $classNameBase; ?>__entries">
+			<?php foreach ($termine as $termin) { ?>
+				<li class="<?php echo $classNameBase; ?>__entry">
+					<?php echo $termin; ?>
+				</li>
+			<?php
+			} ?>
+		</ul>
+	</div>
+</div>

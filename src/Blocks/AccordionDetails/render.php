@@ -30,9 +30,9 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
 // TERMIN
-$termin = $offer_model->getTermin();
+$termine = $offer_model->getTermine();
 
-if (!empty($termin)) {
+if (!empty($termine)) {
 	ob_start();
 ?>
 	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--termin">
@@ -41,7 +41,16 @@ if (!empty($termin)) {
 			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--termin"><?php echo $attributes['title_termin']; ?></h3>
 		<?php } ?>
 
-		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin"><?php echo $termin; ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin">
+			<ul class="shb-accordion__termin-entries">
+				<?php foreach ($termine as $termin) { ?>
+					<li class="shb-accordion__termin-entry">
+						<?php echo $termin; ?>
+					</li>
+				<?php
+				} ?>
+			</ul>
+		</div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
