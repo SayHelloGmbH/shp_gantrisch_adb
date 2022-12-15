@@ -33,6 +33,11 @@
 			}
 		}
 
+		&__termin-entries {
+			list-style: none;
+			padding-left: 0;
+		}
+
 		&__title {
 			font-size: 1.875rem;
 			line-height: calc(36 / 30);
