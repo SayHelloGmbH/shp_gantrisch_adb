@@ -47,7 +47,7 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 			if ($link) {
 		?>
-				<p class="wp-block-button <?php echo $block['shp']['classNameBase']; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $block['shp']['classNameBase']; ?>__button-link" href="<?php echo $link; ?>"><?php echo esc_html($attributes['button_text']); ?></a></p>
+				<p class="wp-block-button <?php echo $block['shp']['classNameBase']; ?>__button-wrapper"><a class="wp-block-button__link <?php echo $block['shp']['classNameBase']; ?>__button-link" href="<?php echo $link; ?>" target="_blank"><?php echo esc_html($attributes['button_text']); ?></a></p>
 		<?php }
 		} ?>
 
