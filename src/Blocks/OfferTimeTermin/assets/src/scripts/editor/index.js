@@ -1,4 +1,4 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { getBlockDefaultClassName, registerBlockType } from '@wordpress/blocks';
 import {
 	InspectorControls,
 	RichText,
@@ -9,11 +9,12 @@ import { __, _x } from '@wordpress/i18n';
 
 import block_json from '../../../../block.json';
 const { name: block_name } = block_json;
+const classNameBase = getBlockDefaultClassName(block_name);
 
 registerBlockType(block_name, {
 	edit: ({ attributes, setAttributes }) => {
 		const { title } = attributes;
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps({ className: 'c-message' });
 
 		return (
 			<>
