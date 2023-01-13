@@ -6,6 +6,10 @@ if (!$data) {
 	return '';
 }
 
+if (empty($data['subscription_contact']) && empty($data['subscription_details']) && !$data['subscription_link'] && !$data['subscription_mandatory'] && !$data['online_subscription_enabled']) {
+	return '';
+}
+
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>">
