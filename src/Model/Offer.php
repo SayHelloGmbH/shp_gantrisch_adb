@@ -754,8 +754,9 @@ class Offer
 		$return = [];
 
 		foreach ($offer->dates as $termin) {
-			$date_from = parks_mysql2date(wp_date('Y-m-d H:i:s', strtotime($termin->date_from)), TRUE);
-			$date_to = parks_mysql2date(wp_date('Y-m-d H:i:s', strtotime($termin->date_to)), TRUE);
+			// Don't use wp_date here: we need the specific date and time, not the timezone-relevant date and time
+			$date_from = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_from)), TRUE);
+			$date_to = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_to)), TRUE);
 
 			$return[] = parks_show_date([
 				'date_from' => parks_mysql2form($date_from),
