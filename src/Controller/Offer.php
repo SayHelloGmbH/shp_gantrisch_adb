@@ -20,6 +20,9 @@ class Offer
 	{
 		add_action('template_redirect', [$this, 'handleInvalidSingle']);
 		add_action('the_title', [$this, 'offerTitle'], 10, 2);
+		add_filter('get_canonical_url', [$this, 'canonicalURL'], 10, 2);
+		add_filter('wpseo_canonical', [$this, 'canonicalURL'], 10, 2);
+		add_filter('get_shortlink', [$this, 'shortlink']);
 	}
 
 	public function queryVarName()
@@ -130,5 +133,41 @@ class Offer
 			$rewrite_key,
 			$offer['offer_id']
 		);
+	}
+
+	public function canonicalURL($canonical_url)
+	{
+
+		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+
+		if (!$single_page || get_the_ID() !== $single_page) {
+			return $canonical_url;
+		}
+
+		$rewrites_package = new RewritesPackage();
+		$rewrite_key = $rewrites_package->getVarKey();
+
+		if (!$rewrite_key) {
+			return $canonical_url;
+		}
+
+		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+
+		if (!$offer_id) {
+			return $canonical_url;
+		}
+
+		return "{$canonical_url}{$rewrite_key}/{$offer_id}/";
+	}
+
+	public function shortlink($shortlink)
+	{
+		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+
+		if (!$single_page) {
+			return $shortlink;
+		}
+
+		return '';
 	}
 }
