@@ -17,8 +17,8 @@ use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
-$show_filter = false; // Temporary hard-coding
-//$show_filter = (bool) get_field('adb_show_filter');
+//$show_filter = false; // Temporary hard-coding
+$show_filter = (bool) get_field('adb_show_filter');
 
 $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
@@ -91,7 +91,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 	<?php if ($show_filter) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
 			<?php
-			//$api->show_offers_filter($category_ids, $filters);
+			$api->show_offers_filter($category_ids, $filters);
 			?>
 		</div>
 	<?php }
