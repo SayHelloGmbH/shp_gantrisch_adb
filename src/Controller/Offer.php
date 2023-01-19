@@ -21,6 +21,7 @@ class Offer
 		add_action('template_redirect', [$this, 'handleInvalidSingle']);
 		add_action('the_title', [$this, 'offerTitle'], 10, 2);
 		add_filter('get_canonical_url', [$this, 'canonicalURL'], 10, 2);
+		add_filter('wpseo_canonical', [$this, 'canonicalURL'], 10, 2);
 		add_filter('get_shortlink', [$this, 'shortlink']);
 	}
 
@@ -134,8 +135,9 @@ class Offer
 		);
 	}
 
-	public function canonicalURL($canonical_url, $post)
+	public function canonicalURL($canonical_url)
 	{
+
 		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
 
 		if (!$single_page || get_the_ID() !== $single_page) {
