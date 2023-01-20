@@ -23,30 +23,36 @@
 DROP TABLE IF EXISTS `accessibility`;
 
 CREATE TABLE `accessibility` (
+  `accessibility_id` bigint(20) unsigned NOT NULL,
   `offer_id` bigint(20) NOT NULL,
-  `accessibility_pictogram_id` bigint(20) NOT NULL,
-	`poi_detail_link` VARCHAR(500),
-  PRIMARY KEY (`offer_id`,`accessibility_pictogram_id`),
+  `ginto_id` varchar(255) DEFAULT NULL,
+  `ginto_icon` varchar(1000) DEFAULT NULL,
+  `ginto_link` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`accessibility_id`,`offer_id`),
+  KEY `offer_id_idxfk_10` (`offer_id`),
   CONSTRAINT `accessibility_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-# Export table accessibility_pictogram
+# Export table accessibility_rating
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `accessibility_pictogram`;
+DROP TABLE IF EXISTS `accessibility_rating`;
 
-CREATE TABLE `accessibility_pictogram` (
-  `accessibility_pictogram_id` bigint(20) NOT NULL,
-  `pictogram_source` varchar(1000) DEFAULT NULL,
-  `name_de` varchar(500) DEFAULT NULL,
-  `name_en` varchar(500) DEFAULT NULL,
-  `name_fr` varbinary(500) DEFAULT NULL,
-  `name_it` varchar(500) DEFAULT NULL,
-  `detail_link` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`accessibility_pictogram_id`)
+CREATE TABLE `accessibility_rating` (
+  `accessibility_rating_id` bigint(20) NOT NULL,
+  `accessibility_id` bigint(20) unsigned NOT NULL,
+  `description_de` varchar(500) DEFAULT NULL,
+  `description_fr` varchar(500) DEFAULT NULL,
+  `description_it` varbinary(500) DEFAULT NULL,
+  `description_en` varchar(500) DEFAULT NULL,
+  `icon_url` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`accessibility_rating_id`),
+  KEY `accessibility_id_idxfk` (`accessibility_id`),
+  CONSTRAINT `accessibility_rating_ibfk_1` FOREIGN KEY (`accessibility_id`) REFERENCES `accessibility` (`accessibility_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 
@@ -93,6 +99,10 @@ CREATE TABLE `activity` (
   `has_washrooms` tinyint(1) DEFAULT NULL,
   `poi` text,
   `season_months` varchar(50) DEFAULT NULL,
+  `route_condition_id` TINYINT,
+  `route_condition_color` VARCHAR(255),
+  `route_condition` VARCHAR(500),
+  `route_condition_details` VARCHAR(500),
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -115,7 +125,7 @@ LOCK TABLES `api` WRITE;
 
 INSERT INTO `api` (`initialized`, `version`, `last_import`)
 VALUES
-	(1,'16',NULL);
+	(1,'18',NULL);
 
 /*!40000 ALTER TABLE `api` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -379,10 +389,10 @@ DROP TABLE IF EXISTS `offer_i18n`;
 CREATE TABLE `offer_i18n` (
   `offer_id` bigint(20) NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `title` varchar(255) DEFAULT NULL,
-  `abstract` varchar(50) DEFAULT NULL,
-  `description_medium` varchar(250) DEFAULT NULL,
-  `description_long` varchar(1000) DEFAULT NULL,
+  `title` varchar(1000) DEFAULT NULL,
+  `abstract` varchar(1000) DEFAULT NULL,
+  `description_medium` varchar(1000) DEFAULT NULL,
+  `description_long` varchar(1500) DEFAULT NULL,
   `details` text,
   `price` text,
   `location_details` varchar(1000) DEFAULT NULL,

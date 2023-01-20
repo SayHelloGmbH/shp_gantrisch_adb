@@ -81,17 +81,19 @@ Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@s
 						</div>
 					[ISSET(OFFER_IMAGES)@stop]
 
+					[OFFER_PRODUCT@start]
+						[ISSET(OFFER_PRODUCT_DETAIL)@start]
+						<div class="portlet">
+							__OFFER_PRODUCT_PRICE__
+						</div>
+						[ISSET(OFFER_PRODUCT_DETAIL)@stop]
+					[OFFER_PRODUCT@stop]
+
 					[ISSET(OFFER_DATES)@start]
 						<div class="portlet">
 							__OFFER_DATES__
 						</div>
 					[ISSET(OFFER_DATES)@stop]
-
-					[OFFER_PROJECT@start]
-						<div class="portlet">
-							__OFFER_PROJECT_DETAIL__
-						</div>
-					[OFFER_PROJECT@stop]
 
 					[OFFER_EVENT@start]
 						<div class="portlet">
@@ -264,6 +266,18 @@ Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@s
 							</div>
 						</div>
 						[ISSET(OFFER_POI_LIST)@stop]
+
+						[OFFER_PROJECT@start]
+						<div class="accordion_element">
+							<h2 class="accordion_title">
+								__LANG[offer_detail]__
+								<span class="icon" aria-hidden="true"><span></span><span></span></span>
+							</h2>
+							<div class="accordion_content">
+								__OFFER_PROJECT_DETAIL__
+							</div>
+						</div>
+						[OFFER_PROJECT@stop]
 					</div>
 				</div>
 			</div>

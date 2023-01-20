@@ -140,6 +140,8 @@ $lang['offer_hour'] = 'heure';
 $lang['offer_hours'] = 'heures';
 $lang['offer_minute'] = 'minute';
 $lang['offer_minutes'] = 'minutes';
+$lang['offer_more_informations'] = "Plus d'information";
+$lang['offer_more_informations_accessibility'] = "Plus d'information sur l'accessibilité";
 
 
 /*

@@ -204,12 +204,15 @@ class ParksMySQL {
 		$db_fields = '';
 		$db_values = '';
 		foreach ($fields as $key => $value) {
-			if ($escape) {
-				$value = str_replace("'", "\'", $value);
-			}
-			else{
-				$value = str_replace("\'", "'", $value); // Replace all right '
-				$value = str_replace("'", "\'", $value); // Do escaping again (for all entries, also for right)
+
+			if (!empty($value)) {
+				if ($escape) {
+					$value = str_replace("'", "\'", $value);
+				}
+				else {
+					$value = str_replace("\'", "'", $value); // Replace all right '
+					$value = str_replace("'", "\'", $value); // Do escaping again (for all entries, also for right)
+				}
 			}
 
 			$db_fields .= "`".$key."` , ";
@@ -242,12 +245,15 @@ class ParksMySQL {
 	public function update($table, $fields, $where = NULL, $escape = FALSE) {
 		$db_fields = '';
 		foreach ($fields as $key  => $value) {
-			if ($escape) {
-				$value = str_replace("'", "\'", $value);
-			}
-			else{
-				$value = str_replace("\'", "'", $value); // Replace all right '
-				$value = str_replace("'", "\'", $value); // Do escaping again (for all entries, also for right)
+
+			if (!empty($value)) {
+				if ($escape) {
+					$value = str_replace("'", "\'", $value);
+				}
+				else{
+					$value = str_replace("\'", "'", $value); // Replace all right '
+					$value = str_replace("'", "\'", $value); // Do escaping again (for all entries, also for right)
+				}
 			}
 
 			if ($value == NULL) {

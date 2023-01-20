@@ -27,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
 |--------------------------------------------------------------------------
 |
 */
-define('API_VERSION', 17);
+define('API_VERSION', 18);
 
 
 /*

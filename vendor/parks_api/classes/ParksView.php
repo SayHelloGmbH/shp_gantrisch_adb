@@ -1903,15 +1903,38 @@ class ParksView {
 		|--------------------------------------------------------------------------
 		|
 		*/
-		if (!empty($offer->accessibilities) && is_array($offer->accessibilities)) {
+		if (!empty($offer->accessibilities)) {
+
+			// Init accessibility
 			$accessibilities = '';
-			$pictogram_link = '';
-			foreach ($offer->accessibilities as $accessibility) {
-				$pictogram_name = $accessibility->{'name_'.$this->api->lang_id};
-				$pictogram_link = $accessibility->poi_detail_link;
-				$accessibilities .= '<a href="'.$pictogram_link.'" target="_blank" title="'.$this->api->lang->get('offer_link_more_infos').' '.$pictogram_name.'"><img src="'.$accessibility->pictogram_source.'" alt="'.$pictogram_name.'" title="'.$pictogram_name.'" class="pictogram tooltip"></a>';
+			$accessibility = $offer->accessibilities;
+			$accessiblity_link = $accessibility->ginto_link;
+
+			// Show ratings
+			if (!empty($accessibility->ratings)) {
+				foreach ($accessibility->ratings as $rating) {
+					$label = $rating->{'description_'.$this->api->lang_id};
+					$accessibilities .= '
+						<a href="'.$accessiblity_link.'" target="_blank">
+							<img src="'.$rating->icon_url.'" class="pictogram tooltip" alt="'.$label.'" title="'.$label.'">
+						</a>
+					';
+				}
 			}
-			$accessibilities .= '<br><a href="'.$pictogram_link.'" target="_blank" title="'.$this->api->lang->get('offer_link_more_infos').' '.$this->api->lang->get('offer_accessibility').'">'.$this->api->lang->get('more_informations').'</a>';
+
+			// Show OK:GO link
+			else if (!empty($accessibility->ginto_icon)) {
+				$accessibilities .= '
+					<a href="'.$accessiblity_link.'" target="_blank">
+						<img src="'.$accessibility->ginto_icon.'" width="50">
+					</a>
+				';
+			}
+
+			// More info link
+			$accessibilities .= '<br><a href="'.$accessiblity_link.'" target="_blank">'.$this->api->lang->get('offer_more_informations_accessibility').'</a>';
+
+			// Set template tag
 			if (!empty($accessibilities)) {
 				$template_data['OFFER_ACCESSIBILITIES'] = $this->_show_text($this->api->lang->get('offer_accessibility'), '<p>'.$accessibilities.'</p>', 'block offer_accessibilities');
 			}
@@ -3181,7 +3204,7 @@ class ParksView {
 
 		// Check html tags
 		$has_html = FALSE;
-		if ($content != strip_tags($content)) {
+		if (!empty($content) && ($content != strip_tags($content))) {
 			$has_html = TRUE;
 		}
 
