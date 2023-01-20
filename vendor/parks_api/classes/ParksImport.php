@@ -458,30 +458,41 @@ class ParksImport {
 					// Accessibilities
 					$this->api->db->delete('accessibility', array('offer_id' => $offer_id));
 					if ($offer->Accessibilities) {
-						foreach ($offer->Accessibilities->Accessibility as $accessibility) {
 
-							// Get pictogram id
-							$pictogram_id = (string)$accessibility->attributes()->identifier;
+						// Import main accessiblity data
+						$accessibility_id = (string)$offer->Accessibilities->attributes()->identifier;
+						$ginto_id = (string)$offer->Accessibilities->attributes()->gintoId;
+						$ginto_icon = (string)$offer->Accessibilities->attributes()->gintoIcon;
+						$ginto_link = (string)$offer->Accessibilities->attributes()->gintoLink;
+						$this->api->db->insert('accessibility', array(
+							'accessibility_id' => $accessibility_id,
+							'offer_id' => $offer_id,
+							'ginto_id' => $ginto_id,
+							'ginto_icon' => $ginto_icon,
+							'ginto_link' => $ginto_link,
+						));
+						
+						// Import ratings
+						$this->api->db->delete('accessibility_rating', array('accessibility_id' => $accessibility_id));
+						if ($offer->Accessibilities->Accessibility) {
+							foreach ($offer->Accessibilities->Accessibility as $accessibility) {
 
-							// Insert or update pictogram
-							$pictogram = array();
-							$pictogram['accessibility_pictogram_id'] = $pictogram_id;
-							$pictogram['pictogram_source'] = (string)$accessibility->PictogramSource;
-							foreach ($accessibility->Name as $name) {
-								$language = (string)$name->attributes()->language;
-								$pictogram['name_'.$language] = (string)$name;
+								// Get rating ID
+								$rating_id = (string)$accessibility->attributes()->identifier;
+
+								// Insert or update rating
+								$rating = [
+									'accessibility_rating_id' => $rating_id,
+									'accessibility_id' => $accessibility_id,
+								];
+								foreach ($accessibility->Name as $name) {
+									$language = (string)$name->attributes()->language;
+									$rating['description_'.$language] = (string)$name;
+								}
+								$rating['icon_url'] = (string)$accessibility->RatingIcon;
+								$this->_insert_or_update('accessibility_rating', $rating, array('accessibility_rating_id' => $rating_id));
+
 							}
-							$pictogram['detail_link'] = (string)$accessibility->PictogramDetailLink;
-							$this->_insert_or_update('accessibility_pictogram', $pictogram, array('accessibility_pictogram_id' => $pictogram_id));
-
-							// Insert offer link
-							$link = array(
-								'offer_id' => $offer_id,
-								'accessibility_pictogram_id' => $pictogram_id,
-								'poi_detail_link' => (string)$accessibility->PoiDetailLink,
-							);
-							$this->api->db->insert('accessibility', $link);
-
 						}
 					}
 

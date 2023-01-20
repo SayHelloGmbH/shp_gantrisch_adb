@@ -68,6 +68,7 @@ $api = new ParksAPI('de');
 			'offers_child_friendly' => 0, 				// 1 = child friendly offers
 			'offers_filter_hints' => 0, 				// 1 = show only hints (Tipps)
 			'offers_is_park_event' => 1,				// 1 = show only park events	
+			'has_accessibility_informations' => TRUE,	// TRUE = Filter offers with accessibility informations
 			'offers' => array(),						// Filter by offer ids
 			'show_keywords_filter' => TRUE,				// Show keywords filter
 			'hide_user_filter' => FALSE,				// Hide user filter if more than one park is listed as dropdown in the filter
