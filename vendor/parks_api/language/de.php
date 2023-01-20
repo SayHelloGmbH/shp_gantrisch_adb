@@ -141,6 +141,8 @@ $lang['offer_hour'] = 'Stunde';
 $lang['offer_hours'] = 'Stunden';
 $lang['offer_minute'] = 'Minute';
 $lang['offer_minutes'] = 'Minuten';
+$lang['offer_more_informations'] = "Weitere Informationen";
+$lang['offer_more_informations_accessibility'] = "Weitere Informationen zur Barrierefreiheit";
 
 
 /*

@@ -1372,6 +1372,11 @@ class ParksAPI {
 			$filter['offers_is_park_event'] = $additional_filter['offers_is_park_event'];
 		}
 
+		// Has accessibility informations
+		if (isset($additional_filter['has_accessibility_informations'])) {
+			$filter['has_accessibility_informations'] = $additional_filter['has_accessibility_informations'];
+		}
+
 		// Offers
 		if (isset($additional_filter['offers'])) {
 			$filter['offers'] = $additional_filter['offers'];

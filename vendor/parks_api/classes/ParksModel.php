@@ -225,6 +225,9 @@ class ParksModel {
 		$join .= " LEFT JOIN `category` AS c2 ON `c1`.`parent_id` = `c2`.`category_id` ";
 		$join .= " LEFT JOIN `category` AS c3 ON `c2`.`parent_id` = `c3`.`category_id` ";
 
+		// Join accessibility informations
+		$join .= " LEFT OUTER JOIN `accessibility` ON `accessibility`.`offer_id` = main_offer.`offer_id` ";
+
 		// Filter: categories
 		$where = array();
 		if (isset($filter['categories']) && !empty($filter['categories'])) {
@@ -282,6 +285,11 @@ class ParksModel {
 									OR event.`is_park_event` IS NULL
 								)";
 			}
+		}
+
+		// Filter: accessibility informations
+		if (!empty($filter['has_accessibility_informations'])) {
+			$where[] .= " `accessibility`.`accessibility_id` IS NOT NULL ";
 		}
 
 		// Select language and show every entry, no matter which language is available
@@ -893,17 +901,31 @@ class ParksModel {
 
 				// Accessibilities
 				if ($map_mode == FALSE) {
+
+					// Get main accessibility data
 					$q_accessibilities = $this->api->db->query("
 						SELECT *
 						FROM `accessibility`
-						INNER JOIN `accessibility_pictogram` ON `accessibility_pictogram`.`accessibility_pictogram_id` = `accessibility`.`accessibility_pictogram_id`
 						WHERE `accessibility`.`offer_id` = ".$offer->offer_id."
+						LIMIT 1
 					");
 					if (mysqli_num_rows($q_accessibilities) > 0) {
-						$offer->accessibilities = array();
-						while ($row = mysqli_fetch_object($q_accessibilities)) {
-							$offer->accessibilities[] = $row;
+
+						// Get accessibility data
+						$offer->accessibilities = mysqli_fetch_object($q_accessibilities);
+
+						// Get accessibility ratings
+						$q_ratings = $this->api->db->query("
+							SELECT *
+							FROM `accessibility_rating`
+							WHERE `accessibility_rating`.`accessibility_id` = ".$offer->accessibilities->accessibility_id."
+						");
+						if (mysqli_num_rows($q_accessibilities) > 0) {
+							while ($rating = mysqli_fetch_object($q_ratings)) {
+								$offer->accessibilities->ratings[] = $rating;
+							}
 						}
+
 					}
 				}
 
