@@ -371,7 +371,7 @@ class Offer
 			return null;
 		}
 
-		return strip_tags($offer->description_long ?? '');
+		return wpautop(strip_tags($offer->description_long ?? ''));
 	}
 
 	/**
