@@ -1039,22 +1039,45 @@ class ParksModel {
 
 			// Poi
 			if (($return_minimal == FALSE) && ($map_mode == FALSE)) {
-				if (isset($offer->poi) && !empty($offer->poi) && ($offer->poi != '') && !is_array($offer->poi)) {
+				if (!empty($offer->poi) && ($offer->poi != '') && !is_array($offer->poi)) {
 					$poi = explode(',', $offer->poi);
 
 					// Check if offer exists
 					$existing_poi = array();
-					if (is_array($poi) && !empty($poi)) {
+					if (!empty($poi) && is_array($poi)) {
 						foreach ($poi as $offer_id) {
-							$q_poi = $this->api->db->get('offer', array('offer_id' => $offer_id));
-							if ($q_poi->num_rows == 1) {
-								$existing_poi[] = $offer_id;
+							if (!empty($offer_id)) {
+								$q_poi = $this->api->db->get('offer', array('offer_id' => $offer_id));
+								if ($q_poi->num_rows == 1) {
+									$existing_poi[] = $offer_id;
+								}
 							}
 						}
 					}
 
 					$offer->poi = $existing_poi;
 				}
+			}
+
+			// Linked routes
+			if (($return_minimal == FALSE) && ($map_mode == FALSE)) {
+				$linked_routes = array();
+				$q_linked_routes = $this->api->db->query("
+					SELECT `offer_id`
+					FROM `activity`
+					WHERE `poi` LIKE '%".$offer->offer_id.",%'
+				");
+				if (mysqli_num_rows($q_linked_routes) > 0) {
+					while ($linked_route = mysqli_fetch_assoc($q_linked_routes)) {
+						if (!empty($linked_route['offer_id'])) {
+							$q_poi = $this->api->db->get('offer', array('offer_id' => $linked_route['offer_id']));
+							if ($q_poi->num_rows == 1) {
+								$linked_routes[] = $linked_route['offer_id'];
+							}
+						}
+					}
+				}
+				$offer->linked_routes = $linked_routes;
 			}
 
 			return $offer;

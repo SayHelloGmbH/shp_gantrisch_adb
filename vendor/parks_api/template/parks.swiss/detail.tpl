@@ -48,6 +48,7 @@ OFFER_INSTITUTION
 OFFER_CONTACT
 OFFER_SUBSCRIPTION
 OFFER_POI_LIST
+OFFER_ROUTE_LIST
 OFFER_MAP
 OFFER_KEYWORDS
 
@@ -266,6 +267,18 @@ Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@s
 							</div>
 						</div>
 						[ISSET(OFFER_POI_LIST)@stop]
+
+						[ISSET(OFFER_ROUTE_LIST)@start]
+						<div class="accordion_element">
+							<h2 class="accordion_title">
+								__LANG[offer_route_links]__
+								<span class="icon" aria-hidden="true"><span></span><span></span></span>
+							</h2>
+							<div class="accordion_content">
+								__OFFER_ROUTE_LIST__
+							</div>
+						</div>
+						[ISSET(OFFER_ROUTE_LIST)@stop]
 
 						[OFFER_PROJECT@start]
 						<div class="accordion_element">

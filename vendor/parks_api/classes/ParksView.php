@@ -1594,7 +1594,7 @@ class ParksView {
 			// Route condition details
 			if (!empty($offer->route_condition_details)) {
 				$description .= '
-					<div class="route_condition_details"><div class="route_condition_details_inner">'.$offer->route_condition_details.'</div></div>
+					<div class="route_condition_details"><div class="route_condition_details_inner">'.auto_link($offer->route_condition_details, 'both', TRUE).'</div></div>
 				';
 			}
 		}
@@ -2057,8 +2057,19 @@ class ParksView {
 		|--------------------------------------------------------------------------
 		|
 		*/
-		if (isset($offer->poi) && !empty($offer->poi)) {
+		if (!empty($offer->poi)) {
 			$template_data['OFFER_POI_LIST'] = $this->_get_poi_content($offer->poi, $offer->offer_id, $offer->root_category);
+		}
+
+
+		/*
+		|--------------------------------------------------------------------------
+		| Placeholder: Linked routes
+		|--------------------------------------------------------------------------
+		|
+		*/
+		if (!empty($offer->linked_routes)) {
+			$template_data['OFFER_ROUTE_LIST'] = $this->_get_poi_content($offer->linked_routes, $offer->offer_id, $offer->root_category);
 		}
 
 
