@@ -96,7 +96,7 @@ $lang['offer_status_inactive'] = "Inactif";
 $lang['offer_status_active'] = "Actif";
 $lang['offer_coordinates'] = "Coordonn&eacute;es";
 $lang['offer_images_help'] = "Vous pouvez t&eacute;l&eacute;charger ici des images en format JPG, GIF ou PNG. Chaque image doit avoir une r&eacute;solution minimale de 200x100 Pixel. Pri&egrave;re de veiller au droits d'auteur de l'image originale.";
-$lang['offer_activity_maps_help'] = "Sie k&ouml;nnen die Route beliebig anpassen, indem Sie die Wegpunkte (grau) mit der Maus ziehen. Mit den weissen, kleineren Markierungen k&ouml;nnen Sie durch Ziehen neue Wegpunkte hinzuf&uuml;gen. Bestehende Wegpunkte k&ouml;nnen &uuml;ber ein Rechtsklick entfernt werden.";
+$lang['offer_activity_maps_help'] = "Vous pouvez adapter l'itinéraire à votre guise en faisant glisser les points de passage (en gris) avec la souris. Les marqueurs blancs, plus petits, vous permettent d'ajouter de nouveaux points de passage en les faisant glisser. Les points de passage existants peuvent être supprimés par un clic droit.";
 $lang['offer_will_not_be_published_on_myswitzerland'] = "Ne peut pas &ecirc;tre publi&eacute; par Suisse Tourisme";
 $lang['offer_all_season'] = "Tout au long de l'ann&eacute;e";
 $lang['offer_maps_search'] = "Recherche";
@@ -142,6 +142,7 @@ $lang['offer_minute'] = 'minute';
 $lang['offer_minutes'] = 'minutes';
 $lang['offer_more_informations'] = "Plus d'information";
 $lang['offer_more_informations_accessibility'] = "Plus d'information sur l'accessibilité";
+$lang['offer_route_links'] = "Itinéraires à proximité";
 
 
 /*

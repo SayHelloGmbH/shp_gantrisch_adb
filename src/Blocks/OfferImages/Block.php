@@ -55,10 +55,15 @@ class Block
 							<figure class="<?php echo $block['shp']['classNameBase']; ?>__figure">
 								<?php
 								printf(
-									'<img src="%1$s" alt="%2$s" loading="lazy" class="%3$s__image" />',
+									'<img src="%1$s" alt="%2$s" loading="lazy" class="%3$s__image" />%4$s',
 									$image->$image_size,
 									$offer_title,
-									$block['shp']['classNameBase']
+									$block['shp']['classNameBase'],
+									!empty($image->copyright ?? '') ? sprintf(
+										'<figcaption class="%1$s__figcaption">© %2$s</figcaption>',
+										$block['shp']['classNameBase'],
+										strip_tags($image->copyright)
+									) : ''
 								)
 								?>
 							</figure>
