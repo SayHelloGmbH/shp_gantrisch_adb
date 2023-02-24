@@ -143,6 +143,7 @@ $lang['offer_minute'] = 'Minute';
 $lang['offer_minutes'] = 'Minuten';
 $lang['offer_more_informations'] = "Weitere Informationen";
 $lang['offer_more_informations_accessibility'] = "Weitere Informationen zur Barrierefreiheit";
+$lang['offer_route_links'] = "Routen in der Nähe";
 
 
 /*
