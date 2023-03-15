@@ -10,6 +10,13 @@ if (empty($data['subscription_contact']) && empty($data['subscription_details'])
 	return '';
 }
 
+$subscription_link = $data['subscription_link'];
+
+if (empty($subscription_link) && $data['online_subscription_enabled']) {
+	$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+	$subscription_link = "https://angebote.paerke.ch/de/subscription/subscriber/{$offer_id}";
+}
+
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>">
@@ -35,7 +42,7 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 		<?php
 
-		if (!empty($attributes['button_text'] ?? '') && !empty($data['subscription_link'] ?? '')) {
+		if (!empty($attributes['button_text'] ?? '') && !empty($subscription_link ?? '')) {
 			$link = null;
 			$title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
 
@@ -43,10 +50,10 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 				$title = $title->get_error_message();
 			}
 
-			if (filter_var($data['subscription_link'], FILTER_VALIDATE_EMAIL)) {
-				$link = "mailto:{$data['subscription_link']}?subject={$title}";
-			} else if (filter_var($data['subscription_link'], FILTER_VALIDATE_URL)) {
-				$link = $data['subscription_link'];
+			if (filter_var($subscription_link, FILTER_VALIDATE_EMAIL)) {
+				$link = "mailto:{$subscription_link}?subject={$title}";
+			} else if (filter_var($subscription_link, FILTER_VALIDATE_URL)) {
+				$link = $subscription_link;
 			}
 
 			if ($link) {
