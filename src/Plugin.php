@@ -92,6 +92,7 @@ class Plugin
 				Controller\Category::class,
 				Controller\Offer::class,
 
+				Package\Admin::class,
 				Package\Assets::class,
 				Package\Gutenberg::class,
 				Package\Fetch::class,
