@@ -13,6 +13,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
@@ -52,9 +53,9 @@ if ($is_preview === true) {
 
 $offers = $offer_model->getAll($category_ids, $keywords);
 
-if (empty($offers)) {
-	return '';
-}
+// if (empty($offers)) {
+// 	return '';
+// }
 
 $offer_controller = new OfferController();
 
@@ -71,7 +72,8 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
 ]);
 
-$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+$api_controller = new APIController();
+$api = $api_controller->getApi();
 
 if ($show_filter) {
 	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
@@ -88,8 +90,11 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>">
 
+	<h1>xxxxx</h1>
+
 	<?php if ($show_filter) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
+			<h1>drtfzguhijokl</h1>
 			<?php
 			$api->show_offers_filter($category_ids, $filters);
 			?>
