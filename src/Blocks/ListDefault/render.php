@@ -18,7 +18,6 @@ use SayHello\ShpGantrischAdb\Controller\API as APIController;
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
-//$show_filter = false; // Temporary hard-coding
 $show_filter = (bool) get_field('adb_show_filter');
 
 $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
@@ -53,9 +52,9 @@ if ($is_preview === true) {
 
 $offers = $offer_model->getAll($category_ids, $keywords);
 
-// if (empty($offers)) {
-// 	return '';
-// }
+if (empty($offers) && !$show_filter) {
+	return '';
+}
 
 $offer_controller = new OfferController();
 
@@ -90,11 +89,8 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 ?>
 <div class="<?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>">
 
-	<h1>xxxxx</h1>
-
 	<?php if ($show_filter) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
-			<h1>drtfzguhijokl</h1>
 			<?php
 			$api->show_offers_filter($category_ids, $filters);
 			?>
