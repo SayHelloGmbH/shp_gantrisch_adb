@@ -1,0 +1,9 @@
+.wp-block-shp-gantrisch-adb-offer-map {
+	&__iframe {
+		min-height: 80vh;
+
+		@media screen and (min-height: 48em) {
+			min-height: 60vh;
+		}
+	}
+}
