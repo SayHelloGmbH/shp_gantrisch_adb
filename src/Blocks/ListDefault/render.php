@@ -97,9 +97,6 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 		</div>
 	<?php }
 
-	//$api->show_offers_list($category_ids, $filters);
-	//$api->show_offers_pagination();
-
 	$shown_termine = [];
 	?>
 
@@ -134,7 +131,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 					$srcset[] = "{$images[0]->large}?size=large 800w";
 				}
 
-				// Large images can be absolutely massive
+				// Original images can be absolutely massive
 				// if (filter_var($images[0]->original ?? '', FILTER_VALIDATE_URL) !== false) {
 				// 	$srcset[] = "{$images[0]->original} 2560w";
 				// }
