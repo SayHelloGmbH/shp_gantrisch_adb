@@ -13,11 +13,11 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
-//$show_filter = false; // Temporary hard-coding
 $show_filter = (bool) get_field('adb_show_filter');
 
 $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
@@ -52,7 +52,7 @@ if ($is_preview === true) {
 
 $offers = $offer_model->getAll($category_ids, $keywords);
 
-if (empty($offers)) {
+if (empty($offers) && !$show_filter) {
 	return '';
 }
 
@@ -71,7 +71,8 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 	'initial_count' => (int) ($block['data']['initial_count'] ?? false),
 ]);
 
-$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+$api_controller = new APIController();
+$api = $api_controller->getApi();
 
 if ($show_filter) {
 	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
@@ -95,9 +96,6 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 			?>
 		</div>
 	<?php }
-
-	//$api->show_offers_list($category_ids, $filters);
-	//$api->show_offers_pagination();
 
 	$shown_termine = [];
 	?>
@@ -133,7 +131,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 					$srcset[] = "{$images[0]->large}?size=large 800w";
 				}
 
-				// Large images can be absolutely massive
+				// Original images can be absolutely massive
 				// if (filter_var($images[0]->original ?? '', FILTER_VALIDATE_URL) !== false) {
 				// 	$srcset[] = "{$images[0]->original} 2560w";
 				// }
