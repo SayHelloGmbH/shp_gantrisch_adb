@@ -29,16 +29,16 @@ if (!$offer) {
 $api_controller = new APIController();
 $api = $api_controller->getApi();
 
-dump($offer->park_id);
 
 // Set selected park
-$api->_set_selected_park($offer->park_id);
+//$api->_set_selected_park($offer->park_id);
 
 // Load view
-echo $api->_load_maps_api();
-return;
+// echo $api->_load_maps_api();
+//return;
 
 ?>
+
 <div class="<?php echo $block['shp']['class_names']; ?>">
-	<div class="<?php echo $block['shp']['classNameBase']; ?>__content"><?php echo wpautop($institution); ?></div>
+	<div class="<?php echo $block['shp']['classNameBase']; ?>__content"><?php $api->show_offers_map(); ?></div>
 </div>
