@@ -849,48 +849,59 @@ class ParksMigration {
 
 						break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 18
-					| Accessibility
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 18:
-						
-						$this->api->db->query("DROP TABLE `accessibility`;");
-						$this->api->db->query("DROP TABLE `accessibility_pictogram`;");
+						/*
+						|--------------------------------------------------------------------------
+						| Migrate to version 18
+						| Accessibility
+						|--------------------------------------------------------------------------
+						|
+						*/
+						case 18:
+							
+							$this->api->db->query("DROP TABLE `accessibility`;");
+							$this->api->db->query("DROP TABLE `accessibility_pictogram`;");
+	
+							$this->api->db->query("
+								CREATE TABLE `accessibility`
+								(
+									`accessibility_id` BIGINT UNSIGNED NOT NULL,
+									`offer_id` BIGINT NOT NULL,
+									`ginto_id` VARCHAR(255),
+									`ginto_icon` VARCHAR(1000),
+									`ginto_link` VARCHAR(1000),
+								PRIMARY KEY (accessibility_id,offer_id)
+								) ENGINE=InnoDB CHARACTER SET=utf8;
+							");
+	
+							$this->api->db->query("
+								CREATE TABLE `accessibility_rating`
+								(
+									`accessibility_rating_id` BIGINT NOT NULL,
+									`accessibility_id` BIGINT UNSIGNED NOT NULL,
+									`description_de` VARCHAR(500),
+									`description_fr` VARCHAR(500),
+									`description_it` VARBINARY(500),
+									`description_en` VARCHAR(500),
+									`icon_url` VARCHAR(1000),
+									PRIMARY KEY (accessibility_rating_id)
+								) ENGINE=InnoDB CHARACTER SET=utf8;
+							");
+	
+							$this->api->db->query("ALTER TABLE `accessibility_rating` ADD FOREIGN KEY accessibility_id_idxfk (accessibility_id) REFERENCES accessibility (accessibility_id) ON DELETE CASCADE;");
+							$this->api->db->query("ALTER TABLE `accessibility` ADD FOREIGN KEY offer_id_idxfk_10 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
+	
+							break;
 
-						$this->api->db->query("
-							CREATE TABLE `accessibility`
-							(
-								`accessibility_id` BIGINT UNSIGNED NOT NULL,
-								`offer_id` BIGINT NOT NULL,
-								`ginto_id` VARCHAR(255),
-								`ginto_icon` VARCHAR(1000),
-								`ginto_link` VARCHAR(1000),
-							PRIMARY KEY (accessibility_id,offer_id)
-							) ENGINE=InnoDB CHARACTER SET=utf8;
-						");
-
-						$this->api->db->query("
-							CREATE TABLE `accessibility_rating`
-							(
-								`accessibility_rating_id` BIGINT NOT NULL,
-								`accessibility_id` BIGINT UNSIGNED NOT NULL,
-								`description_de` VARCHAR(500),
-								`description_fr` VARCHAR(500),
-								`description_it` VARBINARY(500),
-								`description_en` VARCHAR(500),
-								`icon_url` VARCHAR(1000),
-								PRIMARY KEY (accessibility_rating_id)
-							) ENGINE=InnoDB CHARACTER SET=utf8;
-						");
-
-						$this->api->db->query("ALTER TABLE `accessibility_rating` ADD FOREIGN KEY accessibility_id_idxfk (accessibility_id) REFERENCES accessibility (accessibility_id) ON DELETE CASCADE;");
-						$this->api->db->query("ALTER TABLE `accessibility` ADD FOREIGN KEY offer_id_idxfk_10 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
-
-						break;
+						/*
+						|--------------------------------------------------------------------------
+						| Migrate to version 19
+						| Linked routes
+						|--------------------------------------------------------------------------
+						|
+						*/
+						case 19:
+							$this->api->db->query("UPDATE `activity` SET `poi` = CONCAT(`poi`, ',');");
+							break;
 
 			}
 

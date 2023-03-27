@@ -48,6 +48,7 @@ OFFER_INSTITUTION
 OFFER_CONTACT
 OFFER_SUBSCRIPTION
 OFFER_POI_LIST
+OFFER_ROUTE_LIST
 OFFER_MAP
 OFFER_KEYWORDS
 
@@ -91,6 +92,12 @@ Check if placeholder is not set [NOTISSET(OFFER_PRODUCT_DETAIL)@start] [NOTISSET
 
 			</li>
 		[ISSET(OFFER_POI_LIST)@stop]
+
+		[ISSET(OFFER_ROUTE_LIST)@start]
+			<li data="tab_6" role="tab" aria-controls="tab_6">
+				__LANG[offer_route_links]__
+			</li>
+		[ISSET(OFFER_ROUTE_LIST)@stop]
 	</ul>
 	<div class="links_wrap">
 		__OFFER_PRINT_LINK__
@@ -181,4 +188,11 @@ Check if placeholder is not set [NOTISSET(OFFER_PRODUCT_DETAIL)@start] [NOTISSET
 			__OFFER_POI_LIST__
 		</div>
 	[ISSET(OFFER_POI_LIST)@stop]
+
+	[ISSET(OFFER_ROUTE_LIST)@start]
+		<div class="tab_content tab_content_6">
+			<h1>__OFFER_TITLE__</h1>
+			__OFFER_ROUTE_LIST__
+		</div>
+	[ISSET(OFFER_ROUTE_LIST)@stop]
 </div>

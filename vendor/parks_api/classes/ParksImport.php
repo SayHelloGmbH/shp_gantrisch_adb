@@ -761,11 +761,11 @@ class ParksImport {
 
 						// POI
 						$fields['poi'] = NULL;
-						if (isset($offer->POI) && !empty($offer->POI->OfferId)) {
+						if (!empty($offer->POI->OfferId)) {
 							foreach ($offer->POI->OfferId as $poi) {
 								$fields['poi'][] = $poi;
 							}
-							$fields['poi'] = implode(',', $fields['poi']);
+							$fields['poi'] = implode(',', $fields['poi']).',';
 						}
 
 						$this->_insert_or_update('activity', $fields, array('offer_id' => $offer_id));

@@ -144,6 +144,7 @@ $lang['offer_minute'] = 'minuto';
 $lang['offer_minutes'] = 'minuti';
 $lang['offer_more_informations'] = "Maggiori informazioni";
 $lang['offer_more_informations_accessibility'] = "Maggiori informazioni sull'accessibilità";
+$lang['offer_route_links'] = "Percorsi nelle vicinanze";
 
 
 /*

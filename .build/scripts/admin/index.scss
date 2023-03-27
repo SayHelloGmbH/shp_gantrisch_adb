@@ -1,0 +1,25 @@
+.shp_gantrisch_adb {
+	&__message {
+		&.is--hidden {
+			display: none;
+		}
+
+		&.is--error {
+			color: red;
+		}
+
+		&.is--success {
+			color: green;
+		}
+	}
+
+	&__button-wrapper {
+		> * {
+			margin: 0;
+
+			+ * {
+				margin-top: 1em;
+			}
+		}
+	}
+}

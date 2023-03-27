@@ -9,6 +9,7 @@
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
 
 	&__figure {
+		position: relative;
 		padding: 0;
 		margin: 0;
 		background-color: var(
@@ -24,6 +25,18 @@
 			justify-content: center;
 			align-items: center;
 		}
+	}
+
+	&__figcaption {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 0.35em 0.5em;
+		color: var(--wp--preset--color--white);
+		font-style: normal;
+		font-size: 0.75rem;
+		font-weight: 500;
 	}
 
 	&__image {

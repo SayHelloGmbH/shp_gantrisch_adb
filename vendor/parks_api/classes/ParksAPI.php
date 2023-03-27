@@ -1669,9 +1669,11 @@ class ParksAPI {
 			18 => 'pnl',
 			19 => 'pjv',
 			20 => 'npf',
-			27 => 'npn',
-			28 => 'nps',
+			27 => 'nps',
+			28 => 'npn',
 			33 => 'sar',
+			34 => 'pdj',
+			37 => 'wja',
 			43 => 'cal',
 			48 => 'pvt'
 		);
@@ -1727,6 +1729,7 @@ class ParksAPI {
 			'OFFER_INSTITUTION',
 			'OFFER_CONTACT',
 			'OFFER_POI_LIST',
+			'OFFER_ROUTE_LIST',
 			'OFFER_EVENT_LOCATION',
 			'OFFER_EVENT_LOCATION_SHORT',
 			'OFFER_EVENT_LOCATION_DETAILS',

@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSubscription;
 
-use WP_Block;
-
 class Block
 {
 	public function run()
