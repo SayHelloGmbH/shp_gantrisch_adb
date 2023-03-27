@@ -219,6 +219,7 @@ class ParksImport {
 					$fields['contact'] = $this->_address($offer->Contact);
 					$fields['contact_is_park_partner'] = (int)$offer->Contact->ParkPartner;
 					$fields['is_hint'] = (int)$offer->IsHint;
+					$fields['is_hint'] = !empty($fields['is_hint']) ? intval($fields['is_hint']) : 0;
 					$fields['barrier_free'] = (int)$offer->BarrierFree;
 					$fields['learning_opportunity'] = (int)$offer->LearningOpportunity;
 					$fields['child_friendly'] = (int)$offer->ChildFriendly;

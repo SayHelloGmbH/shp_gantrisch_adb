@@ -19,5 +19,6 @@
 			"link": false
 		}
 	},
-	"editorStyle": ["file:./assets/dist/styles/editor/index.min.css"]
+	"editorStyle": ["file:./assets/dist/styles/editor/index.min.css"],
+	"style": ["file:./assets/dist/styles/view/index.min.css"]
 }

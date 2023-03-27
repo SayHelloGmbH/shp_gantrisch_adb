@@ -145,7 +145,7 @@ $lang['offer_minute'] = 'minute';
 $lang['offer_minutes'] = 'minutes';
 $lang['offer_more_informations'] = "More informations";
 $lang['offer_more_informations_accessibility'] = "More information about accessibility";
-$lang['offer_route_links'] = "Routes near";
+$lang['offer_route_links'] = "Routes in the vicinity";
 
 
 /*
