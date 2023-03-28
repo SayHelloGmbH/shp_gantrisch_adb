@@ -901,6 +901,7 @@ class ParksMigration {
 						*/
 						case 19:
 							$this->api->db->query("UPDATE `activity` SET `poi` = CONCAT(`poi`, ',');");
+							$this->api->db->query("ALTER TABLE `offer` CHANGE `is_hint` `is_hint` TINYINT(1)  NOT NULL  DEFAULT 0;");
 							break;
 
 			}

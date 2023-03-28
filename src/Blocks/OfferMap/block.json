@@ -21,10 +21,11 @@
 		}
 	},
 	"supports": {
-		"align": false,
+		"align": ["wide", "full"],
 		"html": false,
 		"multiple": false
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
+	"style": "file:./assets/dist/styles/view/index.min.css",
 	"render": "file:./render.php"
 }

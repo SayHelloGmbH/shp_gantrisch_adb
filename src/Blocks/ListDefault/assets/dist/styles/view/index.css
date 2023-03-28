@@ -1,0 +1,6 @@
+.wp-block-acf-shp-adb-list-default__filter .filter input::placeholder {
+  opacity: 0.75 !important;
+}
+.wp-block-acf-shp-adb-list-default__filter .filter input:focus, .wp-block-acf-shp-adb-list-default__filter .filter input:active, .wp-block-acf-shp-adb-list-default__filter .filter input:hover {
+  color: white !important;
+}
