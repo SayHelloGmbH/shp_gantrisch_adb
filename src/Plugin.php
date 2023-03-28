@@ -115,7 +115,7 @@ class Plugin
 				Blocks\OfferEventLocation\Block::class,
 				Blocks\OfferImages\Block::class,
 				Blocks\OfferLinks\Block::class,
-				Blocks\OfferMap\Block::class, // In development 30.11.2022
+				// Blocks\OfferMap\Block::class, // In development 30.11.2022
 				// Blocks\OfferInfrastructure\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferPrice\Block::class, // In details accordion 17.11.2022
 				// Blocks\OfferKeywords\Block::class, // Not for output on the site - Raphael 22.9.2022
