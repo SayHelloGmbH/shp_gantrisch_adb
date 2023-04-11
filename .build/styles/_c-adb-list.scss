@@ -252,7 +252,9 @@
 
 				input[name='filter[submit]'] {
 					background-color: var(--wp--preset--color--black);
+					font-size: 1.25em;
 					font-weight: 500;
+					padding: 0.3em 0.5em;
 				}
 
 				.form_group h4 {
@@ -320,6 +322,10 @@
 							}
 						}
 					}
+				}
+
+				.reset_link {
+					font-weight: 500;
 				}
 			}
 		}
