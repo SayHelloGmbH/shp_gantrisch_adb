@@ -2,14 +2,14 @@
 	background-color: var(--wp--preset--color--softgrey);
 
 	&.alignwide {
-		padding: 0;
+		padding: 0 1rem;
+
+		@media screen and (min-width: 80em) {
+			padding: 0;
+		}
 	}
 
 	&__iframe {
-		min-height: 80vh;
-
-		@media screen and (min-height: 48em) {
-			min-height: 60vh;
-		}
+		height: 56.625rem;
 	}
 }

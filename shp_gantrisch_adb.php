@@ -4,7 +4,7 @@
  * Plugin URI:        https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/
  * Description:       Plugin for the output of offers from the Swiss Parks database.
  * Author:            Say Hello GmbH
- * Version:           1.6.2
+ * Version:           1.6.3
  * Author URI:        https://sayhello.ch/
  * Text Domain:       shp_gantrisch_adb
  * Domain Path:       /languages
