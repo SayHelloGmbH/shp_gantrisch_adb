@@ -166,8 +166,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 @supports (aspect-ratio: 3/2) {
   .c-adb-list .c-adb-list__entry-image {
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     width: 100% !important;
     height: 100% !important;
   }
