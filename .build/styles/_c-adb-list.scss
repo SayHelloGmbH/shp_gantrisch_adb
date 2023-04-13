@@ -62,6 +62,15 @@
 	padding: var(--block--padding-top) var(--block--padding-right)
 		var(--block--padding-bottom) var(--block--padding-left);
 
+	> * {
+		margin-top: 0;
+		margin-bottom: 0;
+
+		& + * {
+			margin-top: var(--block--entries-row-gap);
+		}
+	}
+
 	.c-adb-list {
 		&__entry {
 			position: relative;
@@ -226,6 +235,98 @@
 
 			@media screen and (min-width: 80rem) {
 				grid-template-columns: repeat(4, minmax(0, 1fr));
+			}
+		}
+
+		&__filter {
+			*:not(i):not(.icon):not(.search_icon) {
+				font-family: inherit !important;
+			}
+
+			.filter {
+				input[name='filter[search]'] {
+					font-weight: 400;
+					color: var(--wp--preset--color--white);
+					background-color: var(--wp--preset--color--softpetrol);
+				}
+
+				input[name='filter[submit]'] {
+					background-color: var(--wp--preset--color--black);
+					font-size: 1.25em;
+					font-weight: 500;
+					padding: 0.3em 0.5em;
+				}
+
+				.form_group h4 {
+					font-size: 1rem;
+					i,
+					&:before {
+						top: 50%;
+						transform: translateY(-50%);
+					}
+				}
+
+				.range_wrap {
+					font-weight: 400;
+
+					.range {
+						.ui-slider-handle {
+							border-color: var(--wp--preset--color--softpetrol);
+						}
+
+						.ui-slider-range {
+							background-color: var(
+								--wp--preset--color--softpetrol
+							);
+						}
+					}
+
+					.range_text {
+						opacity: 0.6;
+					}
+				}
+
+				.form_element {
+					&.search {
+						.icon,
+						.search_icon {
+							top: 50%;
+							transform: translateY(-50%);
+						}
+
+						.search_icon {
+							font-size: 1em;
+							right: 0.75em;
+							transform: translateY(-50%) scaleX(-1);
+						}
+					}
+
+					label[for='date_start'] {
+						font-size: 1em;
+					}
+
+					&.date_wrap {
+						font-size: 1rem;
+						input {
+							font-size: 1em;
+							padding: 5px 25px 5px 11px;
+							border: 2px solid #dee2de;
+							color: var(--wp--preset--color--black);
+							background-color: var(--wp--preset--color--white);
+
+							&:active,
+							&:hover {
+								color: var(
+									--wp--preset--color--black
+								) !important;
+							}
+						}
+					}
+				}
+
+				.reset_link {
+					font-weight: 500;
+				}
 			}
 		}
 

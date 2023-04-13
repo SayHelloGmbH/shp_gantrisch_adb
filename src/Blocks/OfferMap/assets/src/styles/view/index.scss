@@ -1,9 +1,15 @@
 .wp-block-shp-gantrisch-adb-offer-map {
-	&__iframe {
-		min-height: 80vh;
+	background-color: var(--wp--preset--color--softgrey);
 
-		@media screen and (min-height: 48em) {
-			min-height: 60vh;
+	&.alignwide {
+		padding: 0 1rem;
+
+		@media screen and (min-width: 80em) {
+			padding: 0;
 		}
+	}
+
+	&__iframe {
+		height: 56.625rem;
 	}
 }
