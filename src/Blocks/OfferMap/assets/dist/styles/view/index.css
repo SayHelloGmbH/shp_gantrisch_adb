@@ -1,4 +1,6 @@
 .wp-block-shp-gantrisch-adb-offer-map {
+  --adb--single-map--height: 583px;
+  --adb--single-map--routes-height: 230px;
   background-color: var(--wp--preset--color--softgrey);
 }
 .wp-block-shp-gantrisch-adb-offer-map.alignwide {
@@ -11,5 +13,8 @@
   }
 }
 .wp-block-shp-gantrisch-adb-offer-map__iframe {
-  min-height: 65rem;
+  min-height: var(--adb--single-map--height);
+}
+.wp-block-shp-gantrisch-adb-offer-map__iframe--route {
+  min-height: calc(var(--adb--single-map--height) + var(--adb--single-map--routes-height));
 }
