@@ -43,7 +43,7 @@
   --block--entry-background: var(--wp--preset--color--white);
   --block--entry-padding-top: 25px;
   --block--entry-padding-right: 20px;
-  --block--entry-padding-bottom: 20px;
+  --block--entry-padding-bottom: 0;
   --block--entry-padding-left: 40px;
   --block--entry-button-background: var(--wp--preset--color--dark);
   --block--entry-button-color: var(--wp--preset--color--white);
@@ -141,7 +141,7 @@ body.page .c-adb-list .entries_wrap.listing .listing_entry.is--hidden {
 }
 .c-adb-list .entries_wrap.listing .listing_entry .c-adb-list__entry-buttonwrapper {
   --stack-size: auto;
-  padding-top: var(--block--entry-padding-bottom);
+  transform: translateX(var(--block--entry-padding-right));
 }
 .c-adb-list .entries_wrap.listing .listing_entry .cf {
   display: none;
