@@ -108,6 +108,48 @@ document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry .en
 	addLinkButton(element);
 });
 
+document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry .tipp.parkpartner').forEach((element) => {
+	element.closest('.listing_entry').classList.add('is--parkpartner');
+});
+
+document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry .tipp:not(.parkpartner)').forEach((element) => {
+	element.closest('.listing_entry').classList.add('is--tipp');
+});
+
+// // Get all the list items
+// const listItems = document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry');
+
+// // Convert NodeList to an Array
+// const listItemsArray = Array.from(listItems);
+
+// // Sort the list items array
+// listItemsArray.sort((a, b) => {
+// 	// Check if both items have the is--parkpartner class
+// 	const aHasClass = a.classList.contains('is--parkpartner');
+// 	const bHasClass = b.classList.contains('is--parkpartner');
+
+// 	// If both have the class or neither have the class, sort based on document order
+// 	if (aHasClass === bHasClass) {
+// 		return 0;
+// 	}
+
+// 	// If a has the class and b doesn't, move a to the front of the list
+// 	if (aHasClass) {
+// 		return -1;
+// 	}
+
+// 	// If b has the class and a doesn't, move b to the front of the list
+// 	if (bHasClass) {
+// 		return 1;
+// 	}
+// });
+
+// // Append the sorted list items back to the parent element
+// const parentElement = document.querySelector('.wp-block-acf-shp-adb-list-default .listing');
+// listItemsArray.forEach((item) => {
+// 	parentElement.appendChild(item);
+// });
+
 function throttle(fn, wait) {
 	var time = Date.now();
 	return function () {
