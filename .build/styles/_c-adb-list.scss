@@ -7,7 +7,7 @@
 	--block--entry-background: var(--wp--preset--color--white);
 	--block--entry-padding-top: 25px;
 	--block--entry-padding-right: 20px;
-	--block--entry-padding-bottom: 20px;
+	--block--entry-padding-bottom: 0;
 	--block--entry-padding-left: 40px;
 
 	--block--entry-button-background: var(--wp--preset--color--dark);
@@ -120,7 +120,7 @@
 
 			.c-adb-list__entry-buttonwrapper {
 				--stack-size: auto;
-				padding-top: var(--block--entry-padding-bottom);
+				transform: translateX(var(--block--entry-padding-right));
 			}
 
 			.cf {
