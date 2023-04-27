@@ -106,6 +106,14 @@
 			@extend .h-stack;
 			--stack-size: 20px;
 
+			&.is--hidden {
+				body.page & {
+					display: none;
+					max-height: 0;
+					overflow: hidden;
+				}
+			}
+
 			.categories {
 				display: none;
 			}
