@@ -34,7 +34,7 @@ if (!empty($keywords) && !$show_filter) {
 }
 
 // Don't show filter if keywords or categories are set
-if (!empty($filters['keywords'] ?? '') && !empty($category_ids)) {
+if (!empty($filters['keywords'] ?? '') || !empty($category_ids)) {
 	$show_filter = false;
 }
 
