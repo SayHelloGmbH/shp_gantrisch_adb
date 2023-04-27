@@ -50,27 +50,18 @@ const makeVisible = (button, elements) => {
  */
 const blocks = document.querySelectorAll(`.${classNameBase}`);
 
-const initial_count = Math.max(
-	parseInt(shp_gantrisch_adb_block_list_default.initial_count),
-	1
-);
+const initial_count = Math.max(parseInt(shp_gantrisch_adb_block_list_default.initial_count), 1);
 
 blocks.forEach((block) => {
-	const elements_on = block.querySelectorAll(
-		`.${classNameBase}__entry:nth-child(-n+${initial_count})`
-	);
+	const elements_on = block.querySelectorAll(`.${classNameBase}__entry:nth-child(-n+${initial_count})`);
 
-	const elements_off = block.querySelectorAll(
-		`.${classNameBase}__entry:nth-child(n+${initial_count + 1})`
-	);
+	const elements_off = block.querySelectorAll(`.${classNameBase}__entry:nth-child(n+${initial_count + 1})`);
 
 	elements_on.forEach((element) => {
 		element.classList.remove('is--hidden');
 	});
 
-	const entry_before = block.querySelector(
-		`.${classNameBase}__entry:nth-child(13)`
-	);
+	const entry_before = block.querySelector(`.${classNameBase}__entry:nth-child(13)`);
 
 	if (!entry_before) {
 		return;
@@ -78,10 +69,7 @@ blocks.forEach((block) => {
 
 	const button_wrapper = document.createElement('div');
 
-	button_wrapper.classList.add(
-		`${classNameBase}__loadbutton`,
-		`c-adb-list__loadbutton`
-	);
+	button_wrapper.classList.add(`${classNameBase}__loadbutton`, `c-adb-list__loadbutton`);
 
 	if (!!shp_gantrisch_adb_block_list_default) {
 		const button = document.createElement('button');
@@ -96,6 +84,28 @@ blocks.forEach((block) => {
 
 		entry_before.parentNode.insertBefore(button_wrapper, entry_before);
 	}
+});
+
+const addLinkButton = (element) => {
+	const link = document.createElement('a');
+	const wrapper = document.createElement('div');
+	const classNameBase = element.closest('[data-class-name-base]').dataset.classNameBase;
+	const button_text = element.closest('[data-button-text]').dataset.buttonText;
+	const link_text = document.createTextNode(button_text);
+
+	wrapper.classList.add(`${classNameBase}__entry-buttowrapper`, `c-adb-list__entry-buttonwrapper`);
+	link.classList.add(`${classNameBase}__entry-button`, `c-adb-list__entry-button`);
+
+	link.appendChild(link_text);
+	link.setAttribute('href', element.getAttribute('href'));
+
+	wrapper.appendChild(link);
+
+	element.parentNode.insertBefore(wrapper, element.nextSibling);
+};
+
+document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry .entry_link').forEach((element) => {
+	addLinkButton(element);
 });
 
 function throttle(fn, wait) {
