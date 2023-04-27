@@ -5,6 +5,9 @@
 	--block--entries-row-gap: 1.5rem;
 
 	--block--entry-background: var(--wp--preset--color--white);
+	--block--entry-padding-top: 25px;
+	--block--entry-padding-right: 20px;
+	--block--entry-padding-bottom: 20px;
 	--block--entry-padding-left: 40px;
 
 	--block--entry-button-background: var(--wp--preset--color--dark);
@@ -24,6 +27,8 @@
 
 	--block--entry-title-line-height: 1.222222;
 	--block--entry-title-size: 18px;
+	--block--entry-description-size: 16px;
+	--block--entry-description-line-height: 1.5;
 	--block--entry-header-transition: all 300ms ease;
 	--block--entry-title-weight: 700;
 
@@ -31,9 +36,7 @@
 	--block--entry-postit-line-height: calc(26 / 16);
 
 	--block--entry-hint-background-color: var(--e-global-color-accent);
-	--block--entry-parkpartner-background-color: var(
-		--wp--preset--color--softgrey
-	);
+	--block--entry-parkpartner-background-color: var(--wp--preset--color--softgrey);
 
 	--block--loadbutton-padding: var(--wp--custom--spacing--unit, 1rem);
 	--block--loadbutton-background: var(--wp--preset--color--white);
@@ -59,8 +62,7 @@
 		--block--entries-row-gap: 50px;
 	}
 
-	padding: var(--block--padding-top) var(--block--padding-right)
-		var(--block--padding-bottom) var(--block--padding-left);
+	padding: var(--block--padding-top) var(--block--padding-right) var(--block--padding-bottom) var(--block--padding-left);
 
 	> * {
 		margin-top: 0;
@@ -68,6 +70,140 @@
 
 		& + * {
 			margin-top: var(--block--entries-row-gap);
+		}
+	}
+
+	.entries_wrap.listing {
+		list-style: none;
+		gap: var(--block--entries-row-gap);
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+
+		@media screen and (min-width: 48rem) {
+			display: grid;
+			gap: var(--block--entries-column-gap) var(--block--entries-row-gap);
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		@media screen and (min-width: 80rem) {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		#offer_total {
+			display: none;
+		}
+
+		.listing_entry {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			hyphens: auto;
+			word-break: break-word;
+			background-color: var(--block--entry-background);
+			padding: var(--block--entry-padding-top) var(--block--entry-padding-right) var(--block--entry-padding-bottom) var(--block--entry-padding-left);
+			transition: all 300ms ease;
+			@extend .h-stack;
+			--stack-size: 20px;
+
+			&.is--hidden {
+				body.page & {
+					display: none;
+					max-height: 0;
+					overflow: hidden;
+				}
+			}
+
+			.categories {
+				display: none;
+			}
+
+			.c-adb-list__entry-buttonwrapper {
+				--stack-size: auto;
+				padding-top: var(--block--entry-padding-bottom);
+			}
+
+			.cf {
+				display: none;
+			}
+
+			.date {
+				display: block;
+				--stack-size: 0;
+			}
+
+			.date,
+			.institution_location {
+				text-transform: none;
+				font-size: var(--block--entry-meta-size);
+				line-height: var(--block--entry-meta-line-height);
+				font-weight: var(--block--entry-meta-weight);
+				color: var(--block--entry-meta-color);
+
+				strong {
+					font-weight: inherit;
+				}
+			}
+
+			.institution_location {
+				--stack-size: 10px;
+			}
+
+			.pictures {
+				position: static;
+				float: none;
+				width: 100%;
+				margin: 0;
+				aspect-ratio: 3/2;
+				overflow: hidden;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+				}
+			}
+
+			.description {
+				@extend .h-stack;
+				--stack-size: 20px;
+
+				h3 {
+					font-size: var(--block--entry-title-size);
+					line-height: var(--block--entry-title-line-height);
+					font-weight: var(--block--entry-title-weight);
+
+					a {
+						text-decoration: none !important;
+						color: currentColor !important;
+						font-weight: inherit !important;
+						font-size: 1em;
+					}
+				}
+			}
+
+			.route_condition,
+			.offer_description {
+				font-size: var(--block--entry-description-size);
+				line-height: var(--block--entry-description-line-height);
+			}
+
+			.tipp {
+				display: inline-block;
+				position: absolute;
+				top: 0;
+				left: var(--block--entry-padding-left);
+				transform: translateY(-50%);
+				padding: 0.25em 0.5em;
+				font-weight: 500;
+				transform: translateY(-50%);
+				pointer-events: none;
+				font-size: var(--block--entry-postit-font-size);
+				line-height: var(--block--entry-postit-line-height);
+				background-color: var(--block--entry-hint-background-color);
+				text-transform: none;
+			}
 		}
 	}
 
@@ -98,9 +234,7 @@
 				text-decoration: none !important;
 				padding: var(--block--entry-button-padding);
 				color: var(--block--entry-button-color) !important;
-				background-color: var(
-					--block--entry-button-background
-				) !important;
+				background-color: var(--block--entry-button-background) !important;
 				font-size: var(--block--entry-button-size) !important;
 				line-height: var(--block--entry-button-line-height) !important;
 				font-weight: var(--block--entry-button-weight) !important;
@@ -196,9 +330,7 @@
 			}
 
 			&-partnerlabel {
-				background-color: var(
-					--block--entry-parkpartner-background-color
-				);
+				background-color: var(--block--entry-parkpartner-background-color);
 			}
 
 			&-hintlabel {
@@ -228,8 +360,7 @@
 
 			@media screen and (min-width: 48rem) {
 				display: grid;
-				gap: var(--block--entries-column-gap)
-					var(--block--entries-row-gap);
+				gap: var(--block--entries-column-gap) var(--block--entries-row-gap);
 				grid-template-columns: repeat(3, minmax(0, 1fr));
 			}
 
@@ -275,9 +406,7 @@
 						}
 
 						.ui-slider-range {
-							background-color: var(
-								--wp--preset--color--softpetrol
-							);
+							background-color: var(--wp--preset--color--softpetrol);
 						}
 					}
 
@@ -316,9 +445,7 @@
 
 							&:active,
 							&:hover {
-								color: var(
-									--wp--preset--color--black
-								) !important;
+								color: var(--wp--preset--color--black) !important;
 							}
 						}
 					}
@@ -344,9 +471,7 @@
 			button {
 				border: var(--block--loadbutton-border) !important;
 				color: var(--block--loadbutton-color) !important;
-				background-color: var(
-					--block--loadbutton-background
-				) !important;
+				background-color: var(--block--loadbutton-background) !important;
 				font-size: var(--block--loadbutton-size) !important;
 				line-height: var(--block--loadbutton-line-height) !important;
 				font-weight: var(--block--loadbutton-weight) !important;
