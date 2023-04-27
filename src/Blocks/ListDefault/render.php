@@ -24,11 +24,6 @@ $offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
 
 $category_ids = $block['data']['adb_categories'] ?? [];
 
-// If filter is visible, don't constrain category selection
-if ($show_filter) {
-	$category_ids = [];
-}
-
 $filters = [];
 
 $keywords = $block['data']['adb_keywords'] ?? '';
@@ -36,6 +31,11 @@ $keywords = $block['data']['adb_keywords'] ?? '';
 if (!empty($keywords) && !$show_filter) {
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
+}
+
+// Don't show filter if keywords or categories are set
+if (!empty($filters['keywords'] ?? '') && !empty($category_ids)) {
+	$show_filter = false;
 }
 
 if ($is_preview === true) {
@@ -50,11 +50,11 @@ if ($is_preview === true) {
 	return;
 }
 
-$offers = $offer_model->getAll($category_ids, $keywords);
+// $offers = $offer_model->getAll($category_ids, $keywords);
 
-if (empty($offers) && !$show_filter) {
-	return '';
-}
+// if (empty($offers) && !$show_filter) {
+// 	return '';
+// }
 
 $offer_controller = new OfferController();
 
