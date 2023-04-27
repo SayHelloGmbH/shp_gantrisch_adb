@@ -691,10 +691,10 @@ class Offer
 	}
 
 	/**
-	 * Pass by reference. Clean and convert the input to a trimmed array
+	 * Pass by reference. Clean and convert the input to an imploded trimmed array
 	 *
 	 * @param mixed $keywords
-	 * @return array
+	 * @return string
 	 */
 	public function prepareKeywords($keywords)
 	{
@@ -707,6 +707,14 @@ class Offer
 			array_walk($keywords, function (&$keyword) {
 				preg_replace('/([\r\n\t])/', '', trim($keyword));
 			});
+		}
+
+		if (is_array($keywords) && count($keywords) > 0) {
+			$keywords = array_unique($keywords);
+		}
+
+		if (is_array($keywords)) {
+			$keywords = implode(' ', $keywords);
 		}
 
 		return $keywords;
