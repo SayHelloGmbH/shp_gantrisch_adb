@@ -118,7 +118,7 @@ class Offer
 
 	public function getSinglePageID()
 	{
-		return (int) $this->single_page ?? null;
+		return (int) ($this->single_page ?? null);
 	}
 
 	public function getRequestedOfferID()
