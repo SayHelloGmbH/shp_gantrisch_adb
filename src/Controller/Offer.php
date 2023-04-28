@@ -110,8 +110,12 @@ class Offer
 		return $offer_title;
 	}
 
-	public function singleUrl(array $offer)
+	public function singleUrl($offer_id)
 	{
+
+		if (is_array($offer_id)) {
+			$offer_id = $offer_id['offer_id'] ?? null;
+		}
 
 		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
 
@@ -131,7 +135,7 @@ class Offer
 			'%s%s/%s/',
 			$permalink,
 			$rewrite_key,
-			$offer['offer_id']
+			$offer_id
 		);
 	}
 
