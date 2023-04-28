@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use DOMDocument;
+use DOMNodeList;
 use DOMXPath;
 
 class Block
@@ -12,7 +13,7 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock'], 10, 2);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock']);
 	}
 
 	public function register()
@@ -166,9 +167,14 @@ class Block
 		endif;
 	}
 
-	public function renderBlock($html, $block)
+	/**
+	 * Modify the link hrefs of the list entries.
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	public function renderBlock($html)
 	{
-		return $html;
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
@@ -176,21 +182,28 @@ class Block
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
 
-		dump($entries, 1);
+		if (!$entries instanceof DOMNodeList || $entries->length === 0) {
+			return $html;
+		}
 
 		$controller = new OfferController();
 
 		foreach ($entries as $entry) {
+			// get id attribute from $entry: remove offer_ prefix
+			$offer_id = (int) substr($entry->getAttribute('id'), 6);
+			if (!$offer_id) {
+				continue;
+			}
 
-			// get id attribute from $entry
-			// $offer_id = $entry->getAttribute('id');
-
-			$offer_id = 123;
 			$url = $controller->singleUrl($offer_id);
-			die($url);
+
+			// get all descendants with an href attribute
+			$links = $xpath->query('.//@href', $entry);
+			foreach ($links as $link) {
+				// replace href attribute with url to single offer page
+				$link->nodeValue = $url;
+			}
 		}
-
-
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
