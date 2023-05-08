@@ -175,6 +175,11 @@ class Block
 	 */
 	public function renderBlock($html)
 	{
+
+		if (empty($html)) {
+			return $html;
+		}
+
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
