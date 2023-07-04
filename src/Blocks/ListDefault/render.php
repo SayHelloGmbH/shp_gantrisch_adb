@@ -29,15 +29,15 @@ $filters = [];
 $keywords = $block['data']['adb_keywords'] ?? '';
 
 // Don't show filter if keywords or categories are set
-if (!empty($keywords) || !empty($category_ids)) {
-	$show_filter = false;
-}
+// if (!empty($keywords) || !empty($category_ids)) {
+// 	$show_filter = false;
+// }
 
+// if (!empty($keywords)) {
 if (!empty($keywords) && !$show_filter) {
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
 }
-
 
 if ($is_preview === true) {
 ?>
@@ -102,7 +102,8 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 	$api->show_offers_list($category_ids, $filters);
 
-	if (false) :
+	if (true) :
+		// if (false) :
 
 	?>
 
