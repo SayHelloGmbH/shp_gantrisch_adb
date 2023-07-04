@@ -71,9 +71,6 @@
 .wp-block-shp-gantrisch-adb-offer-images .swiper-button-next {
   right: 1rem;
 }
-.wp-block-shp-gantrisch-adb-offer-images .swiper-button-disabled {
-  opacity: 0 !important;
-}
 .wp-block-shp-gantrisch-adb-offer-images .swiper-wrapper {
   align-items: stretch;
   margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);

@@ -1,5 +1,7 @@
 <?php
 
+use function Crontrol\Event\run;
+
 $offer_images = shp_gantrisch_adb_get_instance()->Model->Offer->getImages();
 
 if (empty($offer_images)) {
@@ -32,7 +34,8 @@ if (count($offer_images) > 1) {
 					<figure class="<?php echo $block['shp']['classNameBase']; ?>__figure">
 						<?php
 						printf(
-							'<img src="%1$s" alt="%2$s" loading="lazy" class="%3$s__image" />%4$s',
+							'<a href="%1$s" data-fancybox="offer-images"><img src="%2$s" alt="%3$s" loading="lazy" class="%4$s__image" /></a>%5$s',
+							$image->original,
 							$image->$image_size,
 							$offer_title,
 							$block['shp']['classNameBase'],

@@ -6,3 +6,11 @@
 // Shared styles over multiple blocks
 @import './c-adb-list';
 @import './c-offer-detail-box';
+
+body.admin-bar .fancybox__toolbar.is-absolute {
+	top: var(--wp-admin--admin-bar--height);
+}
+
+[data-fancybox] {
+	cursor: pointer;
+}
