@@ -1,7 +1,5 @@
 <?php
 
-use function Crontrol\Event\run;
-
 $offer_images = shp_gantrisch_adb_get_instance()->Model->Offer->getImages();
 
 if (empty($offer_images)) {
