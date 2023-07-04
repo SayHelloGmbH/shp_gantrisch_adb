@@ -1,6 +1,6 @@
 .wp-block-shp-gantrisch-adb-offer-images {
 	--shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
-	--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 3/2;
+	--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 480/320;
 
 	// Prop name makes use clearer. It's actually the bottom margin on .swiper-wrapper
 	--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top: 2rem;
@@ -12,12 +12,9 @@
 		position: relative;
 		padding: 0;
 		margin: 0;
-		background-color: var(
-			--shp-block--gantrisch-adb-offer-images--figure--background-color
-		);
-		aspect-ratio: var(
-			--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio
-		);
+		background-color: var(--shp-block--gantrisch-adb-offer-images--figure--background-color);
+		aspect-ratio: var(--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio);
+		overflow: hidden;
 
 		&--empty {
 			display: flex;
@@ -41,8 +38,10 @@
 
 	&__image {
 		display: block;
-		width: 100%;
-		height: auto;
+		object-fit: contain;
+		object-position: center;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
 	.swiper-pagination {
@@ -57,22 +56,38 @@
 		background: currentColor;
 
 		&-active {
-			color: var(
-				--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color
-			);
+			color: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color);
 		}
 	}
 
 	.swiper-pagination-bullets {
 		bottom: 0;
-		color: var(
-			--shp-block--gantrisch-adb-offer-images--swiper-bullet--color
-		);
+		color: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet--color);
+	}
+
+	.swiper-button-prev,
+	.swiper-button-next {
+		width: 40px;
+		height: 40px;
+		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iNDAiPjxwYXRoIGQ9Im01NjAuNjY3LTIyOS4zMzQtNTkuMzMzLTYwLjMzMkw2NTIuNjY4LTQ0MUgxNDYuNjY3di04NGg1MDYuMDAxTDUwMC42NjctNjc3IDU2MC03MzYuNjY3bDI1NCAyNTQtMjUzLjMzMyAyNTMuMzMzWiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
+		filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+	}
+
+	.swiper-button-prev {
+		transform: rotate(180deg);
+		left: 1rem;
+	}
+
+	.swiper-button-next {
+		right: 1rem;
+	}
+
+	.swiper-button-disabled {
+		opacity: 0 !important;
 	}
 
 	.swiper-wrapper {
-		margin-bottom: var(
-			--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top
-		);
+		align-items: stretch;
+		margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);
 	}
 }
