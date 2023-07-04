@@ -102,8 +102,7 @@ $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all
 
 	$api->show_offers_list($category_ids, $filters);
 
-	if (true) :
-		// if (false) :
+	if (false) :
 
 	?>
 
