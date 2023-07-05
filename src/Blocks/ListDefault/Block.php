@@ -229,7 +229,7 @@ class Block
 					$hint_element = $document->createElement('div');
 					$hint_element->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit");
 					$hint_element->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
-					$entry->setAttribute('data-hint', 'true');
+					$entry->setAttribute('data-parkpartner', 'true');
 					$entry->insertBefore($hint_element, $entry->firstChild);
 				}
 			}
@@ -240,6 +240,7 @@ class Block
 		if ($tip_tags->length) {
 			foreach ($tip_tags as $tip_tag) {
 				$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit");
+				$tip_tag->parentNode->setAttribute('data-hint', 'true');
 			}
 		}
 
