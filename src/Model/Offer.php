@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
+use DOMNodeList;
 use ParksAPI;
 use stdClass;
 use WP_Error;
@@ -592,6 +593,15 @@ class Offer
 			}
 		}
 
+		/**
+		 * Custom sorting: hints first, then sort by date, then sort
+		 * the remaining entries in a random order.
+		 *
+		 * Warning 5.7.2023: this sort function is also applied through
+		 * DomDocument manipulation in the render_block filter in
+		 * the list block.
+		 */
+
 		$offers_sorted = [];
 		$exclude_from_rest = [];
 
@@ -855,5 +865,81 @@ class Offer
 		}
 
 		return $time_required;
+	}
+
+	/**
+	 * This allows us to pass in an HTML DOM node list
+	 * of offers and sort them, first with "hints" at
+	 * the top of the list, then by date, then the remainder
+	 * in a random ordre.
+	 *
+	 * @param DOMNodeList $nodes
+	 * @return array
+	 */
+	public function sortOfferDomNodes(DOMNodeList $nodes)
+	{
+		$nodes_sorted = [];
+		$exclude_from_rest = [];
+
+		// Pull hints to the top of the list
+		foreach ($nodes as $node) {
+			if ($node->getAttribute('data-hint') === 'true') {
+				$node_id = $node->getAttribute('id');
+				$nodes_sorted["offer{$node_id}"] = $node;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($node_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $node_id;
+				}
+			}
+		}
+
+		$nodes_with_dates = [];
+		foreach ($nodes as $node) {
+			$timestamps = $this->getDates($node, 'integer');
+			if ((int) $timestamps['date_from']) {
+				$node_id = $node->getAttribute('id');
+				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($node_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $node_id;
+				}
+			}
+		}
+
+		if (!empty($nodes_with_dates)) {
+			ksort($nodes_with_dates);
+			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {
+				$nodes_sorted["offer{$node_with_date_key}"] = $node_with_date_value;
+			}
+		}
+
+		unset($nodes_with_dates);
+
+		// Fill the array with the remaining entries
+		$the_rest = [];
+		$the_rest_iterator = 0;
+		foreach ($nodes as $node) {
+
+			// Exclude entries from $exclude_from_rest
+			if (in_array($node->getAttribute('id'), $exclude_from_rest)) {
+				continue;
+			}
+
+			$the_rest[] = $node;
+			$the_rest_iterator++;
+		}
+
+		if (!empty($the_rest)) {
+			shuffle($the_rest);
+			foreach ($the_rest as $the_rest_entry) {
+				if (!array_key_exists("offer{$the_rest_entry->getAttribute('id')}", $nodes_sorted)) {
+					$nodes_sorted["offer{$the_rest_entry->getAttribute('id')}"] = $the_rest_entry;
+				}
+			}
+		}
+
+		return array_values($nodes_sorted);
 	}
 }

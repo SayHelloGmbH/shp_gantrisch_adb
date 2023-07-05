@@ -14,7 +14,8 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock'], 10, 2);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'modifyHTML'], 10, 2);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20, 2);
 	}
 
 	public function register()
@@ -174,7 +175,7 @@ class Block
 	 * @param string $html
 	 * @return string
 	 */
-	public function renderBlock($html, $block)
+	public function modifyHTML($html, $block)
 	{
 
 		if (empty($html)) {
@@ -220,18 +221,23 @@ class Block
 				continue;
 			}
 
-			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner || $offer->is_park_partner_event || $offer->is_park_partner;
+			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false;
 			$is_hint = (bool) ($offer->is_hint ?? false);
 
 			if ($is_partner) {
-				if ($is_partner && !$is_hint) {
-					// Hint elements are automatically added by the ADB's own HTML output in the list.
+				$entry->setAttribute('data-parkpartner', 'true');
+
+				if (!$is_hint) {
+					// Hint HTML elements are automatically added by the ADB's own HTML output in the list.
 					$hint_element = $document->createElement('div');
 					$hint_element->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit");
 					$hint_element->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
-					$entry->setAttribute('data-parkpartner', 'true');
 					$entry->insertBefore($hint_element, $entry->firstChild);
 				}
+			}
+
+			if ($is_hint) {
+				$entry->setAttribute('data-hint', 'true');
 			}
 		}
 
@@ -242,6 +248,45 @@ class Block
 				$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit");
 				$tip_tag->parentNode->setAttribute('data-hint', 'true');
 			}
+		}
+
+		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
+		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	/**
+	 * Modify the order of the list entries.
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	public function sortEntries($html, $block)
+	{
+
+		if (empty($html)) {
+			return $html;
+		}
+
+		libxml_use_internal_errors(true);
+		$document = new DOMDocument();
+		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$xpath = new DOMXPath($document);
+		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+
+		$entries_parent = $entries->item(0)->parentNode;
+
+		$model = new OfferModel();
+		$entries_sorted = $model->sortOfferDomNodes($entries);
+
+		// Remove existing entries
+		foreach ($entries as $entry) {
+			$entry->parentNode->removeChild($entry);
+		}
+
+		// Add back sorted entries
+		foreach ($entries_sorted as $entry) {
+			$entries_parent->appendChild($entry);
 		}
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
