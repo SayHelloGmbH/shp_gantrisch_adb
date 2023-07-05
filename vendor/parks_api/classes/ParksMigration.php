@@ -910,7 +910,7 @@ class ParksMigration {
 			$this->api->db->query("UPDATE `api` SET `version` = ".$version_to." LIMIT 1;");
 			
 			// Show message
-			$message = 'Migration to version '.$version_to.' successfully finished.';
+			$message = '<div>Migration to version '.$version_to.' successfully finished.</div>';
 			echo $message;
 
 			// Log message
