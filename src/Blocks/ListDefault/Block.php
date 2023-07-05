@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use DOMDocument;
 use DOMNodeList;
 use DOMXPath;
@@ -13,7 +14,7 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock']);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock'], 10, 2);
 	}
 
 	public function register()
@@ -173,7 +174,7 @@ class Block
 	 * @param string $html
 	 * @return string
 	 */
-	public function renderBlock($html)
+	public function renderBlock($html, $block)
 	{
 
 		if (empty($html)) {
@@ -192,6 +193,10 @@ class Block
 		}
 
 		$controller = new OfferController();
+		$model = new OfferModel();
+
+		// get default css class name from $block['blockName']
+		$classNameBase = wp_get_block_default_classname($block['blockName']);
 
 		foreach ($entries as $entry) {
 			// get id attribute from $entry: remove offer_ prefix
@@ -207,6 +212,34 @@ class Block
 			foreach ($links as $link) {
 				// replace href attribute with url to single offer page
 				$link->nodeValue = $url;
+			}
+
+			$offer = $model->getOffer($offer_id);
+
+			if (!$offer) {
+				continue;
+			}
+
+			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner || $offer->is_park_partner_event || $offer->is_park_partner;
+			$is_hint = (bool) ($offer->is_hint ?? false);
+
+			if ($is_partner) {
+				if ($is_partner && !$is_hint) {
+					// Hint elements are automatically added by the ADB's own HTML output in the list.
+					$hint_element = $document->createElement('div');
+					$hint_element->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit");
+					$hint_element->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
+					$entry->setAttribute('data-hint', 'true');
+					$entry->insertBefore($hint_element, $entry->firstChild);
+				}
+			}
+		}
+
+		$tip_tags = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]");
+
+		if ($tip_tags->length) {
+			foreach ($tip_tags as $tip_tag) {
+				$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit");
 			}
 		}
 
