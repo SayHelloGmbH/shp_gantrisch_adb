@@ -93,26 +93,3 @@ blocks.forEach((block) => {
 		entry_before.parentNode.insertBefore(button_wrapper, entry_before);
 	}
 });
-
-const addLinkButton = (element) => {
-	const link = document.createElement('a');
-	const wrapper = document.createElement('div');
-	const button_text = element.closest('[data-button-text]').dataset.buttonText;
-	const link_text = document.createTextNode(button_text);
-
-	wrapper.classList.add(`${classNameBase}__entry-buttowrapper`, `c-adb-list__entry-buttonwrapper`);
-	link.classList.add(`${classNameBase}__entry-button`, `c-adb-list__entry-button`);
-
-	link.appendChild(link_text);
-	link.setAttribute('href', element.getAttribute('href'));
-
-	wrapper.appendChild(link);
-
-	element.parentNode.insertBefore(wrapper, element.nextSibling);
-};
-
-const list = document.querySelectorAll('.wp-block-acf-shp-adb-list-default');
-
-// list.querySelectorAll('.listing_entry .entry_link').forEach((element) => {
-// 	addLinkButton(element);
-// });
