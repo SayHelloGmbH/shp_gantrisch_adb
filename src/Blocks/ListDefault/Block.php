@@ -16,6 +16,7 @@ class Block
 		add_action('acf/init', [$this, 'registerFields']);
 		add_action('render_block_acf/shp-adb-list-default', [$this, 'modifyHTML'], 10, 2);
 		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20, 2);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'contentOrder'], 30, 2);
 	}
 
 	public function register()
@@ -300,6 +301,40 @@ class Block
 		// Add back sorted entries
 		foreach ($entries_sorted as $entry) {
 			$entries_parent->appendChild($entry);
+		}
+
+		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
+		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	/**
+	 * Modify the order of the list entry content.
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	public function contentOrder($html, $block)
+	{
+
+		if (empty($html)) {
+			return $html;
+		}
+
+		libxml_use_internal_errors(true);
+		$document = new DOMDocument();
+		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$xpath = new DOMXPath($document);
+		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+
+		foreach ($entries as $entry) {
+			$pictures = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'pictures')]", $entry);
+			$description = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'description')]", $entry);
+
+			// Move pictures after description
+			if ($pictures->length && $description->length) {
+				$description->item(0)->parentNode->insertBefore($pictures->item(0), $description->item(0)->nextSibling);
+			}
 		}
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
