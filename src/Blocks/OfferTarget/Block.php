@@ -32,13 +32,15 @@ class Block
 
 		ob_start();
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?>">
+		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 
 			<?php if (!empty($attributes['title'] ?? '')) { ?>
 				<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<?php echo implode('<br>', $target_audience); ?>
+			<ul>
+				<li><?php echo implode('</li><li>', $target_audience); ?></li>
+			</ul>
 		</div>
 <?php
 		$html = ob_get_contents();

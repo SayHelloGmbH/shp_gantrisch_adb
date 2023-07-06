@@ -202,13 +202,17 @@ $target_audience = $offer_model->getTarget() ?? '';
 if (!empty($target_audience)) {
 	ob_start();
 ?>
-	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--suitability">
+	<div class="c-adb-block c-adb-block--detail shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--suitability">
 
 		<?php if (!empty($attributes['title_suitability'] ?? '')) { ?>
 			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--suitability"><?php echo $attributes['title_suitability']; ?></h3>
 		<?php } ?>
 
-		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability"><?php echo implode('<br>', $target_audience); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability">
+			<ul>
+				<li><?php echo implode('</li><li>', $target_audience); ?></li>
+			</ul>
+		</div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
