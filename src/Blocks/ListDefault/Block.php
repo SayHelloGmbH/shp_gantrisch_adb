@@ -216,6 +216,18 @@ class Block
 
 			$url = $controller->singleUrl($offer_id);
 
+			$link = $document->createElement('a');
+			$link->textContent = $block['attrs']['data']['button_text'] ?? __('Mehr', 'shp-gantrisch-adb');
+			$link->setAttribute('class', "{$classNameBase}__entry-button c-adb-list__entry-button");
+			$link->setAttribute('href', $url);
+
+			$wrapper = $document->createElement('div');
+			$wrapper->setAttribute('class', "{$classNameBase}__entry-buttonwrapper c-adb-list__entry-buttonwrapper");
+
+			$wrapper->appendChild($link);
+
+			$entry->lastChild->parentNode->insertBefore($wrapper, $entry->lastChild);
+
 			// get all descendants with an href attribute
 			$links = $xpath->query('.//@href', $entry);
 			foreach ($links as $link) {

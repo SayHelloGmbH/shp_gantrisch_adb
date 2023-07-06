@@ -5,7 +5,7 @@
 	--block--entries-row-gap: 1.5rem;
 
 	--block--entry-background: var(--wp--preset--color--white);
-	--block--entry-padding-top: 0;
+	--block--entry-padding-top: 24px;
 	--block--entry-padding-right: 0;
 	--block--entry-padding-bottom: 0;
 	--block--entry-padding-left: 30px;
@@ -105,6 +105,7 @@
 		.listing_entry {
 			display: flex;
 			flex-direction: column;
+			justify-content: flex-end;
 			position: relative;
 			hyphens: auto;
 			word-break: break-word;
@@ -127,8 +128,9 @@
 			}
 
 			.c-adb-list__entry-buttonwrapper {
-				--stack-size: auto;
+				--stack-size: 0;
 				transform: translateX(var(--block--entry-padding-right));
+				padding-block-start: 0;
 			}
 
 			.cf {
@@ -155,6 +157,7 @@
 
 			.description {
 				padding-right: 24px;
+				padding-bottom: 10px;
 			}
 
 			.entry_link {
@@ -178,6 +181,7 @@
 				margin: 0;
 				aspect-ratio: 3/2;
 				overflow: hidden;
+				margin-top: auto;
 
 				img {
 					width: 100%;
@@ -187,9 +191,40 @@
 				}
 			}
 
+			.placeholder_wrap {
+				position: relative;
+				height: 0;
+				padding-bottom: percentage(calc(2 / 3));
+				overflow: hidden;
+
+				@supports (aspect-ratio: 3/2) {
+					height: auto;
+					padding-bottom: 0;
+					aspect-ratio: 3/2;
+				}
+
+				.placeholder_image {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+				}
+			}
+
+			.date_wrap {
+				background-color: #dee2de;
+
+				.date {
+					color: var(--wp--preset--color--white);
+
+					span:first-child {
+						border-bottom-color: transparent;
+					}
+				}
+			}
+
 			.description {
 				@extend .h-stack;
-				--stack-size: 20px;
+				--stack-size: 0;
 
 				h3 {
 					font-size: var(--block--entry-title-size);
@@ -249,7 +284,6 @@
 			}
 
 			&-buttonwrapper {
-				margin-top: 0;
 				padding-top: var(--block--entry-padding-top);
 				text-align: right;
 			}

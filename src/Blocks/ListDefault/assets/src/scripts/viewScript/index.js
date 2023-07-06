@@ -111,6 +111,8 @@ const addLinkButton = (element) => {
 	element.parentNode.insertBefore(wrapper, element.nextSibling);
 };
 
-document.querySelectorAll('.wp-block-acf-shp-adb-list-default .listing_entry .entry_link').forEach((element) => {
-	addLinkButton(element);
-});
+const list = document.querySelectorAll('.wp-block-acf-shp-adb-list-default');
+
+// list.querySelectorAll('.listing_entry .entry_link').forEach((element) => {
+// 	addLinkButton(element);
+// });
