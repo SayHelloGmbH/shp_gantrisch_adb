@@ -5,10 +5,10 @@
 	--block--entries-row-gap: 1.5rem;
 
 	--block--entry-background: var(--wp--preset--color--white);
-	--block--entry-padding-top: 25px;
-	--block--entry-padding-right: 20px;
+	--block--entry-padding-top: 0;
+	--block--entry-padding-right: 0;
 	--block--entry-padding-bottom: 0;
-	--block--entry-padding-left: 40px;
+	--block--entry-padding-left: 30px;
 
 	--block--entry-button-background: var(--wp--preset--color--dark);
 	--block--entry-button-color: var(--wp--preset--color--white);
@@ -33,10 +33,18 @@
 	--block--entry-title-weight: 700;
 
 	--block--entry-postit-font-size: 16px;
-	--block--entry-postit-line-height: calc(26 / 16);
+	--block--entry-postit-line-height: 1;
+	--block--entry-postit-padding: 4.5px 7px 2.5px;
+	--block--entry-postit-spacing: 10px;
 
+	--block--entry-hint-color: inherit;
 	--block--entry-hint-background-color: var(--wp--preset--color--softgrey);
+
+	--block--entry-parkpartner-color: inherit;
 	--block--entry-parkpartner-background-color: var(--e-global-color-accent);
+
+	--block--entry-parkevent-color: var(--wp--preset--color--white);
+	--block--entry-parkevent-background-color: var(--wp--preset--color--softpetrol);
 
 	--block--loadbutton-padding: var(--wp--custom--spacing--unit, 1rem);
 	--block--loadbutton-background: var(--wp--preset--color--white);
@@ -143,6 +151,10 @@
 				strong {
 					font-weight: inherit;
 				}
+			}
+
+			.description {
+				padding-right: 24px;
 			}
 
 			.entry_link {
@@ -313,25 +325,38 @@
 				}
 			}
 
-			&-postit {
-				display: inline-block;
+			&-postit-wrapper {
 				position: absolute;
 				top: 0;
 				transform: translateY(-50%);
-				padding: 0.25em 0.5em;
-				font-weight: 500;
-				transform: translateY(-50%);
 				pointer-events: none;
+				font-weight: 500;
 				font-size: var(--block--entry-postit-font-size);
 				line-height: var(--block--entry-postit-line-height);
 			}
 
-			&-partnerlabel {
-				background-color: var(--block--entry-parkpartner-background-color);
-			}
+			&-postit {
+				display: inline-block;
+				padding: var(--block--entry-postit-padding);
 
-			&-hintlabel {
-				background-color: var(--block--entry-hint-background-color);
+				+ .c-adb-list__entry-postit {
+					margin-left: var(--block--entry-postit-spacing);
+				}
+
+				&--parkpartner {
+					color: var(--block--entry-parkpartner-color);
+					background-color: var(--block--entry-parkpartner-background-color);
+				}
+
+				&--parkevent {
+					color: var(--block--entry-parkevent-color);
+					background-color: var(--block--entry-parkevent-background-color);
+				}
+
+				&--tipp {
+					color: var(--block--entry-hint-color);
+					background-color: var(--block--entry-hint-background-color);
+				}
 			}
 
 			&-title {
