@@ -239,6 +239,14 @@ class Block
 			$is_park_event = (bool) $offer->is_park_event ?? false;
 			$is_hint = (bool) ($offer->is_hint ?? false);
 
+			$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp parkpartner')]", $entry);
+
+			if ($tip_tags->length) {
+				foreach ($tip_tags as $tip_tag) {
+					$tip_tag->parentNode->removeChild($tip_tag);
+				}
+			}
+
 			if ($is_partner || $is_park_event || $is_hint) {
 				$postit_wrapper = $document->createElement('div');
 				$postit_wrapper->setAttribute('class', "{$classNameBase}__entry-postit-wrapper c-adb-list__entry-postit-wrapper");
