@@ -9,6 +9,7 @@ const elements = document.querySelectorAll('.wp-block-shp-gantrisch-adb-offer-im
 
 if (elements.length) {
 	const config = {
+		loop: true,
 		autoHeight: false,
 		simulateTouch: false,
 		modules: [Navigation, Pagination],
