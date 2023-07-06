@@ -285,12 +285,6 @@ class Block
 			$is_park_event = (bool) $offer->is_park_event ?? false;
 			$is_tip = (bool) ($offer->is_hint ?? false);
 
-			if ((int) $offer_id === 24598) {
-				dump([
-					$offer->institution_is_park_partner ?? false, $offer->contact_is_park_partner ?? false, $offer->is_park_partner_event ?? false, $offer->is_park_partner ?? false
-				]);
-			}
-
 			// Remove all pre-existing labels
 			$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]", $entry);
 
