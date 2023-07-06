@@ -198,7 +198,7 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
 
 		if (!$entries instanceof DOMNodeList || $entries->length === 0) {
 			return $html;
@@ -219,9 +219,6 @@ class Block
 		}
 
 		foreach ($entries as $entry) {
-
-			$class_names = explode(' ', $entry->getAttribute('class'));
-			$entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entry'], $class_names)));
 
 			// get id attribute from $entry: remove offer_ prefix
 			$offer_id = (int) substr($entry->getAttribute('id'), 6);
@@ -327,7 +324,7 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
 
 		$entries_parent = $entries->item(0)->parentNode;
 
@@ -370,7 +367,7 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
 
 		foreach ($entries as $entry) {
 			$pictures = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'pictures')]", $entry);
