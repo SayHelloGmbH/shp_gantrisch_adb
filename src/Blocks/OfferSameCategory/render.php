@@ -50,7 +50,7 @@ $api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?> c-adb-list">
+<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?> c-adb-list">
 	<div class="<?php echo $classNameBase; ?>__inner c-adb-list__inner h-stack">
 
 		<?php

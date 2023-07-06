@@ -45,7 +45,7 @@ $routelength = $offer->route_length ?? '';
 if ((int) $routelength > 0) {
 	ob_start();
 ?>
-	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--routelength">
+	<div class="c-adb-block c-adb-block--detail shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--routelength">
 
 		<?php if (!empty($attributes['title_routelength'] ?? '')) { ?>
 			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--routelength"><?php echo $attributes['title_routelength']; ?></h3>

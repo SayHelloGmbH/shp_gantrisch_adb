@@ -29,7 +29,7 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?> h-stack c-offer-detail-box">
+<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?> h-stack c-offer-detail-box">
 	<div class="<?php echo $classNameBase; ?>__header h-stack c-offer-detail-box__header">
 		<h2 class="<?php echo $classNameBase; ?>__title c-offer-detail-box__title"><?php echo $attributes['title'] ?? 'Links'; ?></h2>
 	</div>

@@ -29,7 +29,7 @@ if (empty($termine)) {
 }
 
 ?>
-<div class="<?php echo $classNameBase; ?>">
+<div class="c-adb-block c-adb-block--detail <?php echo $classNameBase; ?>">
 
 	<?php if (!empty($attributes['title'] ?? '')) { ?>
 		<h3 class="<?php echo $classNameBase; ?>__title"><?php echo $attributes['title']; ?></h3>

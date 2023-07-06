@@ -24,7 +24,7 @@ if (count($offer_images) > 1) {
 }
 
 ?>
-<div class="<?php echo $block['shp']['class_names']; ?>">
+<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			<?php foreach ($offer_images as $image) { ?>
