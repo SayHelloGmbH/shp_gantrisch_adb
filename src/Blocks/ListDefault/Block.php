@@ -210,7 +210,18 @@ class Block
 		// get default css class name from $block['blockName']
 		$classNameBase = wp_get_block_default_classname($block['blockName']);
 
+		$entries_wrap = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'entries_wrap')]");
+		if ($entries_wrap->length) {
+			foreach ($entries_wrap as $entries_wrap_entry) {
+				$class_names = explode(' ', $entries_wrap_entry->getAttribute('class'));
+				$entries_wrap_entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entries'], $class_names)));
+			}
+		}
+
 		foreach ($entries as $entry) {
+
+			$class_names = explode(' ', $entry->getAttribute('class'));
+			$entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entry'], $class_names)));
 
 			// get id attribute from $entry: remove offer_ prefix
 			$offer_id = (int) substr($entry->getAttribute('id'), 6);

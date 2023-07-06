@@ -17,7 +17,7 @@
 	--block--entry-button-size: 16px;
 	--block--entry-button-weight: 500;
 
-	--block--entry-header-padding: 24px 10px 12px 0;
+	--block--entry-header-padding: 0 10px 12px 0;
 	--block--entry-header-sibling-offset: 12px;
 
 	--block--entry-meta-color: var(--wp--preset--color--petrol);
@@ -81,7 +81,7 @@
 		}
 	}
 
-	.entries_wrap.listing {
+	&__entries {
 		list-style: none;
 		gap: var(--block--entries-row-gap);
 		padding: 0;
@@ -101,8 +101,10 @@
 		#offer_total {
 			display: none;
 		}
+	}
 
-		.listing_entry {
+	.c-adb-list {
+		&__entry {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
@@ -114,150 +116,6 @@
 			transition: all 300ms ease;
 			@extend .h-stack;
 			--stack-size: 20px;
-
-			&.is--hidden {
-				body.page & {
-					display: none;
-					max-height: 0;
-					overflow: hidden;
-				}
-			}
-
-			.categories {
-				display: none;
-			}
-
-			.c-adb-list__entry-buttonwrapper {
-				--stack-size: 0;
-				transform: translateX(var(--block--entry-padding-right));
-				padding-block-start: 0;
-			}
-
-			.cf {
-				display: none;
-			}
-
-			.date {
-				display: block;
-				--stack-size: 0;
-			}
-
-			.date,
-			.institution_location {
-				text-transform: none;
-				font-size: var(--block--entry-meta-size);
-				line-height: var(--block--entry-meta-line-height);
-				font-weight: var(--block--entry-meta-weight);
-				color: var(--block--entry-meta-color);
-
-				strong {
-					font-weight: inherit;
-				}
-			}
-
-			.description {
-				padding-right: 24px;
-				padding-bottom: 10px;
-			}
-
-			.entry_link {
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				z-index: 1;
-				--stack-size: 0;
-			}
-
-			.institution_location {
-				--stack-size: 10px;
-			}
-
-			.pictures {
-				position: static;
-				float: none;
-				width: 100%;
-				margin: 0;
-				aspect-ratio: 3/2;
-				overflow: hidden;
-				margin-top: auto;
-
-				img {
-					width: 100%;
-					height: 100%;
-					object-fit: cover;
-					object-position: center;
-				}
-			}
-
-			.placeholder_wrap {
-				position: relative;
-				height: 0;
-				padding-bottom: percentage(calc(2 / 3));
-				overflow: hidden;
-
-				@supports (aspect-ratio: 3/2) {
-					height: auto;
-					padding-bottom: 0;
-					aspect-ratio: 3/2;
-				}
-
-				.placeholder_image {
-					position: absolute;
-					transform: translate(-50%, -50%);
-					left: 50%;
-				}
-			}
-
-			.date_wrap {
-				background-color: #dee2de;
-
-				.date {
-					color: var(--wp--preset--color--white);
-
-					span:first-child {
-						border-bottom-color: transparent;
-					}
-				}
-			}
-
-			.description {
-				@extend .h-stack;
-				--stack-size: 0;
-
-				h3 {
-					font-size: var(--block--entry-title-size);
-					line-height: var(--block--entry-title-line-height);
-					font-weight: var(--block--entry-title-weight);
-
-					a {
-						text-decoration: none !important;
-						color: currentColor !important;
-						font-weight: inherit !important;
-						font-size: 1em;
-					}
-				}
-			}
-
-			.route_condition,
-			.route_info,
-			.offer_description {
-				display: none;
-				font-size: var(--block--entry-description-size);
-				line-height: var(--block--entry-description-line-height);
-			}
-		}
-	}
-
-	.c-adb-list {
-		&__entry {
-			position: relative;
-			hyphens: auto;
-			word-break: break-word;
-			background-color: var(--block--entry-background);
-			padding-left: var(--block--entry-padding-left);
-			transition: all 300ms ease;
 
 			&.is--hidden {
 				body.page & {
@@ -284,8 +142,10 @@
 			}
 
 			&-buttonwrapper {
-				padding-top: var(--block--entry-padding-top);
+				padding-block-start: 0;
 				text-align: right;
+				--stack-size: 0;
+				transform: translateX(var(--block--entry-padding-right));
 			}
 
 			&-figure {
@@ -404,6 +264,125 @@
 					font-weight: inherit !important;
 					font-size: 1em;
 				}
+			}
+
+			.categories {
+				display: none;
+			}
+
+			.cf {
+				display: none;
+			}
+
+			.date {
+				display: block;
+				--stack-size: 0;
+			}
+
+			.date,
+			.institution_location {
+				text-transform: none;
+				font-size: var(--block--entry-meta-size);
+				line-height: var(--block--entry-meta-line-height);
+				font-weight: var(--block--entry-meta-weight);
+				color: var(--block--entry-meta-color);
+
+				strong {
+					font-weight: inherit;
+				}
+			}
+
+			.description {
+				padding-right: 24px;
+				padding-bottom: 10px;
+			}
+
+			.entry_link {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 1;
+				--stack-size: 0;
+			}
+
+			.institution_location {
+				--stack-size: 10px;
+			}
+
+			.pictures {
+				position: static;
+				float: none;
+				width: 100%;
+				margin: 0;
+				aspect-ratio: 3/2;
+				overflow: hidden;
+				margin-top: auto;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+				}
+			}
+
+			.placeholder_wrap {
+				position: relative;
+				height: 0;
+				padding-bottom: percentage(calc(2 / 3));
+				overflow: hidden;
+
+				@supports (aspect-ratio: 3/2) {
+					height: auto;
+					padding-bottom: 0;
+					aspect-ratio: 3/2;
+				}
+
+				.placeholder_image {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+				}
+			}
+
+			.date_wrap {
+				background-color: #dee2de;
+
+				.date {
+					color: var(--wp--preset--color--white);
+
+					span:first-child {
+						border-bottom-color: transparent;
+					}
+				}
+			}
+
+			.description {
+				@extend .h-stack;
+				--stack-size: 0;
+
+				h3 {
+					font-size: var(--block--entry-title-size);
+					line-height: var(--block--entry-title-line-height);
+					font-weight: var(--block--entry-title-weight);
+
+					a {
+						text-decoration: none !important;
+						color: currentColor !important;
+						font-weight: inherit !important;
+						font-size: 1em;
+					}
+				}
+			}
+
+			.route_condition,
+			.route_info,
+			.offer_description {
+				display: none;
+				font-size: var(--block--entry-description-size);
+				line-height: var(--block--entry-description-line-height);
 			}
 		}
 
