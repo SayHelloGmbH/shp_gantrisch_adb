@@ -198,10 +198,24 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'listing_entry') or contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')][not(contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-'))]");
 
 		if (!$entries instanceof DOMNodeList || $entries->length === 0) {
 			return $html;
+		}
+
+		// Make sure our own class name is set on the entry
+		foreach ($entries as $entry) {
+			$class_names = explode(' ', $entry->getAttribute('class'));
+
+			if (in_array('c-adb-list__entry', $class_names)) {
+				continue;
+			}
+
+			// remove empty class names
+			$class_names = array_filter($class_names);
+
+			$entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entry'], $class_names)));
 		}
 
 		$controller = new OfferController();
@@ -214,6 +228,14 @@ class Block
 		if ($entries_wrap->length) {
 			foreach ($entries_wrap as $entries_wrap_entry) {
 				$class_names = explode(' ', $entries_wrap_entry->getAttribute('class'));
+
+				if (in_array('c-adb-list__entries', $class_names)) {
+					continue;
+				}
+
+				// Remove empty entries
+				$class_names = array_filter($class_names);
+
 				$entries_wrap_entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entries'], $class_names)));
 			}
 		}
