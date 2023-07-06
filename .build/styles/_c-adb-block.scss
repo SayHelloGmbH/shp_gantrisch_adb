@@ -1,0 +1,16 @@
+.c-adb-block {
+	&--detail {
+		ul {
+			padding-left: 1em;
+		}
+	}
+
+	li {
+		padding-left: 10px;
+		padding-bottom: 15px;
+
+		&::marker {
+			content: '⇥';
+		}
+	}
+}
