@@ -897,7 +897,7 @@ class Offer
 		$nodes_with_dates = [];
 		foreach ($nodes as $node) {
 			$timestamps = $this->getDates($node, 'integer');
-			if ((int) $timestamps['date_from']) {
+			if ((int) ($timestamps['date_from'] ?? false)) {
 				$node_id = $node->getAttribute('id');
 				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
 
