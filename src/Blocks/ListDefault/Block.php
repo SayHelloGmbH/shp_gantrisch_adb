@@ -14,9 +14,15 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'modifyHTML'], 10, 2);
+
+		// All blocks. Block type check is in the method.
+		add_action('render_block', [$this, 'modifyHTML'], 10, 2);
+
+		// Only the main list
 		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20, 2);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'contentOrder'], 30, 2);
+
+		// All blocks. Block type check is in the method.
+		add_action('render_block', [$this, 'contentOrder'], 30, 2);
 	}
 
 	public function register()
@@ -183,6 +189,10 @@ class Block
 			return $html;
 		}
 
+		if ($block['blockName'] !== 'acf/shp-adb-list-default' && $block['blockName'] !== 'shp/adb-offer-same-category') {
+			return $html;
+		}
+
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
@@ -337,6 +347,10 @@ class Block
 	{
 
 		if (empty($html)) {
+			return $html;
+		}
+
+		if ($block['blockName'] !== 'acf/shp-adb-list-default' && $block['blockName'] !== 'shp/adb-offer-same-category') {
 			return $html;
 		}
 
