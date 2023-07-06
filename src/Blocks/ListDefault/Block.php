@@ -170,7 +170,7 @@ class Block
 	}
 
 	/**
-	 * Modify the link hrefs of the list entries.
+	 * Various HTML modifications on the list entries.
 	 *
 	 * @param string $html
 	 * @return string
@@ -200,9 +200,16 @@ class Block
 		$classNameBase = wp_get_block_default_classname($block['blockName']);
 
 		foreach ($entries as $entry) {
+
 			// get id attribute from $entry: remove offer_ prefix
 			$offer_id = (int) substr($entry->getAttribute('id'), 6);
 			if (!$offer_id) {
+				continue;
+			}
+
+			$offer = $model->getOffer($offer_id);
+
+			if (!$offer) {
 				continue;
 			}
 
@@ -215,38 +222,44 @@ class Block
 				$link->nodeValue = $url;
 			}
 
-			$offer = $model->getOffer($offer_id);
-
-			if (!$offer) {
-				continue;
-			}
-
 			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false;
+			$is_park_event = (bool) $offer->is_park_event ?? false;
 			$is_hint = (bool) ($offer->is_hint ?? false);
 
-			if ($is_partner) {
-				$entry->setAttribute('data-parkpartner', 'true');
+			if ($is_partner || $is_park_event || $is_hint) {
+				$postit_wrapper = $document->createElement('div');
+				$postit_wrapper->setAttribute('class', "{$classNameBase}__entry-postit-wrapper c-adb-list__entry-postit-wrapper");
+				$entry->insertBefore($postit_wrapper, $entry->firstChild);
 
-				if (!$is_hint) {
-					// Hint HTML elements are automatically added by the ADB's own HTML output in the list.
-					$hint_element = $document->createElement('div');
-					$hint_element->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit");
-					$hint_element->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
-					$entry->insertBefore($hint_element, $entry->firstChild);
+				if ($is_hint) {
+					$entry->setAttribute('data-hint', 'true');
+
+					$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]", $entry);
+
+					if ($tip_tags->length) {
+						foreach ($tip_tags as $tip_tag) {
+							$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit c-adb-list__entry-postit--tipp");
+							$tip_tag->parentNode->setAttribute('data-hint', 'true');
+							$postit_wrapper->appendChild($tip_tag);
+						}
+					}
 				}
-			}
 
-			if ($is_hint) {
-				$entry->setAttribute('data-hint', 'true');
-			}
-		}
+				if ($is_park_event) {
+					$entry->setAttribute('data-parkevent', 'true');
+					$event_label = $document->createElement('div');
+					$event_label->setAttribute('class', "{$classNameBase}__entry-parkeventlabel c-adb-list__entry-parkeventlabel c-adb-list__entry-postit c-adb-list__entry-postit--parkevent");
+					$event_label->nodeValue = _x('Naturpark', 'Park event label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($event_label);
+				}
 
-		$tip_tags = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]");
-
-		if ($tip_tags->length) {
-			foreach ($tip_tags as $tip_tag) {
-				$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit");
-				$tip_tag->parentNode->setAttribute('data-hint', 'true');
+				if ($is_partner) {
+					$entry->setAttribute('data-parkpartner', 'true');
+					$partner_label = $document->createElement('div');
+					$partner_label->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit c-adb-list__entry-postit--parkpartner");
+					$partner_label->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($partner_label);
+				}
 			}
 		}
 
