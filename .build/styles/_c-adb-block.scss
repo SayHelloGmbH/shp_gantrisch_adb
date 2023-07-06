@@ -1,11 +1,11 @@
 .c-adb-block {
 	&--detail {
-		ul {
+		.c-adb-block__ul {
 			padding-left: 1em;
 		}
 	}
 
-	li {
+	&__li {
 		padding-left: 10px;
 		padding-bottom: 15px;
 

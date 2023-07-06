@@ -37,14 +37,14 @@
   font-weight: var(--e-global-typography-secondary-font-weight);
 }
 
-.c-adb-block--detail ul {
+.c-adb-block--detail .c-adb-block__ul {
   padding-left: 1em;
 }
-.c-adb-block li {
+.c-adb-block__li {
   padding-left: 10px;
   padding-bottom: 15px;
 }
-.c-adb-block li::marker {
+.c-adb-block__li::marker {
   content: "⇥";
 }
 

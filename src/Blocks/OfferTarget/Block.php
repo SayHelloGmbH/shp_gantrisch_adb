@@ -38,8 +38,8 @@ class Block
 				<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<ul>
-				<li><?php echo implode('</li><li>', $target_audience); ?></li>
+			<ul class="c-adb-block__ul">
+				<li class="c-adb-block__li"><?php echo implode('</li><li class="c-adb-block__li">', $target_audience); ?></li>
 			</ul>
 		</div>
 <?php
