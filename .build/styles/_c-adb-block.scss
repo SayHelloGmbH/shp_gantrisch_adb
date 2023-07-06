@@ -1,7 +1,11 @@
+body {
+	--block--ul--indent: 1em;
+}
+
 .c-adb-block {
 	&--detail {
 		.c-adb-block__ul {
-			padding-left: 1em;
+			padding-left: var(--block--ul--indent);
 		}
 	}
 

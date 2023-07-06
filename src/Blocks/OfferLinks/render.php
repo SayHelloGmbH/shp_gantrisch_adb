@@ -34,10 +34,10 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 		<h2 class="<?php echo $classNameBase; ?>__title c-offer-detail-box__title"><?php echo $attributes['title'] ?? 'Links'; ?></h2>
 	</div>
 	<div class="<?php echo $classNameBase; ?>__content h-stack c-offer-detail-box__content">
-		<ul class="<?php echo $classNameBase; ?>__entries h-stack c-offer-detail-box__entries">
+		<ul class="c-adb-block__ul <?php echo $classNameBase; ?>__entries h-stack c-offer-detail-box__entries">
 			<?php foreach ($offer->hyperlinks as $link) {
 			?>
-				<li class="<?php echo $classNameBase; ?>__entry c-offer-detail-box__entry">
+				<li class="c-adb-block__li <?php echo $classNameBase; ?>__entry c-offer-detail-box__entry">
 					<a href="<?php echo $link->url ?? '#'; ?>" target="_blank"><?php echo $link->title ?? 'Untitled link'; ?></a>
 				</li>
 			<?php
