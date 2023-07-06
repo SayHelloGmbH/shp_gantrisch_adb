@@ -31,6 +31,7 @@
 	--block--entry-description-line-height: 1.5;
 	--block--entry-header-transition: all 300ms ease;
 	--block--entry-title-weight: 700;
+	--block--entry-title-margin-bottom: 14px;
 
 	--block--entry-postit-font-size: 16px;
 	--block--entry-postit-line-height: 1;
@@ -309,7 +310,7 @@
 			}
 
 			.institution_location {
-				--stack-size: 10px;
+				--stack-size: 0;
 			}
 
 			.pictures {
@@ -368,6 +369,7 @@
 					font-size: var(--block--entry-title-size);
 					line-height: var(--block--entry-title-line-height);
 					font-weight: var(--block--entry-title-weight);
+					margin-block-end: var(--block--entry-title-margin-bottom);
 
 					a {
 						text-decoration: none !important;

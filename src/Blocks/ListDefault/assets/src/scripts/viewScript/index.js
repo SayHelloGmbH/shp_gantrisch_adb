@@ -93,3 +93,8 @@ blocks.forEach((block) => {
 		entry_before.parentNode.insertBefore(button_wrapper, entry_before);
 	}
 });
+
+if (typeof jQuery.fn !== 'undefined' && typeof jQuery.fn.matchHeight !== 'undefined') {
+	jQuery.fn.matchHeight._throttle = 350;
+	jQuery(`.c-adb-list__entry h3`).matchHeight({});
+}
