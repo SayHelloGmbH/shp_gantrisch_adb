@@ -539,7 +539,7 @@ class Offer
 	 * @param boolean $exclude_current
 	 * @return array
 	 */
-	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false)
+	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false, $custom_sort = true)
 	{
 
 		if (!is_array($category_ids)) {
@@ -591,6 +591,18 @@ class Offer
 					}
 				}
 			}
+		}
+
+		if (!$custom_sort) {
+
+			// Trim down the array if necessary
+			if ($number_required > 0) {
+				if (count($offers) > $number_required) {
+					$offers = array_splice($offers, 0, $number_required);
+				}
+			}
+
+			return $offers;
 		}
 
 		/**
@@ -662,7 +674,7 @@ class Offer
 			}
 		}
 
-		// Now trim down the array if necessary
+		// Trim down the array if necessary
 		if ($number_required > 0) {
 			if (count($offers_sorted) > $number_required) {
 				$offers_sorted = array_splice($offers_sorted, 0, $number_required);

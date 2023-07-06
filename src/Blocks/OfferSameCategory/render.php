@@ -39,7 +39,7 @@ if (empty($category_ids)) {
 }
 
 // Get all offers. The method pre-sorts the results.
-$offers = $offer_model->getAll($category_ids, null, 4, true);
+$offers = $offer_model->getAll(category_ids: $category_ids, keywords: null, number_required: 4, exclude_current: true, custom_sort: false);
 
 if (empty($offers)) {
 	return '';
@@ -83,24 +83,12 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 					);
 				}
 
-				$is_hint = (bool) ($offer['is_hint'] ?? false);
-				$is_hint_class = $is_hint ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-hint" : '';
-
-				$park_partner = !$is_hint && (bool) ($offer['is_park_partner'] ?? false);
-				$park_partner_class = $park_partner ? "{$classNameBase}__entry--is-park-partner c-adb-list__entry--is-park-partner" : '';
+				// The hint/parkpartner/parkevent labels and classes are added
+				// in the render_block hook applied using the SayHello\ShpGantrischAdb\Blocks\ListDefault\Block class.
 
 			?>
-				<li class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry <?php echo $park_partner_class . $is_hint_class; ?>">
+				<li id="offer_<?php echo $offer['offer_id']; ?>" class="<?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--<?php echo $offer['offer_id']; ?> c-adb-list__entry">
 
-					<?php if ($is_hint) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit">
-							<?php _ex('Tipp', 'More offers label', 'shp_gantrisch_adb'); ?>
-						</div>
-					<?php } else if ($park_partner) { ?>
-						<div class="<?php echo $classNameBase; ?>__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit">
-							<?php _ex('Parkpartner', 'More offers label', 'shp_gantrisch_adb'); ?>
-						</div>
-					<?php } ?>
 
 					<div class="<?php echo $classNameBase; ?>__entry-header c-adb-list__entry-header">
 

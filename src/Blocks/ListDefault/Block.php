@@ -16,10 +16,10 @@ class Block
 		add_action('acf/init', [$this, 'registerFields']);
 
 		// All blocks. Block type check is in the method.
-		add_action('render_block', [$this, 'modifyHTML'], 10, 2);
+		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
 
 		// Only the main list
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20, 2);
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20);
 
 		// All blocks. Block type check is in the method.
 		add_action('render_block', [$this, 'contentOrder'], 30, 2);
@@ -180,9 +180,11 @@ class Block
 	 * Various HTML modifications on the list entries.
 	 *
 	 * @param string $html
+	 * @param array $block
+	 * @param WP_Block $instance
 	 * @return string
 	 */
-	public function modifyHTML($html, $block)
+	public function modifyHTML($html, $block, $instance)
 	{
 
 		if (empty($html)) {
@@ -256,17 +258,21 @@ class Block
 
 			$url = $controller->singleUrl($offer_id);
 
-			$link = $document->createElement('a');
-			$link->textContent = $block['attrs']['data']['button_text'] ?? __('Mehr', 'shp-gantrisch-adb');
-			$link->setAttribute('class', "{$classNameBase}__entry-button c-adb-list__entry-button");
-			$link->setAttribute('href', $url);
+			$button_link = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-button')]", $entry);
 
-			$wrapper = $document->createElement('div');
-			$wrapper->setAttribute('class', "{$classNameBase}__entry-buttonwrapper c-adb-list__entry-buttonwrapper");
+			if (!$button_link->length) {
+				$link = $document->createElement('a');
+				$link->textContent = $block['attrs']['data']['button_text'] ?? $instance->attributes['button_text'] ?? __('Mehr', 'shp-gantrisch-adb');
+				$link->setAttribute('class', "{$classNameBase}__entry-button c-adb-list__entry-button");
+				$link->setAttribute('href', $url);
 
-			$wrapper->appendChild($link);
+				$wrapper = $document->createElement('div');
+				$wrapper->setAttribute('class', "{$classNameBase}__entry-buttonwrapper c-adb-list__entry-buttonwrapper");
 
-			$entry->lastChild->parentNode->insertBefore($wrapper, $entry->lastChild);
+				$wrapper->appendChild($link);
+
+				$entry->appendChild($wrapper);
+			}
 
 			// get all descendants with an href attribute
 			$links = $xpath->query('.//@href', $entry);
@@ -277,9 +283,16 @@ class Block
 
 			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false;
 			$is_park_event = (bool) $offer->is_park_event ?? false;
-			$is_hint = (bool) ($offer->is_hint ?? false);
+			$is_tip = (bool) ($offer->is_hint ?? false);
 
-			$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp parkpartner')]", $entry);
+			if ((int) $offer_id === 24598) {
+				dump([
+					$offer->institution_is_park_partner ?? false, $offer->contact_is_park_partner ?? false, $offer->is_park_partner_event ?? false, $offer->is_park_partner ?? false
+				]);
+			}
+
+			// Remove all pre-existing labels
+			$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]", $entry);
 
 			if ($tip_tags->length) {
 				foreach ($tip_tags as $tip_tag) {
@@ -287,23 +300,17 @@ class Block
 				}
 			}
 
-			if ($is_partner || $is_park_event || $is_hint) {
+			if ($is_partner || $is_park_event || $is_tip) {
 				$postit_wrapper = $document->createElement('div');
 				$postit_wrapper->setAttribute('class', "{$classNameBase}__entry-postit-wrapper c-adb-list__entry-postit-wrapper");
 				$entry->insertBefore($postit_wrapper, $entry->firstChild);
 
-				if ($is_hint) {
+				if ($is_tip) {
 					$entry->setAttribute('data-hint', 'true');
-
-					$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]", $entry);
-
-					if ($tip_tags->length) {
-						foreach ($tip_tags as $tip_tag) {
-							$tip_tag->setAttribute('class', "{$classNameBase}__entry-hintlabel c-adb-list__entry-hintlabel c-adb-list__entry-postit c-adb-list__entry-postit--tipp");
-							$tip_tag->parentNode->setAttribute('data-hint', 'true');
-							$postit_wrapper->appendChild($tip_tag);
-						}
-					}
+					$tip_label = $document->createElement('div');
+					$tip_label->setAttribute('class', "{$classNameBase}__entry-tiplabel c-adb-list__entry-tiplabel c-adb-list__entry-postit c-adb-list__entry-postit--tipp");
+					$tip_label->nodeValue = _x('Tipp', 'Tip label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($tip_label);
 				}
 
 				if ($is_park_event) {
@@ -334,7 +341,7 @@ class Block
 	 * @param string $html
 	 * @return string
 	 */
-	public function sortEntries($html, $block)
+	public function sortEntries($html)
 	{
 
 		if (empty($html)) {
@@ -348,20 +355,20 @@ class Block
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
 
-		$entries_parent = $entries->item(0)->parentNode;
+		// $entries_parent = $entries->item(0)->parentNode;
 
-		$model = new OfferModel();
-		$entries_sorted = $model->sortOfferDomNodes($entries);
+		// $model = new OfferModel();
+		// $entries_sorted = $entries; $model->sortOfferDomNodes($entries);
 
-		// Remove existing entries
-		foreach ($entries as $entry) {
-			$entry->parentNode->removeChild($entry);
-		}
+		// // Remove existing entries
+		// foreach ($entries as $entry) {
+		// 	$entry->parentNode->removeChild($entry);
+		// }
 
-		// Add back sorted entries
-		foreach ($entries_sorted as $entry) {
-			$entries_parent->appendChild($entry);
-		}
+		// // Add back sorted entries
+		// foreach ($entries_sorted as $entry) {
+		// 	$entries_parent->appendChild($entry);
+		// }
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
