@@ -97,7 +97,7 @@ $classNameBase = $block['shp']['classNameBase'] ?? '';
 						</div>
 
 						<?php if (!empty($offer['institution_location'])) { ?>
-							<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location">
+							<div class="<?php echo $classNameBase; ?>__entry-location c-adb-list__entry-location institution_location">
 								<p><?php echo esc_html($offer['institution_location']); ?></p>
 							</div>
 						<?php
