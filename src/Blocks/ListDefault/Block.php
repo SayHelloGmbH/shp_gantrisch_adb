@@ -242,6 +242,7 @@ class Block
 			}
 		}
 
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'listing_entry') or contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')][not(contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-'))]");
 		foreach ($entries as $entry) {
 
 			// get id attribute from $entry: remove offer_ prefix
