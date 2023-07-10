@@ -348,22 +348,27 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),' c-adb-list__entry ')]");
 
-		// $entries_parent = $entries->item(0)->parentNode;
+		if (!$entries->length) {
+			return $html;
+		}
 
-		// $model = new OfferModel();
-		// $entries_sorted = $entries; $model->sortOfferDomNodes($entries);
+		$entries_parent = $entries->item(0)->parentNode;
 
-		// // Remove existing entries
-		// foreach ($entries as $entry) {
-		// 	$entry->parentNode->removeChild($entry);
-		// }
+		$model = new OfferModel();
+		$entries_sorted = $model->sortOfferDomNodes($entries);
 
-		// // Add back sorted entries
-		// foreach ($entries_sorted as $entry) {
-		// 	$entries_parent->appendChild($entry);
-		// }
+		// Remove existing entries
+		foreach ($entries as $entry) {
+			$entry->parentNode->removeChild($entry);
+		}
+
+		// Add back sorted entries
+		foreach ($entries_sorted as $entry_sorted) {
+			$entries_parent->appendChild($entry_sorted);
+		}
+
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
