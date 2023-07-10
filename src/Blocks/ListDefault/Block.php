@@ -283,7 +283,7 @@ class Block
 				$link->nodeValue = $url;
 			}
 
-			$is_partner = $offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false;
+			$is_partner = $model->isParkPartner($offer_id);
 			$is_park_event = (bool) $offer->is_park_event ?? false;
 			$is_tip = (bool) ($offer->is_hint ?? false);
 

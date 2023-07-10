@@ -391,7 +391,7 @@ class Offer
 
 		return [
 			'contact' => nl2br(make_clickable(strip_tags($offer->contact ?? ''))),
-			'is_partner' => (bool) $offer->contact_is_park_partner,
+			'is_partner' => $this->isParkPartner($offer_id),
 		];
 	}
 
@@ -953,5 +953,28 @@ class Offer
 		}
 
 		return array_values($nodes_sorted);
+	}
+
+	/**
+	 * Is the offer related to a park partner? This logic since 10.7.2023
+	 *
+	 * @param integer $offer_id
+	 * @return boolean
+	 */
+	public function isParkPartner($offer_id = 0)
+	{
+		if (!$offer_id) {
+			$offer_id = $this->getRequestedOfferID();
+		}
+
+		$offer_id = (int) $offer_id;
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer) {
+			return false;
+		}
+
+		return (bool) ($offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false);
 	}
 }
