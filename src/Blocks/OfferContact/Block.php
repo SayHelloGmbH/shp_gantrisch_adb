@@ -39,7 +39,7 @@ class Block
 				<h2 class="<?php echo $block['shp']['classNameBase']; ?>__title"><?php echo esc_html($attributes['title']); ?></h2>
 			<?php } ?>
 
-			<?php if (!empty($attributes['partner_label'] ?? '' && (bool) $contact['is_partner'])) { ?>
+			<?php if (!empty($attributes['partner_label'] ?? '') && (bool) $contact['is_partner']) { ?>
 				<div class="<?php echo $block['shp']['classNameBase']; ?>__partner_label"><?php echo esc_html($attributes['partner_label']); ?></div>
 			<?php } ?>
 
