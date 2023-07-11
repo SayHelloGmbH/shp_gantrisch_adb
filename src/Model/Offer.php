@@ -975,6 +975,6 @@ class Offer
 			return false;
 		}
 
-		return (bool) ($offer->institution_is_park_partner ?? false || $offer->contact_is_park_partner ?? false || $offer->is_park_partner_event ?? false || $offer->is_park_partner ?? false);
+		return (bool) ($offer->institution_is_park_partner ?? false) || (bool) ($offer->contact_is_park_partner ?? false) || (bool) ($offer->is_park_partner_event ?? false) || (bool) ($offer->is_park_partner ?? false);
 	}
 }
