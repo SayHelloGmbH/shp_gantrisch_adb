@@ -528,10 +528,10 @@ class Offer
 	}
 
 	/**
-	 * Get all offers. Random sort, then pull tips and
-	 * park partners to the top of the list.
+	 * Get all offers. Random sort, then pull tips to the top of the list.
 	 * If $number_required is passed, then splice the
 	 * result set and return only those offers.
+	 * The custom sort is only applied if $custom_sort is true.
 	 *
 	 * @param array $category_ids
 	 * @param array $keywords
