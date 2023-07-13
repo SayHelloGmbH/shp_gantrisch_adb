@@ -715,10 +715,10 @@ class Offer
 	/**
 	 * Pass by reference. Clean and convert the input to an imploded trimmed array
 	 *
-	 * @param mixed $keywords
+	 * @param array|string $keywords
 	 * @return string
 	 */
-	public function prepareKeywords($keywords)
+	public function prepareKeywords(array|string $keywords): string
 	{
 		if (is_string($keywords)) {
 			$keywords = preg_split('/([\r\n\t\s])/', trim($keywords));
