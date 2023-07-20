@@ -82,7 +82,7 @@ body {
   --block--entry-title-weight: 700;
   --block--entry-postit-font-size: 16px;
   --block--entry-postit-line-height: 1;
-  --block--entry-postit-padding: 4.5px 7px 2.5px;
+  --block--entry-postit-padding: 4.5px 7px 3.5px;
   --block--entry-postit-spacing: 10px;
   --block--entry-hint-color: inherit;
   --block--entry-hint-background-color: var(--wp--preset--color--softgrey);
@@ -176,7 +176,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
   font-weight: var(--block--entry-button-weight) !important;
 }
 .c-adb-list .c-adb-list__entry-buttonwrapper {
-  padding-block-start: 0;
+  -webkit-padding-before: 0;
+          padding-block-start: 0;
   text-align: right;
   --stack-size: 0;
 }
@@ -209,7 +210,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry-header {
   padding: var(--block--entry-header-padding);
-  margin-block-end: var(--block--entry-header-margin-bottom);
+  -webkit-margin-after: var(--block--entry-header-margin-bottom);
+          margin-block-end: var(--block--entry-header-margin-bottom);
   transition: var(--block--entry-header-transition);
 }
 .c-adb-list .c-adb-list__entry-header > * {
@@ -221,8 +223,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 @supports (aspect-ratio: 3/2) {
   .c-adb-list .c-adb-list__entry-image {
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     width: 100% !important;
     height: 100% !important;
   }
@@ -302,8 +303,10 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry .date > *,
 .c-adb-list .c-adb-list__entry .institution_location > * {
-  margin-block-start: 0;
-  margin-block-end: 0;
+  -webkit-margin-before: 0;
+          margin-block-start: 0;
+  -webkit-margin-after: 0;
+          margin-block-end: 0;
 }
 .c-adb-list .c-adb-list__entry .date strong,
 .c-adb-list .c-adb-list__entry .institution_location strong {
@@ -311,7 +314,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry .description {
   padding-right: 24px;
-  margin-block-end: var(--block--entry-header-margin-bottom);
+  -webkit-margin-after: var(--block--entry-header-margin-bottom);
+          margin-block-end: var(--block--entry-header-margin-bottom);
 }
 .c-adb-list .c-adb-list__entry .entry_link {
   position: absolute;
@@ -337,10 +341,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 .c-adb-list .c-adb-list__entry .pictures img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
 }
 .c-adb-list .c-adb-list__entry .placeholder_wrap {
   position: relative;
@@ -376,7 +378,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
   font-size: var(--block--entry-title-size);
   line-height: var(--block--entry-title-line-height);
   font-weight: var(--block--entry-title-weight);
-  margin-block-end: var(--block--entry-header-margin-bottom);
+  -webkit-margin-after: var(--block--entry-header-margin-bottom);
+          margin-block-end: var(--block--entry-header-margin-bottom);
 }
 .c-adb-list .c-adb-list__entry .description h3 a {
   text-decoration: none !important;
