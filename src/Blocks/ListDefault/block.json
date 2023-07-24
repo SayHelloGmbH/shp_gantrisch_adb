@@ -6,6 +6,7 @@
 	"icon": "database",
 	"apiVersion": 2,
 	"keywords": ["offer", "angebot", "list"],
+	"textdomain": "shp_gantrisch_adb",
 	"acf": {
 		"mode": "preview",
 		"renderTemplate": "render.php",
