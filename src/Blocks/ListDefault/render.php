@@ -29,7 +29,7 @@ $filters = [];
 
 $keywords = $block['data']['adb_keywords'] ?? '';
 
-if (!empty($keywords) && !$show_filter) {
+if (!empty($keywords)) {
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
 }
