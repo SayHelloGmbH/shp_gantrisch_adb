@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-11-30T14:04:37+01:00\n"
-"PO-Revision-Date: 2023-07-24 08:54+0000\n"
+"PO-Revision-Date: 2023-07-24 09:02+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: shp_gantrisch_adb\n"
 "Language: de_DE\n"
@@ -116,6 +116,128 @@ msgstr ""
 "Die Daten konnten nicht von der ADB-Schnittstelle bezogen werden. (ADB-"
 "Server-Antwort HTTP %s.)"
 
+#: src/Blocks/OfferMap/assets/src/scripts/editor/index.js:16
+msgctxt "Editor message"
+msgid "ADB Single offer map."
+msgstr "ADB Einzelansicht: Karte"
+
+#: src/Blocks/OfferEventLocation/assets/src/scripts/editor/index.js:48
+msgctxt "Editor message"
+msgid "Offer event location."
+msgstr "ADB Einzelansicht: Veranstaltungsort"
+
+#: src/Blocks/OfferCondition/assets/src/scripts/editor/index.js:33
+msgctxt "Editor message"
+msgid "Placeholder for ADB condition."
+msgstr "ADB Einzelansicht: Kondition"
+
+#: src/Blocks/OfferLinks/assets/src/scripts/editor/index.js:33
+msgctxt "Editor message"
+msgid "Placeholder for ADB offer links."
+msgstr "ADB Einzelansicht: Angebotslinks"
+
+#: src/Blocks/OfferRouteLength/assets/src/scripts/editor/index.js:33
+msgctxt "Editor message"
+msgid "Placeholder for ADB route length."
+msgstr "ADB Einzelansicht: Routenlänge"
+
+#: src/Blocks/OfferTime/assets/src/scripts/editor/index.js:33
+msgctxt "Editor message"
+msgid "Placeholder for ADB time required."
+msgstr "ADB Einzelansicht: Zeit benötigt"
+
+#: src/Blocks/OfferTimeTermin/assets/src/scripts/editor/index.js:45
+msgctxt "Editor message"
+msgid "Placeholder for ADB time/date."
+msgstr "ADB Einzelansicht: Zeit/Datum"
+
+#: src/Blocks/OfferSameCategory/assets/src/scripts/editor/index.js:44
+msgctxt "Editor message"
+msgid "Posts from the same category."
+msgstr "Beiträge aus der gleichen Kategorie"
+
+#: src/Blocks/OfferBenefits/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid "Single offer benefits."
+msgstr "ADB Einzelansicht: Vorteile"
+
+#: src/Blocks/OfferContact/assets/src/scripts/editor/index.js:66
+msgctxt "Editor message"
+msgid "Single offer contact information."
+msgstr "ADB Einzelansicht: Kontaktinformation"
+
+#: src/Blocks/OfferDescriptionLong/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid ""
+"Single offer description long. Single offer description long. Single offer "
+"description long. Single offer description long. Single offer description "
+"long. Single offer description long. Single offer description long. Single "
+"offer description long. Single offer description long. Single offer "
+"description long. Single offer description long. Single offer description "
+"long. Single offer description long."
+msgstr ""
+"ADB Einzelansicht: Lange Beschreibung. ADB Einzelansicht: Lange Beschreibung."
+" ADB Einzelansicht: Lange Beschreibung. ADB Einzelansicht: Lange "
+"Beschreibung. ADB Einzelansicht: Lange Beschreibung. ADB Einzelansicht: "
+"Lange Beschreibung. ADB Einzelansicht: Lange Beschreibung. ADB Einzelansicht:"
+" Lange Beschreibung. ADB Einzelansicht: Lange Beschreibung. ADB "
+"Einzelansicht: Lange Beschreibung. "
+
+#: src/Blocks/OfferExcerpt/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid ""
+"Single offer excerpt. Single offer excerpt. Single offer excerpt. Single "
+"offer excerpt. Single offer excerpt. Single offer excerpt."
+msgstr ""
+"ADB Einzelansicht: Textauszug. ADB Einzelansicht: Textauszug. ADB "
+"Einzelansicht: Textauszug. ADB Einzelansicht: Textauszug. "
+
+#: src/Blocks/OfferInfrastructure/assets/src/scripts/editor/index.js:46
+msgctxt "Editor message"
+msgid ""
+"Single offer infrastructure. Single offer infrastructure. Single offer "
+"infrastructure. Single offer infrastructure. Single offer infrastructure. "
+"Single offer infrastructure. Single offer infrastructure. Single offer "
+"infrastructure. Single offer infrastructure. Single offer infrastructure. "
+"Single offer infrastructure. Single offer infrastructure. Single offer "
+"infrastructure."
+msgstr ""
+"ADB Einzelansicht: Infrastruktur. ADB Einzelansicht: Infrastruktur. ADB "
+"Einzelansicht: Infrastruktur. ADB Einzelansicht: Infrastruktur. ADB "
+"Einzelansicht: Infrastruktur. ADB Einzelansicht: Infrastruktur. ADB "
+"Einzelansicht: Infrastruktur. ADB Einzelansicht: Infrastruktur. ADB "
+"Einzelansicht: Infrastruktur. ADB Einzelansicht: Infrastruktur. ADB "
+"Einzelansicht: Infrastruktur. "
+
+#: src/Blocks/OfferPrice/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid "Single offer price."
+msgstr "ADB Einzelansicht: Preis"
+
+#: src/Blocks/OfferSeason/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid "Single offer season information."
+msgstr "ADB Einzelansicht: Saisonsinformation."
+
+#: src/Blocks/OfferSubscription/assets/src/scripts/editor/index.js:95
+msgctxt "Editor message"
+msgid "Single offer subscription information."
+msgstr "ADB Einzelansicht: Abonnementsinformation."
+
+#: src/Blocks/OfferTarget/assets/src/scripts/editor/index.js:46
+msgctxt "Editor message"
+msgid ""
+"Single offer target audience. Single offer target audience. Single offer "
+"target audience."
+msgstr ""
+"ADB Einzelansicht: Zielgruppe. ADB Einzelansicht: Zielgruppe. ADB "
+"Einzelansicht: Zielgruppe. "
+
+#: src/Blocks/OfferTitle/assets/src/scripts/editor/index.js:17
+msgctxt "Editor message"
+msgid "Single offer title"
+msgstr "ADB Einzelansicht: Angebotstitel"
+
 #: src/Blocks/OfferTimeTermin/render.php:16
 msgctxt "Editor preview message"
 msgid "API does not return any valid values for this element (30.11.2022)."
@@ -196,6 +318,11 @@ msgstr "https://sayhello.ch/"
 msgid "In Arbeit…"
 msgstr "In Arbeit…"
 
+#: src/Blocks/OfferImages/assets/src/scripts/editor/index.js:65
+msgctxt "Info text"
+msgid "No image size selected"
+msgstr "Keine Bildgrösse ausgewählt."
+
 #: src/Package/Admin.php:49
 msgid ""
 "Klicken Sie auf diesen Button, um die aktuelle Daten aus der ADB-"
@@ -231,6 +358,194 @@ msgstr ""
 #. Author of the plugin
 msgid "Say Hello GmbH"
 msgstr "Say Hello GmbH"
+
+#: src/Blocks/OfferImages/assets/src/scripts/editor/index.js:32
+msgctxt "SelectControl label"
+msgid "Select an image size"
+msgstr "Bildgrösse auswählen"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:31
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:33
+#: src/Blocks/AccordionTravel/assets/src/scripts/editor/index.js:26
+msgctxt "TextControl label"
+msgid "Block title"
+msgstr "Blocktitel"
+
+#: src/Blocks/OfferSameCategory/assets/src/scripts/editor/index.js:28
+#: src/Blocks/OfferSubscription/assets/src/scripts/editor/index.js:58
+msgctxt "TextControl label"
+msgid "Button text"
+msgstr "Button-Text"
+
+#: src/Blocks/OfferTransportStop/assets/src/scripts/editor/index.js:33
+#, javascript-format
+msgctxt "TextControl label"
+msgid "Link text (%s will be replaced with the transport stop)"
+msgstr "Link-Text (%s wird mit den Namen der Haltestelle ersetzt)"
+
+#: src/Blocks/OfferContact/assets/src/scripts/editor/index.js:35
+msgctxt "TextControl label"
+msgid "Partner label (only if offer contact is a partner)"
+msgstr "Partner-Label (nur, wenn Angebot von einem Partner kommt)"
+
+#: src/Blocks/OfferSubscription/assets/src/scripts/editor/index.js:38
+msgctxt "TextControl label"
+msgid "Text"
+msgstr "Text"
+
+#: src/Blocks/OfferCondition/assets/src/scripts/editor/index.js:19
+#: src/Blocks/OfferRouteLength/assets/src/scripts/editor/index.js:19
+#: src/Blocks/OfferTime/assets/src/scripts/editor/index.js:19
+msgctxt "TextControl label"
+msgid "Text prefix"
+msgstr "Präfix"
+
+#: src/Blocks/OfferDocuments/assets/src/scripts/editor/index.js:20
+#: src/Blocks/OfferEventLocation/assets/src/scripts/editor/index.js:26
+#: src/Blocks/OfferLinks/assets/src/scripts/editor/index.js:19
+#: src/Blocks/OfferSameCategory/assets/src/scripts/editor/index.js:19
+#: src/Blocks/OfferSubscription/assets/src/scripts/editor/index.js:27
+#: src/Blocks/OfferTimeTermin/assets/src/scripts/editor/index.js:24
+msgctxt "TextControl label"
+msgid "Title"
+msgstr "Titel"
+
+#: src/Blocks/OfferTransportStop/assets/src/scripts/editor/index.js:24
+msgctxt "TextControl label"
+msgid "Title (only if stop available)"
+msgstr "Titel (nur, wenn Haltestelle vorhanden)"
+
+#: src/Blocks/OfferContact/assets/src/scripts/editor/index.js:26
+#: src/Blocks/OfferInfrastructure/assets/src/scripts/editor/index.js:24
+#: src/Blocks/OfferTarget/assets/src/scripts/editor/index.js:24
+msgctxt "TextControl label"
+msgid "Title (only output if content available)"
+msgstr "Titel (wird nur ausgegeben, wenn Inhalt vorhanden)"
+
+#: src/Blocks/OfferSubscription/assets/src/scripts/editor/index.js:47
+msgctxt "TextControl label"
+msgid "Title - where to subscribe"
+msgstr "Titel - wo anmelden"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:77
+msgctxt "TextControl label"
+msgid "Überschrift Anteil ungeteerter Wegstrecke"
+msgstr "Überschrift Anteil ungeteerter Wegstrecke"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:130
+msgctxt "TextControl label"
+msgid "Überschrift Eignung"
+msgstr "Überschrift Eignung"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:88
+msgctxt "TextControl label"
+msgid "Überschrift Höhendifferenz"
+msgstr "Überschrift Höhendifferenz"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:66
+msgctxt "TextControl label"
+msgid "Überschrift Höhenmeter Abstieg"
+msgstr "Überschrift Höhenmeter Abstieg"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:55
+msgctxt "TextControl label"
+msgid "Überschrift Höhenmeter Aufstieg"
+msgstr "Überschrift Höhenmeter Aufstieg"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:108
+msgctxt "TextControl label"
+msgid "Überschrift Infrastruktur"
+msgstr "Überschrift Infrastruktur"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:53
+msgctxt "TextControl label"
+msgid "Überschrift Leistungen"
+msgstr "Überschrift Leistungen"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:132
+msgctxt "TextControl label"
+msgid "Überschrift Materialmiete"
+msgstr "Überschrift Materialmiete"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:75
+msgctxt "TextControl label"
+msgid "Überschrift Ort"
+msgstr "Überschrift Ort"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:64
+msgctxt "TextControl label"
+msgid "Überschrift Preis"
+msgstr "Überschrift Preis"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:44
+msgctxt "TextControl label"
+msgid "Überschrift Routenlänge"
+msgstr "Überschrift Routenlänge"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:97
+msgctxt "TextControl label"
+msgid "Überschrift Saison"
+msgstr "Überschrift Saison"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:121
+msgctxt "TextControl label"
+msgid "Überschrift Schwierigkeitsgrad Kondition"
+msgstr "Überschrift Schwierigkeitsgrad Kondition"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:110
+msgctxt "TextControl label"
+msgid "Überschrift Schwierigkeitsgrad Technik"
+msgstr "Überschrift Schwierigkeitsgrad Technik"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:143
+msgctxt "TextControl label"
+msgid "Überschrift Sicherheitshinweise"
+msgstr "Überschrift Sicherheitshinweise"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:154
+msgctxt "TextControl label"
+msgid "Überschrift Signalisation"
+msgstr "Überschrift Signalisation"
+
+#: src/Blocks/AccordionTravel/assets/src/scripts/editor/index.js:37
+msgctxt "TextControl label"
+msgid "Überschrift Startort"
+msgstr "Überschrift Startort"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:42
+msgctxt "TextControl label"
+msgid "Überschrift Termin"
+msgstr "Überschrift Termin"
+
+#: src/Blocks/AccordionRoute/assets/src/scripts/editor/index.js:99
+msgctxt "TextControl label"
+msgid "Überschrift Zeitbedarf"
+msgstr "Überschrift Zeitbedarf"
+
+#: src/Blocks/AccordionTravel/assets/src/scripts/editor/index.js:59
+msgctxt "TextControl label"
+msgid "Überschrift Zielort"
+msgstr "Überschrift Zielort"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:119
+msgctxt "TextControl label"
+msgid "Überschrift Zusatzinformation"
+msgstr "Überschrift Zusatzinformation"
+
+#: src/Blocks/AccordionDetails/assets/src/scripts/editor/index.js:86
+msgctxt "TextControl label"
+msgid "Überschrift Öffnungszeiten"
+msgstr "Überschrift Öffnungszeiten"
+
+#: src/Blocks/AccordionTravel/assets/src/scripts/editor/index.js:48
+msgctxt "TextControl label"
+msgid "Überschrift öV Startort"
+msgstr "Überschrift öV Startort"
+
+#: src/Blocks/AccordionTravel/assets/src/scripts/editor/index.js:70
+msgctxt "TextControl label"
+msgid "Überschrift öV Zielort"
+msgstr "Überschrift öV Zielort"
 
 #: src/Blocks/ListDefault/Block.php:308
 msgctxt "Tip label"
