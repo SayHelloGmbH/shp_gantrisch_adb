@@ -8,6 +8,10 @@
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet--color: currentColor;
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
 
+	--swiper-pagination-bullet-horizontal-gap: 0;
+	--swiper-pagination-bullet-border-radius: 0;
+	--swiper-pagination-bullet-size: 10px;
+
 	&__figure {
 		position: relative;
 		padding: 0;
@@ -73,7 +77,11 @@
 		width: 40px;
 		height: 40px;
 		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iNDAiPjxwYXRoIGQ9Im01NjAuNjY3LTIyOS4zMzQtNTkuMzMzLTYwLjMzMkw2NTIuNjY4LTQ0MUgxNDYuNjY3di04NGg1MDYuMDAxTDUwMC42NjctNjc3IDU2MC03MzYuNjY3bDI1NCAyNTQtMjUzLjMzMyAyNTMuMzMzWiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
-		filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.35));
+
+		&:after {
+			display: none;
+		}
 	}
 
 	.swiper-button-prev {
