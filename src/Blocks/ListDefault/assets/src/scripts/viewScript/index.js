@@ -25,6 +25,14 @@ const entry_class = `listing_entry`; // ADB standard class
 const initial_count = Math.max(parseInt(shp_gantrisch_adb_block_list_default.initial_count), 1);
 
 blocks.forEach((block) => {
+	const filterform = block.querySelector('.filter form'),
+		block_id = block.getAttribute('id');
+
+	if (filterform && block_id) {
+		const action = filterform.getAttribute('action');
+		filterform.setAttribute('action', `${action}#${block_id}`);
+	}
+
 	// First remove the total count and hide all entries
 	block.querySelector('#offer_total').remove();
 	block.querySelectorAll(`.${entry_class}:nth-child(n+${initial_count + 1})`).forEach((element) => {

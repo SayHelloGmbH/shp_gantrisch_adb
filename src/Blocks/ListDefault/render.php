@@ -77,7 +77,7 @@ $count = 1;
 $categories_info = is_array($category_ids) ? implode(', ', $category_ids) : 'all';
 
 ?>
-<div class="c-adb-block c-adb-block--list <?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>" data-button-text="<?php echo esc_html($block['data']['button_text'] ?? ''); ?>" data-class-name-base="<?php echo esc_html($classNameBase); ?>">
+<div id="<?php echo $block['id'] ?? ''; ?>" class="c-adb-block c-adb-block--list <?php echo $block['shp']['class_names']; ?>  c-adb-list" data-categories="<?php echo $categories_info; ?>" data-button-text="<?php echo esc_html($block['data']['button_text'] ?? ''); ?>" data-class-name-base="<?php echo esc_html($classNameBase); ?>">
 
 	<?php if ($show_filter) { ?>
 		<div class="<?php echo $classNameBase; ?>__filter c-adb-list__filter">
