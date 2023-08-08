@@ -1,5 +1,4 @@
 .wp-block-shp-gantrisch-adb-offer-images {
-  --shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
   --shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 480/320;
   --shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top: 2rem;
   --shp-block--gantrisch-adb-offer-images--swiper-bullet--gap: 8px;
@@ -13,7 +12,6 @@
   position: relative;
   padding: 0;
   margin: 0;
-  background-color: var(--shp-block--gantrisch-adb-offer-images--figure--background-color);
   aspect-ratio: var(--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio);
   overflow: hidden;
 }
