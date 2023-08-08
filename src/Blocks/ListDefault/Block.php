@@ -284,7 +284,7 @@ class Block
 			}
 
 			$is_partner = $model->isParkPartner($offer_id);
-			$is_park_event = (bool) $offer->is_park_event ?? false;
+			$is_park_event = (bool) ($offer->is_park_event ?? false) || (bool) (preg_match('/^Naturpark Gantrisch/i', $offer->contact) ?? false);
 			$is_tip = (bool) ($offer->is_hint ?? false);
 
 			// Remove all pre-existing labels
