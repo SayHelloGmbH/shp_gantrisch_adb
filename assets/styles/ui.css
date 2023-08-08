@@ -176,8 +176,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
   font-weight: var(--block--entry-button-weight) !important;
 }
 .c-adb-list .c-adb-list__entry-buttonwrapper {
-  -webkit-padding-before: 0;
-          padding-block-start: 0;
+  padding-block-start: 0;
   text-align: right;
   --stack-size: 0;
 }
@@ -210,8 +209,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry-header {
   padding: var(--block--entry-header-padding);
-  -webkit-margin-after: var(--block--entry-header-margin-bottom);
-          margin-block-end: var(--block--entry-header-margin-bottom);
+  margin-block-end: var(--block--entry-header-margin-bottom);
   transition: var(--block--entry-header-transition);
 }
 .c-adb-list .c-adb-list__entry-header > * {
@@ -303,10 +301,8 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry .date > *,
 .c-adb-list .c-adb-list__entry .institution_location > * {
-  -webkit-margin-before: 0;
-          margin-block-start: 0;
-  -webkit-margin-after: 0;
-          margin-block-end: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 .c-adb-list .c-adb-list__entry .date strong,
 .c-adb-list .c-adb-list__entry .institution_location strong {
@@ -314,8 +310,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
 }
 .c-adb-list .c-adb-list__entry .description {
   padding-right: 24px;
-  -webkit-margin-after: var(--block--entry-header-margin-bottom);
-          margin-block-end: var(--block--entry-header-margin-bottom);
+  margin-block-end: var(--block--entry-header-margin-bottom);
 }
 .c-adb-list .c-adb-list__entry .entry_link {
   position: absolute;
@@ -378,8 +373,7 @@ body.page .c-adb-list .c-adb-list__entry.is--hidden {
   font-size: var(--block--entry-title-size);
   line-height: var(--block--entry-title-line-height);
   font-weight: var(--block--entry-title-weight);
-  -webkit-margin-after: var(--block--entry-header-margin-bottom);
-          margin-block-end: var(--block--entry-header-margin-bottom);
+  margin-block-end: var(--block--entry-header-margin-bottom);
 }
 .c-adb-list .c-adb-list__entry .description h3 a {
   text-decoration: none !important;
