@@ -1,4 +1,5 @@
 import 'jquery-match-height';
+import './_polyfill';
 
 const conditionalLoadScript = (filename, condition) => {
 	if (!!condition) {
