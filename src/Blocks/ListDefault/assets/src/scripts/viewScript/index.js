@@ -30,7 +30,7 @@ blocks.forEach((block) => {
 
 	if (filterform && block_id) {
 		const action = filterform.getAttribute('action');
-		filterform.setAttribute('action', `${action}#${block_id}`);
+		filterform.setAttribute('action', `${action}#${block_id}?forcerefresh=1`);
 	}
 
 	// First remove the total count and hide all entries
