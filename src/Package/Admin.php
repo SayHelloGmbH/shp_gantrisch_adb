@@ -2,9 +2,9 @@
 
 namespace SayHello\ShpGantrischAdb\Package;
 
-use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
+use WP_CLI;
 
 class Admin
 {
@@ -13,6 +13,27 @@ class Admin
 		add_action('admin_menu', [$this, 'adminMenu']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
 		add_action('rest_api_init', [$this, 'registerRestRoutes']);
+
+		$this->addCLICommands();
+	}
+
+	public function addCLICommands()
+	{
+		if (defined('WP_CLI') && WP_CLI) {
+			WP_CLI::add_command('shp adb update', function () {
+
+				$mt = microtime(true);
+				WP_CLI::log('Starting ADB update…');
+				$response = $this->updateFromApi();
+
+				if ($response->get_status() !== 200) {
+					WP_CLI::error($response->get_data());
+					exit;
+				}
+
+				WP_CLI::log('ADB update done in ' . (microtime(true) - $mt) . ' seconds. 😁');
+			});
+		}
 	}
 
 	/**
