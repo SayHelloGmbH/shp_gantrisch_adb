@@ -98,6 +98,25 @@ class ACF
 						'return_format' => 'id',
 						'ui' => 1,
 					),
+					[
+						'key' => 'field_64dab31fa3692',
+						'label' => _x('Filterfunktion global deaktivieren', 'ACF field label', 'sha'),
+						'name' => 'shp_adb_filterfunction_deactivate',
+						'type' => 'true_false',
+						'instructions' => _x('', 'ACF field label', 'sha'),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => [
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						],
+						'message' => '',
+						'default_value' => 0,
+						'ui' => 1,
+						'ui_on_text' => _x('Ja', 'ACF field label', 'sha'),
+						'ui_off_text' => _x('Nein', 'ACF field label', 'sha'),
+					],
 				),
 				'location' => array(
 					array(
