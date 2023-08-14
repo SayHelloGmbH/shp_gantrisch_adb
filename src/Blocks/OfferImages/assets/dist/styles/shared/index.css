@@ -87,3 +87,7 @@
   align-items: stretch;
   margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);
 }
+.wp-block-shp-gantrisch-adb-offer-images .swiper-container:not(.swiper-container-initialized) > .swiper-wrapper,
+.wp-block-shp-gantrisch-adb-offer-images .swiper:not(.swiper-initialized) > .swiper-wrapper {
+  overflow: visible;
+}

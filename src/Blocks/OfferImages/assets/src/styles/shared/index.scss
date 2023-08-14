@@ -103,4 +103,10 @@
 		align-items: stretch;
 		margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);
 	}
+
+	// Override outdated rules from Elementor 14.8.2023
+	.swiper-container:not(.swiper-container-initialized)>.swiper-wrapper,
+	.swiper:not(.swiper-initialized)>.swiper-wrapper {
+		overflow: visible;
+	}
 }
