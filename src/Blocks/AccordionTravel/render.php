@@ -42,7 +42,7 @@ if (!empty($start_place_info)) {
 
 	ob_start();
 ?>
-	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--start_place_info">
+	<div class="c-adb-block c-adb-block--detail shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--start_place_info">
 
 		<?php if (!empty($attributes['title_start'] ?? '')) { ?>
 			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--start_place_info"><?php echo $attributes['title_start']; ?></h3>

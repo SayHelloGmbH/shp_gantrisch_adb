@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use DOMDocument;
 use DOMNodeList;
 use DOMXPath;
@@ -13,7 +14,15 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'renderBlock']);
+
+		// All blocks. Block type check is in the method.
+		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
+
+		// Only the main list
+		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20);
+
+		// All blocks. Block type check is in the method.
+		add_action('render_block', [$this, 'contentOrder'], 30, 2);
 	}
 
 	public function register()
@@ -168,12 +177,167 @@ class Block
 	}
 
 	/**
-	 * Modify the link hrefs of the list entries.
+	 * Various HTML modifications on the list entries.
+	 *
+	 * @param string $html
+	 * @param array $block
+	 * @param WP_Block $instance
+	 * @return string
+	 */
+	public function modifyHTML($html, $block, $instance)
+	{
+
+		if (empty($html)) {
+			return $html;
+		}
+
+		if ($block['blockName'] !== 'acf/shp-adb-list-default' && $block['blockName'] !== 'shp/adb-offer-same-category') {
+			return $html;
+		}
+
+		libxml_use_internal_errors(true);
+		$document = new DOMDocument();
+		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$xpath = new DOMXPath($document);
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'listing_entry') or contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')][not(contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-'))]");
+
+		if (!$entries instanceof DOMNodeList || $entries->length === 0) {
+			return $html;
+		}
+
+		// Make sure our own class name is set on the entry
+		foreach ($entries as $entry) {
+			$class_names = explode(' ', $entry->getAttribute('class'));
+
+			if (in_array('c-adb-list__entry', $class_names)) {
+				continue;
+			}
+
+			// remove empty class names
+			$class_names = array_filter($class_names);
+
+			$entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entry'], $class_names)));
+		}
+
+		$controller = new OfferController();
+		$model = new OfferModel();
+
+		// get default css class name from $block['blockName']
+		$classNameBase = wp_get_block_default_classname($block['blockName']);
+
+		$entries_wrap = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'entries_wrap')]");
+		if ($entries_wrap->length) {
+			foreach ($entries_wrap as $entries_wrap_entry) {
+				$class_names = explode(' ', $entries_wrap_entry->getAttribute('class'));
+
+				if (in_array('c-adb-list__entries', $class_names)) {
+					continue;
+				}
+
+				// Remove empty entries
+				$class_names = array_filter($class_names);
+
+				$entries_wrap_entry->setAttribute('class', implode(' ', array_merge(['c-adb-list__entries'], $class_names)));
+			}
+		}
+
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
+
+		foreach ($entries as $entry) {
+
+			// get id attribute from $entry: remove offer_ prefix
+			$offer_id = (int) substr($entry->getAttribute('id'), 6);
+			if (!$offer_id) {
+				continue;
+			}
+
+			$offer = $model->getOffer($offer_id);
+
+			if (!$offer) {
+				continue;
+			}
+
+			$url = $controller->singleUrl($offer_id);
+
+			$button_link = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-button')]", $entry);
+
+			if (!$button_link->length) {
+				$link = $document->createElement('a');
+				$link->textContent = $block['attrs']['data']['button_text'] ?? $instance->attributes['button_text'] ?? __('Mehr', 'shp-gantrisch-adb');
+				$link->setAttribute('class', "{$classNameBase}__entry-button c-adb-list__entry-button");
+				$link->setAttribute('href', $url);
+
+				$wrapper = $document->createElement('div');
+				$wrapper->setAttribute('class', "{$classNameBase}__entry-buttonwrapper c-adb-list__entry-buttonwrapper");
+
+				$wrapper->appendChild($link);
+
+				$entry->appendChild($wrapper);
+			}
+
+			// get all descendants with an href attribute
+			$links = $xpath->query('.//@href', $entry);
+			foreach ($links as $link) {
+				// replace href attribute with url to single offer page
+				$link->nodeValue = $url;
+			}
+
+			$is_partner = $model->isParkPartner($offer_id);
+			$is_park_event = (bool) ($offer->is_park_event ?? false) || (bool) (preg_match('/^Naturpark Gantrisch/i', $offer->contact) ?? false);
+			$is_tip = (bool) ($offer->is_hint ?? false);
+
+			// Remove all pre-existing labels
+			$tip_tags = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'tipp')]", $entry);
+
+			if ($tip_tags->length) {
+				foreach ($tip_tags as $tip_tag) {
+					$tip_tag->parentNode->removeChild($tip_tag);
+				}
+			}
+
+			if ($is_partner || $is_park_event || $is_tip) {
+				$postit_wrapper = $document->createElement('div');
+				$postit_wrapper->setAttribute('class', "{$classNameBase}__entry-postit-wrapper c-adb-list__entry-postit-wrapper");
+				$entry->insertBefore($postit_wrapper, $entry->firstChild);
+
+				if ($is_tip) {
+					$entry->setAttribute('data-hint', 'true');
+					$tip_label = $document->createElement('div');
+					$tip_label->setAttribute('class', "{$classNameBase}__entry-tiplabel c-adb-list__entry-tiplabel c-adb-list__entry-postit c-adb-list__entry-postit--tipp");
+					$tip_label->nodeValue = _x('Tipp', 'Tip label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($tip_label);
+				}
+
+				if ($is_park_event) {
+					$entry->setAttribute('data-parkevent', 'true');
+					$event_label = $document->createElement('div');
+					$event_label->setAttribute('class', "{$classNameBase}__entry-parkeventlabel c-adb-list__entry-parkeventlabel c-adb-list__entry-postit c-adb-list__entry-postit--parkevent");
+					$event_label->nodeValue = _x('Naturpark', 'Park event label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($event_label);
+				}
+
+				if ($is_partner) {
+					$entry->setAttribute('data-parkpartner', 'true');
+					$partner_label = $document->createElement('div');
+					$partner_label->setAttribute('class', "{$classNameBase}__entry-partnerlabel c-adb-list__entry-partnerlabel c-adb-list__entry-postit c-adb-list__entry-postit--parkpartner");
+					$partner_label->nodeValue = _x('Parkpartner', 'More offers label', 'shp_gantrisch_adb');
+					$postit_wrapper->appendChild($partner_label);
+				}
+			}
+		}
+
+		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
+		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	/**
+	 * Modify the order of the list entries.
 	 *
 	 * @param string $html
 	 * @return string
 	 */
-	public function renderBlock($html)
+	public function sortEntries($html)
 	{
 
 		if (empty($html)) {
@@ -185,28 +349,63 @@ class Block
 		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 
 		$xpath = new DOMXPath($document);
-		$entries = $xpath->query("//article[contains(concat(' ',normalize-space(@class),' '),'listing_entry')]");
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),' c-adb-list__entry ')]");
 
-		if (!$entries instanceof DOMNodeList || $entries->length === 0) {
+		if (!$entries->length) {
 			return $html;
 		}
 
-		$controller = new OfferController();
+		$entries_parent = $entries->item(0)->parentNode;
+
+		$model = new OfferModel();
+		$entries_sorted = $model->sortOfferDomNodes($entries);
+
+		// Remove existing entries
+		foreach ($entries as $entry) {
+			$entry->parentNode->removeChild($entry);
+		}
+
+		// Add back sorted entries
+		foreach ($entries_sorted as $entry_sorted) {
+			$entries_parent->appendChild($entry_sorted);
+		}
+
+
+		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
+		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	/**
+	 * Modify the order of the list entry content.
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	public function contentOrder($html, $block)
+	{
+
+		if (empty($html)) {
+			return $html;
+		}
+
+		if ($block['blockName'] !== 'acf/shp-adb-list-default' && $block['blockName'] !== 'shp/adb-offer-same-category') {
+			return $html;
+		}
+
+		libxml_use_internal_errors(true);
+		$document = new DOMDocument();
+		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$xpath = new DOMXPath($document);
+		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
 
 		foreach ($entries as $entry) {
-			// get id attribute from $entry: remove offer_ prefix
-			$offer_id = (int) substr($entry->getAttribute('id'), 6);
-			if (!$offer_id) {
-				continue;
-			}
+			$pictures = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'pictures')]", $entry);
+			$description = $xpath->query(".//*[contains(concat(' ',normalize-space(@class),' '),'description')]", $entry);
 
-			$url = $controller->singleUrl($offer_id);
-
-			// get all descendants with an href attribute
-			$links = $xpath->query('.//@href', $entry);
-			foreach ($links as $link) {
-				// replace href attribute with url to single offer page
-				$link->nodeValue = $url;
+			// Move pictures after description
+			if ($pictures->length && $description->length) {
+				$description->item(0)->parentNode->insertBefore($pictures->item(0), $description->item(0)->nextSibling);
 			}
 		}
 

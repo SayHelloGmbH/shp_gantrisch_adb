@@ -50,8 +50,7 @@ $config['park_id'] = (int) get_option('options_shp_gantrisch_adb_park_id');
 |--------------------------------------------------------------------------
 | SEO URLs
 |--------------------------------------------------------------------------
-|
-| Set TRUE if your environment uses SEO URLs.
+|| Set TRUE if your environment uses SEO URLs.
 |
 */
 $config['seo_urls'] = FALSE;
@@ -59,7 +58,6 @@ $config['seo_url_detail_slug'] = 'offer-detail';
 $config['seo_url_poi_slug'] = 'poi';
 $config['seo_url_page_slug'] = 'page';
 $config['seo_url_reset_slug'] = 'reset';
-
 
 /*
 |--------------------------------------------------------------------------
@@ -80,16 +78,14 @@ $config['db_database'] = DB_NAME;
 |--------------------------------------------------------------------------
 | Custom view
 |--------------------------------------------------------------------------
-|
-| Set your custom view, located in your "custom" folder.
+|| Set your custom view, located in your "custom" folder.
 | example: "MyView"
 |
 */
 $config['class_view'] = "MyView";
 
 
-/*
-|--------------------------------------------------------------------------
+/*|--------------------------------------------------------------------------
 | Template
 |--------------------------------------------------------------------------
 |

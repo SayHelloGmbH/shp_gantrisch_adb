@@ -33,7 +33,7 @@ class Block
 		ob_start();
 
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?>">
+		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 			<?php echo $offer_description_long; ?>
 		</div>
 <?php

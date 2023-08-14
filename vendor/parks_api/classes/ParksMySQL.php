@@ -14,6 +14,12 @@ class ParksMySQL {
 
 
 	/**
+	 * API
+	 */
+	public $api;
+
+
+	/**
 	 * MySQL connection
 	 */
 	private $connection;
@@ -60,14 +66,20 @@ class ParksMySQL {
 	 * @param  string
 	 * @return void
 	 */
-	function __construct($hostname, $username, $password, $database) {
-		$this->hostname = $hostname;
-		$this->username = $username;
-		$this->password = $password;
-		$this->database = $database;
+	function __construct($api) {
+
+		// Api instance
+		$this->api = (object)$api;
+
+		// DB connection
+		$this->hostname = $api->config['db_hostname'];
+		$this->username = $api->config['db_username'];
+		$this->password = $api->config['db_password'];
+		$this->database = $api->config['db_database'];
 
 		$this->connect();
 		$this->connection->set_charset('utf8');
+
 	}
 
 
@@ -217,7 +229,7 @@ class ParksMySQL {
 
 			$db_fields .= "`".$key."` , ";
 
-			if ($value == NULL) {
+			if ($value === NULL) {
 				$db_values .= "NULL, ";
 			}
 			else {
@@ -227,7 +239,13 @@ class ParksMySQL {
 		$db_fields = substr($db_fields, 0, -2);
 		$db_values = substr($db_values, 0, -2);
 
-		return $this->query("INSERT INTO `".$table."` (".$db_fields.") VALUES (".$db_values.");");
+		$status = $this->query("INSERT INTO `".$table."` (".$db_fields.") VALUES (".$db_values.");");
+
+		if ( ! $status) {
+			$this->api->logger->error("INSERT INTO `".$table."` (".$db_fields.") VALUES (".$db_values.");");
+		}
+
+		return $status;
 	}
 
 
@@ -256,7 +274,7 @@ class ParksMySQL {
 				}
 			}
 
-			if ($value == NULL) {
+			if ($value === NULL) {
 				$db_fields .= "`".$key."` = NULL, ";
 			}
 			else {
@@ -274,7 +292,14 @@ class ParksMySQL {
 			$db_where = substr($db_where, 0, -4);
 		}
 
-		return $this->query("UPDATE `".$table."` SET ".$db_fields.$db_where.";");
+		$status = $this->query("UPDATE `".$table."` SET ".$db_fields.$db_where.";");
+
+		if ( ! $status) {
+			$this->api->logger->error("UPDATE `".$table."` SET ".$db_fields.$db_where.";");
+		}
+
+		return $status;
+		
 	}
 
 
@@ -303,7 +328,13 @@ class ParksMySQL {
 			$db_limit = " LIMIT ".$limit;
 		}
 
-		return $this->query("DELETE FROM `".$table."`".$db_where.$db_limit.";");
+		$status = $this->query("DELETE FROM `".$table."`".$db_where.$db_limit.";");
+
+		if ( ! $status) {
+			$this->api->logger->error("DELETE FROM `".$table."`".$db_where.$db_limit.";");
+		}
+
+		return $status;
 	}
 
 

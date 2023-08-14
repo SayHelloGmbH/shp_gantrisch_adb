@@ -32,11 +32,15 @@ class Block
 
 		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?>">
+		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
-				<?php
-				echo implode('<br>', $months);
-				?>
+				<ul class="c-adb-block__ul">
+					<li class="c-adb-block__li">
+						<?php
+						echo implode('</li><li class="c-adb-block__li">', $months);
+						?>
+					</li>
+				</ul>
 			</div>
 		</div>
 <?php

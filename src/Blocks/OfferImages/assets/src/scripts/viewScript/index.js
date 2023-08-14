@@ -3,12 +3,17 @@
  * seems to have problems updating the pagination bullets
  */
 
-import Swiper, { Pagination, Navigation } from 'swiper';
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const elements = document.querySelectorAll('.wp-block-shp-gantrisch-adb-offer-images .swiper-container');
 
 if (elements.length) {
 	const config = {
+		loop: true,
 		autoHeight: false,
 		simulateTouch: false,
 		modules: [Navigation, Pagination],
@@ -23,6 +28,10 @@ if (elements.length) {
 	};
 
 	elements.forEach((element) => {
-		new Swiper(element, config);
+		const swiper = new Swiper(element, config);
+		swiper.on('slideChange', function () {
+			swiper.pagination.render();
+			swiper.pagination.update();
+		});
 	});
 }

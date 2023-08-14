@@ -1,3 +1,7 @@
+.wp-block-acf-shp-adb-list-default .listing_entry:hover {
+  box-shadow: none;
+  border-width: 0;
+}
 .wp-block-acf-shp-adb-list-default__filter .filter input::placeholder {
   opacity: 0.75 !important;
 }

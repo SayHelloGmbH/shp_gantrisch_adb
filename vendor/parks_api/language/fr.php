@@ -274,7 +274,7 @@ $lang['offer_requirements'] = "Conditions";
 */
 $lang['offer_safety_instructions'] = "Prescriptions de s&eacute;curit&eacute;";
 $lang['offer_signalization'] = "Signalisation";
-$lang['offer_material_rent'] = "Location de mat&eacute;riel";
+$lang['offer_material_rent'] = "Équipement / Location de matériel";
 $lang['offer_catering_informations'] = "Possibilit&eacute;s de restauration";
 $lang['offer_saison'] = "Saison";
 $lang['offer_start_place'] = "Lieu de d&eacute;part";

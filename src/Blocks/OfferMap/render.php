@@ -32,7 +32,7 @@ if (!empty($offer->route_url ?? '')) {
 
 ?>
 
-<div class="<?php echo $block['shp']['class_names']; ?>">
+<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 	<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 		<iframe id="adb_iframe" class="<?php echo $block['shp']['classNameBase']; ?>__iframe <?php echo $route_class; ?>" data-src="https://angebote.paerke.ch/de/export/iframe/detail/0a54fe6d6aaa9a5956937700ef1201de31eabd49/<?php echo $offer->offer_id; ?>?map_only=true"></iframe>
 	</div>

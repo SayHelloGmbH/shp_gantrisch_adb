@@ -1,5 +1,5 @@
 .wp-block-shp-gantrisch-adb-offer-images {
-	--shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
+	// --shp-block--gantrisch-adb-offer-images--figure--background-color: #f0f0f0;
 	--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio: 480/320;
 
 	// Prop name makes use clearer. It's actually the bottom margin on .swiper-wrapper
@@ -8,11 +8,15 @@
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet--color: currentColor;
 	--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color: currentColor;
 
+	--swiper-pagination-bullet-horizontal-gap: 0;
+	--swiper-pagination-bullet-border-radius: 0;
+	--swiper-pagination-bullet-size: 10px;
+
 	&__figure {
 		position: relative;
 		padding: 0;
 		margin: 0;
-		background-color: var(--shp-block--gantrisch-adb-offer-images--figure--background-color);
+		// background-color: var(--shp-block--gantrisch-adb-offer-images--figure--background-color);
 		aspect-ratio: var(--shp-block--gantrisch-adb-offer-images--figure--aspect-ratio);
 		overflow: hidden;
 
@@ -34,6 +38,8 @@
 		font-style: normal;
 		font-size: 0.75rem;
 		font-weight: 500;
+		text-align: center;
+		text-shadow: (0 0 2px rgba(0, 0, 0, 0.35));
 	}
 
 	&__image {
@@ -42,6 +48,8 @@
 		object-position: center;
 		width: 100% !important;
 		height: 100% !important;
+		user-select: none;
+		pointer-events: none;
 	}
 
 	.swiper-pagination {
@@ -70,7 +78,11 @@
 		width: 40px;
 		height: 40px;
 		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iNDAiPjxwYXRoIGQ9Im01NjAuNjY3LTIyOS4zMzQtNTkuMzMzLTYwLjMzMkw2NTIuNjY4LTQ0MUgxNDYuNjY3di04NGg1MDYuMDAxTDUwMC42NjctNjc3IDU2MC03MzYuNjY3bDI1NCAyNTQtMjUzLjMzMyAyNTMuMzMzWiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
-		filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.35));
+
+		&:after {
+			display: none;
+		}
 	}
 
 	.swiper-button-prev {
@@ -82,8 +94,19 @@
 		right: 1rem;
 	}
 
+	.swiper-button-disabled {
+		pointer-events: all !important;
+		cursor: not-allowed !important;
+	}
+
 	.swiper-wrapper {
 		align-items: stretch;
 		margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);
+	}
+
+	// Override outdated rules from Elementor 14.8.2023
+	.swiper-container:not(.swiper-container-initialized)>.swiper-wrapper,
+	.swiper:not(.swiper-initialized)>.swiper-wrapper {
+		overflow: visible;
 	}
 }

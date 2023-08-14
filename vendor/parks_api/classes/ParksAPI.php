@@ -165,7 +165,7 @@ class ParksAPI {
 			$this->logger = new ParksLog($this);
 
 			// Instance of ParksMySQL
-			$this->db = new ParksMySQL($this->config['db_hostname'], $this->config['db_username'], $this->config['db_password'], $this->config['db_database']);
+			$this->db = new ParksMySQL($this);
 
 			// Instance of ParksModel
 			$this->model = new ParksModel($this);
@@ -666,7 +666,7 @@ class ParksAPI {
 
 			// Get offers and total
 			$offers = $this->_get_offers($park_id, $categories, NULL, NULL, $filter, FALSE, FALSE, FALSE, TRUE);
-			$return .= $this->view->map($offers['data']);
+			$return .= $this->view->map($offers['data'] ?? '');
 
 			return $return;
 		}
@@ -1209,9 +1209,6 @@ class ParksAPI {
 		if ($this->config['use_sessions']) {
 			unset($_SESSION[$this->session_name]['filter']);
 		}
-
-		// Reload page
-		$this->_reload_page(TRUE);
 
 	}
 

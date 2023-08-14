@@ -277,7 +277,7 @@ $lang['offer_requirements'] = 'Anforderungen';
 */
 $lang['offer_safety_instructions'] = 'Sicherheitshinweise';
 $lang['offer_signalization'] = "Signalisation";
-$lang['offer_material_rent'] = 'Materialmiete';
+$lang['offer_material_rent'] = 'Ausrüstung / Materialmiete';
 $lang['offer_catering_informations'] = 'Verpflegungsmöglichkeiten';
 $lang['offer_saison'] = 'Saison';
 $lang['offer_start_place'] = 'Startort';

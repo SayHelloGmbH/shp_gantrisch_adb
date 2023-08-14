@@ -1,0 +1,20 @@
+body {
+	--block--ul--indent: 1em;
+}
+
+.c-adb-block {
+	&--detail {
+		.c-adb-block__ul {
+			padding-left: var(--block--ul--indent);
+		}
+	}
+
+	&__li {
+		padding-left: 10px;
+		padding-bottom: 15px;
+
+		&::marker {
+			content: '⇥';
+		}
+	}
+}

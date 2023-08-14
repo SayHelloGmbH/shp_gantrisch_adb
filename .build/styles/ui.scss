@@ -4,6 +4,7 @@
 @import './shb-accordion';
 
 // Shared styles over multiple blocks
+@import './c-adb-block';
 @import './c-adb-list';
 @import './c-offer-detail-box';
 
@@ -13,4 +14,17 @@ body.admin-bar .fancybox__toolbar.is-absolute {
 
 [data-fancybox] {
 	cursor: pointer;
+}
+
+:root {
+	--shp--scroll-margin-top: 120px;
+
+	@media screen and (min-width: 64em) {
+		--shp--scroll-margin-top: 150px;
+	}
+}
+
+[id] {
+	scroll-snap-margin-top: var(--shp--scroll-margin-top); // Safari
+	scroll-margin-top: var(--shp--scroll-margin-top);
 }
