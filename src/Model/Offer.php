@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
+use DOMNodeList;
 use ParksAPI;
 use stdClass;
 use WP_Error;
@@ -390,7 +391,7 @@ class Offer
 
 		return [
 			'contact' => nl2br(make_clickable(strip_tags($offer->contact ?? ''))),
-			'is_partner' => (bool) $offer->contact_is_park_partner,
+			'is_partner' => $this->isParkPartner($offer_id),
 		];
 	}
 
@@ -527,10 +528,10 @@ class Offer
 	}
 
 	/**
-	 * Get all offers. Random sort, then pull tips and
-	 * park partners to the top of the list.
+	 * Get all offers. Random sort, then pull tips to the top of the list.
 	 * If $number_required is passed, then splice the
 	 * result set and return only those offers.
+	 * The custom sort is only applied if $custom_sort is true.
 	 *
 	 * @param array $category_ids
 	 * @param array $keywords
@@ -538,7 +539,7 @@ class Offer
 	 * @param boolean $exclude_current
 	 * @return array
 	 */
-	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false)
+	public function getAll($category_ids = [], $keywords = [], $number_required = 0, $exclude_current = false, $custom_sort = true)
 	{
 
 		if (!is_array($category_ids)) {
@@ -591,6 +592,27 @@ class Offer
 				}
 			}
 		}
+
+		if (!$custom_sort) {
+
+			// Trim down the array if necessary
+			if ($number_required > 0) {
+				if (count($offers) > $number_required) {
+					$offers = array_splice($offers, 0, $number_required);
+				}
+			}
+
+			return $offers;
+		}
+
+		/**
+		 * Custom sorting: hints first, then sort by date, then sort
+		 * the remaining entries in a random order.
+		 *
+		 * Warning 5.7.2023: this sort function is also applied through
+		 * DomDocument manipulation in the render_block filter in
+		 * the list block.
+		 */
 
 		$offers_sorted = [];
 		$exclude_from_rest = [];
@@ -652,7 +674,7 @@ class Offer
 			}
 		}
 
-		// Now trim down the array if necessary
+		// Trim down the array if necessary
 		if ($number_required > 0) {
 			if (count($offers_sorted) > $number_required) {
 				$offers_sorted = array_splice($offers_sorted, 0, $number_required);
@@ -693,10 +715,10 @@ class Offer
 	/**
 	 * Pass by reference. Clean and convert the input to an imploded trimmed array
 	 *
-	 * @param mixed $keywords
+	 * @param array|string $keywords
 	 * @return string
 	 */
-	public function prepareKeywords($keywords)
+	public function prepareKeywords(array|string $keywords): string
 	{
 		if (is_string($keywords)) {
 			$keywords = preg_split('/([\r\n\t\s])/', trim($keywords));
@@ -855,5 +877,104 @@ class Offer
 		}
 
 		return $time_required;
+	}
+
+	/**
+	 * This allows us to pass in an HTML DOM node list
+	 * of offers and sort them, first with "hints" at
+	 * the top of the list, then by date, then the remainder
+	 * in a random ordre.
+	 *
+	 * @param DOMNodeList $nodes
+	 * @return array
+	 */
+	public function sortOfferDomNodes(DOMNodeList $nodes)
+	{
+		$nodes_sorted = [];
+		$exclude_from_rest = [];
+
+		// Pull hints to the top of the list
+		foreach ($nodes as $node) {
+			if ($node->getAttribute('data-hint') === 'true') {
+				$node_id = $node->getAttribute('id');
+				$nodes_sorted["offer{$node_id}"] = $node;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($node_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $node_id;
+				}
+			}
+		}
+
+		$nodes_with_dates = [];
+		foreach ($nodes as $node) {
+			$timestamps = $this->getDates($node, 'integer');
+			if ((int) ($timestamps['date_from'] ?? false)) {
+				$node_id = $node->getAttribute('id');
+				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
+
+				// Make sure that this offer doesn't appear in the "rest" list
+				if (!in_array($node_id, $exclude_from_rest)) {
+					$exclude_from_rest[] = $node_id;
+				}
+			}
+		}
+
+		if (!empty($nodes_with_dates)) {
+			ksort($nodes_with_dates);
+			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {
+				$nodes_sorted["offer{$node_with_date_key}"] = $node_with_date_value;
+			}
+		}
+
+		unset($nodes_with_dates);
+
+		// Fill the array with the remaining entries
+		$the_rest = [];
+		$the_rest_iterator = 0;
+		foreach ($nodes as $node) {
+
+			// Exclude entries from $exclude_from_rest
+			if (in_array($node->getAttribute('id'), $exclude_from_rest)) {
+				continue;
+			}
+
+			$the_rest[] = $node;
+			$the_rest_iterator++;
+		}
+
+		if (!empty($the_rest)) {
+			shuffle($the_rest);
+			foreach ($the_rest as $the_rest_entry) {
+				if (!array_key_exists("offer{$the_rest_entry->getAttribute('id')}", $nodes_sorted)) {
+					$nodes_sorted["offer{$the_rest_entry->getAttribute('id')}"] = $the_rest_entry;
+				}
+			}
+		}
+
+		return array_values($nodes_sorted);
+	}
+
+	/**
+	 * Is the offer related to a park partner? This logic since 10.7.2023
+	 *
+	 * @param integer $offer_id
+	 * @return boolean
+	 */
+	public function isParkPartner($offer_id = 0)
+	{
+		if (!$offer_id) {
+			$offer_id = $this->getRequestedOfferID();
+		}
+
+		$offer_id = (int) $offer_id;
+
+		$offer = $this->getOffer($offer_id);
+
+		if (!$offer) {
+			return false;
+		}
+
+		return (bool) ($offer->institution_is_park_partner ?? false) || (bool) ($offer->contact_is_park_partner ?? false) || (bool) ($offer->is_park_partner_event ?? false) || (bool) ($offer->is_park_partner ?? false);
 	}
 }

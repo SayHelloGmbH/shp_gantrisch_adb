@@ -208,7 +208,11 @@ if (!empty($target_audience)) {
 			<h3 class="shb-accordion__entry-title <?php echo $classNameBase; ?>__entry-title <?php echo $classNameBase; ?>__entry-title--suitability"><?php echo $attributes['title_suitability']; ?></h3>
 		<?php } ?>
 
-		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability"><?php echo implode('<br>', $target_audience); ?></div>
+		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--suitability">
+			<ul class="c-adb-block__ul">
+				<li class="c-adb-block__li"><?php echo implode('</li><li class="c-adb-block__li">', $target_audience); ?></li>
+			</ul>
+		</div>
 	</div>
 <?php
 	$entries[] = ob_get_contents();
@@ -220,7 +224,7 @@ if (empty($entries)) {
 }
 
 ?>
-<div class="shb-accordion <?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
+<div class="c-adb-block c-adb-block--detail shb-accordion <?php echo $block['shp']['class_names']; ?>" data-shp-accordion-entry>
 	<div class="shb-accordion__header <?php echo $classNameBase; ?>__header">
 		<h2 class="shb-accordion__title <?php echo $classNameBase; ?>__title" data-shp-accordion-entry-trigger><?php echo $attributes['title_block'] ?? 'Details'; ?></h2>
 	</div>

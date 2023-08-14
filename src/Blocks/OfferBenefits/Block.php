@@ -39,7 +39,7 @@ class Block
 		ob_start();
 
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?>">
+		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
 				<?php
 				echo nl2br($benefits);

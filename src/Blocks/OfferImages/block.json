@@ -30,8 +30,6 @@
 	},
 	"editorScript": "file:./assets/dist/scripts/editor.js",
 	"viewScript": "file:./assets/dist/scripts/viewScript.js",
-	"style": [
-		"file:./assets/dist/styles/shared/index.min.css",
-		"shp-gantrisch-adb-offer-images-shared"
-	]
+	"style": ["file:./assets/dist/styles/shared/index.min.css", "shp-gantrisch-adb-offer-images-shared"],
+	"render": "./render.php"
 }

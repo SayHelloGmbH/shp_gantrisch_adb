@@ -34,7 +34,7 @@ $helpers = new HelpersPackage();
 
 ?>
 
-<div class="<?php echo $block['shp']['class_names']; ?>">
+<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 
 	<div class="<?php echo $classNameBase; ?>__content">
 		<?php if (!empty($attributes['prefix'] ?? '')) { ?>

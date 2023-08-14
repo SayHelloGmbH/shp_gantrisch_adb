@@ -1,8 +1,6 @@
 .c-offer-detail-box {
 	--shb-offer-detail-box-color: var(--wp--preset--color--white);
-	--shb-offer-detail-box-background-color: var(
-		--wp--preset--color--softpetrol
-	);
+	--shb-offer-detail-box-background-color: var(--wp--preset--color--softpetrol);
 	--shb-offer-detail-title-color: var(--wp--preset--color--white);
 	--shb-offer-detail-link-color: var(--wp--preset--color--white);
 	--shb-offer-detail-box-padding: 20px;
@@ -16,9 +14,7 @@
 	}
 
 	&:not(.has-background) {
-		background-color: var(
-			--shb-offer-detail-box-background-color
-		) !important;
+		background-color: var(--shb-offer-detail-box-background-color) !important;
 	}
 
 	&__entries {
@@ -30,6 +26,7 @@
 	&__entry {
 		font-size: 1.875rem !important;
 		line-height: 1.2 !important;
+		color: var(--shb-offer-detail-link-color) !important;
 	}
 
 	&__title {
@@ -40,7 +37,7 @@
 	}
 
 	a {
-		color: var(--shb-offer-detail-link-color) !important;
+		color: inherit !important;
 		text-decoration: underline !important;
 		text-decoration-thickness: 1px !important;
 		text-underline-offset: 3px !important;

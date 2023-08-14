@@ -140,6 +140,12 @@ class ParksView {
 			// Set action for default urls
 			$action = $this->script_url_with_params;
 
+			// Clean url from page param
+			$action = preg_replace('/[\?\&]page=\w*/', '', $action);
+
+			// Clean url from reset param
+			$action = preg_replace('/[\?\&]reset=\w*/', '', $action);
+
 		}
 
 		// Show filter
@@ -268,7 +274,7 @@ class ParksView {
 				);
 
 				$template_data['FILTER_TARGET_GROUPS'] = '
-					<div class="form_element mega_dropdown">
+					<div class="form_element mega_dropdown filter_target_groups">
 						<div class="form_group">
 							<h4 aria-haspopup="true" role="button" tabindex="0" title="'.$this->api->lang->get('general_select_field').': '.$this->api->lang->get('offer_target_group_general_info').'">
 								<i class="deselect_icon" aria-hidden="true">m</i>

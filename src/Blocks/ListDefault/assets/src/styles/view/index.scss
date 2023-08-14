@@ -1,13 +1,22 @@
-.wp-block-acf-shp-adb-list-default__filter {
-	.filter input {
-		&::placeholder {
-			opacity: 0.75 !important;
-		}
-
-		&:focus,
-		&:active,
+.wp-block-acf-shp-adb-list-default {
+	.listing_entry {
 		&:hover {
-			color: white !important;
+			box-shadow: none;
+			border-width: 0;
+		}
+	}
+
+	&__filter {
+		.filter input {
+			&::placeholder {
+				opacity: 0.75 !important;
+			}
+
+			&:focus,
+			&:active,
+			&:hover {
+				color: white !important;
+			}
 		}
 	}
 }

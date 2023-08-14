@@ -36,20 +36,7 @@ export const task = (config) => {
 								loader: 'babel-loader',
 							},
 							{
-								test: /\.css$/i,
-								exclude: /node_modules/,
-								use: [
-									{
-										loader: 'style-loader',
-									},
-									{
-										loader: 'css-loader',
-									},
-								],
-							},
-							{
-								test: /\.scss$/i,
-								exclude: /node_modules/,
+								test: /\.s?css$/i,
 								use: [
 									{
 										loader: 'style-loader',
@@ -80,9 +67,7 @@ export const task = (config) => {
 						target_basename = basename_parts[1],
 						target_basefolder = basename_parts[0],
 						path_new = {
-							dirname:
-								config.blockScriptsDist +
-								`${target_basefolder}/assets/dist/scripts/`,
+							dirname: config.blockScriptsDist + `${target_basefolder}/assets/dist/scripts/`,
 							basename: target_basename,
 							extname: path.extname,
 						};

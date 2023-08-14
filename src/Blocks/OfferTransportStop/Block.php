@@ -45,7 +45,7 @@ class Block
 
 		ob_start();
 ?>
-		<div class="<?php echo $block['shp']['class_names']; ?> c-offer-detail-box">
+		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?> c-offer-detail-box">
 			<div class="<?php echo $block['shp']['classNameBase']; ?>__content h-stack">
 
 				<?php if (!empty($attributes['title'] ?? '')) { ?>

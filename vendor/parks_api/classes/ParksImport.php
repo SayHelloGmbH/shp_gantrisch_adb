@@ -219,19 +219,19 @@ class ParksImport {
 					$fields['contact'] = $this->_address($offer->Contact);
 					$fields['contact_is_park_partner'] = (int)$offer->Contact->ParkPartner;
 					$fields['is_hint'] = (int)$offer->IsHint;
-					$fields['is_hint'] = !empty($fields['is_hint']) ? intval($fields['is_hint']) : 0;
+					$fields['is_hint'] = !empty($fields['is_hint']) ? 1 : 0;
 					$fields['barrier_free'] = (int)$offer->BarrierFree;
 					$fields['learning_opportunity'] = (int)$offer->LearningOpportunity;
 					$fields['child_friendly'] = (int)$offer->ChildFriendly;
 					$fields['latitude'] = (float)$offer->Latitude;
 					$fields['longitude'] = (float)$offer->Longitude;
-					$fields['keywords'] = $offer->Keywords;
+					$fields['keywords'] = (string)$offer->Keywords;
 					$fields['created_at'] = $this->_datetime($offer->attributes()->createdAt);
 					$fields['modified_at'] = $this->_datetime($offer->attributes()->modifiedAt);
 
 					// Error handling
 					if (!$this->_insert_or_update('offer', $fields, array('offer_id' => $offer_id))) {
-						$this->api->logger->error("MySQL Error: ".$this->api->db->get_last_error());
+						$this->api->logger->error("MySQL Error (offer id ".$offer_id."): ".$this->api->db->get_last_error());
 						continue;
 					}
 
@@ -995,15 +995,17 @@ class ParksImport {
 	 */
 	private function _insert_or_update($table, $fields, $where) {
 		if (!empty($table) && !empty($fields) && !empty($where)) {
+			
 			// Check if offer exists in database
 			$exists = $this->api->db->get($table, $where);
 
+			// Update db record
 			if (mysqli_num_rows($exists) > 0) {
-				// Update db record
 				return $this->api->db->update($table, $fields, $where);
 			}
+
+			// Insert new db record
 			else {
-				// Insert new db record
 				$fields = array_merge($fields, $where);
 				return $this->api->db->insert($table, $fields);
 			}

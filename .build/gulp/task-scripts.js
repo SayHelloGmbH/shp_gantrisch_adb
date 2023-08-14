@@ -5,10 +5,7 @@ import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
 import fs from 'fs';
 
-const getDirectories = (path) =>
-	fs
-		.readdirSync(path)
-		.filter((file) => fs.statSync(path + '/' + file).isDirectory());
+const getDirectories = (path) => fs.readdirSync(path).filter((file) => fs.statSync(path + '/' + file).isDirectory());
 
 export const task = (config) => {
 	return new Promise((resolve) => {
@@ -31,35 +28,15 @@ export const task = (config) => {
 						rules: [
 							{
 								test: /\.js$/,
-								exclude: /node_modules/,
 								loader: 'babel-loader',
 							},
 							{
 								test: /\.css$/i,
-								exclude: /node_modules/,
-								use: [
-									{
-										loader: 'style-loader',
-									},
-									{
-										loader: 'css-loader',
-									},
-								],
+								use: ['style-loader', 'css-loader'],
 							},
 							{
 								test: /\.scss$/i,
-								exclude: /node_modules/,
-								use: [
-									{
-										loader: 'style-loader',
-									},
-									{
-										loader: 'css-loader',
-									},
-									{
-										loader: 'sass-loader',
-									},
-								],
+								use: ['style-loader', 'css-loader', 'sass-loader'],
 							},
 						],
 					},
