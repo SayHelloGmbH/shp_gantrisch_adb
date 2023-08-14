@@ -87,6 +87,9 @@ class Admin
 
 	public function updateFromApi()
 	{
+
+		set_time_limit(600);
+
 		$plugin_url = shp_gantrisch_adb_get_instance()->url;
 		$response = wp_remote_get("{$plugin_url}/vendor/parks_api/scripts/cron.php", ['sslverify' => false, 'timeout' => 60]);
 
