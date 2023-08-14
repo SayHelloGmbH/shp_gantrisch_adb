@@ -21,6 +21,10 @@ shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = (bool) get_field('adb_show_filter');
 
+if ((bool) (get_field('shp_adb_filterfunction_deactivate', 'options') ?? false) === true) {
+	$show_filter = false;
+}
+
 $offer_model = new OfferModel;
 
 $category_ids = $block['data']['adb_categories'] ?? [];
