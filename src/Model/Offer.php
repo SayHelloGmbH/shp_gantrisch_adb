@@ -911,6 +911,7 @@ class Offer
 			$timestamps = $this->getDates($node, 'integer');
 			if ((int) ($timestamps['date_from'] ?? false)) {
 				$node_id = $node->getAttribute('id');
+				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
 				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
@@ -920,6 +921,8 @@ class Offer
 			}
 		}
 
+		// Sort by keys, each of which contains an applied timestamp of the first Termin.
+		// Then add them to the master set of nodes.
 		if (!empty($nodes_with_dates)) {
 			ksort($nodes_with_dates);
 			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {
