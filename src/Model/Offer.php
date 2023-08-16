@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
+use DOMElement;
 use DOMNodeList;
 use ParksAPI;
 use stdClass;
@@ -269,6 +270,10 @@ class Offer
 	public function getDates($offer = null, $format = 'raw')
 	{
 
+		if ($offer instanceof DOMElement) {
+			$offer = (int) preg_replace('/^offer_/', '', $offer->getAttribute('id'));
+		}
+
 		if (is_int($offer)) {
 			$offer = $this->getOffer($offer);
 		}
@@ -293,8 +298,8 @@ class Offer
 					break;
 				}
 			case 'integer': {
-					$return['date_from'] = strtotime($offer->date_from ?? 0);
-					$return['date_to'] = strtotime($offer->date_to ?? 0);
+					$return['date_from'] = strtotime($offer->date_from);
+					$return['date_to'] = strtotime($offer->date_to);
 					break;
 				}
 			case 'raw': {
@@ -609,9 +614,12 @@ class Offer
 		 * Custom sorting: hints first, then sort by date, then sort
 		 * the remaining entries in a random order.
 		 *
-		 * Warning 5.7.2023: this sort function is also applied through
-		 * DomDocument manipulation in the render_block filter in
-		 * the list block.
+		 * Warning 5.7.2023: the same logic of this function is also
+		 * applied through DomDocument manipulation on DOM nodes in
+		 * the render_block filter in the list block.
+		 *
+		 * Make sure that the logic from this function is also applied
+		 * in the sortOfferDomNodes function.
 		 */
 
 		$offers_sorted = [];
@@ -632,7 +640,7 @@ class Offer
 		$offers_with_dates = [];
 		foreach ($offers as $offer) {
 			$timestamps = $this->getDates($offer, 'integer');
-			if ((int) $timestamps['date_from']) {
+			if ((int) $timestamps['date_from'] ?? false) {
 				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
 
 				// Make sure that this offer doesn't appear in the "rest" list
@@ -883,13 +891,26 @@ class Offer
 	 * This allows us to pass in an HTML DOM node list
 	 * of offers and sort them, first with "hints" at
 	 * the top of the list, then by date, then the remainder
-	 * in a random ordre.
+	 * in a random order.
 	 *
 	 * @param DOMNodeList $nodes
 	 * @return array
 	 */
 	public function sortOfferDomNodes(DOMNodeList $nodes)
 	{
+
+		/**
+		 * Custom sorting: hints first, then sort by date, then sort
+		 * the remaining entries in a random order.
+		 *
+		 * Warning 5.7.2023: the same logic of this function is also
+		 * applied through manipulation of the Order objects in
+		 * the Model function getAll.
+		 *
+		 * Make sure that the logic from this function is also applied
+		 * there.
+		 */
+
 		$nodes_sorted = [];
 		$exclude_from_rest = [];
 
@@ -911,6 +932,7 @@ class Offer
 			$timestamps = $this->getDates($node, 'integer');
 			if ((int) ($timestamps['date_from'] ?? false)) {
 				$node_id = $node->getAttribute('id');
+				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
 				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
@@ -920,6 +942,8 @@ class Offer
 			}
 		}
 
+		// Sort by keys, each of which contains an applied timestamp of the first Termin.
+		// Then add them to the master set of nodes.
 		if (!empty($nodes_with_dates)) {
 			ksort($nodes_with_dates);
 			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {

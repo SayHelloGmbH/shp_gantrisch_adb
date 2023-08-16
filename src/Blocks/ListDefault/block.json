@@ -1,7 +1,7 @@
 {
 	"name": "shp-adb-list-default",
-	"title": "ADB List",
-	"description": "List view of all offers, optionally filtered by category and/or keyword.",
+	"title": "ADB: Liste",
+	"description": "Listenansicht der Angebote mit einer optionalen Auswahl an Kategorien und/oder Schlagwort.",
 	"category": "media",
 	"icon": "database",
 	"apiVersion": 2,
