@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
 use DOMElement;
+use DOMElement;
 use DOMNodeList;
 use ParksAPI;
 use stdClass;
@@ -264,14 +265,15 @@ class Offer
 	 * Get the from and to dates for a specific offer.
 	 *
 	 * @param mixed $offer
-	 * @param boolean $formatted Return format: raw, legible or integer
+	 * @param string $formatted Return format: raw, legible or integer
+	 * @param string $mode future dates only, or all
 	 * @return void
 	 */
-	public function getDates($offer = null, $format = 'raw')
+	public function getDates($offer = null, $format = 'raw', $mode = '')
 	{
 
 		if ($offer instanceof DOMElement) {
-			$offer = (int) preg_replace('/^offer_/', '', $offer->getAttribute('id'));
+			$offer = (int) str_replace('offer_', '', $offer->getAttribute('id'));
 		}
 
 		if (is_int($offer)) {
@@ -289,22 +291,39 @@ class Offer
 
 		$return = [];
 
+		$termine = $this->getTermine($offer->offer_id, 'YmdHis');
+
+		if (!is_array($termine) || empty($termine)) {
+			return [];
+		}
+
+		usort($termine, function ($a, $b) {
+			return strtotime($a['date_from']) - strtotime($b['date_from']);
+		});
+
+		// Filter out past dates and reset array index
+		if ($mode === 'future') {
+			$termine = array_values(array_filter($termine, function ($termin) {
+				return strtotime($termin['date_from']) > time();
+			}));
+		}
+
 		// Default format is raw, which will return the
 		// unmanipulated value from the database table
 		switch ($format) {
 			case 'legible': {
-					$return['date_from'] = wp_date($this->date_format, strtotime($offer->date_from ?? 0));
-					$return['date_to'] = wp_date($this->date_format, strtotime($offer->date_to ?? 0));
+					$return['date_from'] = wp_date($this->date_format, strtotime($termine[0]['date_from'] ?? 0));
+					$return['date_to'] = wp_date($this->date_format, strtotime($termine[0]['date_to'] ?? 0));
 					break;
 				}
 			case 'integer': {
-					$return['date_from'] = strtotime($offer->date_from);
-					$return['date_to'] = strtotime($offer->date_to);
+					$return['date_from'] = strtotime($termine[0]['date_from']);
+					$return['date_to'] = strtotime($termine[0]['date_to']);
 					break;
 				}
 			case 'raw': {
-					$return['date_from'] = $offer->date_from ?? 0;
-					$return['date_to'] = $offer->date_to ?? 0;
+					$return['date_from'] = $termine[0]['date_from'] ?? 0;
+					$return['date_to'] = $termine[0]['date_to'] ?? 0;
 					break;
 				}
 		}
@@ -639,8 +658,8 @@ class Offer
 
 		$offers_with_dates = [];
 		foreach ($offers as $offer) {
-			$timestamps = $this->getDates($offer, 'integer');
-			if ((int) $timestamps['date_from'] ?? false) {
+			$timestamps = $this->getDates($offer, 'integer', 'future');
+			if ((int) $timestamps['date_from']) {
 				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
 
 				// Make sure that this offer doesn't appear in the "rest" list
@@ -776,7 +795,7 @@ class Offer
 		]);
 	}
 
-	public function getTermine($offer_id = null)
+	public function getTermine($offer_id = null, $format = '')
 	{
 
 		if (!function_exists('parks_mysql2date') || !function_exists('parks_show_date') || !function_exists('parks_mysql2form')) {
@@ -796,10 +815,20 @@ class Offer
 			$date_from = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_from)), TRUE);
 			$date_to = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_to)), TRUE);
 
-			$return[] = parks_show_date([
-				'date_from' => parks_mysql2form($date_from),
-				'date_to' => parks_mysql2form($date_to)
-			]);
+			switch ($format) {
+				case 'YmdHis':
+					$return[] = [
+						'date_from' => $date_from,
+						'date_to' => $date_to
+					];
+					break;
+				default:
+					$return[] = parks_show_date([
+						'date_from' => parks_mysql2form($date_from),
+						'date_to' => parks_mysql2form($date_to)
+					]);
+					break;
+			}
 		}
 
 		return $return;
@@ -929,8 +958,9 @@ class Offer
 
 		$nodes_with_dates = [];
 		foreach ($nodes as $node) {
-			$timestamps = $this->getDates($node, 'integer');
+			$timestamps = $this->getDates($node, 'integer', 'future');
 			if ((int) ($timestamps['date_from'] ?? false)) {
+				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
 				$node_id = $node->getAttribute('id');
 				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
 				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
