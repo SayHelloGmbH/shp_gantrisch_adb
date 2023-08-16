@@ -298,8 +298,8 @@ class Offer
 					break;
 				}
 			case 'integer': {
-					$return['date_from'] = strtotime($offer->date_from ?? 0);
-					$return['date_to'] = strtotime($offer->date_to ?? 0);
+					$return['date_from'] = strtotime($offer->date_from);
+					$return['date_to'] = strtotime($offer->date_to);
 					break;
 				}
 			case 'raw': {
