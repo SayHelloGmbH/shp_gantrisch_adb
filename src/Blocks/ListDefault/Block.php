@@ -40,7 +40,7 @@ class Block
 				'fields' => array(
 					array(
 						'key' => 'field_6357d9b9fc60d',
-						'label' => 'Button Text',
+						'label' => 'Button-Text «Mehr zum Angebot»',
 						'name' => 'button_text',
 						'aria-label' => '',
 						'type' => 'text',
@@ -60,7 +60,7 @@ class Block
 					),
 					array(
 						'key' => 'field_6357fad3546d8',
-						'label' => 'Load more text',
+						'label' => 'Button-Text «Mehr laden»',
 						'name' => 'load_more_text',
 						'aria-label' => '',
 						'type' => 'text',
@@ -80,11 +80,11 @@ class Block
 					),
 					array(
 						'key' => 'field_6357fa9d418ff',
-						'label' => 'Initial number of entries',
+						'label' => 'Anzahl initiale Angebote',
 						'name' => 'initial_count',
 						'aria-label' => '',
 						'type' => 'number',
-						'instructions' => 'How many entries should be shown before the "load more” button?',
+						'instructions' => 'Wie viele Angebote sollen vor dem «Mehr laden»-Button erscheinen?',
 						'required' => 1,
 						'conditional_logic' => 0,
 						'wrapper' => array(
@@ -369,7 +369,6 @@ class Block
 		foreach ($entries_sorted as $entry_sorted) {
 			$entries_parent->appendChild($entry_sorted);
 		}
-
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
