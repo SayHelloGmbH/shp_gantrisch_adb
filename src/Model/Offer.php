@@ -614,9 +614,12 @@ class Offer
 		 * Custom sorting: hints first, then sort by date, then sort
 		 * the remaining entries in a random order.
 		 *
-		 * Warning 5.7.2023: this sort function is also applied through
-		 * DomDocument manipulation in the render_block filter in
-		 * the list block.
+		 * Warning 5.7.2023: the same logic of this function is also
+		 * applied through DomDocument manipulation on DOM nodes in
+		 * the render_block filter in the list block.
+		 *
+		 * Make sure that the logic from this function is also applied
+		 * in the sortOfferDomNodes function.
 		 */
 
 		$offers_sorted = [];
@@ -888,13 +891,26 @@ class Offer
 	 * This allows us to pass in an HTML DOM node list
 	 * of offers and sort them, first with "hints" at
 	 * the top of the list, then by date, then the remainder
-	 * in a random ordre.
+	 * in a random order.
 	 *
 	 * @param DOMNodeList $nodes
 	 * @return array
 	 */
 	public function sortOfferDomNodes(DOMNodeList $nodes)
 	{
+
+		/**
+		 * Custom sorting: hints first, then sort by date, then sort
+		 * the remaining entries in a random order.
+		 *
+		 * Warning 5.7.2023: the same logic of this function is also
+		 * applied through manipulation of the Order objects in
+		 * the Model function getAll.
+		 *
+		 * Make sure that the logic from this function is also applied
+		 * there.
+		 */
+
 		$nodes_sorted = [];
 		$exclude_from_rest = [];
 
