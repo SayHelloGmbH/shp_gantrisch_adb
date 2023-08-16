@@ -640,7 +640,7 @@ class Offer
 		$offers_with_dates = [];
 		foreach ($offers as $offer) {
 			$timestamps = $this->getDates($offer, 'integer');
-			if ((int) $timestamps['date_from']) {
+			if ((int) $timestamps['date_from'] ?? false) {
 				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
 
 				// Make sure that this offer doesn't appear in the "rest" list
