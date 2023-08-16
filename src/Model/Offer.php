@@ -4,7 +4,6 @@ namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
 use DOMElement;
-use DOMElement;
 use DOMNodeList;
 use ParksAPI;
 use stdClass;
