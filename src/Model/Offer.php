@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use DateTime;
+use DOMElement;
 use DOMNodeList;
 use ParksAPI;
 use stdClass;
@@ -268,6 +269,10 @@ class Offer
 	 */
 	public function getDates($offer = null, $format = 'raw')
 	{
+
+		if ($offer instanceof DOMElement) {
+			$offer = (int) preg_replace('/^offer_/', '', $offer->getAttribute('id'));
+		}
 
 		if (is_int($offer)) {
 			$offer = $this->getOffer($offer);
