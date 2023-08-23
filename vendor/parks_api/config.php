@@ -11,12 +11,13 @@
 
 set_time_limit(1200); // twenty minutes, easily enough
 
-if (!defined('DB_HOST')) {
-	require $_SERVER['DOCUMENT_ROOT'] . '/wp-config.php';
+if (!file_exists($_SERVER['DOCUMENT_ROOT'] . '/adb-config.php')) {
+	die('adb-config.php not found in the webroot');
 }
 
-$config = array();
+require $_SERVER['DOCUMENT_ROOT'] . '/adb-config.php';
 
+$config = array();
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ $config = array();
 */
 
 // Using get_option because we can't use ACF get_field at the point when this code is loaded
-$config['api_hash'] = get_option('options_shp_gantrisch_adb_api_hash');
+$config['api_hash'] = $GLOBALS['ADBAPI']['api_hash'];
 
 
 /*
@@ -43,7 +44,7 @@ $config['api_hash'] = get_option('options_shp_gantrisch_adb_api_hash');
 */
 
 // Using get_option because we can't use ACF get_field at the point when this code is loaded
-$config['park_id'] = (int) get_option('options_shp_gantrisch_adb_park_id');
+$config['park_id'] = (int) $GLOBALS['ADBAPI']['park_id'];
 
 
 /*
@@ -68,10 +69,10 @@ $config['seo_url_reset_slug'] = 'reset';
 | Imported offers will be stored there for better performance.
 |
 */
-$config['db_hostname'] = DB_HOST;
-$config['db_username'] = DB_USER;
-$config['db_password'] = DB_PASSWORD;
-$config['db_database'] = DB_NAME;
+$config['db_hostname'] = $GLOBALS['ADBAPI']['DB_HOST'];
+$config['db_username'] = $GLOBALS['ADBAPI']['DB_USER'];
+$config['db_password'] = $GLOBALS['ADBAPI']['DB_PASSWORD'];
+$config['db_database'] = $GLOBALS['ADBAPI']['DB_NAME'];
 
 
 /*
