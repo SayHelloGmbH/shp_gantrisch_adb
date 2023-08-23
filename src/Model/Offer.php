@@ -945,8 +945,8 @@ class Offer
 		// Pull hints to the top of the list
 		foreach ($nodes as $node) {
 			if ($node->getAttribute('data-hint') === 'true') {
-				$node_id = $node->getAttribute('id');
-				$nodes_sorted["offer{$node_id}"] = $node;
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+				$nodes_sorted["offer-hint-{$node_id}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
 				if (!in_array($node_id, $exclude_from_rest)) {
@@ -976,7 +976,7 @@ class Offer
 		if (!empty($nodes_with_dates)) {
 			ksort($nodes_with_dates);
 			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {
-				$nodes_sorted["offer{$node_with_date_key}"] = $node_with_date_value;
+				$nodes_sorted["offer-termine-{$node_with_date_key}"] = $node_with_date_value;
 			}
 		}
 
@@ -988,7 +988,8 @@ class Offer
 		foreach ($nodes as $node) {
 
 			// Exclude entries from $exclude_from_rest
-			if (in_array($node->getAttribute('id'), $exclude_from_rest)) {
+			$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+			if (in_array($node_id, $exclude_from_rest)) {
 				continue;
 			}
 
@@ -999,11 +1000,11 @@ class Offer
 		if (!empty($the_rest)) {
 			shuffle($the_rest);
 			foreach ($the_rest as $the_rest_entry) {
-				if (!array_key_exists("offer{$the_rest_entry->getAttribute('id')}", $nodes_sorted)) {
-					$nodes_sorted["offer{$the_rest_entry->getAttribute('id')}"] = $the_rest_entry;
-				}
+				$nodes_sorted["offer-rest-{$node_id}"] = $the_rest_entry;
 			}
 		}
+
+		unset($the_rest);
 
 		return array_values($nodes_sorted);
 	}
