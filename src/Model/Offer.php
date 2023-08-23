@@ -956,18 +956,21 @@ class Offer
 		}
 
 		$nodes_with_dates = [];
+		$iterator = 0;
 		foreach ($nodes as $node) {
 			$timestamps = $this->getDates($node, 'integer', 'future');
 			if ((int) ($timestamps['date_from'] ?? false)) {
 				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
-				$node_id = $node->getAttribute('id');
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
 				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
-				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
+				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}-{$iterator}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
 				if (!in_array($node_id, $exclude_from_rest)) {
 					$exclude_from_rest[] = $node_id;
 				}
+
+				$iterator++;
 			}
 		}
 
