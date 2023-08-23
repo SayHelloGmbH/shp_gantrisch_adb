@@ -979,13 +979,15 @@ class Offer
 			}
 
 			$the_rest[] = $node;
+
 			$the_rest_iterator++;
 		}
 
 		if (!empty($the_rest)) {
 			shuffle($the_rest);
-			foreach ($the_rest as $the_rest_entry) {
-				$nodes_by_group["offer-rest-{$node_id}"] = $the_rest_entry;
+			foreach ($the_rest as $node) {
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+				$nodes_by_group["offer-rest-{$node_id}"] = $node;
 			}
 		}
 
