@@ -629,8 +629,10 @@ class Offer
 		}
 
 		/**
-		 * Custom sorting: hints first, then sort by date, then sort
-		 * the remaining entries in a random order.
+		 * Custom sorting: hints first, then entries with dates, then sort
+		 * the remaining entries in a random order. Note that we don't
+		 * need to sort the hints or the entries with Termine becuase
+		 * the API hs already put them in the correct order.
 		 *
 		 * Warning 5.7.2023: the same logic of this function is also
 		 * applied through DomDocument manipulation on DOM nodes in
@@ -655,11 +657,10 @@ class Offer
 			}
 		}
 
-		$offers_with_dates = [];
 		foreach ($offers as $offer) {
 			$timestamps = $this->getDates($offer, 'integer', 'future');
 			if ((int) $timestamps['date_from']) {
-				$offers_with_dates["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
+				$offers_sorted["ts-{$timestamps['date_from']}-offer-{$offer->offer_id}"] = $offer;
 
 				// Make sure that this offer doesn't appear in the "rest" list
 				if (!in_array($offer->offer_id, $exclude_from_rest)) {
@@ -667,15 +668,6 @@ class Offer
 				}
 			}
 		}
-
-		if (!empty($offers_with_dates)) {
-			ksort($offers_with_dates);
-			foreach ($offers_with_dates as $offer_with_date_key => $offer_with_date_value) {
-				$offers_sorted["offer{$offer_with_date_key}"] = $offer_with_date_value;
-			}
-		}
-
-		unset($offers_with_dates);
 
 		// Fill the array with the remaining entries
 		$the_rest = [];
@@ -928,8 +920,10 @@ class Offer
 	{
 
 		/**
-		 * Custom sorting: hints first, then sort by date, then sort
-		 * the remaining entries in a random order.
+		 * Custom grouping: hints first, then sort by date, then sort
+		 * the remaining entries in a random order. Note that we don't
+		 * need to sort the hints or the entries with Termine becuase
+		 * the API hs already put them in the correct order.
 		 *
 		 * Warning 5.7.2023: the same logic of this function is also
 		 * applied through manipulation of the Order objects in
@@ -939,14 +933,14 @@ class Offer
 		 * there.
 		 */
 
-		$nodes_sorted = [];
+		$nodes_by_group = [];
 		$exclude_from_rest = [];
 
 		// Pull hints to the top of the list
 		foreach ($nodes as $node) {
 			if ($node->getAttribute('data-hint') === 'true') {
-				$node_id = $node->getAttribute('id');
-				$nodes_sorted["offer{$node_id}"] = $node;
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+				$nodes_by_group["offer-hint-{$node_id}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
 				if (!in_array($node_id, $exclude_from_rest)) {
@@ -955,32 +949,23 @@ class Offer
 			}
 		}
 
-		$nodes_with_dates = [];
+		$iterator = 0;
 		foreach ($nodes as $node) {
 			$timestamps = $this->getDates($node, 'integer', 'future');
 			if ((int) ($timestamps['date_from'] ?? false)) {
 				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
-				$node_id = $node->getAttribute('id');
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
 				$node->setAttribute('data-date-from', date('Y-m-d H:i:s', $timestamps['date_from']));
-				$nodes_with_dates["ts-{$timestamps['date_from']}-offer-{$node_id}"] = $node;
+				$nodes_by_group["offer-termine-{$node_id}-{$iterator}"] = $node;
 
 				// Make sure that this offer doesn't appear in the "rest" list
 				if (!in_array($node_id, $exclude_from_rest)) {
 					$exclude_from_rest[] = $node_id;
 				}
+
+				$iterator++;
 			}
 		}
-
-		// Sort by keys, each of which contains an applied timestamp of the first Termin.
-		// Then add them to the master set of nodes.
-		if (!empty($nodes_with_dates)) {
-			ksort($nodes_with_dates);
-			foreach ($nodes_with_dates as $node_with_date_key => $node_with_date_value) {
-				$nodes_sorted["offer{$node_with_date_key}"] = $node_with_date_value;
-			}
-		}
-
-		unset($nodes_with_dates);
 
 		// Fill the array with the remaining entries
 		$the_rest = [];
@@ -988,24 +973,27 @@ class Offer
 		foreach ($nodes as $node) {
 
 			// Exclude entries from $exclude_from_rest
-			if (in_array($node->getAttribute('id'), $exclude_from_rest)) {
+			$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+			if (in_array($node_id, $exclude_from_rest)) {
 				continue;
 			}
 
 			$the_rest[] = $node;
+
 			$the_rest_iterator++;
 		}
 
 		if (!empty($the_rest)) {
 			shuffle($the_rest);
-			foreach ($the_rest as $the_rest_entry) {
-				if (!array_key_exists("offer{$the_rest_entry->getAttribute('id')}", $nodes_sorted)) {
-					$nodes_sorted["offer{$the_rest_entry->getAttribute('id')}"] = $the_rest_entry;
-				}
+			foreach ($the_rest as $node) {
+				$node_id = str_replace('offer_', '', $node->getAttribute('id'));
+				$nodes_by_group["offer-rest-{$node_id}"] = $node;
 			}
 		}
 
-		return array_values($nodes_sorted);
+		unset($the_rest);
+
+		return array_values($nodes_by_group);
 	}
 
 	/**
