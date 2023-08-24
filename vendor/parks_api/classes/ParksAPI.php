@@ -1448,7 +1448,7 @@ class ParksAPI {
 		}
 
 		// Special cases
-		if (($level == 0) && ($index == 0) && ($main_category == CATEGORY_PRODUCT) && isset($categories[CATEGORY_GASTRONOMY_AND_ACCOMMODATION]) && (count($categories[0]) == 1)) {
+		if (($level == 0) && ($index == 0) && ($main_category == CATEGORY_PRODUCT) && isset($categories[CATEGORY_GASTRONOMY_AND_ACCOMMODATION]) && (count($categories[CATEGORY_PRODUCT]) == 1)) {
 			$index = CATEGORY_GASTRONOMY_AND_ACCOMMODATION;
 		}
 
