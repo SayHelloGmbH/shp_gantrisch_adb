@@ -1485,6 +1485,7 @@ class ParksModel {
 
 							case 'search':
 							case 'order_by':
+							case 'has_accessibility_informations':
 								break;
 
 							case 'filter_hints':
