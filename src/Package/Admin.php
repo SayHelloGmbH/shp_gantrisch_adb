@@ -112,7 +112,7 @@ class Admin
 		set_time_limit(600);
 
 		$plugin_url = shp_gantrisch_adb_get_instance()->url;
-		$response = wp_remote_get("{$plugin_url}/vendor/parks_api/scripts/cron.php", ['sslverify' => false, 'timeout' => 60]);
+		$response = wp_remote_get("{$plugin_url}/vendor/parks_api/scripts/cron.php", ['sslverify' => false, 'timeout' => 300]);
 
 		if (is_wp_error($response)) {
 			return new WP_REST_Response($response->get_error_message(), 500);
