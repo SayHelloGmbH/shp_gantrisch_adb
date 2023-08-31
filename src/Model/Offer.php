@@ -949,6 +949,8 @@ class Offer
 			}
 		}
 
+		// This just pulls out the entries with dates and times
+		// So that they aren't included in the shuffle logic below.
 		$iterator = 0;
 		foreach ($nodes as $node) {
 			$timestamps = $this->getDates($node, 'integer', 'future');
