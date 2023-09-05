@@ -77,15 +77,31 @@ class Offer
 
 	public function run()
 	{
+		add_action('acf/init', [$this, 'getFields'], 1);
+		add_action('acf/init', [$this, 'setLanguage'], 1);
+	}
+
+	public function setLanguage()
+	{
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
-		$this->single_page = get_option('options_shp_gantrisch_adb_single_page');
 		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
 
 		$lang_sub = substr($this->locale, 0, 2);
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
 		}
+	}
+
+	/**
+	 * Get fields using ACF init
+	 * Values not available earlier in the proces
+	 *
+	 * @return void
+	 */
+	public function getFields()
+	{
+		$this->single_page = (int) get_field('shp_gantrisch_adb_single_page', 'options');
 	}
 
 	/**
