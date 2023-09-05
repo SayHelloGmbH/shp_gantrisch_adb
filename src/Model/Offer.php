@@ -77,9 +77,12 @@ class Offer
 
 	public function run()
 	{
-
 		add_action('acf/init', [$this, 'getFields'], 1);
+		add_action('acf/init', [$this, 'setLanguage'], 1);
+	}
 
+	public function setLanguage()
+	{
 		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
 		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
