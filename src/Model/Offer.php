@@ -77,7 +77,6 @@ class Offer
 
 	public function run()
 	{
-		add_action('acf/init', [$this, 'getFields'], 1);
 		add_action('acf/init', [$this, 'setLanguage'], 1);
 	}
 
@@ -91,17 +90,6 @@ class Offer
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
 		}
-	}
-
-	/**
-	 * Get fields using ACF init
-	 * Values not available earlier in the proces
-	 *
-	 * @return void
-	 */
-	public function getFields()
-	{
-		$this->single_page = (int) get_field('shp_gantrisch_adb_single_page', 'options');
 	}
 
 	/**
@@ -136,7 +124,7 @@ class Offer
 
 	public function getSinglePageID()
 	{
-		return (int) ($this->single_page ?? null);
+		return (int) get_field('shp_gantrisch_adb_single_page', 'options');
 	}
 
 	public function getRequestedOfferID()
