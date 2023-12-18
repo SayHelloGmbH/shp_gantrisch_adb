@@ -322,7 +322,7 @@ class ParksAPI {
 	 * @param mixed $section
 	 * @param array $template_data (default: array())
 	 * @param array $conditions (default: array())
-	 * @return void
+	 * @return mixed
 	 */
 	public function compile_template($section, $template_data = array(), $conditions = array()) {
 		if (!empty($section)) {
@@ -515,7 +515,15 @@ class ParksAPI {
 
 			// Check if only projects exists in export
 			$projects_only = FALSE;
-			if (($projects_count > 0) || in_array(CATEGORY_RESEARCH, $param_categories)) {
+			if (
+				($projects_count > 0)
+				||
+				(
+					is_array($param_categories)
+					&&
+					in_array(CATEGORY_RESEARCH, $param_categories)
+				)
+			) {
 				if (($event_count == 0) && ($booking_count == 0) && ($activity_count == 0) && ($product_count == 0)) {
 					$projects_only = TRUE;
 				}
@@ -530,7 +538,9 @@ class ParksAPI {
 				'show_event_filter' => $show_event_filter,
 				'show_route_filter' => $show_route_filter,
 				'show_target_group_filter' => $this->config['show_target_group_filter'],
+				'show_accessibility_filter' => $this->config['show_accessibility_filter'],
 				'show_project_filter' => $show_project_filter,
+				'hide_accessibility_filter' => $filter['hide_accessibility_filter'] ?? FALSE,
 				'projects_only' => $projects_only,
 			);
 
@@ -678,7 +688,7 @@ class ParksAPI {
 	 *
 	 * @access public
 	 * @param integer
-	 * @return void
+	 * @return array
 	 */
 	public function show_offer_poi_list($poi = NULL) {
 		$offers = array();
@@ -713,7 +723,7 @@ class ParksAPI {
 	 * Displays pagination
 	 *
 	 * @access public
-	 * @return void
+	 * @return string
 	 */
 	public function show_offers_pagination() {
 		if (!$this->is_offer_detail()) {
@@ -873,7 +883,7 @@ class ParksAPI {
 	 *
 	 * @access public
 	 * @param mixed $offer_id
-	 * @return void
+	 * @return mixed
 	 */
 	public function toggle_favorite($offer_id) {
 		if (($offer_id > 0) && ($this->config['use_sessions'] == TRUE)) {
@@ -923,7 +933,7 @@ class ParksAPI {
 	 * Returns if detail page should be displayed
 	 *
 	 * @access public
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_offer_detail() {
 
@@ -950,7 +960,7 @@ class ParksAPI {
 	 * Returns if filter is active
 	 *
 	 * @access public
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_filter_activated() {
 		return $this->filter;
@@ -961,7 +971,7 @@ class ParksAPI {
 	 * Returns filter data
 	 *
 	 * @access public
-	 * @return boolean
+	 * @return bool
 	 */
 	public function get_filter_data() {
 		return $this->filter_data;
@@ -1130,7 +1140,7 @@ class ParksAPI {
 
 		// Prepare URL params
 		$get_params = FALSE;
-		$allowed_get_params = array('categories', 'target_groups');
+		$allowed_get_params = array('categories', 'target_groups', 'accessibilities');
 		foreach ($allowed_get_params as $param) {
 			if (!empty($_GET[$param])) {
 				$get_params = TRUE;
@@ -1138,7 +1148,7 @@ class ParksAPI {
 		}
 
 		// Set filter by all types
-		$fields = array('categories', 'date_from', 'date_to', 'search', 'park_id', 'time_required', 'level_technics', 'level_condition', 'route_length_min', 'route_length_max', 'project_status', 'target_groups');
+		$fields = array('categories', 'date_from', 'date_to', 'search', 'park_id', 'time_required', 'level_technics', 'level_condition', 'route_length_min', 'route_length_max', 'project_status', 'target_groups', 'accessibilities');
 		foreach ($fields as $field) {
 
 			// Get categories from URL
@@ -1269,12 +1279,17 @@ class ParksAPI {
 	/**
 	 * Get offers
 	 *
-	 * @access public
-	 * @param array $categories (default: array())
-	 * @param mixed $page (default: NULL)
-	 * @param array $additional_filter (default: array())
-	 * @param mixed $ignore_filter (default: FALSE)
-	 * @return void
+	 * @param int $park_id
+	 * @param array $categories
+	 * @param int $page
+	 * @param int $limit
+	 * @param array $additional_filter
+	 * @param bool $ignore_filter
+	 * @param bool $return_minimal
+	 * @param bool $only_count_categories
+	 * @param bool $map_mode
+	 * @param bool $return_only_categories
+	 * @return object
 	 */
 	public function _get_offers($park_id = NULL, $categories = array(), $page = NULL, $limit = NULL, $additional_filter = array(), $ignore_filter = FALSE, $return_minimal = FALSE, $only_count_categories = FALSE, $map_mode = FALSE, $return_only_categories = FALSE) {
 
@@ -1307,6 +1322,11 @@ class ParksAPI {
 		// Target groups
 		if (!empty($additional_filter['target_groups'])) {
 			$filter['target_groups'] = $additional_filter['target_groups'];
+		}
+
+		// Accessibilities
+		if (!empty($additional_filter['accessibilities'])) {
+			$filter['accessibilities'] = $additional_filter['accessibilities'];
 		}
 
 		// Search words
@@ -1403,7 +1423,7 @@ class ParksAPI {
 	 * Load map api
 	 *
 	 * @access public
-	 * @return void
+	 * @return string
 	 */
 	public function _load_maps_api() {
 		if ($this->config['prevent_css_js_include'] == FALSE) {
@@ -1435,7 +1455,7 @@ class ParksAPI {
 	 * @param mixed $categories
 	 * @param mixed $index (default: 0)
 	 * @param int $level (default: 0)
-	 * @return void
+	 * @return array
 	 */
 	public function _format_categories_for_select($categories, $index = 0, $level = 0) {
 		$return = array();
@@ -1542,19 +1562,21 @@ class ParksAPI {
 	public function _security_checks() {
 		if (!empty($_GET) && is_array($_GET)) {
 			foreach ($_GET as $key => $value) {
+				if (is_string($value)) {
 
-				// Sql injection protection
-				$tmp = str_replace(array("*", "'", '"', ";", "="), "", $value);
+					// Sql injection protection
+					$tmp = str_replace(array("*", "'", '"', ";", "="), "", $value);
+					
+					// Cross site scripting protection
+					$tmp = str_replace(array("<", ">"), array("&lt;", "&gt;"), $tmp);
+
+					// Escape html entities
+					$tmp = htmlentities($tmp, ENT_QUOTES);
+
+					// Reset param
+					$_GET[$key] = $tmp;
 				
-				// Cross site scripting protection
-				$tmp = str_replace(array("<", ">"), array("&lt;", "&gt;"), $tmp);
-
-				// Escape html entities
-				$tmp = htmlentities($tmp, ENT_QUOTES);
-
-				// Reset param
-				$_GET[$key] = $tmp;
-
+				}
 			}
 		}
 	}
@@ -1620,6 +1642,7 @@ class ParksAPI {
 		$this->config['xml_export_active_offers'] = $this->config['base_url']."export/xml/active_offers/";
 		$this->config['json_export_target_groups'] = $this->config['base_url']."export/json/target_groups";
 		$this->config['json_export_categories'] = $this->config['base_url']."export/json/categories";
+		$this->config['json_export_accessibilities'] = $this->config['base_url']."export/json/accessibilities";
 
 		// Sbb link
 		$this->config['min_chars_sbb_link'] = 3;
@@ -1766,6 +1789,7 @@ class ParksAPI {
 			'FILTER_CATEGORIES',
 			'FILTER_DATES',
 			'FILTER_TARGET_GROUPS',
+			'FILTER_ACCESSIBILITIES',
 			'FILTER_PARKS',
 			'FILTER_PROJECT',
 			'FILTER_ROUTE_LENGTH',
@@ -1797,7 +1821,7 @@ class ParksAPI {
 	 * Load external xml source
 	 *
 	 * @param string $url
-	 * @return void
+	 * @return mixed
 	 */
 	function load_external_xml($url) {
 		if ($url != '') {
