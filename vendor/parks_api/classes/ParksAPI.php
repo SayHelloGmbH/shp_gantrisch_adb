@@ -214,7 +214,7 @@ class ParksAPI {
 				}
 
 				// Set session
-				$this->session_name = $this->config['session_name'].'_'.md5($session_url);
+				$this->session_name = $this->config['session_name'].'_'.md5($session_url ?? time());
 
 				// Init favorites
 				$this->favorites_cookie_name = $this->config['session_name'].'_favorites';
