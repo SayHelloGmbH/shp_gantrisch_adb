@@ -11,11 +11,18 @@
 
 set_time_limit(1200); // twenty minutes, easily enough
 
-if (!file_exists($_SERVER['DOCUMENT_ROOT'] . '/adb-config.php')) {
+if (! empty($_SERVER['DOCUMENT_ROOT'])) {
+	$config_path = $_SERVER['DOCUMENT_ROOT'] . '/adb-config.php';
+}
+else {
+	$config_path = '../../../../../../adb-config.php';
+}
+
+if (!file_exists($config_path)) {
 	die('adb-config.php not found in the webroot');
 }
 
-require $_SERVER['DOCUMENT_ROOT'] . '/adb-config.php';
+require $config_path;
 
 $config = array();
 
