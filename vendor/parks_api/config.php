@@ -11,10 +11,9 @@
 
 set_time_limit(1200); // twenty minutes, easily enough
 
-if (! empty($_SERVER['DOCUMENT_ROOT'])) {
+if (!empty($_SERVER['DOCUMENT_ROOT'])) {
 	$config_path = $_SERVER['DOCUMENT_ROOT'] . '/adb-config.php';
-}
-else {
+} else {
 	$config_path = '../../../../../../adb-config.php';
 }
 

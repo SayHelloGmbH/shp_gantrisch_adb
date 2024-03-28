@@ -7,6 +7,8 @@
   --swiper-pagination-bullet-horizontal-gap: 0;
   --swiper-pagination-bullet-border-radius: 0;
   --swiper-pagination-bullet-size: 10px;
+  --swiper-pagination-bottom: -1.5rem;
+  overflow-x: hidden;
 }
 .wp-block-shp-gantrisch-adb-offer-images__figure {
   position: relative;
@@ -58,7 +60,7 @@
   color: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet-active--color);
 }
 .wp-block-shp-gantrisch-adb-offer-images .swiper-pagination-bullets {
-  bottom: 0;
+  bottom: var(--swiper-pagination-bottom, 8px) !important;
   color: var(--shp-block--gantrisch-adb-offer-images--swiper-bullet--color);
 }
 .wp-block-shp-gantrisch-adb-offer-images .swiper-button-prev,
@@ -86,6 +88,15 @@
 .wp-block-shp-gantrisch-adb-offer-images .swiper-wrapper {
   align-items: stretch;
   margin-bottom: var(--shp-block--gantrisch-adb-offer-images--swiper-pagination--margin-top);
+}
+.wp-block-shp-gantrisch-adb-offer-images .swiper-container {
+  position: relative;
+}
+.wp-block-shp-gantrisch-adb-offer-images .swiper-slide {
+  transition: opacity 0.1s ease-in-out;
+}
+.wp-block-shp-gantrisch-adb-offer-images .swiper-slide:not(.swiper-slide-active) {
+  opacity: 0;
 }
 .wp-block-shp-gantrisch-adb-offer-images .swiper-container:not(.swiper-container-initialized) > .swiper-wrapper,
 .wp-block-shp-gantrisch-adb-offer-images .swiper:not(.swiper-initialized) > .swiper-wrapper {
