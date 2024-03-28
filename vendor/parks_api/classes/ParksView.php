@@ -86,7 +86,7 @@ class ParksView {
 
 		// Set script url without params
 		$this->script_url = $this->script_url_with_params;
-		$param_start = ! empty($this->script_url_with_params) ? strpos($this->script_url_with_params, '?') : 0;
+		$param_start = strpos($this->script_url_with_params, '?');
 		if ($param_start > 0) {
 			$this->script_url = substr($this->script_url_with_params, 0, $param_start);
 		}
