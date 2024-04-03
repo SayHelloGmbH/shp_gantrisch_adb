@@ -99,8 +99,14 @@ if (!is_array($category_ids)) {
 			?>
 		</div>
 	<?php }
-
+	?>
+	<hr>
+	<h1>KARTE HIER</h1>
+	<?php
 	$api->show_offers_map($category_ids, $filters);
+	?>
+	<hr>
+	<?php
 
 	$shown_termine = [];
 
