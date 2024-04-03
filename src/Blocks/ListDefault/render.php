@@ -99,6 +99,8 @@ if (!is_array($category_ids)) {
 		</div>
 	<?php }
 
+	$api->show_offers_map($category_ids, $filters);
+
 	$shown_termine = [];
 
 	$api->show_offers_list($category_ids, $filters);
