@@ -73,3 +73,12 @@ function shp_gantrisch_adb_get_instance()
 }
 
 shp_gantrisch_adb_get_instance();
+
+
+function handleAdbJquery()
+{
+	wp_deregister_script('jquery');
+	wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-17/jquery.min.js', false, '3.6.1');
+	wp_enqueue_script('jquery');
+}
+add_action('wp_enqueue_scripts', 'handleAdbJquery', 100);
