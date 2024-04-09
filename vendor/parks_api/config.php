@@ -199,7 +199,7 @@ $config['return_output'] = FALSE;
 | Check _load_maps_api() method to see file paths.
 |
 */
-$config['prevent_css_js_include'] = TRUE;
+$config['prevent_css_js_include'] = FALSE;
 
 
 /*
