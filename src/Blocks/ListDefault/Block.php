@@ -16,13 +16,13 @@ class Block
 		add_action('acf/init', [$this, 'registerFields']);
 
 		// All blocks. Block type check is in the method.
-		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
+		//add_action('render_block', [$this, 'modifyHTML'], 10, 3);
 
 		// Only the main list
-		add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20);
+		//add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20);
 
 		// All blocks. Block type check is in the method.
-		add_action('render_block', [$this, 'contentOrder'], 30, 2);
+		//add_action('render_block', [$this, 'contentOrder'], 30, 2);
 	}
 
 	public function register()
