@@ -14,6 +14,7 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
+		add_action('wp_enqueue_scripts', [$this, 'maybeDequeueJquery'], PHP_INT_MAX);
 
 		// All blocks. Block type check is in the method.
 		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
@@ -410,5 +411,17 @@ class Block
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	public function maybeDequeueJquery()
+	{
+		if (is_admin()) {
+			return;
+		}
+
+		wp_dequeue_script('jquery');
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-17/jquery.min.js', false, '3.6.1');
+		wp_enqueue_script('jquery');
 	}
 }
