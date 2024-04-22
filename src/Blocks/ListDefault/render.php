@@ -70,9 +70,9 @@ $api = $api_controller->getApi();
 
 if (true || $show_filter) {
 	//wp_enqueue_script("jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, false);
-	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ['jquery'], null, false);
+	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", [], null, false);
+	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", ["{$classNameBase}_i18n"], null, false);
+	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ["{$classNameBase}_i18n", "{$classNameBase}_jquery-ui"], null, false);
 	wp_enqueue_style("{$classNameBase}_parkapp-api", "https://angebote.paerke.ch/api/lib/api-17/api.css", [], null);
 }
 
