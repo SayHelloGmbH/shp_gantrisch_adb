@@ -17,7 +17,7 @@ class Block
 		add_action('wp_enqueue_scripts', [$this, 'maybeDequeueJquery'], PHP_INT_MAX);
 
 		// All blocks. Block type check is in the method.
-		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
+		//add_action('render_block', [$this, 'modifyHTML'], 10, 3);
 
 		// Only the main list
 		//add_action('render_block_acf/shp-adb-list-default', [$this, 'sortEntries'], 20);
