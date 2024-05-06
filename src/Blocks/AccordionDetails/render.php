@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionDetails;
 
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
@@ -19,20 +20,20 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+$offer_model = new OfferModel();
+
 $offer = $offer_model->getOffer();
 
-if (!$offer) {
+if (!$offer || empty($offer->details || '')) {
 	return;
 }
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $entries = [];
 
-// TERMIN
-$termine = $offer_model->getTermine();
-
-if (!empty($termine)) {
+// Text field, not calculated Termine
+// Since 6.5.2024
+if (!empty($offer->details)) {
 	ob_start();
 ?>
 	<div class="shb-accordion__entry <?php echo $classNameBase; ?>__entry <?php echo $classNameBase; ?>__entry--termin">
@@ -42,14 +43,9 @@ if (!empty($termine)) {
 		<?php } ?>
 
 		<div class="shb-accordion__entry-content <?php echo $classNameBase; ?>__entry-content <?php echo $classNameBase; ?>__entry-content--termin">
-			<ul class="shb-accordion__termin-entries">
-				<?php foreach ($termine as $termin) { ?>
-					<li class="shb-accordion__termin-entry">
-						<?php echo $termin; ?>
-					</li>
-				<?php
-				} ?>
-			</ul>
+			<div class="shb-accordion__termine">
+				<?php echo nl2br($offer->details); ?>
+			</div>
 		</div>
 	</div>
 <?php
