@@ -790,6 +790,13 @@ class Offer
 		]);
 	}
 
+	/**
+	 * Builds a list of Termine based on the dates field
+	 *
+	 * @param $offer_id
+	 * @param string $format
+	 * @return array
+	 */
 	public function getTermine($offer_id = null, $format = '')
 	{
 
