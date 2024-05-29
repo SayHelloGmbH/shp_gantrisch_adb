@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 use DOMDocument;
 use DOMNodeList;
 use DOMXPath;
@@ -14,6 +15,7 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
+		add_action('wp_enqueue_scripts', [$this, 'maybeDequeueJquery'], PHP_INT_MAX);
 
 		// All blocks. Block type check is in the method.
 		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
@@ -197,7 +199,8 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
-		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+		$html = $this->convertStringEncoding($html);
+		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'listing_entry') or contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')][not(contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry-'))]");
@@ -410,5 +413,41 @@ class Block
 
 		$body = $document->saveHtml($document->getElementsByTagName('body')->item(0));
 		return str_replace(['<body>', '</body>'], '', $body);
+	}
+
+	public function maybeDequeueJquery()
+	{
+		if (is_admin()) {
+			return;
+		}
+
+		wp_dequeue_script('jquery');
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-17/jquery.min.js', false, '3.6.1');
+		wp_enqueue_script('jquery');
+	}
+	/**
+	 * PHP 8.2-compatible string conversion.
+	 * Formerly mb_convert_encoding($string, 'HTML-ENTITIES', 'UTF-8')
+	 *
+	 * @param string $string
+	 * @param string $convert_to
+	 * @return string
+	 */
+	private function convertStringEncoding(string $string, $convert_to = 'UTF-8')
+	{
+		return mb_encode_numericentity(
+			htmlspecialchars_decode(
+				htmlentities(
+					$string,
+					ENT_NOQUOTES,
+					$convert_to,
+					false
+				),
+				ENT_NOQUOTES
+			),
+			[0x80, 0x10FFFF, 0, ~0],
+			$convert_to
+		);
 	}
 }

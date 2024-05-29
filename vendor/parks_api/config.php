@@ -57,7 +57,8 @@ $config['park_id'] = (int) $GLOBALS['ADBAPI']['park_id'];
 |--------------------------------------------------------------------------
 | SEO URLs
 |--------------------------------------------------------------------------
-|| Set TRUE if your environment uses SEO URLs.
+|
+| Set TRUE if your environment uses SEO URLs.
 |
 */
 $config['seo_urls'] = FALSE;
@@ -65,6 +66,7 @@ $config['seo_url_detail_slug'] = 'offer-detail';
 $config['seo_url_poi_slug'] = 'poi';
 $config['seo_url_page_slug'] = 'page';
 $config['seo_url_reset_slug'] = 'reset';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -85,30 +87,30 @@ $config['db_database'] = $GLOBALS['ADBAPI']['DB_NAME'];
 |--------------------------------------------------------------------------
 | Custom view
 |--------------------------------------------------------------------------
-|| Set your custom view, located in your "custom" folder.
+|
+| Set your custom view, located in your "custom" folder.
 | example: "MyView"
 |
 */
 $config['class_view'] = "MyView";
 
 
-/*|--------------------------------------------------------------------------
+/*
+|--------------------------------------------------------------------------
 | Template
 |--------------------------------------------------------------------------
 |
 | Set the template placed in the parks_api/template/ folder.
 | Create your individual template by creating your own folder,
 | copied from the standard folder.
-|
- */
+| */
 $config['template_folder'] = 'standard';
 
 
 /*
 |--------------------------------------------------------------------------
 | Custom view options
-|--------------------------------------------------------------------------
-|
+|--------------------------------------------------------------------------|
 | 'always_show_filter' => Show filter on detail pages
 | 'show_route_filter' => Show route filter
 | 'show_target_group_filter' => Show target group filter
@@ -150,8 +152,7 @@ $config['show_event_location_in_overview'] = TRUE;
 $config['show_short_description_in_overview'] = FALSE;
 $config['show_keywords_in_overview'] = FALSE;
 $config['show_button_in_overview'] = FALSE;
-$config['poi_listing_link_target'] = '';
-$config['heading_offer_title_in_overview'] = 'h3';
+$config['poi_listing_link_target'] = '';$config['heading_offer_title_in_overview'] = 'h3';
 
 
 /*

@@ -4,12 +4,12 @@
  * Plugin URI:        https://bitbucket.org/sayhellogmbh/shp_gantrisch_adb/
  * Description:       Plugin for the output of offers from the Swiss Parks database.
  * Author:            Say Hello GmbH
- * Version:           2.4.1
+ * Version:           2.5.0
  * Author URI:        https://sayhello.ch/
  * Text Domain:       shp_gantrisch_adb
  * Domain Path:       /languages
  * Requires at least: 6.1.1
- * Requires PHP:      8.0
+ * Requires PHP:      8.2
  * License:           GPL v3 or later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Update URI:        https://sayhello.ch/
@@ -19,21 +19,18 @@
 if (!function_exists('dump')) {
 	function dump($var, $exit = false, $print_r = false)
 	{
+		echo '<pre>';
 
-		if (defined('WP_DEBUG') && WP_DEBUG) {
-			echo '<pre>';
+		if ($print_r) {
+			print_r($var);
+		} else {
+			var_dump($var);
+		}
 
-			if ($print_r) {
-				print_r($var);
-			} else {
-				var_dump($var);
-			}
+		echo '</pre>';
 
-			echo '</pre>';
-
-			if ($exit) {
-				exit;
-			}
+		if ($exit) {
+			exit;
 		}
 	}
 }

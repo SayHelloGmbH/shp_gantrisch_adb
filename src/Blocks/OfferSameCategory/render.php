@@ -2,7 +2,13 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSameCategory;
 
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
+$block_controller = new BlockController();
+$block_controller->extend($block);
 
 if (shp_gantrisch_adb_get_instance()->Package->Gutenberg->isContextEdit() === true) {
 ?>
@@ -16,7 +22,7 @@ if (shp_gantrisch_adb_get_instance()->Package->Gutenberg->isContextEdit() === tr
 	return;
 }
 
-$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+$offer_model = new OfferModel();
 
 // Get the categories of the current requested offer
 $offer_categories =	$offer_model->getCategories();
@@ -45,8 +51,10 @@ if (empty($offers)) {
 	return '';
 }
 
-$offer_controller = shp_gantrisch_adb_get_instance()->Controller->Offer;
-$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+$offer_controller = new OfferController();
+
+$api_controller = new APIController();
+$api = $api_controller->getApi();
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>

@@ -2,6 +2,9 @@
 
 namespace SayHello\ShpGantrischAdb\Model;
 
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+
 use DateTime;
 use DOMElement;
 use DOMNodeList;
@@ -16,6 +19,9 @@ class Offer
 	private $single_page = false;
 	private $offers = [];
 	private $requested_id = null;
+	private $date_format = 'Y/m/d';
+	private $debug = false;
+	private $api_controller = null;
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -71,9 +77,10 @@ class Offer
 		'target_group_link' => 'target_group_link',
 	];
 
-	private $date_format = 'Y/m/d';
-
-	private $debug = false;
+	public function __construct()
+	{
+		$this->api_controller = new APIController();
+	}
 
 	public function run()
 	{
@@ -134,7 +141,10 @@ class Offer
 			return $this->requested_id;
 		}
 
-		$var_name = shp_gantrisch_adb_get_instance()->Controller->Offer->queryVarName();
+		// Do NOT run this on the constructor or it will create an infinite loop
+		$offer_controller = new OfferController();
+
+		$var_name = $offer_controller->queryVarName();
 		$var_value = get_query_var($var_name);
 
 		if (empty($var_value)) {
@@ -179,7 +189,9 @@ class Offer
 			return $this->offers[$offer_id];
 		}
 
-		$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+
+
+		$api = $this->api_controller->getApi();
 
 		if (!$api instanceof ParksAPI) {
 			return null;
@@ -585,7 +597,7 @@ class Offer
 		$offers = get_transient($transient_key);
 
 		if ($this->debug || empty($offers) || (bool)($_GET['force'] ?? '') === true) {
-			$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+			$api = $this->api_controller->getApi();
 
 			if (!empty($keywords)) {
 				$offers = $api->_get_offers(NULL, $category_ids, NULL, NULL, ['keywords' => implode(' ', $keywords)]);
