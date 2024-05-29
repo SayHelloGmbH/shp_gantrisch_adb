@@ -25,8 +25,6 @@ if ((bool) (get_field('shp_adb_filterfunction_deactivate', 'options') ?? false) 
 	$show_filter = false;
 }
 
-$offer_model = new OfferModel;
-
 $category_ids = $block['data']['adb_categories'] ?? [];
 
 $filters = [];
@@ -34,6 +32,7 @@ $filters = [];
 $keywords = $block['data']['adb_keywords'] ?? '';
 
 if (!empty($keywords)) {
+	$offer_model = new OfferModel();
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
 }

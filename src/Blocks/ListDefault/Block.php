@@ -4,6 +4,7 @@ namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 use DOMDocument;
 use DOMNodeList;
 use DOMXPath;

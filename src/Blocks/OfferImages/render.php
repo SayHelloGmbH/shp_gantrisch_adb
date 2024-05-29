@@ -1,13 +1,16 @@
 <?php
 
-$offer_images = shp_gantrisch_adb_get_instance()->Model->Offer->getImages();
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
+$offer_model = new OfferModel();
+$offer_images = $offer_model->getImages();
 
 if (empty($offer_images)) {
 	return '';
 }
 
 $image_size = $attributes['image_size'] ?? 'small';
-$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
+$offer_title = $offer_model->getTitle();
 
 if (!$offer_title) {
 	$offer_title = '';

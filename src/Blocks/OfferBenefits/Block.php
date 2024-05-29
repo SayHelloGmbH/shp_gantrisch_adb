@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferBenefits;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 use WP_Block;
 
 class Block
@@ -21,7 +23,7 @@ class Block
 
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
-		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
+		$offer_model = new OfferModel();
 		$offer = $offer_model->getOffer();
 
 		if (!$offer) {

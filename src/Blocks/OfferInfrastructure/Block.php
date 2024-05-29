@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferInfrastructure;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
@@ -21,8 +22,8 @@ class Block
 
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
-
-		$offer_infrastructure = shp_gantrisch_adb_get_instance()->Model->Offer->getInfrastructure();
+		$offer_model = new OfferModel();
+		$offer_infrastructure = $offer_model->getInfrastructure();
 
 		if (empty($offer_infrastructure)) {
 			return '';

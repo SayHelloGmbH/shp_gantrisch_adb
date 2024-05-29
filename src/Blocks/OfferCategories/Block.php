@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferCategories;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 use WP_Block;
 
 class Block
@@ -22,7 +24,8 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_categories =	shp_gantrisch_adb_get_instance()->Model->Offer->getCategories();
+		$offer_model = new OfferModel();
+		$offer_categories =	$offer_model->getCategories();
 
 		if (empty($offer_categories)) {
 			return '';

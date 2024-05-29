@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionDetails;
 
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
@@ -19,7 +20,8 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer();
+$offer_model = new OfferModel();
+$offer = $offer_model->getOffer();
 
 if (!$offer || !is_array($offer->documents ?? null)) {
 	return;

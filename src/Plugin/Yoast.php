@@ -2,8 +2,17 @@
 
 namespace SayHello\ShpGantrischAdb\Plugin;
 
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
 class Yoast
 {
+
+	private $offer_model = null;
+
+	public function __construct()
+	{
+		$this->offer_model = new OfferModel();
+	}
 	public function run()
 	{
 		add_action('wpseo_title', [$this, 'seoTitle']);
@@ -28,7 +37,7 @@ class Yoast
 			return $seo_title;
 		}
 
-		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
+		$offer_title = $this->offer_model->getTitle();
 
 		if (!$offer_title || $offer_title === $seo_title) {
 			return $seo_title;
@@ -53,7 +62,7 @@ class Yoast
 			return $seo_description;
 		}
 
-		$offer_excerpt = shp_gantrisch_adb_get_instance()->Model->Offer->getExcerpt();
+		$offer_excerpt = $this->offer_model->getExcerpt();
 
 		if (!$offer_excerpt || !is_string($offer_excerpt)) {
 			return $seo_description;
@@ -77,7 +86,7 @@ class Yoast
 			return $seo_url;
 		}
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+		$offer_id = $this->offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $seo_url;

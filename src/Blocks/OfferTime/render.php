@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTime;
 
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
@@ -19,7 +20,8 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$time_required = shp_gantrisch_adb_get_instance()->Model->Offer->getTimeRequired();
+$offer_model = new OfferModel();
+$time_required = $offer_model->getTimeRequired();
 
 if (empty($time_required)) {
 	return;
