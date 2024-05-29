@@ -16,6 +16,9 @@ class Offer
 	private $single_page = false;
 	private $offers = [];
 	private $requested_id = null;
+	private $date_format = 'Y/m/d';
+	private $debug = false;
+
 
 	/**
 	 * Individual data sets will be cached for a short
@@ -70,10 +73,6 @@ class Offer
 		'target_group_i18n' => 'target_group_i18n',
 		'target_group_link' => 'target_group_link',
 	];
-
-	private $date_format = 'Y/m/d';
-
-	private $debug = false;
 
 	public function run()
 	{
