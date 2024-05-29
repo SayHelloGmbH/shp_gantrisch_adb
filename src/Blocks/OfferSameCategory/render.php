@@ -2,7 +2,9 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSameCategory;
 
+use SayHello\ShpGantrischAdb\Controller\API as APIController;
 use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $block_controller = new BlockController();
@@ -49,8 +51,10 @@ if (empty($offers)) {
 	return '';
 }
 
-$offer_controller = shp_gantrisch_adb_get_instance()->Controller->Offer;
-$api = shp_gantrisch_adb_get_instance()->Controller->API->getApi();
+$offer_controller = new OfferController();
+
+$api_controller = new APIController();
+$api = $api_controller->getApi();
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>
