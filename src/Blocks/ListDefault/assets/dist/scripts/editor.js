@@ -1,1 +1,1 @@
-(()=>{"use strict";const s=window.wp.blocks,e=JSON.parse('{"u2":"shp-adb-list-default"}');(0,s.registerBlockType)(e.u2)})();
+(()=>{"use strict";const s=window.wp.blocks,e=JSON.parse('{"UU":"shp-adb-list-default"}');(0,s.registerBlockType)(e.UU)})();

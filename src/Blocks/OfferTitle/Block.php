@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTitle;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
 class Block
@@ -22,13 +24,15 @@ class Block
 	public function render(array $attributes, string $content, WP_Block $block)
 	{
 
-		$offer_title = shp_gantrisch_adb_get_instance()->Model->Offer->getTitle();
+		$offer_model = new OfferModel();
+		$offer_title = $offer_model->getTitle();
 
 		if (!$offer_title) {
 			return '';
 		}
 
-		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+		$block_controller = new BlockController();
+		$block_controller->extend($block);
 
 		ob_start();
 

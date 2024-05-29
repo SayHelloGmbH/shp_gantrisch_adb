@@ -12,11 +12,13 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
 
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+$block_controller = new BlockController();
+$block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = (bool) get_field('adb_show_filter');
@@ -25,8 +27,6 @@ if ((bool) (get_field('shp_adb_filterfunction_deactivate', 'options') ?? false) 
 	$show_filter = false;
 }
 
-$offer_model = new OfferModel;
-
 $category_ids = $block['data']['adb_categories'] ?? [];
 
 $filters = [];
@@ -34,6 +34,7 @@ $filters = [];
 $keywords = $block['data']['adb_keywords'] ?? '';
 
 if (!empty($keywords)) {
+	$offer_model = new OfferModel();
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
 }
@@ -68,11 +69,11 @@ wp_localize_script($classNameBase, 'shp_gantrisch_adb_block_list_default', [
 $api_controller = new APIController();
 $api = $api_controller->getApi();
 
-if ($show_filter) {
-	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", ['jquery'], null, true);
-	wp_enqueue_script("{$classNameBase}_jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", [], null, false);
-	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ['jquery'], null, true);
+if (true || $show_filter) {
+	//wp_enqueue_script("jquery", "https://angebote.paerke.ch/api/lib/api-17/jquery.min.js", [], null, false);
+	wp_enqueue_script("{$classNameBase}_i18n", "https://angebote.paerke.ch/api/lib/api-17/{$api->lang_id}.js", [], null, false);
+	wp_enqueue_script("{$classNameBase}_jquery-ui", "https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js", ["{$classNameBase}_i18n"], null, false);
+	wp_enqueue_script("{$classNameBase}_parkapp", "https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js", ["{$classNameBase}_i18n", "{$classNameBase}_jquery-ui"], null, false);
 	wp_enqueue_style("{$classNameBase}_parkapp-api", "https://angebote.paerke.ch/api/lib/api-17/api.css", [], null);
 }
 

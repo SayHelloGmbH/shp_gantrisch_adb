@@ -11,6 +11,31 @@ class Plugin
 	public $file = '';
 	public $path = '';
 	public $url = '';
+	private array $properties = [];
+
+	/**
+	 * Class instance handling of dynamic properties.
+	 *
+	 * @param string $name
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function __set(string $name, $value): void
+	{
+		$this->properties[$name] = $value;
+	}
+
+	/**
+	 * Class instance handling of dynamic properties.
+	 *
+	 * @param string $name
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function __get(string $name)
+	{
+		return $this->properties[$name] ?? null;
+	}
 
 	/**
 	 * Loads and initializes the provided classes.

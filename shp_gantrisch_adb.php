@@ -19,21 +19,18 @@
 if (!function_exists('dump')) {
 	function dump($var, $exit = false, $print_r = false)
 	{
+		echo '<pre>';
 
-		if (defined('WP_DEBUG') && WP_DEBUG) {
-			echo '<pre>';
+		if ($print_r) {
+			print_r($var);
+		} else {
+			var_dump($var);
+		}
 
-			if ($print_r) {
-				print_r($var);
-			} else {
-				var_dump($var);
-			}
+		echo '</pre>';
 
-			echo '</pre>';
-
-			if ($exit) {
-				exit;
-			}
+		if ($exit) {
+			exit;
 		}
 	}
 }

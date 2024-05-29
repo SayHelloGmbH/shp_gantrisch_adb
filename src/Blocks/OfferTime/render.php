@@ -2,9 +2,9 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTime;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
-
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $gutenberg_package = new GutenbergPackage();
 
@@ -19,13 +19,15 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$time_required = shp_gantrisch_adb_get_instance()->Model->Offer->getTimeRequired();
+$offer_model = new OfferModel();
+$time_required = $offer_model->getTimeRequired();
 
 if (empty($time_required)) {
 	return;
 }
 
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+$block_controller = new BlockController();
+$block_controller->extend($block);
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 
 ?>

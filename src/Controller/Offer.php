@@ -3,6 +3,7 @@
 namespace SayHello\ShpGantrischAdb\Controller;
 
 use SayHello\ShpGantrischAdb\Package\Rewrites as RewritesPackage;
+use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 /**
  * Handles general request controlling for
@@ -15,6 +16,12 @@ class Offer
 {
 
 	private $query_var = 'adb_offer_id';
+	private $offer_model = null;
+
+	public function __construct()
+	{
+		$this->offer_model = new OfferModel();
+	}
 
 	public function run()
 	{
@@ -33,7 +40,7 @@ class Offer
 
 	public function isConfiguredSinglePage()
 	{
-		$single_page_id = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+		$single_page_id = $this->offer_model->getSinglePageID();
 		return $single_page_id && get_the_ID() && get_the_ID() === $single_page_id;
 	}
 
@@ -49,7 +56,7 @@ class Offer
 	public function handleInvalidSingle()
 	{
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+		$offer_id = $this->offer_model->getRequestedOfferID();
 
 		if (!$this->isConfiguredSinglePage() && $offer_id) {
 			header("HTTP/1.1 404 Not Found");
@@ -64,7 +71,7 @@ class Offer
 
 		if ($this->isConfiguredSinglePage() && $offer_id) {
 			// Is there a valid offer for the ID which has been passed in?
-			$offer = shp_gantrisch_adb_get_instance()->Model->Offer->getOffer($offer_id);
+			$offer = $this->offer_model->getOffer($offer_id);
 			if (!$offer) {
 				header("HTTP/1.1 404 Not Found");
 				exit;
@@ -90,19 +97,17 @@ class Offer
 			return $post_title;
 		}
 
-		$offer_model = shp_gantrisch_adb_get_instance()->Model->Offer;
-
-		if ($post_id !== $offer_model->getSinglePageID()) {
+		if ($post_id !== $this->offer_model->getSinglePageID()) {
 			return $post_title;
 		}
 
-		$offer_id = $offer_model->getRequestedOfferID();
+		$offer_id = $this->offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $post_title;
 		}
 
-		$offer_title = $offer_model->getTitle($offer_id);
+		$offer_title = $this->offer_model->getTitle($offer_id);
 
 		if (empty($offer_title) || is_wp_error($offer_title)) {
 			return $post_title;
@@ -118,7 +123,7 @@ class Offer
 			$offer_id = $offer_id['offer_id'] ?? null;
 		}
 
-		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+		$single_page = $this->offer_model->getSinglePageID();
 
 		if (!$single_page) {
 			return '#';
@@ -143,7 +148,7 @@ class Offer
 	public function canonicalURL($canonical_url)
 	{
 
-		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+		$single_page = $this->offer_model->getSinglePageID();
 
 		if (!$single_page || get_the_ID() !== $single_page) {
 			return $canonical_url;
@@ -156,7 +161,7 @@ class Offer
 			return $canonical_url;
 		}
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+		$offer_id = $this->offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $canonical_url;
@@ -167,7 +172,7 @@ class Offer
 
 	public function shortlink($shortlink)
 	{
-		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+		$single_page = $this->offer_model->getSinglePageID();
 
 		if (!$single_page) {
 			return $shortlink;
@@ -183,13 +188,13 @@ class Offer
 			return $url;
 		}
 
-		$single_page = shp_gantrisch_adb_get_instance()->Model->Offer->getSinglePageID();
+		$single_page = $this->offer_model->getSinglePageID();
 
 		if (!$single_page || get_the_ID() !== $single_page) {
 			return $url;
 		}
 
-		$offer_id = shp_gantrisch_adb_get_instance()->Model->Offer->getRequestedOfferID();
+		$offer_id = $this->offer_model->getRequestedOfferID();
 
 		if (!$offer_id) {
 			return $url;
