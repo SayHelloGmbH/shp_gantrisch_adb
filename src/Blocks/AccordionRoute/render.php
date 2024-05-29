@@ -2,9 +2,14 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionRoute;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
+
+
+$block_controller = new BlockController();
+$block_controller->extend($block);
 
 $helpers = new HelpersPackage();
 
@@ -14,8 +19,6 @@ $difficulties = [
 	_x('Mittel', 'ADB route difficulty', 'shp_gantrisch_adb'),
 	_x('Schwer', 'ADB route difficulty', 'shp_gantrisch_adb'),
 ];
-
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $gutenberg_package = new GutenbergPackage();
 

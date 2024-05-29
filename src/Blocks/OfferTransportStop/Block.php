@@ -2,6 +2,7 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTransportStop;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -36,7 +37,8 @@ class Block
 			return '';
 		}
 
-		shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+		$block_controller = new BlockController();
+		$block_controller->extend($block);
 
 		$link = $offer_model->getSBBTimetableURL();
 

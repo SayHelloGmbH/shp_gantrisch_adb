@@ -2,11 +2,10 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferCondition;
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
 
 $gutenberg_package = new GutenbergPackage();
 
@@ -34,7 +33,9 @@ if (empty($routecondition)) {
 	return;
 }
 
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+$block_controller = new BlockController();
+$block_controller->extend($block);
+
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $helpers = new HelpersPackage();
 

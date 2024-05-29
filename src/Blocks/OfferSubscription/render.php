@@ -1,5 +1,6 @@
 <?php
 
+use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $offer_model = new OfferModel();
@@ -20,7 +21,8 @@ if (empty($subscription_link) && $data['online_subscription_enabled']) {
 	$subscription_link = "https://angebote.paerke.ch/de/subscription/subscriber/{$offer_id}";
 }
 
-shp_gantrisch_adb_get_instance()->Controller->Block->extend($block);
+$block_controller = new BlockController();
+$block_controller->extend($block);
 ?>
 <div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">
 	<div class="<?php echo $block['shp']['classNameBase']; ?>__content">
