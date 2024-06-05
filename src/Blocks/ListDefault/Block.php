@@ -199,7 +199,9 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
+
 		$html = $this->convertStringEncoding($html);
+
 		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
@@ -349,7 +351,10 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
-		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$html = $this->convertStringEncoding($html);
+
+		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),' c-adb-list__entry ')]");
@@ -396,7 +401,10 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
-		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$html = $this->convertStringEncoding($html);
+
+		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
@@ -426,28 +434,29 @@ class Block
 		wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-17/jquery.min.js', false, '3.6.1');
 		wp_enqueue_script('jquery');
 	}
+
 	/**
 	 * PHP 8.2-compatible string conversion.
 	 * Formerly mb_convert_encoding($string, 'HTML-ENTITIES', 'UTF-8')
 	 *
 	 * @param string $string
-	 * @param string $convert_to
+	 * @param string $convert_from
 	 * @return string
 	 */
-	private function convertStringEncoding(string $string, $convert_to = 'UTF-8')
+	private function convertStringEncoding(string $string, $convert_from = 'UTF-8')
 	{
 		return mb_encode_numericentity(
 			htmlspecialchars_decode(
 				htmlentities(
 					$string,
 					ENT_NOQUOTES,
-					$convert_to,
+					$convert_from,
 					false
 				),
 				ENT_NOQUOTES
 			),
 			[0x80, 0x10FFFF, 0, ~0],
-			$convert_to
+			$convert_from
 		);
 	}
 }
