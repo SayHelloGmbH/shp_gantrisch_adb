@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionRoute;
 
-use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
@@ -19,7 +18,7 @@ $difficulties = [
 	_x('Schwer', 'ADB route difficulty', 'shp_gantrisch_adb'),
 ];
 
-$gutenberg_package = new GutenbergPackage();
+$gutenberg_package = shp_gantrisch_adb_get_instance()->Package_Gutenberg;
 
 if ($gutenberg_package->isContextEdit()) {
 ?>

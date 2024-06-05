@@ -2,10 +2,9 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTime;
 
-use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
-$gutenberg_package = new GutenbergPackage();
+$gutenberg_package = shp_gantrisch_adb_get_instance()->Package_Gutenberg;
 
 if ($gutenberg_package->isContextEdit()) {
 ?>

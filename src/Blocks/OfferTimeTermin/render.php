@@ -2,13 +2,12 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTimeTermin;
 
-use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 
-$gutenberg_package = new GutenbergPackage();
+$gutenberg_package = shp_gantrisch_adb_get_instance()->Package_Gutenberg;
 
 if ($gutenberg_package->isContextEdit()) {
 ?>
