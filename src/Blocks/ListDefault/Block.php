@@ -349,7 +349,10 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
-		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$html = $this->convertStringEncoding($html);
+
+		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),' c-adb-list__entry ')]");
@@ -396,7 +399,10 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
-		$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$html = $this->convertStringEncoding($html);
+
+		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
 		$entries = $xpath->query("//*[contains(concat(' ',normalize-space(@class),' '),'c-adb-list__entry')]");
