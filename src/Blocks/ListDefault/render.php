@@ -12,12 +12,11 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
 
-$block_controller = new BlockController();
+$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';

@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferTime;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
@@ -26,7 +25,7 @@ if (empty($time_required)) {
 	return;
 }
 
-$block_controller = new BlockController();
+$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 

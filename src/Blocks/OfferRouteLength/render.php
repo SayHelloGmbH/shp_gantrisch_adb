@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferRouteLength;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Package\Gutenberg as GutenbergPackage;
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
@@ -29,7 +28,7 @@ if ((int) $routelength < 1) {
 	return;
 }
 
-$block_controller = new BlockController();
+$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $helpers = new HelpersPackage();
