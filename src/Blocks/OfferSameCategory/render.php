@@ -10,7 +10,7 @@ use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 $block_controller = new BlockController();
 $block_controller->extend($block);
 
-if (shp_gantrisch_adb_get_instance()->Package->Gutenberg->isContextEdit() === true) {
+if (shp_gantrisch_adb_get_instance()->Package_Gutenberg->isContextEdit() === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">
 		<div class="c-message c-message--info">

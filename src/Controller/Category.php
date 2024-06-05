@@ -26,7 +26,7 @@ class Category
 				return true;
 			},
 			'callback' => function () {
-				$categories = shp_gantrisch_adb_get_instance()->Model->Category->getForSelect();
+				$categories = shp_gantrisch_adb_get_instance()->Model_Category->getForSelect();
 				return $categories;
 			}
 		]);
