@@ -92,7 +92,7 @@ class Yoast
 			return $seo_url;
 		}
 
-		$rewrite_package = shp_gantrisch_adb_get_instance()->Package->Rewrites;
+		$rewrite_package = shp_gantrisch_adb_get_instance()->Package_Rewrites;
 		$var_key = $rewrite_package->getVarKey();
 
 		$permalink = get_permalink();

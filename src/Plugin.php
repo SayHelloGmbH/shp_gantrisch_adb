@@ -44,23 +44,19 @@ class Plugin
 	 */
 	private function loadClasses($classes)
 	{
+
+		$instance = shp_gantrisch_adb_get_instance();
+
 		foreach ($classes as $class) {
 			$class_parts = explode('\\', $class);
 			$class_short = end($class_parts);
 			$class_set   = $class_parts[count($class_parts) - 2];
+			$key         = "{$class_set}_{$class_short}";
 
-			if (!isset(shp_gantrisch_adb_get_instance()->{$class_set}) || !is_object(shp_gantrisch_adb_get_instance()->{$class_set})) {
-				shp_gantrisch_adb_get_instance()->{$class_set} = new \stdClass();
-			}
+			$instance->{$key} = new $class();
 
-			if (property_exists(shp_gantrisch_adb_get_instance()->{$class_set}, $class_short)) {
-				wp_die(sprintf(__('A problem has ocurred in the Theme. Only one PHP class named “%1$s” may be assigned to the “%2$s” object in the Theme.', 'sht'), $class_short, $class_set), 500);
-			}
-
-			shp_gantrisch_adb_get_instance()->{$class_set}->{$class_short} = new $class();
-
-			if (method_exists(shp_gantrisch_adb_get_instance()->{$class_set}->{$class_short}, 'run')) {
-				shp_gantrisch_adb_get_instance()->{$class_set}->{$class_short}->run();
+			if (method_exists($instance->{$key}, 'run')) {
+				$instance->{$key}->run();
 			}
 		}
 	}
