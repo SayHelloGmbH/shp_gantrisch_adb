@@ -199,7 +199,9 @@ class Block
 
 		libxml_use_internal_errors(true);
 		$document = new DOMDocument();
+
 		$html = $this->convertStringEncoding($html);
+
 		$document->loadHTML($html);
 
 		$xpath = new DOMXPath($document);
