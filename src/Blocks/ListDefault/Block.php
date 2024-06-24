@@ -431,7 +431,7 @@ class Block
 
 		wp_dequeue_script('jquery');
 		wp_deregister_script('jquery');
-		wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-17/jquery.min.js', false, '3.6.1');
+		wp_register_script('jquery', 'https://angebote.paerke.ch/api/lib/api-20/jquery.min.js', false, '3.6.1');
 		wp_enqueue_script('jquery');
 	}
 

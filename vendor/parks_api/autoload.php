@@ -27,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
 |--------------------------------------------------------------------------
 |
 */
-define('API_VERSION', 19);
+define('API_VERSION', 20);
 
 
 /*
@@ -62,6 +62,15 @@ define('CATEGORY_INFRASTRUCTURE', 100);
 define('OFFER_STATUS_STUB', 0);
 define('OFFER_STATUS_INACTIVE', 1);
 define('OFFER_STATUS_ACTIVE', 2);
+
+
+/*
+|--------------------------------------------------------------------------
+| Misc
+|--------------------------------------------------------------------------
+|
+*/
+define('GINTO_INFOS_AVAILABLE', 1);
 
 
 /*

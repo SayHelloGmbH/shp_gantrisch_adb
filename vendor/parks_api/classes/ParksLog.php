@@ -10,7 +10,8 @@
 */
 
 
-class ParksLog {
+class ParksLog
+{
 
 
 	/**
@@ -25,60 +26,69 @@ class ParksLog {
 	private $logfile;
 
 
+
 	/**
 	 * Constructor
 	 *
 	 * @access public
-	 * @param  string  Path to logfile (optional)
+	 * @param object $api
 	 * @return void
 	 */
-	function __construct($api) {
+	function __construct($api)
+	{
 
 		// Api instance
 		$this->api = $api;
 
 		// Set log path
-		$this->logfile = $this->api->config['absolute_path'].'/'.$this->api->config['log_directory'].date("Y_m_d").'.log';
+		$this->logfile = $this->api->config['absolute_path'] . '/' . $this->api->config['log_directory'] . date("Y_m_d") . '.log';
 
 	}
+
 
 
 	/**
 	 * Log error message
 	 *
 	 * @access public
-	 * @param  string
+	 * @param string $message
 	 * @return void
 	 */
-	public function error($message) {
+	public function error($message)
+	{
 		$this->_log("ERROR", $message);
 	}
+
 
 
 	/**
 	 * Log info message
 	 *
 	 * @access public
-	 * @param  string
+	 * @param string $message
 	 * @return void
 	 */
-	public function info($message) {
+	public function info($message)
+	{
 		$this->_log("INFO", $message);
 	}
+
 
 
 	/**
 	 * Log message
 	 *
 	 * @access private
-	 * @param  string
-	 * @param  string
+	 * @param int $level
+	 * @param string $message
 	 * @return void
 	 */
-	private function _log($level, $message) {
-		$line = date("Y-m-d H:i:s")."\t".$level."\t".$message."\n";
-		@file_put_contents($this->logfile, $line, FILE_APPEND);
+	private function _log($level, $message)
+	{
+		$line = date("Y-m-d H:i:s") . "\t" . $level . "\t" . $message . "\n";
+		file_put_contents($this->logfile, $line, FILE_APPEND);
 	}
+
 
 
 }

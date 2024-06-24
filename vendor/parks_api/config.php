@@ -23,7 +23,7 @@ if (!file_exists($config_path)) {
 
 require $config_path;
 
-$config = array();
+$config = [];
 
 /*
 |--------------------------------------------------------------------------
@@ -58,18 +58,17 @@ $config['park_id'] = (int) $GLOBALS['ADBAPI']['park_id'];
 | SEO URLs
 |--------------------------------------------------------------------------
 |
-| Set TRUE if your environment uses SEO URLs.
+| Set true if your environment uses SEO URLs.
 |
 */
-$config['seo_urls'] = FALSE;
+$config['seo_urls'] = false;
 $config['seo_url_detail_slug'] = 'offer-detail';
 $config['seo_url_poi_slug'] = 'poi';
 $config['seo_url_page_slug'] = 'page';
 $config['seo_url_reset_slug'] = 'reset';
 
 
-/*
-|--------------------------------------------------------------------------
+/*|--------------------------------------------------------------------------
 | MySQL Database
 |--------------------------------------------------------------------------
 |
@@ -87,8 +86,7 @@ $config['db_database'] = $GLOBALS['ADBAPI']['DB_NAME'];
 |--------------------------------------------------------------------------
 | Custom view
 |--------------------------------------------------------------------------
-|
-| Set your custom view, located in your "custom" folder.
+|| Set your custom view, located in your "custom" folder.
 | example: "MyView"
 |
 */
@@ -103,14 +101,16 @@ $config['class_view'] = "MyView";
 | Set the template placed in the parks_api/template/ folder.
 | Create your individual template by creating your own folder,
 | copied from the standard folder.
-| */
+|
+ */
 $config['template_folder'] = 'standard';
 
 
 /*
 |--------------------------------------------------------------------------
 | Custom view options
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
+|
 | 'always_show_filter' => Show filter on detail pages
 | 'show_route_filter' => Show route filter
 | 'show_target_group_filter' => Show target group filter
@@ -131,11 +131,12 @@ $config['template_folder'] = 'standard';
 | 'show_button_in_overview' => Show link button in overview
 | 'poi_listing_link_target' => Set the detail link target in poi listing e.g. '_blank'
 | 'heading_offer_title_in_overview' => Set the heading html tag for offer titles in overview
+| 'show_accessibility_filter' => Show accessibility filter
 |
 */
-$config['always_show_filter'] = FALSE;
-$config['show_route_filter'] = TRUE;
-$config['show_target_group_filter'] = TRUE;
+$config['always_show_filter'] = false;
+$config['show_route_filter'] = true;
+$config['show_target_group_filter'] = true;
 $config['show_route_filter_min_count'] = 5;
 $config['offers_per_page'] = 10000;
 $config['n_th_point'] = 2;
@@ -144,23 +145,24 @@ $config['pagination_max_numbers'] = 5;
 $config['overview_thumbnail_size'] = 'medium';
 $config['detail_thumbnail_size'] = 'large';
 $config['placeholder_image'] = 'https://angebote.paerke.ch/img/placeholder.png';
-$config['image_enlargement'] = TRUE;
+$config['image_enlargement'] = true;
 $config['detail_limit_dates'] = 5;
-$config['filter_keywords_with_and'] = FALSE;
-$config['show_park_name'] = FALSE;
-$config['show_event_location_in_overview'] = TRUE;
-$config['show_short_description_in_overview'] = FALSE;
-$config['show_keywords_in_overview'] = FALSE;
-$config['show_button_in_overview'] = FALSE;
-$config['poi_listing_link_target'] = '';$config['heading_offer_title_in_overview'] = 'h3';
+$config['filter_keywords_with_and'] = false;
+$config['show_park_name'] = false;
+$config['show_event_location_in_overview'] = true;
+$config['show_short_description_in_overview'] = false;
+$config['show_keywords_in_overview'] = false;
+$config['show_button_in_overview'] = false;
+$config['poi_listing_link_target'] = '';
+$config['heading_offer_title_in_overview'] = 'h3';
+$config['show_accessibility_filter'] = true;
 
 
 /*
 |--------------------------------------------------------------------------
 | Keyword filter
 |--------------------------------------------------------------------------
-|
-| Set keywords for the optinally keyword filter.
+|| Set keywords for the optinally keyword filter.
 | The first entry is the title of the filter, the second entry is the label to show all entries.
 |
 | Example:
@@ -184,10 +186,10 @@ $config['keyword_filter'] = array(
 |--------------------------------------------------------------------------
 |
 | Set if view should be returned or directly displayed
-| Default: FALSE, output will automatically displayed
+| Default: false, output will automatically displayed
 |
 */
-$config['return_output'] = FALSE;
+$config['return_output'] = false;
 
 
 /*
@@ -200,7 +202,7 @@ $config['return_output'] = FALSE;
 | Check _load_maps_api() method to see file paths.
 |
 */
-$config['prevent_css_js_include'] = FALSE;
+$config['prevent_css_js_include'] = false;
 
 
 /*
@@ -213,7 +215,7 @@ $config['prevent_css_js_include'] = FALSE;
 | file, e.g. /plugins/parks_api/scripts (without an ending slash)
 |
 */
-$config['favorites_extension_available'] = FALSE;
+$config['favorites_extension_available'] = false;
 $config['favorites_script_path'] = '';
 
 
@@ -240,7 +242,7 @@ $config['url_param_prefix'] = '';
 */
 $config['default_language'] = 'de';
 $config['available_languages'] = array('de', 'fr', 'it', 'en');
-$config['language_independence'] = TRUE;
+$config['language_independence'] = true;
 $config['language_priority'] = array(
 	'de' => array('fr', 'it', 'en'),
 	'fr' => array('de', 'it', 'en'),
@@ -255,7 +257,7 @@ $config['language_priority'] = array(
 |--------------------------------------------------------------------------
 |
 */
-$config['use_sessions'] = TRUE;
+$config['use_sessions'] = true;
 $config['session_name'] = "parks_api";
 
 

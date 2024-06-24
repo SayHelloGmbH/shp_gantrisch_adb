@@ -24,13 +24,13 @@ $api = new ParksAPI('de');
 	<title>parks.swiss API Example</title>
 
 	<!-- Parks API CSS  -->
-	<link href="https://angebote.paerke.ch/api/lib/api-17/api.css" rel="stylesheet">
+	<link href="https://angebote.paerke.ch/api/lib/api-20/api.css" rel="stylesheet">
 
 	<!-- Parks API JS -->
-	<script src="https://angebote.paerke.ch/api/lib/api-17/<?php echo $api->lang_id; ?>.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-17/jquery.min.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-17/jquery-ui.min.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-17/ParkApp.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-20/<?php echo $api->lang_id; ?>.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-20/jquery.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-20/jquery-ui.min.js"></script>
+	<script src="https://angebote.paerke.ch/api/lib/api-20/ParkApp.min.js"></script>
 
 </head>
 <body>
@@ -40,18 +40,19 @@ $api = new ParksAPI('de');
 		// Map options
 		$api->map_options = array(
 			/*
-			'show_layers_at_start' => FALSE, 			// Show/hide layers at start after loading
-			'parkperimeter_visibility' => TRUE,			// Show/hide swiss parks perimeter after loading
-			'associated_members_visibility' => TRUE,	// Show/hide associated members layer
-			'link_target' => '_blank', 					// Set the link target for offer detail links in the map
-			'full_height' => FALSE, 					// Show the map over full window height
-			'disable_auto_load_oev' => TRUE,			// Disable auto loading oev layer lower than zoom level 0.3km			
-			'map_extent' => array(						// Overwrite init extent on overview maps and set your own
+			'show_layers_at_start' => false, 				// Show/hide layers at start after loading
+			'parkperimeter_visibility' => true,				// Show/hide swiss parks perimeter after loading
+			'associated_members_visibility' => true,		// Show/hide associated members layer
+			'link_target' => '_blank', 						// Set the link target for offer detail links in the map
+			'full_height' => false, 						// Show the map over full window height
+			'disable_auto_load_oev' => true,				// Disable auto loading oev layer lower than zoom level 0.3km			
+			'map_extent' => array(							// Overwrite init extent on overview maps and set your own
 				'xmin' => 2590807.0,
 				'ymin' => 1130285.0,
 				'xmax' => 2736607.0,
 				'ymax' => 1235385.0,
-			)
+			),
+			'do_not_group_categories_in_legend' => true,	// Do not group offer categories in legend
 			*/
 		);
 
@@ -68,10 +69,11 @@ $api = new ParksAPI('de');
 			'offers_child_friendly' => 0, 				// 1 = child friendly offers
 			'offers_filter_hints' => 0, 				// 1 = show only hints (Tipps)
 			'offers_is_park_event' => 1,				// 1 = show only park events	
-			'has_accessibility_informations' => TRUE,	// TRUE = Filter offers with accessibility informations
+			'has_accessibility_informations' => true,	// true = Filter offers with accessibility informations
 			'offers' => array(),						// Filter by offer ids
-			'show_keywords_filter' => TRUE,				// Show keywords filter
-			'hide_user_filter' => FALSE,				// Hide user filter if more than one park is listed as dropdown in the filter
+			'show_keywords_filter' => true,				// Show keywords filter
+			'hide_user_filter' => false,				// Hide user filter if more than one park is listed as dropdown in the filter
+			'hide_accessibility_filter' => false,		// Hide accessibility filter
 			'system_filter' => array(					// Additional filter set by your system
 				'target_groups' => array()					// Show only these target groups in offers list and filter view field
 			)
@@ -79,7 +81,7 @@ $api = new ParksAPI('de');
 		);
 
 		// Filter categories
-		$categories = array();
+		$categories = [];
 
 		// Show detail page
 		if ($api->is_offer_detail()) {
