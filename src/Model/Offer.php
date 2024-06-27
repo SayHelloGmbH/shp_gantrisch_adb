@@ -799,7 +799,7 @@ class Offer
 		return parks_show_date([
 			'date_from' => parks_mysql2form($date_from),
 			'date_to' => parks_mysql2form($date_to)
-		]);
+		], $this->api_controller->getApi()->lang);
 	}
 
 	/**
@@ -840,7 +840,7 @@ class Offer
 					$return[] = parks_show_date([
 						'date_from' => parks_mysql2form($date_from),
 						'date_to' => parks_mysql2form($date_to)
-					]);
+					], $this->api_controller->getApi()->lang);
 					break;
 			}
 		}
