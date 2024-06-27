@@ -17,7 +17,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Export table accessibility
+# Table accessibility
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `accessibility`;
@@ -35,7 +35,7 @@ CREATE TABLE `accessibility` (
 
 
 
-# Export table accessibility_rating
+# Table accessibility_rating
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `accessibility_rating`;
@@ -55,8 +55,21 @@ CREATE TABLE `accessibility_rating` (
 
 
 
+# Table accessibility_dropdown
+# ------------------------------------------------------------
 
-# Export table accommodation
+DROP TABLE IF EXISTS `accessibility_dropdown`;
+
+CREATE TABLE `accessibility_dropdown`
+(
+  `accessibility_dropdown_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `icon_url` VARCHAR(1000),
+  PRIMARY KEY (`accessibility_dropdown_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Table accommodation
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `accommodation`;
@@ -71,7 +84,7 @@ CREATE TABLE `accommodation` (
 
 
 
-# Export table activity
+# Table activity
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `activity`;
@@ -101,15 +114,13 @@ CREATE TABLE `activity` (
   `season_months` varchar(50) DEFAULT NULL,
   `route_condition_id` TINYINT,
   `route_condition_color` VARCHAR(255),
-  `route_condition` VARCHAR(500),
-  `route_condition_details` VARCHAR(500),
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-# Export table api
+# Table api
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `api`;
@@ -125,13 +136,13 @@ LOCK TABLES `api` WRITE;
 
 INSERT INTO `api` (`initialized`, `version`, `last_import`)
 VALUES
-	(1,'19',NULL);
+	(1,'20',NULL);
 
 /*!40000 ALTER TABLE `api` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Export table booking
+# Table booking
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `booking`;
@@ -151,7 +162,7 @@ CREATE TABLE `booking` (
 
 
 
-# Export table category
+# Table category
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `category`;
@@ -171,7 +182,7 @@ CREATE TABLE `category` (
 
 
 
-# Export table category_i18n
+# Table category_i18n
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `category_i18n`;
@@ -186,7 +197,7 @@ CREATE TABLE `category_i18n` (
 
 
 
-# Export table category_link
+# Table category_link
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `category_link`;
@@ -200,7 +211,7 @@ CREATE TABLE `category_link` (
 
 
 
-# Export table document
+# Table document
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `document`;
@@ -216,7 +227,7 @@ CREATE TABLE `document` (
 
 
 
-# Export table document
+# Table document
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `document_intern`;
@@ -232,7 +243,7 @@ CREATE TABLE `document_intern` (
 
 
 
-# Export table event
+# Table event
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `event`;
@@ -249,7 +260,38 @@ CREATE TABLE `event` (
 
 
 
-# Export table hyperlink
+# Tables: Fields of activity
+# ------------------------------------------------------------
+
+CREATE TABLE `field_of_activity_link` (
+  `offer_id` BIGINT,
+  `field_of_activity_id` INTEGER,
+  PRIMARY KEY (offer_id,field_of_activity_id)
+) ENGINE=InnoDB CHARACTER SET=utf8;
+
+CREATE TABLE `field_of_activity`
+(
+  `field_of_activity_id` INTEGER AUTO_INCREMENT UNIQUE ,
+  `sort` INTEGER,
+  PRIMARY KEY (`field_of_activity_id`)
+) ENGINE=InnoDB CHARACTER SET=utf8;
+
+CREATE TABLE `field_of_activity_i18n`
+(
+  `field_of_activity_id` INTEGER,
+  `language` CHAR(2),
+  `body` VARCHAR(255),
+  PRIMARY KEY (field_of_activity_id,language)
+) ENGINE=InnoDB CHARACTER SET=utf8;
+
+ALTER TABLE `field_of_activity_i18n` ADD FOREIGN KEY field_of_activity_id_idxfk (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;
+ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY offer_id_idxfk_42 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;
+ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY field_of_activity_id_idxfk_1 (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;
+
+
+
+
+# Table hyperlink
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `hyperlink`;
@@ -265,7 +307,7 @@ CREATE TABLE `hyperlink` (
 
 
 
-# Export table hyperlink_intern
+# Table hyperlink_intern
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `hyperlink_intern`;
@@ -281,7 +323,7 @@ CREATE TABLE `hyperlink_intern` (
 
 
 
-# Export table image
+# Table image
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `image`;
@@ -299,7 +341,7 @@ CREATE TABLE `image` (
 
 
 
-# Export table map_layer
+# Table map_layer
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `map_layer`;
@@ -320,7 +362,7 @@ CREATE TABLE `map_layer` (
 
 
 
-# Export table map_layer_i18n
+# Table map_layer_i18n
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `map_layer_i18n`;
@@ -335,7 +377,7 @@ CREATE TABLE `map_layer_i18n` (
 
 
 
-# Export table offer
+# Table offer
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `offer`;
@@ -364,7 +406,7 @@ CREATE TABLE `offer` (
 
 
 
-# Export table offer_date
+# Table offer_date
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `offer_date`;
@@ -381,7 +423,7 @@ CREATE TABLE `offer_date` (
 
 
 
-# Export table offer_i18n
+# Table offer_i18n
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `offer_i18n`;
@@ -390,12 +432,12 @@ CREATE TABLE `offer_i18n` (
   `offer_id` bigint(20) NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
   `title` varchar(1000) DEFAULT NULL,
-  `abstract` varchar(1000) DEFAULT NULL,
-  `description_medium` varchar(1000) DEFAULT NULL,
-  `description_long` varchar(1500) DEFAULT NULL,
+  `abstract` text,
+  `description_medium` text,
+  `description_long` text,
   `details` text,
   `price` text,
-  `location_details` varchar(1000) DEFAULT NULL,
+  `location_details` text DEFAULT NULL,
   `opening_hours` text,
   `benefits` text,
   `requirements` text,
@@ -405,20 +447,26 @@ CREATE TABLE `offer_i18n` (
   `safety_instructions` text,
   `signalization` text,
   `other_infrastructure` text,
-  `route_url` varchar(255) DEFAULT NULL,
+  `route_url` text DEFAULT NULL,
   `costs` text,
   `funding` text,
   `partner` text,
   `remarks` text,
   `online_shop_payment_terms` text,
   `online_shop_delivery_conditions` text,
+  `project_initial_situation` text,
+	`project_goal` text,
+	`project_further_information` text,
+	`project_partner` text,
+  `route_condition` VARCHAR(500),
+  `route_condition_details` VARCHAR(500),
   PRIMARY KEY (`offer_id`,`language`),
   CONSTRAINT `offer_i18n_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-# Export table offer_route
+# Table offer_route
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `offer_route`;
@@ -434,7 +482,7 @@ CREATE TABLE `offer_route` (
 
 
 
-# Export table product
+# Table product
 # ------------------------------------------------------------
 
 CREATE TABLE `product` (
@@ -455,7 +503,7 @@ CREATE TABLE `product` (
 
 
 
-# Export table product_article
+# Table product_article
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article` (
@@ -469,7 +517,7 @@ CREATE TABLE `product_article` (
 
 
 
-# Export table product_article_i18n
+# Table product_article_i18n
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article_i18n` (
@@ -484,7 +532,7 @@ CREATE TABLE `product_article_i18n` (
 
 
 
-# Export table product_article_label
+# Table product_article_label
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article_label` (
@@ -500,7 +548,7 @@ CREATE TABLE `product_article_label` (
 
 
 
-# Export table project
+# Table project
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `project`;
@@ -508,7 +556,9 @@ DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `offer_id` bigint(20) NOT NULL DEFAULT '0',
   `duration_from` int(11) DEFAULT NULL,
+  `duration_from_month` tinyint DEFAULT NULL,
   `duration_to` int(11) DEFAULT NULL,
+  `duration_to_month` tinyint DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `poi` text,
   PRIMARY KEY (`offer_id`),
@@ -517,7 +567,7 @@ CREATE TABLE `project` (
 
 
 
-# Export table subscription
+# Table subscription
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `subscription`;
@@ -534,7 +584,7 @@ CREATE TABLE `subscription` (
 
 
 
-# Export table subscription_i18n
+# Table subscription_i18n
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `subscription_i18n`;
@@ -549,7 +599,7 @@ CREATE TABLE `subscription_i18n` (
 
 
 
-# Export table supplier
+# Table supplier
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `supplier`;
@@ -564,7 +614,7 @@ CREATE TABLE `supplier` (
 
 
 
-# Export table target_group
+# Table target_group
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `target_group`;
@@ -577,7 +627,7 @@ CREATE TABLE `target_group` (
 
 
 
-# Export table target_group_i18n
+# Table target_group_i18n
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `target_group_i18n`;
@@ -591,7 +641,7 @@ CREATE TABLE `target_group_i18n` (
 
 
 
-# Export table target_group_link
+# Table target_group_link
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `target_group_link`;

@@ -10,7 +10,8 @@
 */
 
 
-class ParksLanguage {
+class ParksLanguage
+{
 
 
 	/**
@@ -22,7 +23,7 @@ class ParksLanguage {
 	/**
 	 * labels for current language
 	 */
-	private $labels = array();
+	private $labels = [];
 
 
 	/**
@@ -32,26 +33,35 @@ class ParksLanguage {
 
 
 	/**
+	 * Lower case language id
+	 */
+	public $lang;
+
+
+
+	/**
 	 * Constructor
 	 *
 	 * @access public
-	 * @param  string
+	 * @param string $lang_id
+	 * @param object $api
 	 * @return void
 	 */
-	function __construct($lang_id, $api) {
+	function __construct($lang_id, $api)
+	{
 
 		// Api instance
 		$this->api = $api;
 
 		// Load language file
-		if (!empty($lang_id) && in_array($lang_id, $this->api->config['available_languages']) && file_exists($this->api->config['absolute_path'].'/language/'.strtolower($lang_id).'.php')) {
-			require($this->api->config['absolute_path'].'/language/'.strtolower($lang_id).'.php');
+		if (! empty($lang_id) && in_array($lang_id, $this->api->config['available_languages']) && file_exists($this->api->config['absolute_path'] . '/language/' . strtolower($lang_id) . '.php')) {
+			require($this->api->config['absolute_path'] . '/language/' . strtolower($lang_id) . '.php');
 			$this->lang = strtolower($lang_id);
 		}
 
 		// Load default language file
-		elseif (file_exists($this->api->config['absolute_path'].'/language/de.php')) {
-			require($this->api->config['absolute_path'].'/language/de.php');
+		elseif (file_exists($this->api->config['absolute_path'] . '/language/de.php')) {
+			require($this->api->config['absolute_path'] . '/language/de.php');
 			$lang_id = 'de';
 		}
 
@@ -62,7 +72,7 @@ class ParksLanguage {
 		}
 
 		// Check language labels
-		if (!isset($lang) || !is_array($lang)) {
+		if (!isset($lang) || ! is_array($lang)) {
 			echo 'Your language file does not appear to be formatted correctly.';
 			exit();
 		}
@@ -81,16 +91,18 @@ class ParksLanguage {
 	 * Get language string
 	 *
 	 * @access public
-	 * @param  string
+	 * @param string $key
 	 * @return string
 	 */
-	public function get($key) {
+	public function get($key)
+	{
 		if (isset($this->labels[$key])) {
 			return $this->labels[$key];
 		}
 
 		return $key;
 	}
+
 
 
 }

@@ -3,11 +3,10 @@
 namespace SayHello\ShpGantrischAdb\Blocks\OfferSameCategory;
 
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
-$block_controller = new BlockController();
+$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 
 if (shp_gantrisch_adb_get_instance()->Package_Gutenberg->isContextEdit() === true) {

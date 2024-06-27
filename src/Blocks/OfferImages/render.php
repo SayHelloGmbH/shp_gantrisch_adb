@@ -1,6 +1,5 @@
 <?php
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 $offer_model = new OfferModel();
@@ -17,7 +16,7 @@ if (!$offer_title) {
 	$offer_title = '';
 }
 
-$block_controller = new BlockController();
+$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 
 // Use of viewScript in block.json allows us to enqueue the script as we want to.

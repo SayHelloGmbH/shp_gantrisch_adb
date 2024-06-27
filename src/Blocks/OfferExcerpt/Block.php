@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferExcerpt;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use WP_Block;
 
 class Block
@@ -29,7 +28,7 @@ class Block
 			return '';
 		}
 
-		$block_controller = new BlockController();
+		$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 		$block_controller->extend($block);
 
 		ob_start();

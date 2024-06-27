@@ -2,7 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferContact;
 
-use SayHello\ShpGantrischAdb\Controller\Block as BlockController;
 use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use WP_Block;
 
@@ -35,7 +34,7 @@ class Block
 
 		ob_start();
 
-		$block_controller = new BlockController();
+		$block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 		$block_controller->extend($block);
 ?>
 		<div class="c-adb-block c-adb-block--detail <?php echo $block['shp']['class_names']; ?>">

@@ -9,7 +9,7 @@
 |
 */
 
-$lang = array();
+$lang = [];
 
 
 $lang['general_from_2'] = "From";
@@ -184,6 +184,10 @@ $lang['offer_included_products'] = 'Products included';
 $lang['offer_product_honoured_by'] = 'The product is distinguished by';
 $lang['offer_product_shop_now'] = 'Shop now';
 $lang['offer_product_article_ingredients'] = 'Ingredients';
+$lang['offer_product_article_allergens'] = "Allergens";
+$lang['offer_product_article_nutritional_values'] = "Nutritional values";
+$lang['offer_product_article_identity_label'] = "Identity label";
+$lang['offer_product_article_quantity_indication'] = "Quantity indication";
 
 
 /*
@@ -211,6 +215,7 @@ $lang['offer_target_group'] = 'Suitable for';
 $lang['offer_target_group_general_info'] = "The offer is suitable for";
 $lang['offer_target_group_specific_info'] = "The offer has been particularly developed for";
 $lang['offer_accessibility'] = 'Accessibility';
+$lang['offer_accessibility_available'] = 'OK:GO accessibility information available';
 
 
 /*
@@ -320,6 +325,9 @@ $lang['offer_project_status'] = "Project status";
 $lang['offer_project_responsibility'] = "Responsibility for the project";
 $lang['offer_project_links'] = "Catenations";
 $lang['offer_project_poi'] = "Catenations with projects and offers";
+$lang['offer_project_initial_situation'] = 'Initial situation';
+$lang['offer_project_goal'] = 'Goal';
+$lang['offer_project_further_information'] = 'Further information';
 
 
 /*

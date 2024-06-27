@@ -68,7 +68,7 @@ class ParksSwissView extends ParksView {
 	 *
 	 * @access protected
 	 * @param mixed $offer
-	 * @return void
+	 * @return string
 	 */
 	protected function _get_detail_event($offer) {
 
@@ -76,7 +76,7 @@ class ParksSwissView extends ParksView {
 		$template_data['OFFER_ADDITIONAL_INFO'] = parent:: _prepare_additional_infos($offer);
 		$template_data['OFFER_EVENT_DATE_DETAILS'] = trim(parent::_show_text($this->api->lang->get('offer_date_details'), $offer->details, 'block date_details'));
 		$template_data['OFFER_EVENT_LOCATION_DETAILS'] = trim(parent::_show_text($this->api->lang->get('offer_location_details'), $offer->location_details, 'block location_details'));
-		if (!empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
+		if (! empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
 			$template_data['OFFER_EVENT_TRANSPORT'] = trim(parent::_show_text($this->api->lang->get('offer_public_transport_stop'), $offer->public_transport_stop.' <a href="'.$this->sbb_link.'?nach='.urlencode($offer->public_transport_stop).'" target="_blank" class="sbb">'.$this->api->lang->get('offer_timetable_sbb').'</a>', 'block public_transport_stop'));
 		}
 		$template_data['OFFER_EVENT_PRICE'] = trim(parent::_show_text($this->api->lang->get('offer_price'), $offer->price, 'block price'));
@@ -92,12 +92,12 @@ class ParksSwissView extends ParksView {
 	 *
 	 * @access protected
 	 * @param mixed $offer
-	 * @return void
+	 * @return string
 	 */
 	protected function _get_detail_product($offer) {
 
 		// Load template data
-		if (!empty($offer->online_shop_enabled)) {
+		if (! empty($offer->online_shop_enabled)) {
 
 			// Show article price
 			$template_data['OFFER_PRODUCT_PRICE'] = '
@@ -136,10 +136,10 @@ class ParksSwissView extends ParksView {
 			$template_data['OFFER_DATES'] = $this->_get_offer_dates($offer);
 		}
 		$template_data['OFFER_PRODUCT_OPENING_HOURS'] = trim(parent::_show_text($this->api->lang->get('offer_opening_hours'), $offer->opening_hours, 'block opening_hours'));
-		if (!empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
+		if (! empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
 			$template_data['OFFER_PRODUCT_PUBLIC_TRANSPORT'] = trim($this->_show_text($this->api->lang->get('offer_public_transport_stop'), $offer->public_transport_stop.' <a href="'.$this->sbb_link.'?nach='.urlencode($offer->public_transport_stop).'" target="_blank" class="sbb" title="'.$this->api->lang->get('offer_link_sbb').'">'.$this->api->lang->get('offer_timetable_sbb').'</a>', 'block public_transport_stop'));
 		}
-		if (!empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
+		if (! empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
 			$template_data['OFFER_PRODUCT_PUBLIC_TRANSPORT'] = trim(parent::_show_text($this->api->lang->get('offer_public_transport_stop'), $offer->public_transport_stop.' <a href="'.$this->sbb_link.'?nach='.urlencode($offer->public_transport_stop).'" target="_blank" class="sbb">'.$this->api->lang->get('offer_timetable_sbb').'</a>', 'block public_transport_stop'));
 		}
 		$template_data['OFFER_PRODUCT_INFRASTRUCTURE'] = trim(parent::_show_text($this->api->lang->get('offer_infrastructure'), parent::_get_detail_infrastructure($offer), 'block infrastructure'));
@@ -156,7 +156,7 @@ class ParksSwissView extends ParksView {
 	 *
 	 * @access protected
 	 * @param mixed $offer
-	 * @return void
+	 * @return string
 	 */
 	protected function _get_detail_booking($offer) {
 
@@ -165,7 +165,7 @@ class ParksSwissView extends ParksView {
 		$template_data['OFFER_BOOKING_GROUPS'] = parent::_get_detail_groups($offer);
 		$template_data['OFFER_BOOKING_BENEFITS'] = trim(parent::_show_text($this->api->lang->get('offer_benefits'), $offer->benefits, 'block benefits'));
 		$template_data['OFFER_BOOKING_REQUIREMENTS'] = trim(parent::_show_text($this->api->lang->get('offer_requirements'), $offer->requirements, 'block requirements'));
-		if (!empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
+		if (! empty($offer->public_transport_stop) && (strlen($offer->public_transport_stop) >= $this->config['min_chars_sbb_link'])) {
 			$template_data['OFFER_BOOKING_TRANSPORT'] = trim(parent::_show_text($this->api->lang->get('offer_public_transport_stop'), $offer->public_transport_stop.' <a href="'.$this->sbb_link.'?nach='.urlencode($offer->public_transport_stop).'" target="_blank" class="sbb">'.$this->api->lang->get('offer_timetable_sbb').'</a>', 'block public_transport_stop'));
 		}
 		$template_data['OFFER_BOOKING_PRICE'] = trim(parent::_show_text($this->api->lang->get('offer_price'), $offer->price, 'block price'));
@@ -182,7 +182,7 @@ class ParksSwissView extends ParksView {
 	 *
 	 * @access protected
 	 * @param mixed $offer
-	 * @return void
+	 * @return string
 	 */
 	protected function _get_detail_activity($offer) {
 
@@ -206,7 +206,7 @@ class ParksSwissView extends ParksView {
 	 *
 	 * @access protected
 	 * @param mixed $offer
-	 * @return void
+	 * @return string
 	 */
 	protected function _get_detail_research($offer) {
 
