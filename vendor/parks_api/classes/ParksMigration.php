@@ -10,7 +10,8 @@
 */
 
 
-class ParksMigration {
+class ParksMigration
+{
 
 
 	/**
@@ -31,19 +32,22 @@ class ParksMigration {
 	private $version_to;
 
 
+
 	/**
 	 * Constructor
 	 *
 	 * @access public
-	 * @param mixed $api
+	 * @param object $api
 	 * @return void
 	 */
-	function __construct($api) {
+	function __construct($api)
+	{
 
 		// Api instance
 		$this->api = $api;
 
 	}
+
 
 
 	/**
@@ -52,7 +56,8 @@ class ParksMigration {
 	 * @access public
 	 * @return void
 	 */
-	public function start() {
+	public function start()
+	{
 
 		// Version from
 		$query_api = mysqli_fetch_assoc($this->api->db->get('api'));
@@ -62,23 +67,26 @@ class ParksMigration {
 		$this->version_to = API_VERSION;
 
 		// Migrate all versions
-		for ($version = ($this->version_from+1) ; $version <= $this->version_to ; $version++) {
+		for ($version = ($this->version_from + 1); $version <= $this->version_to; $version++) {
 			$this->migrate_to($version);
 		}
 
 	}
 
 
+
 	/**
 	 * Migrate to specified version
 	 *
 	 * @access public
+	 * @param int $version_to
 	 * @return void
 	 */
-	public function migrate_to($version_to) {
+	public function migrate_to($version_to)
+	{
 		if ($version_to > 0) {
-			$this->api->logger->info('Starting migration from version '.$this->version_from.' to version '.$version_to.'...');
-			switch($version_to) {
+			$this->api->logger->info('Starting migration from version ' . $this->version_from . ' to version ' . $version_to . '...');
+			switch ($version_to) {
 				default:
 					break;
 
@@ -641,15 +649,15 @@ class ParksMigration {
 
 					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate version 8 to version 9
-					| Accessibilities from Pro Infirmis
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 9:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate version 8 to version 9
+				| Accessibilities from Pro Infirmis
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 9:
+					$this->api->db->query("
 							CREATE TABLE `accessibility_pictogram`
 							(
 							`accessibility_pictogram_id` BIGINT NOT NULL,
@@ -662,7 +670,7 @@ class ParksMigration {
 							PRIMARY KEY (`accessibility_pictogram_id`)
 							) CHARACTER SET=utf8;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							CREATE TABLE `accessibility`
 							(
 							`offer_id` BIGINT,
@@ -671,97 +679,97 @@ class ParksMigration {
 							PRIMARY KEY (`offer_id`, `accessibility_pictogram_id`)
 							) CHARACTER SET=utf8;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							ALTER TABLE `accessibility` ADD FOREIGN KEY offer_id_idxfk_34 (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE;
 						");
-	
-						// Reset target group foreign keys
-						$this->api->db->query("
+
+					// Reset target group foreign keys
+					$this->api->db->query("
 							ALTER TABLE `target_group_link` DROP FOREIGN KEY `target_group_link_ibfk_2`;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							ALTER TABLE `target_group_i18n` DROP FOREIGN KEY `target_group_i18n_ibfk_1`;
 						");
-	
-						// Create new institution_location field
-						$this->api->db->query("
+
+					// Create new institution_location field
+					$this->api->db->query("
 							ALTER TABLE `offer` ADD COLUMN `institution_location` VARCHAR(500) NULL AFTER `institution`;
 						");
-	
-						// Sync target groups
-						$this->api->import->sync_target_groups();
-	
-						// Migrate/relink target group: Schulklassen Primarstufe
-						$q_tg_link = $this->api->db->get('target_group_link', array('target_group_id' => 7));
-						if (mysqli_num_rows($q_tg_link) > 0) {
-							while ($row = mysqli_fetch_object($q_tg_link)) {
-								$this->api->db->insert('target_group_link', array('offer_id' => $row->offer_id, 'target_group_id' => 12));
-							}
+
+					// Sync target groups
+					$this->api->import->sync_target_groups();
+
+					// Migrate/relink target group: Schulklassen Primarstufe
+					$q_tg_link = $this->api->db->get('target_group_link', array('target_group_id' => 7));
+					if (mysqli_num_rows($q_tg_link) > 0) {
+						while ($row = mysqli_fetch_object($q_tg_link)) {
+							$this->api->db->insert('target_group_link', array('offer_id' => $row->offer_id, 'target_group_id' => 12));
 						}
-	
-						// Rename category: bookable offer (only german)
-						$this->api->db->query("
+					}
+
+					// Rename category: bookable offer (only german)
+					$this->api->db->query("
 							UPDATE `category_i18n` SET `body` = 'Buchbares Angebot' WHERE `category_id` = 3 AND `language` = 'de' LIMIT 1
 						");
-						break;
+					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 12
-					| Activities: Routes, time required in minutes
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 12:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 12
+				| Activities: Routes, time required in minutes
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 12:
+					$this->api->db->query("
 							ALTER TABLE `activity` ADD COLUMN `time_required_minutes` INTEGER AFTER `time_required`;
 						");
-						break;
+					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 13
-					| Activities and product season months
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 13:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 13
+				| Activities and product season months
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 13:
+					$this->api->db->query("
 							ALTER TABLE `activity` ADD COLUMN `season_months` VARCHAR(50) NULL;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							ALTER TABLE `product` ADD COLUMN `season_months` VARCHAR(50) NULL;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							ALTER TABLE `offer` DROP COLUMN `park_day`;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							ALTER TABLE `offer` DROP COLUMN `enjoy_week`;
 						");
-						break;
+					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 14
-					| Booking season months
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 14:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 14
+				| Booking season months
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 14:
+					$this->api->db->query("
 							ALTER TABLE `booking` ADD COLUMN `season_months` VARCHAR(50) NULL;
 						");
-						break;
+					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 15
-					| Internal informations
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 15:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 15
+				| Internal informations
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 15:
+					$this->api->db->query("
 							CREATE TABLE `hyperlink_intern`
 							(
 								`offer_id` BIGINT,
@@ -770,7 +778,7 @@ class ParksMigration {
 								`url` VARCHAR(255)
 							) CHARACTER SET=utf8; 
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							CREATE TABLE document_intern
 							(
 								`offer_id` BIGINT,
@@ -779,23 +787,23 @@ class ParksMigration {
 								`url` VARCHAR(255)
 							) CHARACTER SET=utf8; 
 						");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `costs` TEXT;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `funding` TEXT;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `partner` TEXT;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `remarks` TEXT;");
-						$this->api->db->query("ALTER TABLE `hyperlink_intern` ADD FOREIGN KEY offer_id_idxfk_36 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;"); 
-						$this->api->db->query("ALTER TABLE `document_intern` ADD FOREIGN KEY offer_id_idxfk_37 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
-						break;
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `costs` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `funding` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `partner` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `remarks` TEXT;");
+					$this->api->db->query("ALTER TABLE `hyperlink_intern` ADD FOREIGN KEY offer_id_idxfk_36 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `document_intern` ADD FOREIGN KEY offer_id_idxfk_37 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
+					break;
 
-					/*
-					|--------------------------------------------------------------------------
-					| Migrate to version 16
-					| Online Shop
-					|--------------------------------------------------------------------------
-					|
-					*/
-					case 16:
-						$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 16
+				| Online Shop
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 16:
+					$this->api->db->query("
 							CREATE TABLE `product_article`
 							(
 								`product_article_id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -804,7 +812,7 @@ class ParksMigration {
 							PRIMARY KEY (`product_article_id`)
 							) CHARACTER SET=utf8;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							CREATE TABLE `product_article_i18n`
 							(
 								`product_article_id` BIGINT,
@@ -815,7 +823,7 @@ class ParksMigration {
 							PRIMARY KEY (`product_article_id`,`language`)
 							) CHARACTER SET=utf8;
 						");
-						$this->api->db->query("
+					$this->api->db->query("
 							CREATE TABLE product_article_label
 							(
 								`product_article_id` BIGINT,
@@ -828,40 +836,42 @@ class ParksMigration {
 							) CHARACTER SET=utf8;
 						");
 
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `online_shop_payment_terms` TEXT;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `online_shop_delivery_conditions` TEXT;");
-						$this->api->db->query("ALTER TABLE `product` ADD COLUMN `online_shop_enabled` TINYINT;");
-						$this->api->db->query("ALTER TABLE `product` ADD COLUMN `online_shop_price` FLOAT(10,2);");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `online_shop_payment_terms` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `online_shop_delivery_conditions` TEXT;");
+					$this->api->db->query("ALTER TABLE `product` ADD COLUMN `online_shop_enabled` TINYINT;");
+					$this->api->db->query("ALTER TABLE `product` ADD COLUMN `online_shop_price` FLOAT(10,2);");
 
-						$this->api->db->query("ALTER TABLE `product_article` ADD FOREIGN KEY offer_id_idxfk_40 (offer_id) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE;");
-						$this->api->db->query("ALTER TABLE `product_article_i18n` ADD FOREIGN KEY product_article_id_idxfk (product_article_id) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE;");
-						$this->api->db->query("ALTER TABLE `product_article_label` ADD FOREIGN KEY product_article_id_idxfk_2 (`product_article_id`) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `product_article` ADD FOREIGN KEY offer_id_idxfk_40 (offer_id) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `product_article_i18n` ADD FOREIGN KEY product_article_id_idxfk (product_article_id) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `product_article_label` ADD FOREIGN KEY product_article_id_idxfk_2 (`product_article_id`) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE;");
 
-						$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `title` `title` VARCHAR(1000) NULL DEFAULT NULL;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `abstract` `abstract` VARCHAR(1000) NULL DEFAULT NULL;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_medium` `description_medium` VARCHAR(1000) NULL DEFAULT NULL;");
-						$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_long` `description_long` VARCHAR(1500) NULL DEFAULT NULL;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `title` `title` VARCHAR(1000) NULL DEFAULT NULL;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `abstract` `abstract` VARCHAR(1000) NULL DEFAULT NULL;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_medium` `description_medium` VARCHAR(1000) NULL DEFAULT NULL;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_long` `description_long` VARCHAR(1500) NULL DEFAULT NULL;");
 
-						$this->api->db->query("ALTER TABLE `activity` ADD COLUMN `route_condition_id` TINYINT;");
-						$this->api->db->query("ALTER TABLE `activity` ADD COLUMN `route_condition_color` VARCHAR(255);");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `route_condition` VARCHAR(500);");
-						$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `route_condition_details` VARCHAR(500);");
+					$this->api->db->query("ALTER TABLE `activity` ADD COLUMN `route_condition_id` TINYINT;");
+					$this->api->db->query("ALTER TABLE `activity` ADD COLUMN `route_condition_color` VARCHAR(255);");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `route_condition` VARCHAR(500);");
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `route_condition_details` VARCHAR(500);");
+					$this->api->db->query("ALTER TABLE `activity` DROP COLUMN `route_condition`;");
+					$this->api->db->query("ALTER TABLE `activity` DROP COLUMN `route_condition_details`;");
 
-						break;
+					break;
 
-						/*
-						|--------------------------------------------------------------------------
-						| Migrate to version 18
-						| Accessibility
-						|--------------------------------------------------------------------------
-						|
-						*/
-						case 18:
-							
-							$this->api->db->query("DROP TABLE `accessibility`;");
-							$this->api->db->query("DROP TABLE `accessibility_pictogram`;");
-	
-							$this->api->db->query("
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 18
+				| Accessibility
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 18:
+
+					$this->api->db->query("DROP TABLE `accessibility`;");
+					$this->api->db->query("DROP TABLE `accessibility_pictogram`;");
+
+					$this->api->db->query("
 								CREATE TABLE `accessibility`
 								(
 									`accessibility_id` BIGINT UNSIGNED NOT NULL,
@@ -872,8 +882,8 @@ class ParksMigration {
 								PRIMARY KEY (accessibility_id,offer_id)
 								) ENGINE=InnoDB CHARACTER SET=utf8;
 							");
-	
-							$this->api->db->query("
+
+					$this->api->db->query("
 								CREATE TABLE `accessibility_rating`
 								(
 									`accessibility_rating_id` BIGINT NOT NULL,
@@ -886,37 +896,117 @@ class ParksMigration {
 									PRIMARY KEY (accessibility_rating_id)
 								) ENGINE=InnoDB CHARACTER SET=utf8;
 							");
-	
-							$this->api->db->query("ALTER TABLE `accessibility_rating` ADD FOREIGN KEY accessibility_id_idxfk (accessibility_id) REFERENCES accessibility (accessibility_id) ON DELETE CASCADE;");
-							$this->api->db->query("ALTER TABLE `accessibility` ADD FOREIGN KEY offer_id_idxfk_10 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
-	
-							break;
 
-						/*
-						|--------------------------------------------------------------------------
-						| Migrate to version 19
-						| Linked routes
-						|--------------------------------------------------------------------------
-						|
-						*/
-						case 19:
-							$this->api->db->query("UPDATE `activity` SET `poi` = CONCAT(`poi`, ',');");
-							$this->api->db->query("ALTER TABLE `offer` CHANGE `is_hint` `is_hint` TINYINT(1)  NOT NULL  DEFAULT 0;");
-							break;
+					$this->api->db->query("ALTER TABLE `accessibility_rating` ADD FOREIGN KEY accessibility_id_idxfk (accessibility_id) REFERENCES accessibility (accessibility_id) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `accessibility` ADD FOREIGN KEY offer_id_idxfk_10 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
 
+					break;
+
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 19
+				| Linked routes
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 19:
+					$this->api->db->query("UPDATE `activity` SET `poi` = CONCAT(`poi`, ',');");
+					$this->api->db->query("ALTER TABLE `offer` CHANGE `is_hint` `is_hint` TINYINT(1)  NOT NULL  DEFAULT 0;");
+					break;
+
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 20
+				| Accessibilities
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 20:
+
+					// Accessibility dropdown
+					$this->api->db->query("
+						CREATE TABLE `accessibility_dropdown`
+						(
+							`accessibility_dropdown_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+							`icon_url` VARCHAR(1000),
+							PRIMARY KEY (`accessibility_dropdown_id`)
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+					");
+
+					// New i18n text lengths
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `title` `title` VARCHAR(1000);");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `abstract` `abstract` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_medium` `description_medium` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `description_long` `description_long` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `location_details` `location_details` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `route_url` `route_url` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `route_condition` `route_condition` TEXT;");
+					$this->api->db->query("ALTER TABLE `offer_i18n` CHANGE `route_condition_details` `route_condition_details` TEXT;");
+
+					// Fields of activity
+					$this->api->db->query("
+						CREATE TABLE `field_of_activity_link`
+						(
+							`offer_id` BIGINT,
+							`field_of_activity_id` INTEGER,
+							PRIMARY KEY (offer_id,field_of_activity_id)
+						) ENGINE=InnoDB CHARACTER SET=utf8;
+					");
+
+					$this->api->db->query("
+						CREATE TABLE `field_of_activity`
+						(
+							`field_of_activity_id` INTEGER AUTO_INCREMENT UNIQUE ,
+							`sort` INTEGER,
+							PRIMARY KEY (`field_of_activity_id`)
+						) ENGINE=InnoDB CHARACTER SET=utf8;
+					");
+
+					$this->api->db->query("
+						CREATE TABLE `field_of_activity_i18n`
+						(
+							`field_of_activity_id` INTEGER,
+							`language` CHAR(2),
+							`body` VARCHAR(255),
+							PRIMARY KEY (field_of_activity_id,language)
+						) ENGINE=InnoDB CHARACTER SET=utf8; 
+					");
+
+					$this->api->db->query("ALTER TABLE `field_of_activity_i18n` ADD FOREIGN KEY field_of_activity_id_idxfk (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;"); 
+					$this->api->db->query("ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY offer_id_idxfk_42 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY field_of_activity_id_idxfk_1 (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;");
+
+					// New project i18n data
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `project_initial_situation` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `project_goal` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `project_further_information` TEXT;"); 
+					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `project_partner` TEXT;");
+
+					// Project duration
+					$this->api->db->query("ALTER TABLE `project` ADD COLUMN `duration_from_month` TINYINT  AFTER `duration_from`;");
+					$this->api->db->query("ALTER TABLE `project` ADD COLUMN `duration_to_month` TINYINT  AFTER `duration_to`;");
+
+					// Webshop: Article informations
+					$this->api->db->query("ALTER TABLE product_article ADD COLUMN is_food TINYINT;");
+					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_allergens TEXT;");
+					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_nutritional_values TEXT;");
+					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_identity_label TEXT;");
+					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_quantity_indication TEXT;");
+
+					break;
 			}
 
 			// Update db version
-			$this->api->db->query("UPDATE `api` SET `version` = ".$version_to." LIMIT 1;");
-			
+			$this->api->db->query("UPDATE `api` SET `version` = " . $version_to . " LIMIT 1;");
+
 			// Show message
-			$message = '<div>Migration to version '.$version_to.' successfully finished.</div>';
+			$message = 'Migration to version ' . $version_to . ' successfully finished.';
 			echo $message;
 
 			// Log message
 			$this->api->logger->info($message);
-		}
-		else {
+
+		} else {
 
 			// Show message
 			$message = 'No valid version number set.';
@@ -924,9 +1014,9 @@ class ParksMigration {
 
 			// Log error
 			$this->api->logger->error($message);
-
 		}
 	}
 
 
+	
 }

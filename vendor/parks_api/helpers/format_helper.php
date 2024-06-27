@@ -13,21 +13,18 @@
 /**
  * Auto text format
  *
- * @param mixed $string
- * @return void
+ * @param string $string
+ * @return string
  */
-function auto_text_format($string, $first_line_strong = FALSE) {
+function auto_text_format($string, $first_line_strong = false) {
 	$return = '';
 	if ($string != '') {
 
-		// Set html tags
-		$html_tags = array('ul', 'li', 'ol', 'dl', 'dd');
-
 		// Explode lines
-		$is_first_line = TRUE;
+		$is_first_line = true;
 		$new_lines = explode("\n", $string);
 
-		if (!empty($new_lines)) {
+		if (! empty($new_lines)) {
 			foreach ($new_lines as $line) {
 				if ($line != '-') {
 
@@ -40,17 +37,17 @@ function auto_text_format($string, $first_line_strong = FALSE) {
 					}
 
 					// Make first line strong
-					if (($first_line_strong == TRUE) && ($is_first_line == TRUE)) {
+					if (($first_line_strong == true) && ($is_first_line == true)) {
 						$return .= '<strong>';
 					}
 
 					// Return URL
-					if (!empty($line) && (filter_var($line, FILTER_VALIDATE_URL) == TRUE)) {
+					if (! empty($line) && (filter_var($line, FILTER_VALIDATE_URL) == true)) {
 						$return .= '<a href="'.$line.'" class="external_link" target="_blank">'.str_replace(array('http://', 'https://'), '', $line).'</a><br>';
 					}
 
 					// Return email
-					else if (!empty($line) && (filter_var($line, FILTER_VALIDATE_EMAIL) == TRUE)) {
+					else if (! empty($line) && (filter_var($line, FILTER_VALIDATE_EMAIL) == true)) {
 						$return .= safe_mailto($line, $line, array('class' => 'email_link')).'<br>';
 					}
 
@@ -60,9 +57,9 @@ function auto_text_format($string, $first_line_strong = FALSE) {
 					}
 
 					// Close strong first line
-					if (($first_line_strong == TRUE) && ($is_first_line == TRUE)) {
+					if (($first_line_strong == true) && ($is_first_line == true)) {
 						$return .= '</strong>';
-						$first_line_strong = FALSE;
+						$first_line_strong = false;
 					}
 				}
 			}
@@ -91,7 +88,7 @@ function auto_text_format($string, $first_line_strong = FALSE) {
  * @param	bool	whether to create pop-up links
  * @return	string
  */
-function auto_link($str, $type = 'both', $popup = FALSE) {
+function auto_link($str, $type = 'both', $popup = false) {
 	// Find and replace any URLs.
 	if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[a-z0-9]+(-+[a-z0-9]+)*(\.[a-z0-9]+(-+[a-z0-9]+)*)+(/([^\s()<>;]+\w)?/?)?#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
 		// Set our target HTML if using popup links.
@@ -114,7 +111,7 @@ function auto_link($str, $type = 'both', $popup = FALSE) {
 	// Find and replace any emails.
 	if ($type !== 'url' && preg_match_all('#([\w\.\-\+]+@[a-z0-9\-]+\.[a-z0-9\-\.]+[^[:punct:]\s])#i', $str, $matches, PREG_OFFSET_CAPTURE)) {
 		foreach (array_reverse($matches[0]) as $match) {
-			if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== FALSE) {
+			if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== false) {
 				$str = substr_replace($str, safe_mailto($match[0]), $match[1], strlen($match[0]));
 			}
 		}
@@ -130,7 +127,7 @@ function auto_link($str, $type = 'both', $popup = FALSE) {
  *
  * @access public
  * @param mixed $text
- * @return void
+ * @return string
  */
 function nl2p($text) {
 	return '<p>'.str_replace(array("\r\n", "\r", "\n"), '</p><p>', $text).'</p>';
@@ -184,7 +181,7 @@ function nl2p($text) {
 
 	$x[] = '>';
 
-	$temp = array();
+	$temp = [];
 	for ($i = 0; $i < strlen($title); $i++) {
 		$ordinal = ord($title[$i]);
 
@@ -201,7 +198,7 @@ function nl2p($text) {
 				$number = ($count == 3) ? (($temp['0'] % 16) * 4096) + (($temp['1'] % 64) * 64) + ($temp['2'] % 64) : (($temp['0'] % 32) * 64) + ($temp['1'] % 64);
 				$x[] = "|".$number;
 				$count = 1;
-				$temp = array();
+				$temp = [];
 			}
 		}
 	}

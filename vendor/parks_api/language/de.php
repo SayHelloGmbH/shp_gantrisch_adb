@@ -9,7 +9,7 @@
 |
 */
 
-$lang = array();
+$lang = [];
 
 
 $lang['general_from_2'] = "Ab";
@@ -182,6 +182,10 @@ $lang['offer_included_products'] = 'Enthaltene Produkte';
 $lang['offer_product_honoured_by'] = 'Das Produkt ist ausgezeichnet durch';
 $lang['offer_product_shop_now'] = 'Jetzt online bestellen';
 $lang['offer_product_article_ingredients'] = 'Zutaten';
+$lang['offer_product_article_allergens'] = "Allergene";
+$lang['offer_product_article_nutritional_values'] = "Nährwerte";
+$lang['offer_product_article_identity_label'] = "Identitätskennzeichen";
+$lang['offer_product_article_quantity_indication'] = "Mengenangabe";
 
 
 /*
@@ -209,6 +213,7 @@ $lang['offer_target_group'] = 'Geeignet für';
 $lang['offer_target_group_general_info'] = "Das Angebot ist geeignet f&uuml;r";
 $lang['offer_target_group_specific_info'] = "Das Angebot wurde speziell entwickelt f&uuml;r";
 $lang['offer_accessibility'] = 'Barrierefreiheit';
+$lang['offer_accessibility_available'] = 'OK:GO Zugänglichkeitsinformationen vorhanden';
 
 
 /*
@@ -317,6 +322,9 @@ $lang['offer_project_status'] = "Projektstand";
 $lang['offer_project_responsibility'] = "Verantwortung Projekt";
 $lang['offer_project_links'] = "Verknüpfungen";
 $lang['offer_project_poi'] = "Verknüpfungen mit Projekten und Angeboten";
+$lang['offer_project_initial_situation'] = 'Ausgangslage';
+$lang['offer_project_goal'] = 'Ziel';
+$lang['offer_project_further_information'] = 'Weitere Informationen';
 
 
 /*

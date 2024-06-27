@@ -14,12 +14,12 @@
  * Convert latitude and longitued values to CH1903 format
  *
  * @access public
- * @param mixed $latitude
- * @param mixed $longitude
- * @return void
+ * @param string $latitude
+ * @param string $longitude
+ * @return array
  */
 function convertLatLonToCH1903($latitude, $longitude) {
-	$return = array();
+	$return = [];
 
 	$return['x'] = intval(WGStoCHx($latitude, $longitude) + 1000000);
 	$return['y'] = intval(WGStoCHy($latitude, $longitude) + 2000000);
@@ -32,9 +32,9 @@ function convertLatLonToCH1903($latitude, $longitude) {
  * Convert WGS lat/long (° dec) to CH y
  *
  * @access public
- * @param mixed $lat
- * @param mixed $long
- * @return void
+ * @param float $lat
+ * @param float $long
+ * @return float
  */
 function WGStoCHy($lat, $long) {
 
@@ -65,9 +65,9 @@ function WGStoCHy($lat, $long) {
  * Convert WGS lat/long (° dec) to CH x
  *
  * @access public
- * @param mixed $lat
- * @param mixed $long
- * @return void
+ * @param float $lat
+ * @param float $long
+ * @return float
  */
 function WGStoCHx($lat, $long) {
 
@@ -103,7 +103,7 @@ function WGStoCHx($lat, $long) {
  * @access public
  * @param mixed $y
  * @param mixed $x
- * @return void
+ * @return string
  */
 function CHtoWGSlat($y, $x) {
 
@@ -134,7 +134,7 @@ function CHtoWGSlat($y, $x) {
  * @access public
  * @param mixed $y
  * @param mixed $x
- * @return void
+ * @return string
  */
 function CHtoWGSlong($y, $x) {
 
@@ -163,7 +163,7 @@ function CHtoWGSlong($y, $x) {
  *
  * @access public
  * @param mixed $angle
- * @return void
+ * @return float
  */
 function SEXtoDEC($angle) {
 
@@ -182,8 +182,8 @@ function SEXtoDEC($angle) {
  * Convert DEC angle to SEX DMS
  *
  * @access public
- * @param mixed $angle
- * @return void
+ * @param float $angle
+ * @return float
  */
 function DECtoSEX($angle) {
 
@@ -202,8 +202,8 @@ function DECtoSEX($angle) {
  * Convert Degrees angle to seconds
  *
  * @access public
- * @param mixed $angle
- * @return void
+ * @param float $angle
+ * @return float
  */
 function DEGtoSEC($angle) {
 
