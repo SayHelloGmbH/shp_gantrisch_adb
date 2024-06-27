@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /path/to/api/
+cd "$(dirname "$0")"
 php cron.php
