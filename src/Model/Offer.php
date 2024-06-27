@@ -16,7 +16,6 @@ class Offer
 {
 	private $locale = 'de_CH';
 	private $language = 'de';
-	private $single_page = false;
 	private $offers = [];
 	private $requested_id = null;
 	private $date_format = 'Y/m/d';
@@ -266,13 +265,6 @@ class Offer
 			}
 		}
 
-		// Don't know what this is for… 1.12.2022
-		// foreach ($categories as $key => $category) {
-		// 	if (empty($category['categories'])) {
-		// 		unset($categories[$key]);
-		// 	}
-		// }
-
 		return $categories;
 	}
 
@@ -326,21 +318,18 @@ class Offer
 		// Default format is raw, which will return the
 		// unmanipulated value from the database table
 		switch ($format) {
-			case 'legible': {
-					$return['date_from'] = wp_date($this->date_format, strtotime($termine[0]['date_from'] ?? 0));
-					$return['date_to'] = wp_date($this->date_format, strtotime($termine[0]['date_to'] ?? 0));
-					break;
-				}
-			case 'integer': {
-					$return['date_from'] = strtotime($termine[0]['date_from'] ?? 0);
-					$return['date_to'] = strtotime($termine[0]['date_to'] ?? 0);
-					break;
-				}
-			case 'raw': {
-					$return['date_from'] = $termine[0]['date_from'] ?? 0;
-					$return['date_to'] = $termine[0]['date_to'] ?? 0;
-					break;
-				}
+			case 'legible':
+				$return['date_from'] = wp_date($this->date_format, strtotime($termine[0]['date_from'] ?? 0));
+				$return['date_to'] = wp_date($this->date_format, strtotime($termine[0]['date_to'] ?? 0));
+				break;
+			case 'integer':
+				$return['date_from'] = strtotime($termine[0]['date_from'] ?? 0);
+				$return['date_to'] = strtotime($termine[0]['date_to'] ?? 0);
+				break;
+			case 'raw':
+				$return['date_from'] = $termine[0]['date_from'] ?? 0;
+				$return['date_to'] = $termine[0]['date_to'] ?? 0;
+				break;
 		}
 
 		return $return;
@@ -459,7 +448,6 @@ class Offer
 		$year = wp_date('Y');
 
 		foreach ($season_months_array as $month_number) {
-
 			if ($month_number < 10) {
 				$month_number = "0{$month_number}";
 			}
@@ -600,9 +588,9 @@ class Offer
 			$api = $this->api_controller->getApi();
 
 			if (!empty($keywords)) {
-				$offers = $api->_get_offers(NULL, $category_ids, NULL, NULL, ['keywords' => implode(' ', $keywords)]);
+				$offers = $api->_get_offers(null, $category_ids, null, null, ['keywords' => implode(' ', $keywords)]);
 			} else {
-				$offers = $api->_get_offers(NULL, $category_ids);
+				$offers = $api->_get_offers(null, $category_ids);
 			}
 
 			if (is_array($offers) && is_array($offers['data'] ?? false) && !empty($offers['data'])) {
@@ -633,7 +621,6 @@ class Offer
 		}
 
 		if (!$custom_sort) {
-
 			// Trim down the array if necessary
 			if ($number_required > 0) {
 				if (count($offers) > $number_required) {
@@ -689,7 +676,6 @@ class Offer
 		$the_rest = [];
 		$the_rest_iterator = 0;
 		foreach ($offers as $offer) {
-
 			// Exclude entries from $exclude_from_rest
 			if (in_array($offer->offer_id, $exclude_from_rest)) {
 				continue;
@@ -793,13 +779,13 @@ class Offer
 			return '';
 		}
 
-		$date_from = parks_mysql2date($offer->date_from, TRUE);
-		$date_to = parks_mysql2date($offer->date_to, TRUE);
+		$date_from = parks_mysql2date($offer->date_from, true);
+		$date_to = parks_mysql2date($offer->date_to, true);
 
 		return parks_show_date([
 			'date_from' => parks_mysql2form($date_from),
 			'date_to' => parks_mysql2form($date_to)
-		]);
+		], $this->api_controller->getApi()->lang);
 	}
 
 	/**
@@ -826,8 +812,8 @@ class Offer
 
 		foreach ($offer->dates as $termin) {
 			// Don't use wp_date here: we need the specific date and time, not the timezone-relevant date and time
-			$date_from = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_from)), TRUE);
-			$date_to = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_to)), TRUE);
+			$date_from = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_from)), true);
+			$date_to = parks_mysql2date(date('Y-m-d H:i:s', strtotime($termin->date_to)), true);
 
 			switch ($format) {
 				case 'YmdHis':
@@ -840,7 +826,7 @@ class Offer
 					$return[] = parks_show_date([
 						'date_from' => parks_mysql2form($date_from),
 						'date_to' => parks_mysql2form($date_to)
-					]);
+					], $this->api_controller->getApi()->lang);
 					break;
 			}
 		}
@@ -996,7 +982,6 @@ class Offer
 		$the_rest = [];
 		$the_rest_iterator = 0;
 		foreach ($nodes as $node) {
-
 			// Exclude entries from $exclude_from_rest
 			$node_id = str_replace('offer_', '', $node->getAttribute('id'));
 			if (in_array($node_id, $exclude_from_rest)) {
