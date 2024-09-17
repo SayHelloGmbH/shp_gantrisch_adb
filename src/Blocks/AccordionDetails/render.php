@@ -23,8 +23,28 @@ if ($gutenberg_package->isContextEdit()) {
 $offer_model = new OfferModel();
 
 $offer = $offer_model->getOffer();
+$leistungen = $offer_model->getBenefits();
+$price = $offer_model->getPrice();
+$place = $offer_model->getPlace();
+$opening = $offer_model->getOpeningTimes();
+$months = $offer_model->getSeason();
+$offer_infrastructure = $offer_model->getInfrastructure();
+$additional_information = $offer->additional_informations ?? '';
+$target_audience = $offer_model->getTarget() ?? '';
 
-if (!$offer || empty($offer->details || '')) {
+if (!$offer) {
+	return;
+}
+
+if (
+	empty($offer) &&
+	empty($leistungen) &&
+	empty($price) &&
+	empty($place) &&
+	empty($opening) &&
+	empty($months) &&
+	empty($offer_infrastructure) && empty($additional_information) && empty($target_audience)
+) {
 	return;
 }
 
@@ -54,8 +74,6 @@ if (!empty($offer->details)) {
 }
 
 // LEISTUNGEN
-$leistungen = $offer_model->getBenefits();
-
 if (!empty($leistungen)) {
 	ob_start();
 ?>
@@ -74,8 +92,6 @@ if (!empty($leistungen)) {
 
 
 // PRICE
-$price = $offer_model->getPrice();
-
 if (!empty($price)) {
 	ob_start();
 ?>
@@ -93,8 +109,6 @@ if (!empty($price)) {
 }
 
 // PLACE
-$place = $offer_model->getPlace();
-
 if (!empty($place)) {
 	ob_start();
 ?>
@@ -112,8 +126,6 @@ if (!empty($place)) {
 }
 
 // ÖFFNUNGSZEITEN
-$opening = $offer_model->getOpeningTimes();
-
 if (!empty($opening)) {
 	ob_start();
 ?>
@@ -132,8 +144,6 @@ if (!empty($opening)) {
 
 
 // SEASON
-$months = $offer_model->getSeason();
-
 if (!empty($months)) {
 	ob_start();
 ?>
@@ -153,8 +163,6 @@ if (!empty($months)) {
 
 
 // INFRASTRUCTURE
-$offer_infrastructure = $offer_model->getInfrastructure();
-
 if (!empty($offer_infrastructure)) {
 	ob_start();
 ?>
@@ -173,8 +181,6 @@ if (!empty($offer_infrastructure)) {
 
 
 // ADDITIONAL INFORMATION
-$additional_information = $offer->additional_informations ?? '';
-
 if (!empty($additional_information)) {
 	ob_start();
 ?>
@@ -193,8 +199,6 @@ if (!empty($additional_information)) {
 
 
 // SUITABLE FOR / TARGET AUDIENCE
-$target_audience = $offer_model->getTarget() ?? '';
-
 if (!empty($target_audience)) {
 	ob_start();
 ?>
