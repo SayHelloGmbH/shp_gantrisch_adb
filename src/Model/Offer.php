@@ -115,6 +115,7 @@ class Offer
 	 */
 	public function getLanguage()
 	{
+		$this->setLanguage();
 		return $this->language;
 	}
 
