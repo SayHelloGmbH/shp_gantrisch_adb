@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Controller;
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 use ParksAPI;
 
 /**
@@ -25,7 +23,7 @@ class API
 		}
 
 		if (class_exists('ParksAPI')) {
-			$offer_model = new OfferModel();
+			$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 			$language = $offer_model->getLanguage();
 			$this->api = new ParksAPI($language);
 		}

@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Model;
 
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 class Category
 {
@@ -18,7 +17,7 @@ class Category
 
 	public function run()
 	{
-		$offer_model = new OfferModel();
+		$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 		$this->tables = $offer_model->getTables();
 		$this->language = $offer_model->getLanguage();
 	}
