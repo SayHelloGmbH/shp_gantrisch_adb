@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionRoute;
 
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 
 $block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;

@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionDetails;
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 $block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
 $block_controller->extend($block);
 
