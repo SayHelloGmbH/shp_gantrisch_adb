@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Blocks\AccordionRoute;
 
 use SayHello\ShpGantrischAdb\Package\Helpers as HelpersPackage;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 
 $block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
@@ -31,7 +30,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = new OfferModel();
+$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 $offer = $offer_model->getOffer();
 
 if (!$offer) {

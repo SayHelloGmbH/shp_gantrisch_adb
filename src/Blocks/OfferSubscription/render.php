@@ -1,8 +1,6 @@
 <?php
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
-$offer_model = new OfferModel();
+$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 $data = $offer_model->getSubscription();
 
 if (!$data) {

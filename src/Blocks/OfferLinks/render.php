@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Blocks\OfferLinks;
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 $gutenberg_package = shp_gantrisch_adb_get_instance()->Package_Gutenberg;
 
 if ($gutenberg_package->isContextEdit()) {
@@ -17,7 +15,7 @@ if ($gutenberg_package->isContextEdit()) {
 	return;
 }
 
-$offer_model = new OfferModel();
+$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 $offer = $offer_model->getOffer();
 
 if (!$offer || empty($offer->hyperlinks ?? [])) {

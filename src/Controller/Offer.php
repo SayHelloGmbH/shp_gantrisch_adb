@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Controller;
 
 use SayHello\ShpGantrischAdb\Package\Rewrites as RewritesPackage;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 /**
  * Handles general request controlling for
@@ -20,7 +19,7 @@ class Offer
 
 	public function __construct()
 	{
-		$this->offer_model = new OfferModel();
+		$this->offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 	}
 
 	public function run()

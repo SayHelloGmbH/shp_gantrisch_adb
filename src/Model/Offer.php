@@ -44,7 +44,10 @@ class Offer
 	 * @var array
 	 */
 	private $supported_languages = [
-		'de', 'fr', 'it', 'en'
+		'de',
+		'fr',
+		'it',
+		'en'
 	];
 
 	private $sbb_timetable_urls = [
@@ -79,22 +82,30 @@ class Offer
 	public function __construct()
 	{
 		$this->api_controller = new APIController();
+		$this->setConfig();
 	}
 
 	public function run()
 	{
-		add_action('acf/init', [$this, 'setLanguage'], 1);
+		add_action('wp', [$this, 'setLanguage']);
+	}
+
+	public function setConfig()
+	{
+		$this->date_format = get_option('date_format');
+		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
 	}
 
 	public function setLanguage()
 	{
-		$this->date_format = get_option('date_format');
 		$this->locale = get_locale();
-		$this->debug = defined('WP_DEBUG') && WP_DEBUG;
 
 		$lang_sub = substr($this->locale, 0, 2);
+
 		if (in_array($lang_sub, $this->supported_languages)) {
 			$this->language = $lang_sub;
+		} else {
+			$this->language = 'de';
 		}
 	}
 
@@ -115,7 +126,6 @@ class Offer
 	 */
 	public function getLanguage()
 	{
-		$this->setLanguage();
 		return $this->language;
 	}
 

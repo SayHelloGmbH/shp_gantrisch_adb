@@ -100,8 +100,6 @@ class Plugin
 		register_activation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'activation']);
 		register_deactivation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'deactivation']);
 
-		// Load individual pattern classes which contain
-		// grouped functionality. E.g. everything to do with a post type.
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[
