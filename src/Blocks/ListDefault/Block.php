@@ -3,7 +3,6 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 
 use DOMDocument;
 use DOMNodeList;
@@ -226,7 +225,7 @@ class Block
 		}
 
 		$controller = new OfferController();
-		$model = new OfferModel();
+		$model = shp_gantrisch_adb_get_instance()->Model_Offer;
 
 		// get default css class name from $block['blockName']
 		$classNameBase = wp_get_block_default_classname($block['blockName']);
@@ -365,7 +364,7 @@ class Block
 
 		$entries_parent = $entries->item(0)->parentNode;
 
-		$model = new OfferModel();
+		$model = shp_gantrisch_adb_get_instance()->Model_Offer;
 		$entries_sorted = $model->sortOfferDomNodes($entries);
 
 		// Remove existing entries

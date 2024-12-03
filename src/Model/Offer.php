@@ -44,7 +44,10 @@ class Offer
 	 * @var array
 	 */
 	private $supported_languages = [
-		'de', 'fr', 'it', 'en'
+		'de',
+		'fr',
+		'it',
+		'en'
 	];
 
 	private $sbb_timetable_urls = [

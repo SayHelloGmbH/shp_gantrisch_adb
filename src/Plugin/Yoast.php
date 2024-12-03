@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Plugin;
 
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
-
 class Yoast
 {
 
@@ -11,8 +9,9 @@ class Yoast
 
 	public function __construct()
 	{
-		$this->offer_model = new OfferModel();
+		$this->offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 	}
+
 	public function run()
 	{
 		add_action('wpseo_title', [$this, 'seoTitle']);

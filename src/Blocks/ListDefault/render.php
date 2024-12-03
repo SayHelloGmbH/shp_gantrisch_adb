@@ -13,7 +13,6 @@
 namespace SayHello\ShpGantrischAdb\Blocks\ListDefault;
 
 use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
-use SayHello\ShpGantrischAdb\Model\Offer as OfferModel;
 use SayHello\ShpGantrischAdb\Controller\API as APIController;
 
 $block_controller = shp_gantrisch_adb_get_instance()->Controller_Block;
@@ -33,7 +32,7 @@ $filters = [];
 $keywords = $block['data']['adb_keywords'] ?? '';
 
 if (!empty($keywords)) {
-	$offer_model = new OfferModel();
+	$offer_model = shp_gantrisch_adb_get_instance()->Model_Offer;
 	$keywords = $offer_model->prepareKeywords($keywords);
 	$filters['keywords'] = $keywords;
 }
