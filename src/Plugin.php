@@ -77,7 +77,7 @@ class Plugin
 				include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			}
 
-			$data = get_plugin_data($file);
+			$data = get_plugin_data($file, false, false);
 
 			self::$instance->name = $data['Name'];
 			self::$instance->prefix = 'shp_gantrisch_adb';
