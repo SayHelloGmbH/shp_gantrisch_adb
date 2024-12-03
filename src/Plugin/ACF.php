@@ -2,8 +2,6 @@
 
 namespace SayHello\ShpGantrischAdb\Plugin;
 
-use SayHello\ShpGantrischAdb\Model\Category as CategoryModel;
-
 class ACF
 {
 	public function run()
@@ -143,7 +141,7 @@ class ACF
 
 	public function adbCategories($field)
 	{
-		$category_model = new CategoryModel();
+		$category_model = shp_gantrisch_adb_get_instance()->Model_Category;
 		$choices = $category_model->getForSelect();
 
 		if (is_array($choices)) {
