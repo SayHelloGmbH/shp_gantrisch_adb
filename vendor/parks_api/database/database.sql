@@ -23,11 +23,11 @@
 DROP TABLE IF EXISTS `accessibility`;
 
 CREATE TABLE `accessibility` (
-  `accessibility_id` bigint(20) unsigned NOT NULL,
-  `offer_id` bigint(20) NOT NULL,
-  `ginto_id` varchar(255) DEFAULT NULL,
-  `ginto_icon` varchar(1000) DEFAULT NULL,
-  `ginto_link` varchar(1000) DEFAULT NULL,
+  `accessibility_id` BIGINT unsigned NOT NULL,
+  `offer_id` BIGINT NOT NULL,
+  `ginto_id` VARCHAR(255) DEFAULT NULL,
+  `ginto_icon` VARCHAR(1000) DEFAULT NULL,
+  `ginto_link` VARCHAR(1000) DEFAULT NULL,
   PRIMARY KEY (`accessibility_id`,`offer_id`),
   KEY `offer_id_idxfk_10` (`offer_id`),
   CONSTRAINT `accessibility_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
@@ -41,13 +41,13 @@ CREATE TABLE `accessibility` (
 DROP TABLE IF EXISTS `accessibility_rating`;
 
 CREATE TABLE `accessibility_rating` (
-  `accessibility_rating_id` bigint(20) NOT NULL,
-  `accessibility_id` bigint(20) unsigned NOT NULL,
-  `description_de` varchar(500) DEFAULT NULL,
-  `description_fr` varchar(500) DEFAULT NULL,
+  `accessibility_rating_id` BIGINT NOT NULL,
+  `accessibility_id` BIGINT unsigned NOT NULL,
+  `description_de` VARCHAR(500) DEFAULT NULL,
+  `description_fr` VARCHAR(500) DEFAULT NULL,
   `description_it` varbinary(500) DEFAULT NULL,
-  `description_en` varchar(500) DEFAULT NULL,
-  `icon_url` varchar(1000) DEFAULT NULL,
+  `description_en` VARCHAR(500) DEFAULT NULL,
+  `icon_url` VARCHAR(1000) DEFAULT NULL,
   PRIMARY KEY (`accessibility_rating_id`),
   KEY `accessibility_id_idxfk` (`accessibility_id`),
   CONSTRAINT `accessibility_rating_ibfk_1` FOREIGN KEY (`accessibility_id`) REFERENCES `accessibility` (`accessibility_id`) ON DELETE CASCADE
@@ -75,9 +75,9 @@ CREATE TABLE `accessibility_dropdown`
 DROP TABLE IF EXISTS `accommodation`;
 
 CREATE TABLE `accommodation` (
-  `offer_id` bigint(20) DEFAULT NULL,
-  `contact` text,
-  `is_park_partner` tinyint(4) DEFAULT '0',
+  `offer_id` BIGINT DEFAULT NULL,
+  `contact` TEXT,
+  `is_park_partner` TINYINT DEFAULT '0',
   KEY `offer_id_idxfk` (`offer_id`),
   CONSTRAINT `accommodation_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -90,28 +90,28 @@ CREATE TABLE `accommodation` (
 DROP TABLE IF EXISTS `activity`;
 
 CREATE TABLE `activity` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `start_place_info` text,
-  `start_place_altitude` int(11) DEFAULT NULL,
-  `goal_place_info` text,
-  `goal_place_altitude` int(11) DEFAULT NULL,
-  `route_length` decimal(7,2) DEFAULT NULL,
-  `untarred_route_length` decimal(7,2) DEFAULT NULL,
-  `public_transport_start` varchar(255) DEFAULT NULL,
-  `public_transport_stop` varchar(255) DEFAULT NULL,
-  `altitude_differential` int(11) DEFAULT NULL,
-  `altitude_ascent` int(11) DEFAULT NULL,
-  `altitude_descent` int(11) DEFAULT NULL,
-  `time_required` varchar(255) DEFAULT NULL,
-  `time_required_minutes` int(11) DEFAULT NULL,
-  `level_technics` tinyint(1) DEFAULT NULL,
-  `level_condition` tinyint(1) DEFAULT NULL,
-  `has_playground` tinyint(1) DEFAULT NULL,
-  `has_picnic_place` tinyint(1) DEFAULT NULL,
-  `has_fireplace` tinyint(1) DEFAULT NULL,
-  `has_washrooms` tinyint(1) DEFAULT NULL,
-  `poi` text,
-  `season_months` varchar(50) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `start_place_info` TEXT,
+  `start_place_altitude` INTEGER DEFAULT NULL,
+  `goal_place_info` TEXT,
+  `goal_place_altitude` INTEGER DEFAULT NULL,
+  `route_length` DECIMAL(7,2) DEFAULT NULL,
+  `untarred_route_length` DECIMAL(7,2) DEFAULT NULL,
+  `public_transport_start` VARCHAR(255) DEFAULT NULL,
+  `public_transport_stop` VARCHAR(255) DEFAULT NULL,
+  `altitude_differential` INTEGER DEFAULT NULL,
+  `altitude_ascent` INTEGER DEFAULT NULL,
+  `altitude_descent` INTEGER DEFAULT NULL,
+  `time_required` VARCHAR(255) DEFAULT NULL,
+  `time_required_minutes` INTEGER DEFAULT NULL,
+  `level_technics` TINYINT DEFAULT NULL,
+  `level_condition` TINYINT DEFAULT NULL,
+  `has_playground` TINYINT DEFAULT NULL,
+  `has_picnic_place` TINYINT DEFAULT NULL,
+  `has_fireplace` TINYINT DEFAULT NULL,
+  `has_washrooms` TINYINT DEFAULT NULL,
+  `poi` TEXT,
+  `season_months` VARCHAR(50) DEFAULT NULL,
   `route_condition_id` TINYINT,
   `route_condition_color` VARCHAR(255),
   PRIMARY KEY (`offer_id`),
@@ -126,9 +126,9 @@ CREATE TABLE `activity` (
 DROP TABLE IF EXISTS `api`;
 
 CREATE TABLE `api` (
-  `initialized` tinyint(1) DEFAULT '0',
-  `version` varchar(20) DEFAULT '1.0',
-  `last_import` int(11) DEFAULT NULL
+  `initialized` TINYINT DEFAULT '0',
+  `version` VARCHAR(20) DEFAULT '1.0',
+  `last_import` INTEGER DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `api` WRITE;
@@ -136,7 +136,7 @@ LOCK TABLES `api` WRITE;
 
 INSERT INTO `api` (`initialized`, `version`, `last_import`)
 VALUES
-	(1,'20',NULL);
+	(1,'21',NULL);
 
 /*!40000 ALTER TABLE `api` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -148,14 +148,14 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `booking`;
 
 CREATE TABLE `booking` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `is_park_partner` tinyint(1) DEFAULT NULL,
-  `min_group_subscriber` int(11) DEFAULT NULL,
-  `max_group_subscriber` int(11) DEFAULT NULL,
-  `min_individual_subscriber` int(11) DEFAULT NULL,
-  `max_individual_subscriber` int(11) DEFAULT NULL,
-  `public_transport_stop` varchar(255) DEFAULT NULL,
-  `season_months` varchar(50) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `is_park_partner` TINYINT DEFAULT NULL,
+  `min_group_subscriber` INTEGER DEFAULT NULL,
+  `max_group_subscriber` INTEGER DEFAULT NULL,
+  `min_individual_subscriber` INTEGER DEFAULT NULL,
+  `max_individual_subscriber` INTEGER DEFAULT NULL,
+  `public_transport_stop` VARCHAR(255) DEFAULT NULL,
+  `season_months` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -168,13 +168,13 @@ CREATE TABLE `booking` (
 DROP TABLE IF EXISTS `category`;
 
 CREATE TABLE `category` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) DEFAULT NULL,
-  `stnet_id` char(1) DEFAULT NULL,
-  `alpstein_id` varchar(255) DEFAULT NULL,
-  `contact_visible_for_alpstein` tinyint(4) DEFAULT '1',
-  `marker` varchar(255) DEFAULT NULL,
-  `sort` int(11) NOT NULL,
+  `category_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `parent_id` INTEGER DEFAULT NULL,
+  `stnet_id` VARCHAR(10) DEFAULT NULL,
+  `alpstein_id` VARCHAR(255) DEFAULT NULL,
+  `contact_visible_for_alpstein` TINYINT DEFAULT '1',
+  `marker` VARCHAR(255) DEFAULT NULL,
+  `sort` INTEGER NOT NULL,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_id` (`category_id`),
   UNIQUE KEY `sort` (`sort`)
@@ -188,9 +188,9 @@ CREATE TABLE `category` (
 DROP TABLE IF EXISTS `category_i18n`;
 
 CREATE TABLE `category_i18n` (
-  `category_id` int(11) NOT NULL DEFAULT '0',
+  `category_id` INTEGER NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `body` varchar(255) DEFAULT NULL,
+  `body` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`category_id`,`language`),
   CONSTRAINT `category_i18n_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -203,10 +203,12 @@ CREATE TABLE `category_i18n` (
 DROP TABLE IF EXISTS `category_link`;
 
 CREATE TABLE `category_link` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `category_id` int(11) NOT NULL DEFAULT '0',
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `category_id` INTEGER NOT NULL DEFAULT '0',
   PRIMARY KEY (`offer_id`,`category_id`),
-  KEY `category_id_idxfk_1` (`category_id`)
+  KEY `category_id_idxfk_1` (`category_id`),
+  CONSTRAINT `category_link_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE,
+  CONSTRAINT `category_link_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -217,10 +219,10 @@ CREATE TABLE `category_link` (
 DROP TABLE IF EXISTS `document`;
 
 CREATE TABLE `document` (
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
   `language` char(2) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `title` VARCHAR(255) DEFAULT NULL,
+  `url` VARCHAR(255) DEFAULT NULL,
   KEY `offer_id_idxfk_4` (`offer_id`),
   CONSTRAINT `document_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -233,10 +235,10 @@ CREATE TABLE `document` (
 DROP TABLE IF EXISTS `document_intern`;
 
 CREATE TABLE `document_intern` (
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
   `language` char(2) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `title` VARCHAR(255) DEFAULT NULL,
+  `url` VARCHAR(255) DEFAULT NULL,
   KEY `offer_id_idxfk_37` (`offer_id`),
   CONSTRAINT `document_intern_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -249,11 +251,11 @@ CREATE TABLE `document_intern` (
 DROP TABLE IF EXISTS `event`;
 
 CREATE TABLE `event` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `is_park_event` tinyint(1) DEFAULT NULL,
-  `is_park_partner_event` tinyint(1) DEFAULT NULL,
-  `public_transport_stop` varchar(255) DEFAULT NULL,
-  `kind_of_event` varchar(255) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `is_park_event` TINYINT DEFAULT NULL,
+  `is_park_partner_event` TINYINT DEFAULT NULL,
+  `public_transport_stop` VARCHAR(255) DEFAULT NULL,
+  `kind_of_event` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `event_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -286,7 +288,6 @@ CREATE TABLE `field_of_activity_i18n`
 
 ALTER TABLE `field_of_activity_i18n` ADD FOREIGN KEY field_of_activity_id_idxfk (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;
 ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY offer_id_idxfk_42 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;
-ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY field_of_activity_id_idxfk_1 (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;
 
 
 
@@ -297,10 +298,10 @@ ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY field_of_activity_id_idxfk_
 DROP TABLE IF EXISTS `hyperlink`;
 
 CREATE TABLE `hyperlink` (
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
   `language` char(2) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `title` VARCHAR(255) DEFAULT NULL,
+  `url` VARCHAR(255) DEFAULT NULL,
   KEY `offer_id_idxfk_9` (`offer_id`),
   CONSTRAINT `hyperlink_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -313,10 +314,10 @@ CREATE TABLE `hyperlink` (
 DROP TABLE IF EXISTS `hyperlink_intern`;
 
 CREATE TABLE `hyperlink_intern` (
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
   `language` char(2) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `title` VARCHAR(255) DEFAULT NULL,
+  `url` VARCHAR(255) DEFAULT NULL,
   KEY `offer_id_idxfk_36` (`offer_id`),
   CONSTRAINT `hyperlink_intern_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -329,12 +330,12 @@ CREATE TABLE `hyperlink_intern` (
 DROP TABLE IF EXISTS `image`;
 
 CREATE TABLE `image` (
-  `offer_id` bigint(20) DEFAULT NULL,
-  `small` varchar(255) DEFAULT NULL,
-  `medium` varchar(255) DEFAULT NULL,
-  `large` varchar(255) DEFAULT NULL,
-  `original` varchar(255) DEFAULT NULL,
-  `copyright` varchar(255) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
+  `small` VARCHAR(255) DEFAULT NULL,
+  `medium` VARCHAR(255) DEFAULT NULL,
+  `large` VARCHAR(255) DEFAULT NULL,
+  `original` VARCHAR(255) DEFAULT NULL,
+  `copyright` VARCHAR(255) DEFAULT NULL,
   KEY `offer_id_idxfk_11` (`offer_id`),
   CONSTRAINT `image_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -347,15 +348,15 @@ CREATE TABLE `image` (
 DROP TABLE IF EXISTS `map_layer`;
 
 CREATE TABLE `map_layer` (
-  `map_layer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `url` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `languages` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `layer_position` tinyint(4) DEFAULT NULL,
-  `visible_by_default` tinyint(4) DEFAULT NULL,
-  `popup_title` varchar(255) DEFAULT NULL,
-  `popup_logo` varchar(255) DEFAULT NULL,
-  `popup_logo_width` int(11) DEFAULT NULL,
-  `popup_logo_height` int(11) DEFAULT NULL,
+  `map_layer_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `url` VARCHAR(255) CHARACTER SET latin1 DEFAULT NULL,
+  `languages` VARCHAR(255) CHARACTER SET latin1 DEFAULT NULL,
+  `layer_position` TINYINT DEFAULT NULL,
+  `visible_by_default` TINYINT DEFAULT NULL,
+  `popup_title` VARCHAR(255) DEFAULT NULL,
+  `popup_logo` VARCHAR(255) DEFAULT NULL,
+  `popup_logo_width` INTEGER DEFAULT NULL,
+  `popup_logo_height` INTEGER DEFAULT NULL,
   PRIMARY KEY (`map_layer_id`),
   UNIQUE KEY `map_layer_id` (`map_layer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -368,9 +369,9 @@ CREATE TABLE `map_layer` (
 DROP TABLE IF EXISTS `map_layer_i18n`;
 
 CREATE TABLE `map_layer_i18n` (
-  `map_layer_id` int(11) NOT NULL DEFAULT '0',
+  `map_layer_id` INTEGER NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `popup_content` text,
+  `popup_content` TEXT,
   PRIMARY KEY (`map_layer_id`,`language`),
   CONSTRAINT `map_layer_i18n_ibfk_1` FOREIGN KEY (`map_layer_id`) REFERENCES `map_layer` (`map_layer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -383,21 +384,21 @@ CREATE TABLE `map_layer_i18n` (
 DROP TABLE IF EXISTS `offer`;
 
 CREATE TABLE `offer` (
-  `offer_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `park_id` int(11) NOT NULL,
+  `offer_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `park_id` INTEGER NOT NULL,
   `park` text NOT NULL,
-  `is_hint` tinyint(1) DEFAULT NULL,
-  `institution` text,
-  `institution_location` varchar(500) DEFAULT NULL,
-  `institution_is_park_partner` tinyint(1) DEFAULT NULL,
-  `contact` text,
-  `contact_is_park_partner` tinyint(1) DEFAULT NULL,
-  `barrier_free` tinyint(1) DEFAULT NULL,
-  `learning_opportunity` tinyint(1) DEFAULT NULL,
-  `child_friendly` tinyint(1) DEFAULT NULL,
+  `is_hint` TINYINT DEFAULT NULL,
+  `institution` TEXT,
+  `institution_location` VARCHAR(500) DEFAULT NULL,
+  `institution_is_park_partner` TINYINT DEFAULT NULL,
+  `contact` TEXT,
+  `contact_is_park_partner` TINYINT DEFAULT NULL,
+  `barrier_free` TINYINT DEFAULT NULL,
+  `learning_opportunity` TINYINT DEFAULT NULL,
+  `child_friendly` TINYINT DEFAULT NULL,
   `latitude` float(10,6) DEFAULT NULL,
   `longitude` float(10,6) DEFAULT NULL,
-  `keywords` varchar(150) DEFAULT NULL,
+  `keywords` VARCHAR(150) DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`offer_id`),
@@ -412,8 +413,8 @@ CREATE TABLE `offer` (
 DROP TABLE IF EXISTS `offer_date`;
 
 CREATE TABLE `offer_date` (
-  `offer_date_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_date_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `offer_id` BIGINT DEFAULT NULL,
   `date_from` datetime DEFAULT NULL,
   `date_to` datetime DEFAULT NULL,
   PRIMARY KEY (`offer_date_id`),
@@ -429,35 +430,35 @@ CREATE TABLE `offer_date` (
 DROP TABLE IF EXISTS `offer_i18n`;
 
 CREATE TABLE `offer_i18n` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `title` varchar(1000) DEFAULT NULL,
-  `abstract` text,
-  `description_medium` text,
-  `description_long` text,
-  `details` text,
-  `price` text,
+  `title` VARCHAR(1000) DEFAULT NULL,
+  `abstract` TEXT,
+  `description_medium` TEXT,
+  `description_long` TEXT,
+  `details` TEXT,
+  `price` TEXT,
   `location_details` text DEFAULT NULL,
-  `opening_hours` text,
-  `benefits` text,
-  `requirements` text,
-  `additional_informations` text,
-  `catering_informations` text,
-  `material_rent` text,
-  `safety_instructions` text,
-  `signalization` text,
-  `other_infrastructure` text,
+  `opening_hours` TEXT,
+  `benefits` TEXT,
+  `requirements` TEXT,
+  `additional_informations` TEXT,
+  `catering_informations` TEXT,
+  `material_rent` TEXT,
+  `safety_instructions` TEXT,
+  `signalization` TEXT,
+  `other_infrastructure` TEXT,
   `route_url` text DEFAULT NULL,
-  `costs` text,
-  `funding` text,
-  `partner` text,
-  `remarks` text,
-  `online_shop_payment_terms` text,
-  `online_shop_delivery_conditions` text,
-  `project_initial_situation` text,
-	`project_goal` text,
-	`project_further_information` text,
-	`project_partner` text,
+  `costs` TEXT,
+  `funding` TEXT,
+  `partner` TEXT,
+  `remarks` TEXT,
+  `online_shop_payment_terms` TEXT,
+  `online_shop_delivery_conditions` TEXT,
+  `project_initial_situation` TEXT,
+	`project_goal` TEXT,
+	`project_further_information` TEXT,
+	`project_partner` TEXT,
   `route_condition` VARCHAR(500),
   `route_condition_details` VARCHAR(500),
   PRIMARY KEY (`offer_id`,`language`),
@@ -472,10 +473,10 @@ CREATE TABLE `offer_i18n` (
 DROP TABLE IF EXISTS `offer_route`;
 
 CREATE TABLE `offer_route` (
-  `offer_id` bigint(20) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
   `latitude` float(10,6) DEFAULT NULL,
   `longitude` float(10,6) DEFAULT NULL,
-  `sort` int(11) DEFAULT NULL,
+  `sort` INTEGER DEFAULT NULL,
   KEY `offer_id_idxfk_8` (`offer_id`),
   CONSTRAINT `offer_route_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -486,16 +487,16 @@ CREATE TABLE `offer_route` (
 # ------------------------------------------------------------
 
 CREATE TABLE `product` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `public_transport_stop` varchar(255) DEFAULT NULL,
-  `number_of_rooms` int(11) DEFAULT NULL,
-  `has_conference_room` tinyint(1) DEFAULT NULL,
-  `has_playground` tinyint(1) DEFAULT NULL,
-  `has_picnic_place` tinyint(1) DEFAULT NULL,
-  `has_fireplace` tinyint(1) DEFAULT NULL,
-  `has_washrooms` tinyint(1) DEFAULT NULL,
-  `season_months` varchar(50) DEFAULT NULL,
-  `online_shop_enabled` tinyint(4) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `public_transport_stop` VARCHAR(255) DEFAULT NULL,
+  `number_of_rooms` INTEGER DEFAULT NULL,
+  `has_conference_room` TINYINT DEFAULT NULL,
+  `has_playground` TINYINT DEFAULT NULL,
+  `has_picnic_place` TINYINT DEFAULT NULL,
+  `has_fireplace` TINYINT DEFAULT NULL,
+  `has_washrooms` TINYINT DEFAULT NULL,
+  `season_months` VARCHAR(50) DEFAULT NULL,
+  `online_shop_enabled` TINYINT DEFAULT NULL,
   `online_shop_price` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
@@ -507,9 +508,9 @@ CREATE TABLE `product` (
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article` (
-  `product_article_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `offer_id` bigint(20) DEFAULT NULL,
-  `supplier_contact` text,
+  `product_article_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `offer_id` BIGINT DEFAULT NULL,
+  `supplier_contact` TEXT,
   PRIMARY KEY (`product_article_id`),
   KEY `offer_id_idxfk_40` (`offer_id`),
   CONSTRAINT `product_article_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
@@ -521,11 +522,11 @@ CREATE TABLE `product_article` (
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article_i18n` (
-  `product_article_id` bigint(20) NOT NULL,
+  `product_article_id` BIGINT NOT NULL,
   `language` char(2) NOT NULL,
-  `article_title` varchar(1000) DEFAULT NULL,
-  `article_description` text,
-  `article_ingredients` text,
+  `article_title` VARCHAR(1000) DEFAULT NULL,
+  `article_description` TEXT,
+  `article_ingredients` TEXT,
   PRIMARY KEY (`product_article_id`,`language`),
   CONSTRAINT `product_article_i18n_ibfk_1` FOREIGN KEY (`product_article_id`) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -536,12 +537,12 @@ CREATE TABLE `product_article_i18n` (
 # ------------------------------------------------------------
 
 CREATE TABLE `product_article_label` (
-  `product_article_id` bigint(20) NOT NULL,
-  `label_id` int(11) NOT NULL,
+  `product_article_id` BIGINT NOT NULL,
+  `label_id` INTEGER NOT NULL,
   `language` char(2) NOT NULL,
-  `label_title` varchar(1000) DEFAULT NULL,
-  `label_url` varchar(2000) DEFAULT NULL,
-  `label_icon` varchar(2000) DEFAULT NULL,
+  `label_title` VARCHAR(1000) DEFAULT NULL,
+  `label_url` VARCHAR(2000) DEFAULT NULL,
+  `label_icon` VARCHAR(2000) DEFAULT NULL,
   PRIMARY KEY (`product_article_id`,`label_id`,`language`),
   CONSTRAINT `product_article_label_ibfk_1` FOREIGN KEY (`product_article_id`) REFERENCES `product_article` (`product_article_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -554,13 +555,13 @@ CREATE TABLE `product_article_label` (
 DROP TABLE IF EXISTS `project`;
 
 CREATE TABLE `project` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `duration_from` int(11) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `duration_from` INTEGER DEFAULT NULL,
   `duration_from_month` tinyint DEFAULT NULL,
-  `duration_to` int(11) DEFAULT NULL,
+  `duration_to` INTEGER DEFAULT NULL,
   `duration_to_month` tinyint DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `poi` text,
+  `status` TINYINT DEFAULT NULL,
+  `poi` TEXT,
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `project_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -573,11 +574,11 @@ CREATE TABLE `project` (
 DROP TABLE IF EXISTS `subscription`;
 
 CREATE TABLE `subscription` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `subscription_mandatory` tinyint(1) DEFAULT NULL,
-  `online_subscription_enabled` tinyint(1) DEFAULT NULL,
-  `subscription_contact` varchar(255) DEFAULT NULL,
-  `subscription_link` varchar(255) DEFAULT NULL,
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `subscription_mandatory` TINYINT DEFAULT NULL,
+  `online_subscription_enabled` TINYINT DEFAULT NULL,
+  `subscription_contact` VARCHAR(255) DEFAULT NULL,
+  `subscription_link` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`offer_id`),
   CONSTRAINT `subscription_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -590,9 +591,9 @@ CREATE TABLE `subscription` (
 DROP TABLE IF EXISTS `subscription_i18n`;
 
 CREATE TABLE `subscription_i18n` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `subscription_details` text,
+  `subscription_details` TEXT,
   PRIMARY KEY (`offer_id`,`language`),
   CONSTRAINT `subscription_i18n_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -605,9 +606,9 @@ CREATE TABLE `subscription_i18n` (
 DROP TABLE IF EXISTS `supplier`;
 
 CREATE TABLE `supplier` (
-  `offer_id` bigint(20) DEFAULT NULL,
-  `contact` text,
-  `is_park_partner` tinyint(1) DEFAULT NULL,
+  `offer_id` BIGINT DEFAULT NULL,
+  `contact` TEXT,
+  `is_park_partner` TINYINT DEFAULT NULL,
   KEY `offer_id_idxfk_10` (`offer_id`),
   CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -620,8 +621,8 @@ CREATE TABLE `supplier` (
 DROP TABLE IF EXISTS `target_group`;
 
 CREATE TABLE `target_group` (
-  `target_group_id` int(11) NOT NULL DEFAULT '0',
-  `sort` int(11) DEFAULT NULL,
+  `target_group_id` INTEGER NOT NULL DEFAULT '0',
+  `sort` INTEGER DEFAULT NULL,
   PRIMARY KEY (`target_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -633,9 +634,9 @@ CREATE TABLE `target_group` (
 DROP TABLE IF EXISTS `target_group_i18n`;
 
 CREATE TABLE `target_group_i18n` (
-  `target_group_id` int(11) NOT NULL DEFAULT '0',
+  `target_group_id` INTEGER NOT NULL DEFAULT '0',
   `language` char(2) NOT NULL DEFAULT '',
-  `body` varchar(255) DEFAULT NULL,
+  `body` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`target_group_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -647,8 +648,8 @@ CREATE TABLE `target_group_i18n` (
 DROP TABLE IF EXISTS `target_group_link`;
 
 CREATE TABLE `target_group_link` (
-  `offer_id` bigint(20) NOT NULL DEFAULT '0',
-  `target_group_id` int(11) NOT NULL DEFAULT '0',
+  `offer_id` BIGINT NOT NULL DEFAULT '0',
+  `target_group_id` INTEGER NOT NULL DEFAULT '0',
   PRIMARY KEY (`offer_id`,`target_group_id`),
   KEY `target_group_id_idxfk` (`target_group_id`),
   CONSTRAINT `target_group_link_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE CASCADE
@@ -656,9 +657,30 @@ CREATE TABLE `target_group_link` (
 
 
 
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+# Table municipality
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `municipality`;
+
+CREATE TABLE `municipality`
+(
+  `municipality_id` INTEGER NOT NULL,
+  `park_id` INTEGER NOT NULL,
+  `municipality` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`municipality_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Table offer_municipality_link
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `offer_municipality_link`;
+
+CREATE TABLE `offer_municipality_link` (
+  `offer_id` BIGINT NOT NULL,
+  `municipality_id` INTEGER NOT NULL,
+  PRIMARY KEY (`offer_id`,`municipality_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE offer_municipality_link ADD FOREIGN KEY offer_id_idxfk (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;
+ALTER TABLE offer_municipality_link ADD FOREIGN KEY municipality_id_idxfk (municipality_id) REFERENCES municipality (municipality_id) ON DELETE CASCADE;

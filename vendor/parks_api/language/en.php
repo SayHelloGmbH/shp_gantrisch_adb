@@ -39,7 +39,7 @@ $lang['offer_map'] = 'Map';
 $lang['offer_description'] = 'Description';
 $lang['offer_detail'] = 'Details';
 $lang['offer_poi'] = 'Waypoints';
-$lang['offer_poi_activity'] = 'Discovering underway';
+$lang['offer_poi_activity'] = 'To discover on the trail';
 $lang['offer_category'] = 'Category';
 $lang['offer_maincategory'] = 'Maincategory';
 $lang['offer_subcategory'] = 'Subcategory';
@@ -321,20 +321,13 @@ $lang['offer_elevation_profile'] = '<strong>Height profile</strong> view map';
 */
 $lang['offer_project'] = "Project";
 $lang['offer_project_duration'] = "Project duration";
+$lang['offer_project_no_duration'] = "No particular project duration";
 $lang['offer_project_status'] = "Project status";
-$lang['offer_project_responsibility'] = "Responsibility for the project";
 $lang['offer_project_links'] = "Catenations";
 $lang['offer_project_poi'] = "Catenations with projects and offers";
 $lang['offer_project_initial_situation'] = 'Initial situation';
 $lang['offer_project_goal'] = 'Goal';
 $lang['offer_project_further_information'] = 'Further information';
-
-
-/*
-| Insert mask 6: research
-*/
-$lang['offer_research'] = "Research project";
-$lang['offer_research_responsibility'] = "Responsibility for the research project";
 
 
 /*
@@ -430,6 +423,7 @@ $lang['general_from'] = "from";
 $lang['offer_park_single'] = "Park";
 $lang['general_search'] = "Search";
 $lang['offer_arrival'] = "Arrival";
+$lang['offer_municipalities_all'] = "All municipalities";
 
 
 /*

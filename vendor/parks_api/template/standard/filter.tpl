@@ -33,12 +33,13 @@ Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@s
 		__FILTER_CATEGORIES__
 		__FILTER_DATES__
 		__FILTER_TARGET_GROUPS__
-		__FILTER_ACCESSIBILITIES__
+		__FILTER_MUNICIPALITIES__
 		__FILTER_PARKS__
-		__FILTER_PROJECT__
 		__FILTER_ROUTE_LENGTH__
 		__FILTER_ROUTE_TIME__
 		__FILTER_ROUTE_CONDITION__
+		__FILTER_PROJECT__
+		__FILTER_ACCESSIBILITIES__
 		<div class="cf"></div>
 	</div>
 	<div class="form_element submit">

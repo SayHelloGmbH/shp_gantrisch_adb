@@ -100,6 +100,7 @@ class ParksModel
 
 	/**
 	 * Get Custom Layers
+	 * [Deprecated with new map]
 	 * 
 	 * @access public
 	 * @return mixed
@@ -107,7 +108,12 @@ class ParksModel
 	public function get_custom_layers()
 	{
 
-		$query = 'SELECT * FROM map_layer WHERE languages LIKE "%' . $this->api->lang->lang_id . '%";';
+		$query = "
+			SELECT * 
+			FROM `map_layer` 
+			WHERE `languages` LIKE '%" . $this->api->lang->lang_id . "%'
+		";
+
 		$q_layers = $this->api->db->query($query);
 
 		if (mysqli_num_rows($q_layers) > 0) {
@@ -116,7 +122,11 @@ class ParksModel
 			while ($row = mysqli_fetch_object($q_layers)) {
 
 				// Retrieve content
-				$query_i18n = 'SELECT * FROM map_layer_i18n WHERE map_layer_id = ' . $row->map_layer_id;
+				$query_i18n = "
+					SELECT * 
+					FROM `map_layer_i18n` 
+					WHERE `map_layer_id` = " . $row->map_layer_id . "
+				";
 				$q_layers_i18n = $this->api->db->query($query_i18n);
 				if (mysqli_num_rows($q_layers_i18n) > 0) {
 					$layer_content = [];
@@ -166,56 +176,79 @@ class ParksModel
 		// Select offers
 		$select = "
 			SELECT
-				SQL_CALC_FOUND_ROWS *,
-				main_offer.`offer_id`,
-				`offer_i18n`.`language`,
+				SQL_CALC_FOUND_ROWS main_offer.*,
+				offer_i18n.*,
+				offer_i18n.language AS language,
+				activity.*,
+				booking.*,
+				event.*,
+				product.*,
+				project.*,
+				subscription.*,
+				MIN(offer_date.date_from) AS date_from,
+				MAX(offer_date.date_to) AS date_to,
+				main_offer.offer_id,
+				MIN(category_link.category_id) AS main_category_id,
 
-				IF ( " . CATEGORY_EVENT . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `event`.`public_transport_stop`,
-					IF ( " . CATEGORY_PRODUCT . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `product`.`public_transport_stop`,
-						IF ( " . CATEGORY_BOOKING . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `booking`.`public_transport_stop`,
-							`activity`.`public_transport_stop` )
-						)
-					)
-				AS public_transport_stop,
+				CASE MIN(category_link.category_id)
+					WHEN " . CATEGORY_EVENT . " THEN event.public_transport_stop
+					WHEN " . CATEGORY_PRODUCT . " THEN product.public_transport_stop
+					WHEN " . CATEGORY_BOOKING . " THEN booking.public_transport_stop
+				END AS public_transport_stop,
+			
+				CASE MIN(category_link.category_id)
+					WHEN " . CATEGORY_PRODUCT . " THEN product.season_months
+					WHEN " . CATEGORY_ACTIVITY . " THEN activity.season_months
+				END AS season_months,
 
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`has_playground`, `product`.`has_playground` ) AS has_playground,
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`has_picnic_place`, `product`.`has_picnic_place` ) AS has_picnic_place,
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`has_fireplace`, `product`.`has_fireplace` ) AS has_fireplace,
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`has_washrooms`, `product`.`has_washrooms` ) AS has_washrooms,
-				
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`season_months`, 
-					IF ( " . CATEGORY_PRODUCT . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `product`.`season_months`,
-						`booking`.`season_months`)) AS season_months,
-
-				IF ((c1.`category_id` IN (1000)) OR (c2.`category_id` IN (1000)) OR (c3.`category_id` IN (1000)), 1, 0) AS is_project,
-				
 				" . (! empty($filter_date_from) ?
-			"IF (`offer_date`.`date_from` < '" . $filter_date_from . "', '" . $filter_date_from . "', DATE_FORMAT(`offer_date`.`date_from`, '%Y-%m-%d')) as start_date,"
-			:
-			"IF (`offer_date`.`date_from` < NOW(), CURDATE(), DATE_FORMAT(`offer_date`.`date_from`, '%Y-%m-%d')) as start_date,"
-		) . "				
-				`offer_date`.`date_from`,
-				`offer_date`.`date_to`,
-				TIMESTAMPDIFF(hour, `offer_date`.`date_from`, `offer_date`.`date_to`) AS duration,
-				IF(DATEDIFF(`offer_date`.`date_to`, `offer_date`.`date_from`) IS NULL, 0, DATEDIFF(`offer_date`.`date_to`, `offer_date`.`date_from`)) AS date_difference,
-				IF ((`offer_date`.`date_from` IS NOT NULL) AND ((c1.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c2.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c3.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . "))), `offer_date`.`date_from`, offer_i18n.`title`) AS special_order_by,
-				IF ((`offer_date`.`date_from` IS NOT null) AND ((c1.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c2.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c3.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . "))), DATE_FORMAT(`offer_date`.`date_from`, '%Y-%m-%d'), main_offer.`offer_id`) AS special_group_by,
-				IF (
-					(`offer_date`.`date_from` IS NOT null) 
-					AND 
-					(
-						DATE_FORMAT(`offer_date`.`date_from`, '%Y-%m-%d') = DATE_FORMAT(`offer_date`.`date_to`, '%Y-%m-%d')
-						OR
-						`offer_date`.`date_to` = '0000-00-00 00:00:00'
-						OR
-						`offer_date`.`date_to` IS NULL
-					)
-					AND ((c1.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c2.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . ")) OR (c3.`category_id` IN (" . CATEGORY_EVENT . "," . CATEGORY_RESEARCH . "))), 
-					GROUP_CONCAT( DISTINCT DATE_FORMAT(`offer_date`.`date_from`, '%H:%i'), ' - ', DATE_FORMAT(IFNULL(`offer_date`.`date_to`, '0000-00-00 00:00:00'), '%H:%i') ), ''
-				) AS times, 
-				IF ( " . CATEGORY_ACTIVITY . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`), `activity`.`poi`, `project`.`poi` ) AS poi,
-				GROUP_CONCAT(DISTINCT `accessibility_rating`.`icon_url` SEPARATOR ', ') AS icon_urls
-			FROM `offer` main_offer ";
+					"
+						CASE 
+							WHEN (MIN(offer_date.date_from) < '" . $filter_date_from . "') AND (MIN(category_link.category_id) = " . CATEGORY_EVENT . ") 
+								THEN '" . $filter_date_from . "'
+							WHEN MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
+								THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
+							ELSE 
+								MIN(offer_i18n.title)
+						END AS start_date,
+					"
+					:
+					"
+						CASE 
+							WHEN (MIN(offer_date.date_from) < NOW()) AND (MIN(category_link.category_id) = " . CATEGORY_EVENT . ") 
+								THEN CURDATE()
+							WHEN MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
+								THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
+							ELSE 
+								MIN(offer_i18n.title)
+						END AS start_date,
+					"
+				) . "	
+
+				TIMESTAMPDIFF(hour, MIN(offer_date.date_from), MAX(offer_date.date_to)) AS duration,
+				IFNULL( DATEDIFF(MAX(offer_date.date_to), MIN(offer_date.date_from) ), 0) AS date_difference,
+
+				CASE 
+					WHEN (MIN(offer_date.date_from) IS NOT NULL) 
+						AND (
+							DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d') = DATE_FORMAT(MAX(offer_date.date_to), '%Y-%m-%d')
+							OR MAX(offer_date.date_to) = '0000-00-00 00:00:00'
+							OR MAX(offer_date.date_to) IS NULL
+						)
+						AND MIN(category_link.category_id) = " . CATEGORY_EVENT . "
+					THEN GROUP_CONCAT(DISTINCT DATE_FORMAT(offer_date.date_from, '%H:%i'), ' - ', DATE_FORMAT(offer_date.date_to, '%H:%i'))
+					ELSE ''
+				END AS times,
+
+				CASE MIN(category_link.category_id)
+					WHEN " . CATEGORY_ACTIVITY . " THEN activity.poi
+					WHEN " . CATEGORY_PROJECT . " THEN project.poi
+				END AS poi,
+
+				GROUP_CONCAT(DISTINCT accessibility_rating.icon_url SEPARATOR ', ') AS icon_urls
+
+			FROM offer main_offer
+		";
 
 		// Alternative mode: count categories
 		if ($only_count_categories == true) {
@@ -226,115 +259,101 @@ class ParksModel
 					COUNT(activity.offer_id) as activity_count,
 					COUNT(product.offer_id) as product_count,
 					COUNT(project.offer_id) as project_count
-				FROM `offer` main_offer
+				FROM offer main_offer
 			";
 		}
 
 		// Alternative mode: get only categories
 		else if ($return_only_categories == true) {
 			$select = "
-				SELECT
-					`category_link`.`category_id` as c0,
-					c1.`category_id` as c1,
-					c2.`category_id` as c2,
-					c3.`category_id` as c3
-				FROM `offer` main_offer
+				SELECT category_link.category_id
+				FROM offer main_offer
 			";
 		}
 
-		// Join i18n data
-		$join = "INNER JOIN `offer_i18n` ON main_offer.`offer_id` = `offer_i18n`.`offer_id` ";
+		// Inner joins
+		$join = "
+			INNER JOIN offer_i18n ON main_offer.offer_id = offer_i18n.offer_id
+			INNER JOIN category_link ON category_link.offer_id = main_offer.offer_id
+		";
 
-		// Join main categories
-		$join .= " LEFT OUTER JOIN `event` ON `event`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `booking` ON `booking`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `activity` ON `activity`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `product` ON `product`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `project` ON `project`.`offer_id` = main_offer.`offer_id` ";
+		// Left joins
+		$join .= "
+			LEFT OUTER JOIN event ON event.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN booking ON booking.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN activity ON activity.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN product ON product.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN project ON project.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN subscription ON subscription.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN subscription_i18n ON subscription_i18n.offer_id = main_offer.offer_id AND subscription_i18n.language = '" . $this->api->lang->lang_id . "'
+			LEFT OUTER JOIN offer_date ON main_offer.offer_id = offer_date.offer_id
+			LEFT OUTER JOIN accessibility ON accessibility.offer_id = main_offer.offer_id
+			LEFT OUTER JOIN accessibility_rating ON accessibility_rating.accessibility_id = accessibility.accessibility_id
+		";
 
-		// Join subscription settings
-		$join .= " LEFT OUTER JOIN `subscription` ON `subscription`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `subscription_i18n` ON `subscription_i18n`.`offer_id` = main_offer.`offer_id` AND `subscription_i18n`.`language` = '" . $this->api->lang->lang_id . "' ";
-
-		// Join offer dates
-		$join .= " LEFT OUTER JOIN `offer_date` ON main_offer.`offer_id` = `offer_date`.`offer_id` ";
-
-		// Join categories
-		$join .= " INNER JOIN `category_link` ON `category_link`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " INNER JOIN `category` AS c1 ON `category_link`.`category_id` = `c1`.`category_id` ";
-		$join .= " LEFT JOIN `category` AS c2 ON `c1`.`parent_id` = `c2`.`category_id` ";
-		$join .= " LEFT JOIN `category` AS c3 ON `c2`.`parent_id` = `c3`.`category_id` ";
-
-		// Join accessibility informations
-		$join .= " LEFT OUTER JOIN `accessibility` ON `accessibility`.`offer_id` = main_offer.`offer_id` ";
-		$join .= " LEFT OUTER JOIN `accessibility_rating` ON `accessibility_rating`.`accessibility_id` = `accessibility`.`accessibility_id` ";
-
-		// Filter: categories
+		// Where conditions
 		$where = [];
-		if (isset($filter['categories']) && ! empty($filter['categories'])) {
-			if (! is_array($filter['categories'])) {
-				$filter['categories'] = array($filter['categories']);
-			}
-			if (! empty($filter['categories'])) {
-				$where_categories = "";
-				foreach ($filter['categories'] as $category) {
-					if ($category != '') {
-						$where_categories .= $category . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`) OR ";
-					}
-				}
-				$where_categories = substr($where_categories, 0, -4);
-				if ($where_categories != '') {
-					$where[] = "(" . $where_categories . ")";
-				}
-			}
+		
+		// Filter: categories
+		$categories = (array)($filter['categories'] ?? []);
+		$categories = array_filter($categories, fn($id) => $id !== '');
+		if (! empty($categories)) {
+			$conditions = array_map(fn($id) => "category_link.category_id = " . $id, $categories);
+			$where[] = '(' . implode(' OR ', $conditions) . ')';
 		}
 
 		// Filter: is hint
 		if (isset($filter['is_hint'])) {
 			if ($filter['is_hint'] == 1) {
-				$where[] = " main_offer.`is_hint` = 1";
+				$where[] = "main_offer.is_hint = 1";
 			} else {
-				$where[] = " 	(
-									main_offer.`is_hint` = 0
-									OR main_offer.`is_hint` IS NULL
-								)";
+				$where[] = "
+					(
+						main_offer.is_hint = 0
+						OR main_offer.is_hint IS NULL
+					)
+				";
 			}
 		}
 
 		// Filter: contact_is_park_partner
 		if (isset($filter['contact_is_park_partner'])) {
 			if ($filter['contact_is_park_partner'] == 1) {
-				$where[] = " main_offer.`contact_is_park_partner` = 1";
+				$where[] = "main_offer.contact_is_park_partner = 1";
 			} else {
-				$where[] = " 	(
-									main_offer.`contact_is_park_partner` = 0
-									OR main_offer.`contact_is_park_partner` IS NULL
-								)";
+				$where[] = "
+					(
+						main_offer.contact_is_park_partner = 0
+						OR main_offer.contact_is_park_partner IS NULL
+					)
+				";
 			}
 		}
 
 		// Filter: offers_is_park_event
 		if (isset($filter['offers_is_park_event'])) {
 			if ($filter['offers_is_park_event'] == true) {
-				$where[] = " event.`is_park_event` = 1";
+				$where[] = "event.is_park_event = 1";
 			} else {
-				$where[] = "	(
-									event.`is_park_event` = 0
-									OR event.`is_park_event` IS NULL
-								)";
+				$where[] = "
+					(
+						event.is_park_event = 0
+						OR event.is_park_event IS NULL
+					)
+				";
 			}
 		}
 
 		// Filter: has accessibility informations
 		if (! empty($filter['has_accessibility_informations'])) {
-			$where[] = " `accessibility`.`accessibility_id` IS NOT NULL ";
+			$where[] = "accessibility.accessibility_id IS NOT NULL";
 		}
 
 		// Filter: accessilibity ratiing
 		if (! empty($filter['accessibilities'])) {
 			foreach ($filter['accessibilities'] as $accessibility_id) {
 				if ($accessibility_id == GINTO_INFOS_AVAILABLE) {
-					$where[] = "`accessibility`.`accessibility_id` IS NOT NULL";
+					$where[] = "accessibility.accessibility_id IS NOT NULL";
 				} else {
 					$having[] = "icon_urls LIKE '%" . $accessibility_id . "%'";
 				}
@@ -342,84 +361,106 @@ class ParksModel
 		}
 
 		// Select language and show every entry, no matter which language is available
-		if (isset($this->api->config['language_independence']) && ($this->api->config['language_independence'] == true) && isset($this->api->config['language_priority'])) {
+		if (empty($filter['force_language']) && isset($this->api->config['language_independence']) && ($this->api->config['language_independence'] == true) && isset($this->api->config['language_priority'])) {
 
 			// Get language priorities
 			$language_priority = $this->api->config['language_priority'][$this->api->lang->lang_id];
 			if (! empty($language_priority) && is_array($language_priority)) {
 
-				$where[] = "`offer_i18n`.`language` = (
-
-					SELECT IF (sub_offer_i18n.`language` IS NOT NULL, sub_offer_i18n.`language`, (
-							SELECT IF (sub_offer_i18n.`language` IS NOT NULL, sub_offer_i18n.`language`, (
-									SELECT
-										IF (sub_offer_i18n.`language` IS NOT NULL, sub_offer_i18n.`language`, ((
-											SELECT IF (sub_offer_i18n.`language` IS NOT NULL, sub_offer_i18n.`language`, 'de')
-											FROM `offer` sub_offer
-											LEFT JOIN `offer_i18n` sub_offer_i18n ON sub_offer_i18n.`offer_id` = sub_offer.`offer_id` AND sub_offer_i18n.`language` = '" . $language_priority[2] . "'
-											WHERE main_offer.`offer_id` = sub_offer.`offer_id`)
-										))
-									FROM `offer` sub_offer
-									LEFT JOIN `offer_i18n` sub_offer_i18n ON sub_offer_i18n.`offer_id` = sub_offer.`offer_id` AND sub_offer_i18n.`language` = '" . $language_priority[1] . "'
-									WHERE main_offer.`offer_id` = sub_offer.`offer_id`
-								))
-							FROM `offer` sub_offer
-							LEFT JOIN `offer_i18n` sub_offer_i18n ON sub_offer_i18n.`offer_id` = sub_offer.`offer_id` AND sub_offer_i18n.`language` = '" . $language_priority[0] . "'
-							WHERE main_offer.`offer_id` = sub_offer.`offer_id`
-						))
-					FROM `offer` sub_offer
-					LEFT JOIN `offer_i18n` sub_offer_i18n ON sub_offer_i18n.`offer_id` = sub_offer.`offer_id` AND sub_offer_i18n.`language` = '" . $this->api->lang->lang_id . "'
-					WHERE main_offer.`offer_id` = sub_offer.`offer_id`
-
-				)";
+				$where[] = "
+					offer_i18n.language = (
+						SELECT IF (sub_offer_i18n.language IS NOT NULL, sub_offer_i18n.language, (
+								SELECT IF (sub_offer_i18n.language IS NOT NULL, sub_offer_i18n.language, (
+										SELECT
+											IF (sub_offer_i18n.language IS NOT NULL, sub_offer_i18n.language, ((
+												SELECT IF (sub_offer_i18n.language IS NOT NULL, sub_offer_i18n.language, 'de')
+												FROM offer sub_offer
+												LEFT JOIN offer_i18n sub_offer_i18n ON sub_offer_i18n.offer_id = sub_offer.offer_id AND sub_offer_i18n.language = '" . $language_priority[2] . "'
+												WHERE main_offer.offer_id = sub_offer.offer_id)
+											))
+										FROM offer sub_offer
+										LEFT JOIN offer_i18n sub_offer_i18n ON sub_offer_i18n.offer_id = sub_offer.offer_id AND sub_offer_i18n.language = '" . $language_priority[1] . "'
+										WHERE main_offer.offer_id = sub_offer.offer_id
+									))
+								FROM offer sub_offer
+								LEFT JOIN offer_i18n sub_offer_i18n ON sub_offer_i18n.offer_id = sub_offer.offer_id AND sub_offer_i18n.language = '" . $language_priority[0] . "'
+								WHERE main_offer.offer_id = sub_offer.offer_id
+							))
+						FROM offer sub_offer
+						LEFT JOIN offer_i18n sub_offer_i18n ON sub_offer_i18n.offer_id = sub_offer.offer_id AND sub_offer_i18n.language = '" . $this->api->lang->lang_id . "'
+						WHERE main_offer.offer_id = sub_offer.offer_id
+					)
+				";
 			}
 		}
 
 		// Select only offers which are available in the current language
 		else {
-			$where[] = "`offer_i18n`.`language` = '" . $this->api->lang->lang_id . "'";
+			$where[] = "offer_i18n.language = '" . ($filter['force_language'] ?: $this->api->lang->lang_id) . "'";
 		}
 
 		// Filter: offer settings
-		if (isset($filter['offer_settings']) && ! empty($filter['offer_settings'])) {
+		if (! empty($filter['offer_settings'])) {
 			foreach ($filter['offer_settings'] as $key => $value) {
-				$where[] = "main_offer.`" . $key . "` = '" . $value . "'";
+				$where[] = "main_offer." . $key . " = '" . $value . "'";
 			}
 		}
 
 		// Filter: target groups
-		$join .= " LEFT JOIN `target_group_link` ON `target_group_link`.`offer_id` = main_offer.`offer_id` ";
-		if (! empty($filter['target_groups'])) {
-			$where[] = "(
-				(`target_group_link`.`target_group_id` IN (" . implode(',', $filter['target_groups']) . "))
-				OR
-				(`target_group_link`.`target_group_id` IS NULL)
-			)";
-		}
-		if (! empty($this->api->system_filter['target_groups'])) {
-			$where[] = "(
-				(`target_group_link`.`target_group_id` IN (" . implode(',', $this->api->system_filter['target_groups']) . "))
-				OR
-				(`target_group_link`.`target_group_id` IS NULL)
-			)";
-		}
-
-		// Filter: park
-		if (isset($filter['park_id']) && ! empty($filter['park_id'])) {
-			if (! is_array($filter['park_id'])) {
-				$where[] = "main_offer.`park_id` = " . intval($filter['park_id']);
-			} else {
-				$where_in_park_ids = implode(",", $filter['park_id']);
-				$where[] = "main_offer.`park_id` IN (" . $where_in_park_ids . ")";
+		if (! empty($filter['target_groups']) || ! empty($this->api->system_filter['target_groups'])) {
+			$join .= "
+				LEFT JOIN target_group_link ON target_group_link.offer_id = main_offer.offer_id
+			";
+			if (! empty($filter['target_groups'])) {
+				$where[] = "(target_group_link.target_group_id IN (" . implode(',', $filter['target_groups']) . "))";
+			}
+			if (! empty($this->api->system_filter['target_groups'])) {
+				$where[] = "(target_group_link.target_group_id IN (" . implode(',', $this->api->system_filter['target_groups']) . "))";
 			}
 		}
-		if (isset($filter['user']) && ! empty($filter['user'])) {
-			$where[] = "main_offer.`park` = '" . $filter['park_id'] . "'";
+
+		// Filter: fields of activity
+		if (! empty($filter['fields_of_activity']) || ! empty($this->api->system_filter['fields_of_activity'])) {
+			$join .= "
+				LEFT JOIN field_of_activity_link ON field_of_activity_link.offer_id = main_offer.offer_id
+			";
+			if (! empty($filter['fields_of_activity'])) {
+				$where[] = "(field_of_activity_link.field_of_activity_id IN (" . implode(',', $filter['fields_of_activity']) . "))";
+			}
+			if (! empty($this->api->system_filter['fields_of_activity'])) {
+				$where[] = "(field_of_activity_link.field_of_activity_id IN (" . implode(',', $this->api->system_filter['fields_of_activity']) . "))";
+			}
+		}
+
+		// Filter: municipalities
+		if (! empty($filter['municipalities'])) {
+			$join .= "
+				LEFT OUTER JOIN offer_municipality_link ON offer_municipality_link.offer_id = main_offer.offer_id
+			";
+			if (is_array($filter['municipalities'])) {
+				$where[] = "(offer_municipality_link.municipality_id IN (" . implode(', ', $filter['municipalities']) . "))";
+			}
+			else {
+				$where[] = "offer_municipality_link.municipality_id = " . $filter['municipalities'];
+			}
+		}
+
+		// Filter: park or user
+		if (! empty($filter['park_id'])) {
+			if (! is_array($filter['park_id'])) {
+				$where[] = "main_offer.park_id = " . intval($filter['park_id']);
+			} else {
+				$where_in_park_ids = implode(",", $filter['park_id']);
+				$where[] = "main_offer.park_id IN (" . $where_in_park_ids . ")";
+			}
+		}
+		if (! empty($filter['user'])) {
+			$where[] = "main_offer.park = '" . $filter['user'] . "'";
 		}
 
 		// Filter: exlcude parks
 		if (! empty($filter['exclude_park_ids']) && is_array($filter['exclude_park_ids'])) {
-			$where[] = "main_offer.`park` NOT IN (" . implode(",", $filter['exclude_park_ids']) . ")";
+			$where[] = "main_offer.park NOT IN (" . implode(",", $filter['exclude_park_ids']) . ")";
 		}
 
 		// Filter: offers of today
@@ -433,7 +474,7 @@ class ParksModel
 		if (! empty($filter['date_from']) || ! empty($filter['date_to'])) {
 
 			// Only filter dates on events
-			$where[] = " ( " . CATEGORY_EVENT . " IN (c1.`category_id`, c1.`parent_id`, c2.`category_id`, c2.`parent_id`, c3.`category_id`, c3.`parent_id`) ) ";
+			$having[] = " (main_category_id = " . CATEGORY_EVENT . ") ";
 
 			// Check time span
 			if (! empty($filter_date_from) && ! empty($filter_date_to)) {
@@ -443,17 +484,17 @@ class ParksModel
 				$where[] = "
 					(
 						(
-							'" . $filter_date_from . "' BETWEEN `date_from` AND `date_to`
+							'" . $filter_date_from . "' BETWEEN date_from AND date_to
 							OR
-							'" . $filter_date_to . "' BETWEEN `date_from` AND `date_to`
+							'" . $filter_date_to . "' BETWEEN date_from AND date_to
 						)
 
 						OR
 
 						(
-							`date_from` >= DATE('" . $filter_date_from . "') AND `date_from` < DATE_ADD('" . $filter_date_to . "', INTERVAL 1 DAY)
+							date_from >= DATE('" . $filter_date_from . "') AND date_from < DATE_ADD('" . $filter_date_to . "', INTERVAL 1 DAY)
 							OR
-							`date_to` >= DATE('" . $filter_date_from . "') AND `date_to` < DATE_ADD('" . $filter_date_to . "', INTERVAL 1 DAY)
+							date_to >= DATE('" . $filter_date_from . "') AND date_to < DATE_ADD('" . $filter_date_to . "', INTERVAL 1 DAY)
 						)
 					)
 				";
@@ -461,7 +502,7 @@ class ParksModel
 
 			// Check only date from
 			else if (! empty($filter_date_from)) {
-				$where[] = " ( `offer_date`.`date_from` >= '" . $filter_date_from . "' OR `offer_date`.`date_to` >= '" . $filter_date_from . "' ) ";
+				$where[] = " ( offer_date.date_from >= '" . $filter_date_from . "' OR offer_date.date_to >= '" . $filter_date_from . "' ) ";
 			}
 
 			// Check only date to
@@ -502,19 +543,14 @@ class ParksModel
 			}
 		} else {
 			// Show only coming events
-			$where[] = "
+			$having[] = "
 				(
-						`offer_date`.`date_from` IS NULL
-					OR
-						`offer_date`.`date_from` >= NOW()
-					OR
-						`offer_date`.`date_to` >= NOW()
-					OR
-						(" . CATEGORY_EVENT . " NOT IN (`c1`.`category_id`, `c1`.`parent_id`, `c2`.`category_id`, `c2`.`parent_id`, `c3`.`category_id`, `c3`.`parent_id`))
-					OR
-						(" . CATEGORY_RESEARCH . " NOT IN (`c1`.`category_id`, `c1`.`parent_id`, `c2`.`category_id`, `c2`.`parent_id`, `c3`.`category_id`, `c3`.`parent_id`))
-
-				)";
+					date_from IS NULL
+					OR date_from >= NOW()
+					OR date_to >= NOW()
+					OR main_category_id != " . CATEGORY_EVENT . "
+				)
+			";
 		}
 
 		// Filter: search words
@@ -524,7 +560,7 @@ class ParksModel
 				$search_query = "(";
 				foreach ($search_words as $word) {
 					$search_query .= "(
-								(main_offer.`offer_id` = '" . $word . "')
+								(main_offer.offer_id = '" . $word . "')
 								OR main_offer.keywords LIKE '%" . $word . "%'
 								OR (offer_i18n.title LIKE '%" . $word . "%')
 								OR (offer_i18n.abstract LIKE '%" . $word . "%')
@@ -571,26 +607,26 @@ class ParksModel
 		}
 
 		// Filter: route length
-		if (isset($filter['route_length_min']) && ! empty($filter['route_length_min']) && intval($filter['route_length_min']) != 0) {
-			$where[] = " (`activity`.`route_length` >= " . intval($filter['route_length_min']) . ")";
+		if (! empty($filter['route_length_min']) && intval($filter['route_length_min']) != 0) {
+			$where[] = " (activity.route_length >= " . intval($filter['route_length_min']) . ")";
 		}
 
 		// Filter: route max length
-		if (isset($filter['route_length_max']) && ! empty($filter['route_length_max']) && intval($filter['route_length_max']) != 50) {
-			$where[] = " (`activity`.`route_length` <= " . intval($filter['route_length_max']) . ")";
+		if (! empty($filter['route_length_max']) && intval($filter['route_length_max']) != 50) {
+			$where[] = " (activity.route_length <= " . intval($filter['route_length_max']) . ")";
 		}
 
 		// Filter: time required
-		if (isset($filter['time_required']) && ! empty($filter['time_required'])) {
+		if (! empty($filter['time_required'])) {
 			if (is_array($filter['time_required'])) {
 
 				// Time minutes
 				$where_time_required = [];
 				$time_category_minutes = array(
-					'< 2h' => '(`activity`.`time_required_minutes` <= 120)',
-					'2 - 4h' => '((`activity`.`time_required_minutes` > 120) AND (`activity`.`time_required_minutes` <= 240))',
-					'4 - 6h' => '((`activity`.`time_required_minutes` > 240) AND (`activity`.`time_required_minutes` <= 360))',
-					'> 6h' => '(`activity`.`time_required_minutes` > 360)',
+					'< 2h' => '(activity.time_required_minutes <= 120)',
+					'2 - 4h' => '((activity.time_required_minutes > 120) AND (activity.time_required_minutes <= 240))',
+					'4 - 6h' => '((activity.time_required_minutes > 240) AND (activity.time_required_minutes <= 360))',
+					'> 6h' => '(activity.time_required_minutes > 360)',
 				);
 
 				// Prepare filter data
@@ -604,15 +640,15 @@ class ParksModel
 						$where_time_required[] = "
 							(
 								(
-									`activity`.`time_required_minutes` IS NULL
+									activity.time_required_minutes IS NULL
 									AND
-									`activity`.`time_required` = '" . $value . "'
+									activity.time_required = '" . $value . "'
 								)
 								OR
 								(
-									`activity`.`time_required_minutes` IS NOT NULL
+									activity.time_required_minutes IS NOT NULL
 									AND
-									`activity`.`time_required_minutes` <> 0
+									activity.time_required_minutes <> 0
 									AND
 									" . $time_category_minutes[$value] . "
 								)
@@ -628,61 +664,62 @@ class ParksModel
 		}
 
 		// Filter: level_technics
-		if (isset($filter['level_technics']) && ! empty($filter['level_technics'])) {
+		if (! empty($filter['level_technics'])) {
 			if (is_array($filter['level_technics'])) {
 				$where_in_level_technics = implode(",", $filter['level_technics']);
-				$where[] = " (`activity`.`level_technics` IN (" . $where_in_level_technics . "))";
+				$where[] = " (activity.level_technics IN (" . $where_in_level_technics . "))";
 			} else {
-				$where[] = " (`activity`.`level_technics` = " . $filter['level_technics'] . ")";
+				$where[] = " (activity.level_technics = " . $filter['level_technics'] . ")";
 			}
 		}
 
 		// Filter: time_required
-		if (isset($filter['level_condition']) && ! empty($filter['level_condition'])) {
+		if (! empty($filter['level_condition'])) {
 			if (is_array($filter['level_condition'])) {
 				$where_in_level_condition = implode(",", $filter['level_condition']);
-				$where[] = " (`activity`.`level_condition` IN (" . $where_in_level_condition . "))";
+				$where[] = " (activity.level_condition IN (" . $where_in_level_condition . "))";
 			} else {
-				$where[] = " (`activity`.`level_condition` = " . $filter['level_condition'] . "L)";
+				$where[] = " (activity.level_condition = " . $filter['level_condition'] . "L)";
 			}
 		}
 
 		// Filter: project status
-		if (isset($filter['project_status']) && ! empty($filter['project_status'])) {
+		if (! empty($filter['project_status'])) {
 			if (is_array($filter['project_status'])) {
 				$where_in_level_condition = implode(",", $filter['project_status']);
-				$where[] = " (`project`.`status` IN (" . $where_in_level_condition . "))";
+				$where[] = " (project.status IN (" . $where_in_level_condition . "))";
 			} else {
-				$where[] = " (`project`.`status` = " . $filter['project_status'] . "L)";
+				$where[] = " (project.status = " . $filter['project_status'] . "L)";
 			}
 		}
 
 		// Filter: additional infos
-		$where_additional = "";
+		$where_additional = [];
 		if (isset($filter['online_shop_enabled']) && $filter['online_shop_enabled'] == 1) {
-			$where_additional .= "product.`online_shop_enabled` = 1 OR ";
+			$where_additional[] = "product.online_shop_enabled = 1";
 		}
 		if (isset($filter['barrier_free']) && $filter['barrier_free'] == 1) {
-			$where_additional .= "main_offer.`barrier_free` = 1 OR ";
+			$where_additional[] = "main_offer.barrier_free = 1";
 		}
 		if (isset($filter['learning_opportunity']) && $filter['learning_opportunity'] == 1) {
-			$where_additional .= "main_offer.`learning_opportunity` = 1 OR ";
+			$where_additional[] = "main_offer.learning_opportunity = 1";
 		}
 		if (isset($filter['child_friendly']) && $filter['child_friendly'] == 1) {
-			$where_additional .= "main_offer.`child_friendly` = 1 OR ";
+			$where_additional[] = "main_offer.child_friendly = 1";
 		}
-		if (strlen($where_additional) > 0) {
-			$where[] = " (" . substr($where_additional, 0, -4) . ")";
+		if (! empty($where_additional)) {
+			$where[] = implode(' OR ', $where_additional);
 		}
+
 		// Filter: offers
-		if (isset($filter['offers']) && ! empty($filter['offers'])) {
+		if (! empty($filter['offers'])) {
 			if (! is_array($filter['offers'])) {
 				$filter['offers'] = array($filter['offers']);
 			}
 			if (! empty($filter['offers'])) {
 				$where_offer = "";
 				foreach ($filter['offers'] as $offer) {
-					$where_offer .= " main_offer.`offer_id` = " . $offer . " OR ";
+					$where_offer .= " main_offer.offer_id = " . $offer . " OR ";
 				}
 				$where_offer = substr($where_offer, 0, -4);
 				$where[] = "(" . $where_offer . ")";
@@ -697,7 +734,7 @@ class ParksModel
 		}
 
 		// Init having
-		if (! empty($having) && is_array($having)) {
+		if (! empty($having) && is_array($having) && ($only_count_categories == false) && ($return_only_categories == false)) {
 			$having = " HAVING " . implode(" AND ", $having);
 		} else {
 			$having = "";
@@ -708,7 +745,16 @@ class ParksModel
 		if (($only_count_categories == false) && ($return_only_categories == false)) {
 
 			// Group by
-			$group_by = " GROUP BY special_group_by, main_offer.`offer_id` ";
+			$group_by = "
+				GROUP BY 
+					CASE 
+						WHEN offer_date.date_from IS NOT NULL
+						THEN DATE_FORMAT(offer_date.date_from, '%Y-%m-%d')
+						ELSE main_offer.offer_id
+					END,
+					main_offer.offer_id,
+					offer_i18n.language
+			";
 
 			// Order by
 			if ($order_by_rand === true) {
@@ -718,20 +764,29 @@ class ParksModel
 					ORDER BY 
 						start_date, 
 						date_difference ASC, 
-						offer_date.date_from ASC, 
+						MIN(offer_date.date_from) ASC, 
 						duration ASC, 
-						CAST(offer_date.date_to AS DATE) ASC
+						CAST(MAX(offer_date.date_to) AS DATE) ASC,
+						MIN(offer_i18n.title) ASC
 				";
 			} else {
 				$order_by = "
 					ORDER BY
 						is_hint DESC, 
-						CASE is_project WHEN '1' THEN project.duration_from END DESC,
-						special_order_by,	
-						`offer_i18n`.title ASC
+						CASE MIN(category_link.category_id) IN (" . CATEGORY_PROJECT . ", " . CATEGORY_RESEARCH . ") 
+							WHEN '1' 
+							THEN project.duration_from 
+							END DESC,
+						CASE 
+							WHEN MIN(offer_date.date_from) IS NOT NULL #TODO – AND MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
+							THEN MIN(offer_date.date_from)
+							ELSE MIN(offer_i18n.title)
+							END,	
+						MIN(offer_i18n.title) ASC
 				";
 			}
 		}
+
 
 		// Limit query
 		$limit_sql = "";
@@ -848,7 +903,7 @@ class ParksModel
 
 			// Get dates
 			$offer->dates = [];
-			if (($map_mode == false) || (($map_mode == true) && in_array($offer->root_category, array(CATEGORY_EVENT, CATEGORY_RESEARCH)))) {
+			if (($map_mode == false) || (($map_mode == true) && in_array($offer->root_category, [CATEGORY_EVENT, CATEGORY_RESEARCH]))) {
 				$q_dates = $this->api->db->get(
 					'offer_date',
 					array('offer_id' => $offer->offer_id),
@@ -1077,10 +1132,8 @@ class ParksModel
 				}
 			}
 
-			// Project
-			else if ($offer->root_category == CATEGORY_PROJECT) {
-
-				// Project status
+			// Project and research
+			else if (in_array($offer->root_category, [CATEGORY_PROJECT, CATEGORY_RESEARCH])) {
 				$offer->project_status = $offer->status;
 			}
 
@@ -1112,7 +1165,9 @@ class ParksModel
 				$q_linked_routes = $this->api->db->query("
 					SELECT `offer_id`
 					FROM `activity`
-					WHERE `poi` LIKE '%" . $offer->offer_id . ",%'
+					WHERE 
+						`poi` LIKE '" . $offer->offer_id . ",%'
+						OR `poi` LIKE '%," . $offer->offer_id . ",%'
 				");
 				if (mysqli_num_rows($q_linked_routes) > 0) {
 					while ($linked_route = mysqli_fetch_assoc($q_linked_routes)) {
@@ -1158,7 +1213,7 @@ class ParksModel
 	 *
 	 * @access public
 	 * @param int $category_id
-	 * @return mixed
+	 * @return array
 	 */
 	public function get_category_path($category_id)
 	{
@@ -1174,7 +1229,7 @@ class ParksModel
 			return $path;
 		}
 
-		return false;
+		return [];
 	}
 
 
@@ -1185,7 +1240,7 @@ class ParksModel
 	 * @access public
 	 * @return array
 	 */
-	public function get_all_categories($filter = array())
+	public function get_all_categories($filter = [])
 	{
 		$q_categories_string = "
 			SELECT
@@ -1257,8 +1312,16 @@ class ParksModel
 		$q_category_links = $this->api->db->query("SELECT category_id FROM category_link GROUP BY category_link.category_id");
 
 		if (mysqli_num_rows($q_category_links) > 0) {
+			
 			// Add main categories
-			$category_links = array(CATEGORY_EVENT, CATEGORY_PRODUCT, CATEGORY_BOOKING, CATEGORY_ACTIVITY, CATEGORY_RESEARCH);
+			$category_links = [
+				CATEGORY_EVENT,
+				CATEGORY_PRODUCT,
+				CATEGORY_BOOKING,
+				CATEGORY_ACTIVITY,
+				CATEGORY_PROJECT,
+				CATEGORY_RESEARCH
+			];
 
 			while ($row = mysqli_fetch_object($q_category_links)) {
 				$category_links[] = $row->category_id;
@@ -1279,7 +1342,7 @@ class ParksModel
 	 * @param array $filter
 	 * @return mixed
 	 */
-	public function get_all_users($categories = array(), $filter = array())
+	public function get_all_users($categories = [], $filter = [])
 	{
 		if (empty($categories)) {
 			$categories = $this->get_all_category_links();
@@ -1293,7 +1356,6 @@ class ParksModel
 				LEFT JOIN `event` ON `event`.`offer_id` = `offer`.`offer_id`
 				WHERE category_link.category_id IN (" . implode(",", $categories) . ")";
 		}
-		$query .= $this->_prepare_additional_infos($filter);
 		$query .= " GROUP BY park_id ORDER BY park ASC";
 		$q_users = $this->api->db->query($query);
 
@@ -1516,6 +1578,36 @@ class ParksModel
 
 
 	/**
+	 * Get municipalities
+	 * 
+	 * @return array
+	 */
+	public function get_municipalities()
+	{
+		// First get the municipalities
+		$q_municipalities = $this->api->db->get('municipality');
+
+		// Return empty array if there are no municipalities
+		if (mysqli_num_rows($q_municipalities) <= 0) {
+			return [];
+		}
+		
+		// Format municipalities
+		$municipalities = [];
+		while ($row = mysqli_fetch_array($q_municipalities)) {
+			$municipalities[$row['municipality_id']] = $row['municipality'];
+		}
+
+		// Sort municipalities by name
+		asort($municipalities);
+
+		// Return municipalities
+		return $municipalities;
+	}
+
+
+
+	/**
 	 * Private method for retrieving the root category
 	 *
 	 * @param int $category_id
@@ -1565,8 +1657,9 @@ class ParksModel
 	private function _prepare_additional_infos($filter)
 	{
 		$additional_query = '';
-		if (is_array($filter) && ! empty($filter)) {
+		if (! empty($filter) && is_array($filter)) {
 			foreach ($filter as $key => $value) {
+
 				if (! is_array($value) && ! empty($value)) {
 					$key = str_replace('offers_', '', $key);
 					if (! empty($key) && is_string($key)) {
@@ -1576,6 +1669,7 @@ class ParksModel
 								$additional_query .= " AND `offer`.`keywords` LIKE '%" . $value . "%'";
 								break;
 
+							case 'filter_hints':
 							case 'offers_filter_hints':
 								$additional_query .= " AND `offer`.`is_hint` = '" . $value . "'";
 								break;
@@ -1587,10 +1681,7 @@ class ParksModel
 							case 'search':
 							case 'order_by':
 							case 'has_accessibility_informations':
-								break;
-
-							case 'filter_hints':
-								$additional_query .= " AND `offer`.`is_hint` = '" . $value . "'";
+							case 'online_shop_enabled':
 								break;
 
 							case 'is_park_event':
@@ -1638,10 +1729,12 @@ class ParksModel
 
 		// Get accessiblity options
 		$select_result = $this->api->db->query("
-			SELECT *
+			SELECT 
+				`icon_url`, 
+				MIN(`description_" . $this->api->lang->lang_id . "`) AS `description`
 			FROM `accessibility_rating`
 			GROUP BY `icon_url`
-			ORDER BY `description_" . $this->api->lang->lang_id . "`
+			ORDER BY `description`
 		");
 
 		// Populate accessibilities
@@ -1649,7 +1742,7 @@ class ParksModel
 			$accessibilites[GINTO_INFOS_AVAILABLE] = $this->api->lang->get('offer_accessibility_available');
 			while ($row = mysqli_fetch_array($select_result)) {
 				if (in_array($row['icon_url'], $filter_options)) {
-					$accessibilites[$row['icon_url']] = $row['description' . '_' . $this->api->lang->lang_id];
+					$accessibilites[$row['icon_url']] = $row['description'];
 				}
 			}
 		}

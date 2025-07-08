@@ -219,7 +219,7 @@ $lang['offer_accessibility_available'] = 'Informations d\'accessibilité OK:GO d
 */
 $lang['offer_title_event'] = "Organisation des donn&eacute;es";
 $lang['offer_add_date'] = "Ajouter un nouveau rendez-vous";
-$lang['offer_event_location'] = "Lieu d'organisation";
+$lang['offer_event_location'] = "Lieu de l'évènement";
 $lang['offer_event_organiser'] = "Organisateur";
 $lang['offer_subscription'] = "Inscription";
 $lang['offer_subscription_mandatory'] = "Inscription n&eacute;cessaire";
@@ -315,20 +315,13 @@ $lang['offer_elevation_profile'] = '<strong>Profil d’altitude</strong> voir la
 */
 $lang['offer_project'] = "Projet";
 $lang['offer_project_duration'] = "Durée du projet";
+$lang['offer_project_no_duration'] = "Aucun terme particulier";
 $lang['offer_project_status'] = "État du projet";
-$lang['offer_project_responsibility'] = "Responsabilité du projet";
-$lang['offer_project_links'] = "Concaténations";
-$lang['offer_project_poi'] = "Concaténations avec des projets et offres";
+$lang['offer_project_links'] = "Offres reliées";
+$lang['offer_project_poi'] = "Offres reliées avec des projets et offres";
 $lang['offer_project_initial_situation'] = 'Situation de départ';
 $lang['offer_project_goal'] = 'Objectif';
 $lang['offer_project_further_information'] = 'Informations complémentaires';
-
-
-/*
-| Insert mask 6: research
-*/
-$lang['offer_research'] = "Projet de recherche";
-$lang['offer_research_responsibility'] = "Responsabilité du projet de recherche";
 
 
 /*
@@ -425,6 +418,7 @@ $lang['general_from'] = "du";
 $lang['offer_park_single'] = "Parc";
 $lang['general_search'] = "Chercher";
 $lang['offer_arrival'] = "L'arrivée";
+$lang['offer_municipalities_all'] = "Toutes les communes";
 
 
 /*

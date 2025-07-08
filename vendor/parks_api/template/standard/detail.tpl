@@ -54,7 +54,7 @@ OFFER_KEYWORDS
 
 Language variables can be printed: __LANG[name]__
 
-Conditions available: OFFER_EVENT, OFFER_PRODUCT, OFFER_BOOKING, OFFER_ACTIVITY, OFFER_PROJECT, OFFER_RESEARCH
+Conditions available: OFFER_EVENT, OFFER_PRODUCT, OFFER_BOOKING, OFFER_ACTIVITY, OFFER_PROJECT
 Check condition: [OFFER_EVENT@start] This text is rendered based on the condition [OFFER_PRODUCT@stop]
 
 Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@stop]
@@ -75,9 +75,7 @@ Check if placeholder is not set [NOTISSET(OFFER_PRODUCT_DETAIL)@start] [NOTISSET
 			[OFFER_BOOKING@stop]
 		[ISSET(OFFER_SUBSCRIPTION)@stop]
 
-		[NOTISSET(OFFER_PRODUCT_DETAIL)@start]
-			<li data="tab_4" role="tab" aria-controls="tab_4">__LANG[offer_map]__</li>
-		[NOTISSET(OFFER_PRODUCT_DETAIL)@stop]
+		<li data="tab_4" role="tab" aria-controls="tab_4">__LANG[offer_map]__</li>
 
 		[ISSET(OFFER_POI_LIST)@start]
 			<li data="tab_5" role="tab" aria-controls="tab_5">
@@ -111,8 +109,8 @@ Check if placeholder is not set [NOTISSET(OFFER_PRODUCT_DETAIL)@start] [NOTISSET
 	<div class="tab_content tab_content_1">
 		<h1>__OFFER_TITLE__</h1>
 		<div class="categories">__OFFER_CATEGORIES__</div>
-		__OFFER_IMAGES__
 		__OFFER_DESCRIPTION__
+		__OFFER_IMAGES__
 		<div class="cf"></div>
 	</div>
 
@@ -139,10 +137,6 @@ Check if placeholder is not set [NOTISSET(OFFER_PRODUCT_DETAIL)@start] [NOTISSET
 			[OFFER_PROJECT@start]
 				__OFFER_PROJECT_DETAIL__
 			[OFFER_PROJECT@stop]
-
-			[OFFER_RESEARCH@start]
-				__OFFER_RESEARCH_DETAIL__
-			[OFFER_RESEARCH@stop]
 
 			[ISSET(OFFER_INTERNAL_INFOS)@start]
 				__OFFER_INTERNAL_INFOS__

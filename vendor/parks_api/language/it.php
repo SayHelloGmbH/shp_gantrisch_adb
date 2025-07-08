@@ -317,20 +317,13 @@ $lang['offer_elevation_profile'] = '<strong>Profilo di elevazione</strong> vedi 
 */
 $lang['offer_project'] = "Progretto";
 $lang['offer_project_duration'] = "Durata del progetto";
+$lang['offer_project_no_duration'] = "Nessun particolare termine";
 $lang['offer_project_status'] = "Stato del progetto";
-$lang['offer_project_responsibility'] = "Responsabilità del progetto";
 $lang['offer_project_links'] = "Concatenamenti";
 $lang['offer_project_poi'] = "Concatenamenti con progetti e offerte";
 $lang['offer_project_initial_situation'] = 'Situazione iniziale';
 $lang['offer_project_goal'] = 'Obiettivo';
 $lang['offer_project_further_information'] = 'Ulteriori informazioni';
-
-
-/*
-| Insert mask 6: research
-*/
-$lang['offer_research'] = "Progetto di ricerca";
-$lang['offer_research_responsibility'] = "Responsabilità del progetto di ricerca";
 
 
 /*
@@ -426,7 +419,7 @@ $lang['general_from'] = "da";
 $lang['offer_park_single'] = "Parco";
 $lang['general_search'] = "Cerca";
 $lang['offer_arrival'] = "L'arrivo";
-
+$lang['offer_municipalities_all'] = "Tutti i comuni";
 
 /*
 | Internal informations
