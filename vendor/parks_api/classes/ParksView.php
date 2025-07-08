@@ -2809,7 +2809,7 @@ class ParksView
 				foreach ($offer->categories as $category) {
 					$path = $this->api->model->get_category_path($category->parent_id);
 
-					if (count($path) > $current_level) {
+					if (is_array($path) && count($path) > $current_level) {
 						$offer_category_group = $all_categories[reset($path)];
 						$offer_category = $category;
 						$current_level = count($path);
