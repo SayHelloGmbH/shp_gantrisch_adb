@@ -21,6 +21,33 @@ class ParksMigration
 
 
 	/**
+	 * API releases
+	 */
+	private $releases = [
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		9, 9.1,
+		10,
+		11,
+		12,
+		13,
+		14,
+		15,
+		16,
+		17,
+		18,
+		19,
+		20,
+		21, 21.1,
+	];
+
+
+	/**
 	 * Migration version from
 	 */
 	private $version_from;
@@ -61,14 +88,16 @@ class ParksMigration
 
 		// Version from
 		$query_api = mysqli_fetch_assoc($this->api->db->get('api'));
-		$this->version_from = intval($query_api['version']);
+		$this->version_from = floatval($query_api['version']);
 
 		// Version to
 		$this->version_to = API_VERSION;
 
-		// Migrate all versions
-		for ($version = ($this->version_from + 1); $version <= $this->version_to; $version++) {
-			$this->migrate_to($version);
+		// Update by releases
+		foreach ($this->releases as $release) {
+			if ($release > $this->version_from) {
+				$this->migrate_to($release);
+			}
 		}
 
 	}
@@ -1028,6 +1057,9 @@ class ParksMigration
 
 			// Update db version
 			$this->api->db->query("UPDATE `api` SET `version` = " . $version_to . " LIMIT 1;");
+
+			// Log migration
+			$this->api->log_migration();
 
 			// Show message
 			$message = 'Migration to version ' . $version_to . ' successfully finished.';

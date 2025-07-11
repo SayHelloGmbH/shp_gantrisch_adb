@@ -188,59 +188,102 @@ class ParksModel
 				MIN(offer_date.date_from) AS date_from,
 				MAX(offer_date.date_to) AS date_to,
 				main_offer.offer_id,
-				MIN(category_link.category_id) AS main_category_id,
+				
+				MIN(
+					CASE
+						WHEN c3.category_id IS NOT NULL THEN c3.category_id
+						WHEN c2.category_id IS NOT NULL THEN c2.category_id
+						WHEN c1.category_id IS NOT NULL THEN c1.category_id
+						ELSE NULL
+					END
+				) AS main_category_id,
 
-				CASE MIN(category_link.category_id)
+				CASE 
+					MIN(
+						CASE
+							WHEN c3.category_id IS NOT NULL THEN c3.category_id
+							WHEN c2.category_id IS NOT NULL THEN c2.category_id
+							WHEN c1.category_id IS NOT NULL THEN c1.category_id
+							ELSE NULL
+						END
+					)
 					WHEN " . CATEGORY_EVENT . " THEN event.public_transport_stop
 					WHEN " . CATEGORY_PRODUCT . " THEN product.public_transport_stop
 					WHEN " . CATEGORY_BOOKING . " THEN booking.public_transport_stop
 				END AS public_transport_stop,
 			
-				CASE MIN(category_link.category_id)
+				CASE 
+					MIN(
+						CASE
+							WHEN c3.category_id IS NOT NULL THEN c3.category_id
+							WHEN c2.category_id IS NOT NULL THEN c2.category_id
+							WHEN c1.category_id IS NOT NULL THEN c1.category_id
+							ELSE NULL
+						END
+					)
 					WHEN " . CATEGORY_PRODUCT . " THEN product.season_months
 					WHEN " . CATEGORY_ACTIVITY . " THEN activity.season_months
 				END AS season_months,
 
-				" . (! empty($filter_date_from) ?
-					"
-						CASE 
-							WHEN (MIN(offer_date.date_from) < '" . $filter_date_from . "') AND (MIN(category_link.category_id) = " . CATEGORY_EVENT . ") 
-								THEN '" . $filter_date_from . "'
-							WHEN MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
-								THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
-							ELSE 
-								MIN(offer_i18n.title)
-						END AS start_date,
-					"
-					:
-					"
-						CASE 
-							WHEN (MIN(offer_date.date_from) < NOW()) AND (MIN(category_link.category_id) = " . CATEGORY_EVENT . ") 
-								THEN CURDATE()
-							WHEN MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
-								THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
-							ELSE 
-								MIN(offer_i18n.title)
-						END AS start_date,
-					"
-				) . "	
+				CASE 
+					WHEN 
+						MIN(
+							CASE
+								WHEN c3.category_id IS NOT NULL THEN c3.category_id
+								WHEN c2.category_id IS NOT NULL THEN c2.category_id
+								WHEN c1.category_id IS NOT NULL THEN c1.category_id
+								ELSE NULL
+							END
+						) = " . CATEGORY_EVENT . "
+						AND MIN(offer_date.date_from) < " . (! empty($filter_date_from) ? "'" . $filter_date_from . "'" : "NOW()") . "
+						AND MIN(offer_date.date_from) IS NOT NULL
+						THEN " . (! empty($filter_date_from) ? "'" . $filter_date_from . "'" : "CURDATE()") . "
+					WHEN 
+						MIN(
+							CASE
+								WHEN c3.category_id IS NOT NULL THEN c3.category_id
+								WHEN c2.category_id IS NOT NULL THEN c2.category_id
+								WHEN c1.category_id IS NOT NULL THEN c1.category_id
+								ELSE NULL
+							END
+						) = " . CATEGORY_EVENT . "
+						THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
+					ELSE 
+						MIN(offer_i18n.title)
+				END AS start_date,	
 
 				TIMESTAMPDIFF(hour, MIN(offer_date.date_from), MAX(offer_date.date_to)) AS duration,
 				IFNULL( DATEDIFF(MAX(offer_date.date_to), MIN(offer_date.date_from) ), 0) AS date_difference,
 
 				CASE 
-					WHEN (MIN(offer_date.date_from) IS NOT NULL) 
+					WHEN 
+						MIN(offer_date.date_from) IS NOT NULL
 						AND (
 							DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d') = DATE_FORMAT(MAX(offer_date.date_to), '%Y-%m-%d')
 							OR MAX(offer_date.date_to) = '0000-00-00 00:00:00'
 							OR MAX(offer_date.date_to) IS NULL
 						)
-						AND MIN(category_link.category_id) = " . CATEGORY_EVENT . "
+						AND MIN(
+							CASE
+								WHEN c3.category_id IS NOT NULL THEN c3.category_id
+								WHEN c2.category_id IS NOT NULL THEN c2.category_id
+								WHEN c1.category_id IS NOT NULL THEN c1.category_id
+								ELSE NULL
+							END
+						) = " . CATEGORY_EVENT . "
 					THEN GROUP_CONCAT(DISTINCT DATE_FORMAT(offer_date.date_from, '%H:%i'), ' - ', DATE_FORMAT(offer_date.date_to, '%H:%i'))
 					ELSE ''
 				END AS times,
 
-				CASE MIN(category_link.category_id)
+				CASE 
+					MIN(
+						CASE
+							WHEN c3.category_id IS NOT NULL THEN c3.category_id
+							WHEN c2.category_id IS NOT NULL THEN c2.category_id
+							WHEN c1.category_id IS NOT NULL THEN c1.category_id
+							ELSE NULL
+						END
+					)
 					WHEN " . CATEGORY_ACTIVITY . " THEN activity.poi
 					WHEN " . CATEGORY_PROJECT . " THEN project.poi
 				END AS poi,
@@ -275,6 +318,9 @@ class ParksModel
 		$join = "
 			INNER JOIN offer_i18n ON main_offer.offer_id = offer_i18n.offer_id
 			INNER JOIN category_link ON category_link.offer_id = main_offer.offer_id
+			INNER JOIN category c1 ON c1.category_id = category_link.category_id
+			LEFT JOIN category c2 ON c1.parent_id = c2.category_id
+			LEFT JOIN category c3 ON c2.parent_id = c3.category_id
 		";
 
 		// Left joins
@@ -773,20 +819,39 @@ class ParksModel
 				$order_by = "
 					ORDER BY
 						is_hint DESC, 
-						CASE MIN(category_link.category_id) IN (" . CATEGORY_PROJECT . ", " . CATEGORY_RESEARCH . ") 
-							WHEN '1' 
+						CASE
+							WHEN 
+								MIN(
+									CASE
+										WHEN c3.category_id IS NOT NULL THEN c3.category_id
+										WHEN c2.category_id IS NOT NULL THEN c2.category_id
+										WHEN c1.category_id IS NOT NULL THEN c1.category_id
+										ELSE NULL
+									END
+								) IN (" . CATEGORY_PROJECT . ", " . CATEGORY_RESEARCH . ")
 							THEN project.duration_from 
+							ELSE NULL
 							END DESC,
 						CASE 
-							WHEN MIN(offer_date.date_from) IS NOT NULL #TODO – AND MIN(category_link.category_id) = " . CATEGORY_EVENT . " 
+							WHEN 
+								MIN(offer_date.date_from) IS NOT NULL 
+								AND 
+								MIN(
+									CASE
+										WHEN c3.category_id IS NOT NULL THEN c3.category_id
+										WHEN c2.category_id IS NOT NULL THEN c2.category_id
+										WHEN c1.category_id IS NOT NULL THEN c1.category_id
+										ELSE NULL
+									END
+								) = " . CATEGORY_EVENT . " 
 							THEN MIN(offer_date.date_from)
 							ELSE MIN(offer_i18n.title)
-							END,	
+							END,
 						MIN(offer_i18n.title) ASC
 				";
 			}
-		}
 
+		}
 
 		// Limit query
 		$limit_sql = "";
@@ -1349,7 +1414,10 @@ class ParksModel
 		}
 
 		// Get all users
-		$query = "SELECT park_id, park FROM offer";
+		$query = "
+			SELECT park_id, MIN(park) AS park 
+			FROM offer
+		";
 		if (is_array($categories) && ! empty($categories)) {
 			$query .= "
 				INNER JOIN category_link ON offer.offer_id = category_link.offer_id
@@ -1362,7 +1430,7 @@ class ParksModel
 		// No results: check single categories
 		if (is_array($categories) && (count($categories) == 1) && mysqli_num_rows($q_users) == 0) {
 			$query = "
-				SELECT park_id, park
+				SELECT park_id, MIN(park) AS park
 				FROM offer
 				INNER JOIN category_link ON offer.offer_id = category_link.offer_id
 

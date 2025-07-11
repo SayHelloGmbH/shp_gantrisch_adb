@@ -1666,7 +1666,7 @@ class ParksView
 		}
 
 		// Project and research fields
-		if (in_array($offer->root_category, [CATEGORY_PROJECT, CATEGORY_RESEARCH])) {
+		if (in_array($offer->root_category, [CATEGORY_PROJECT, CATEGORY_RESEARCH]) && empty($long_description)) {
 			$description .= ! empty($offer->project_initial_situation) ? '<h2>' . $this->api->lang->get('offer_project_initial_situation') . '</h2><p class="description">' . output_text($offer->project_initial_situation) . '</p>' : '';
 			$description .= ! empty($offer->project_goal) ? '<h2>' . $this->api->lang->get('offer_project_goal') . '</h2><p class="description">' . output_text($offer->project_goal) . '</p>' : '';
 			$description .= ! empty($offer->project_further_information) ? '<h2>' . $this->api->lang->get('offer_project_further_information') . '</h2><p class="description">' . output_text($offer->project_further_information) . '</p>' : '';

@@ -1921,7 +1921,7 @@ class ParksAPI
 	 * @param string $url
 	 * @return mixed
 	 */
-	function load_external_xml($url)
+	public function load_external_xml($url)
 	{
 		if ($url != '') {
 
@@ -1953,6 +1953,44 @@ class ParksAPI
 		}
 
 		return false;
+	}
+
+
+
+	/**
+	 * Log migration
+	 * 
+	 * @return bool
+	 */
+	public function log_migration() 
+	{
+
+		// Populate payload
+		$payload = array(
+			'api_version' => API_VERSION,
+			'php_version' => phpversion(),
+			'url' => (! empty($_SERVER['HTTP_HOST']) && ! empty($_SERVER['REQUEST_URI'])) ? $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : 'CLI',
+			'hash' => $this->config['api_hash'] ?? '',
+			'park_id' => $this->config['park_id'] ?? '',
+			'file_path' => __FILE__,
+			'ip' => $_SERVER['REMOTE_ADDR'] ?? ''
+		);
+
+		// Send payload to log server
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://angebote.paerke.ch/migrate/log_api_migration');
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+		curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_REFERER'] ?? '');
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_exec($ch);
+		curl_close($ch);
+
+		return true;
+
 	}
 
 
