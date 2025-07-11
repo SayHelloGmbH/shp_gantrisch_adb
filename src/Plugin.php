@@ -100,6 +100,8 @@ class Plugin
 		register_activation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'activation']);
 		register_deactivation_hook(shp_gantrisch_adb_get_instance()->file, [$this, 'deactivation']);
 
+		require_once("{$this->path}vendor/parks_api/autoload.php");
+
 		// LOADING ORDER IS CRITICAL
 		$this->loadClasses(
 			[

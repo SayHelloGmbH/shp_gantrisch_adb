@@ -5,7 +5,7 @@ namespace SayHello\ShpGantrischAdb\Controller;
 use ParksAPI;
 
 /**
- * Handles generic Api stuff
+ * Handles ADB API stuff
  *
  * @author Say Hello GmbH <hello@sayhello.ch>
  */
@@ -15,7 +15,7 @@ class API
 
 	private $api = null;
 
-	public function getApi()
+	public function getApi(): ParksAPI
 	{
 
 		if ($this->api instanceof ParksAPI) {
