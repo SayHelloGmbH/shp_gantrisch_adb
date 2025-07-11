@@ -1775,6 +1775,12 @@ class ParksAPI
 
 		// Hidden categories on overview and detail page
 		$this->config['hidden_categories'] = array(
+			CATEGORY_EVENT,
+			CATEGORY_PRODUCT,
+			CATEGORY_BOOKING,
+			CATEGORY_ACTIVITY,
+			CATEGORY_PROJECT,
+			CATEGORY_RESEARCH,
 			CATEGORY_GASTRONOMY_AND_ACCOMMODATION,
 			CATEGORY_REGIONAL_PRODUCT,
 			CATEGORY_GASTRONOMY,
