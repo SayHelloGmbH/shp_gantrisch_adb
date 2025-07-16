@@ -55,9 +55,6 @@ class ParksSwissView extends ParksView {
 		// Overwrite bookings
 		$template_data['OFFER_BOOKING_DETAIL'] = $this->_get_detail_booking($offer);
 
-		// Overwrite researches
-		$template_data['OFFER_RESEARCH_DETAIL'] = $this->_get_detail_research($offer);
-
 		return $template_data;
 	}
 
@@ -194,24 +191,6 @@ class ParksSwissView extends ParksView {
 		$template_data['OFFER_ACTIVITY_CATERING'] = trim(parent::_show_text($this->api->lang->get('offer_catering_informations'), $offer->catering_informations, 'block catering_informations'));
 		$template_data['OFFER_ACTIVITY_PRICE'] = trim(parent::_show_text($this->api->lang->get('offer_price'), $offer->price, 'block price'));
 		$template_data['OFFER_ACTIVITY_INFRASTRUCTURE'] = trim(parent::_show_text($this->api->lang->get('offer_infrastructure'), parent::_get_detail_infrastructure($offer), 'block infrastructure'));
-
-		// Compile template data
-		return parent::_compile_output($template_data);
-
-	}
-
-
-	/**
-	 * Get research detail
-	 *
-	 * @access protected
-	 * @param mixed $offer
-	 * @return string
-	 */
-	protected function _get_detail_research($offer) {
-
-		// Load template data
-		$template_data['OFFER_ADDITIONAL_INFO'] = parent::_prepare_additional_infos($offer);
 
 		// Compile template data
 		return parent::_compile_output($template_data);

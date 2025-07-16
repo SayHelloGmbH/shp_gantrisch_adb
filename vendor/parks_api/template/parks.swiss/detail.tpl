@@ -54,7 +54,7 @@ OFFER_KEYWORDS
 
 Language variables can be printed: __LANG[name]__
 
-Conditions available: OFFER_EVENT, OFFER_PRODUCT, OFFER_BOOKING, OFFER_ACTIVITY, OFFER_PROJECT, OFFER_RESEARCH
+Conditions available: OFFER_EVENT, OFFER_PRODUCT, OFFER_BOOKING, OFFER_ACTIVITY, OFFER_PROJECT
 Check condition: [OFFER_EVENT@start] This text is rendered based on the condition [OFFER_PRODUCT@stop]
 
 Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@stop]
@@ -221,10 +221,6 @@ Check if placeholder is set [ISSET(OFFER_PRODUCT)@start] [ISSET(OFFER_PRODUCT)@s
 							</div>
 							[ISSET(OFFER_ACTIVITY_ARRIVAL)@stop]
 						[OFFER_ACTIVITY@stop]
-
-						[OFFER_RESEARCH@start]
-							__OFFER_RESEARCH_DETAIL__
-						[OFFER_RESEARCH@stop]
 
 						[ISSET(OFFER_SUBSCRIPTION)@start]
 						<div class="accordion_element">

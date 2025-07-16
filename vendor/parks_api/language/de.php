@@ -318,20 +318,13 @@ $lang['offer_elevation_profile'] = '<strong>Höhenprofil:</strong> siehe Karte';
 */
 $lang['offer_project'] = "Projekt";
 $lang['offer_project_duration'] = "Projekt-Laufzeit";
+$lang['offer_project_no_duration'] = "Keine bestimmte Laufzeit";
 $lang['offer_project_status'] = "Projektstand";
-$lang['offer_project_responsibility'] = "Verantwortung Projekt";
 $lang['offer_project_links'] = "Verknüpfungen";
 $lang['offer_project_poi'] = "Verknüpfungen mit Projekten und Angeboten";
 $lang['offer_project_initial_situation'] = 'Ausgangslage';
 $lang['offer_project_goal'] = 'Ziel';
 $lang['offer_project_further_information'] = 'Weitere Informationen';
-
-
-/*
-| Insert mask 6: research
-*/
-$lang['offer_research'] = "Forschungsprojekt";
-$lang['offer_research_responsibility'] = "Verantwortung Forschungsprojekt";
 
 
 /*
@@ -425,6 +418,7 @@ $lang['general_from'] = "von";
 $lang['offer_park_single'] = "Park";
 $lang['general_search'] = "Suchen";
 $lang['offer_arrival'] = "Anreise";
+$lang['offer_municipalities_all'] = "Alle Gemeinden";
 
 
 /*

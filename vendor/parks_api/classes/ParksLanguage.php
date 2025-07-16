@@ -72,7 +72,7 @@ class ParksLanguage
 		}
 
 		// Check language labels
-		if (!isset($lang) || ! is_array($lang)) {
+		if (! isset($lang) || ! is_array($lang)) {
 			echo 'Your language file does not appear to be formatted correctly.';
 			exit();
 		}

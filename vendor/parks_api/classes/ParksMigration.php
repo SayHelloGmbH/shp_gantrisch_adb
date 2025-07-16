@@ -21,6 +21,33 @@ class ParksMigration
 
 
 	/**
+	 * API releases
+	 */
+	private $releases = [
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		9, 9.1,
+		10,
+		11,
+		12,
+		13,
+		14,
+		15,
+		16,
+		17,
+		18,
+		19,
+		20,
+		21, 21.1,
+	];
+
+
+	/**
 	 * Migration version from
 	 */
 	private $version_from;
@@ -61,14 +88,16 @@ class ParksMigration
 
 		// Version from
 		$query_api = mysqli_fetch_assoc($this->api->db->get('api'));
-		$this->version_from = intval($query_api['version']);
+		$this->version_from = floatval($query_api['version']);
 
 		// Version to
 		$this->version_to = API_VERSION;
 
-		// Migrate all versions
-		for ($version = ($this->version_from + 1); $version <= $this->version_to; $version++) {
-			$this->migrate_to($version);
+		// Update by releases
+		foreach ($this->releases as $release) {
+			if ($release > $this->version_from) {
+				$this->migrate_to($release);
+			}
 		}
 
 	}
@@ -974,7 +1003,6 @@ class ParksMigration
 
 					$this->api->db->query("ALTER TABLE `field_of_activity_i18n` ADD FOREIGN KEY field_of_activity_id_idxfk (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;"); 
 					$this->api->db->query("ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY offer_id_idxfk_42 (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
-					$this->api->db->query("ALTER TABLE `field_of_activity_link` ADD FOREIGN KEY field_of_activity_id_idxfk_1 (field_of_activity_id) REFERENCES field_of_activity (field_of_activity_id) ON DELETE CASCADE;");
 
 					// New project i18n data
 					$this->api->db->query("ALTER TABLE `offer_i18n` ADD COLUMN `project_initial_situation` TEXT;"); 
@@ -992,12 +1020,46 @@ class ParksMigration
 					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_nutritional_values TEXT;");
 					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_identity_label TEXT;");
 					$this->api->db->query("ALTER TABLE product_article_i18n ADD COLUMN article_quantity_indication TEXT;");
-
 					break;
+
+				/*
+				|--------------------------------------------------------------------------
+				| Migrate to version 21
+				| Municipalities
+				|--------------------------------------------------------------------------
+				|
+				*/
+				case 21:
+
+					$this->api->db->query("
+						CREATE TABLE `municipality`
+						(
+						`municipality_id` INTEGER NOT NULL,
+						`park_id` INTEGER NOT NULL,
+						`municipality` VARCHAR(255) NOT NULL,
+						PRIMARY KEY (`municipality_id`)
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+					");
+
+					$this->api->db->query("
+						CREATE TABLE `offer_municipality_link` (
+						`offer_id` BIGINT NOT NULL,
+						`municipality_id` INTEGER NOT NULL,
+						PRIMARY KEY (`offer_id`,`municipality_id`)
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+					");
+
+					$this->api->db->query("ALTER TABLE offer_municipality_link ADD FOREIGN KEY offer_id_idxfk (offer_id) REFERENCES offer (offer_id) ON DELETE CASCADE;");
+					$this->api->db->query("ALTER TABLE offer_municipality_link ADD FOREIGN KEY municipality_id_idxfk (municipality_id) REFERENCES municipality (municipality_id) ON DELETE CASCADE;");
+					break;
+
 			}
 
 			// Update db version
 			$this->api->db->query("UPDATE `api` SET `version` = " . $version_to . " LIMIT 1;");
+
+			// Log migration
+			$this->api->log_migration();
 
 			// Show message
 			$message = 'Migration to version ' . $version_to . ' successfully finished.';

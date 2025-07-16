@@ -91,9 +91,11 @@ function parks_show_date($date, $lang) {
 function parks_mysql2form($mysql_date) {
 	$return = [];
 
-	$return['date'] = substr($mysql_date, 0, 10);
-	$return['hour'] = substr($mysql_date, 11, 2);
-	$return['minute'] = substr($mysql_date, 14, 2);
+	if (! empty($mysql_date)) {
+		$return['date'] = substr($mysql_date, 0, 10);
+		$return['hour'] = substr($mysql_date, 11, 2);
+		$return['minute'] = substr($mysql_date, 14, 2);
+	}
 
 	return $return;
 }

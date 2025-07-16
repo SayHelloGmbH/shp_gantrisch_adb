@@ -75,43 +75,49 @@ function auto_text_format($string, $first_line_strong = false) {
 
 
 /**
- * Auto-linker
+ * Overwrite Auto-linker:
+ * Include also dash sign at the end of an url (improved regex).
  *
  * Automatically links URL and Email addresses.
  * Note: There's a bit of extra code here to deal with
- * URLs or emails that end in a period.  We'll strip these
- * off and add them after the link.
+ * URLs or emails that end in a period. We'll strip these
+ * Off and add them after the link.
  *
- * @access	public
  * @param	string	the string
  * @param	string	the type: email, url, or both
  * @param	bool	whether to create pop-up links
  * @return	string
  */
-function auto_link($str, $type = 'both', $popup = false) {
+function auto_link($str, $type = 'both', $popup = FALSE) {
+
 	// Find and replace any URLs.
-	if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[a-z0-9]+(-+[a-z0-9]+)*(\.[a-z0-9]+(-+[a-z0-9]+)*)+(/([^\s()<>;]+\w)?/?)?#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+	if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[a-z0-9äöü]+(-+[a-z0-9äöü]+)*(\.[a-z0-9äöü]+(-+[a-z0-9äöü]+)*)+(/([^\s()<>;]+\w)?/?)?#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER))
+	{
 		// Set our target HTML if using popup links.
 		$target = ($popup) ? ' target="_blank" rel="noopener"' : '';
 
 		// We process the links in reverse order (last -> first) so that
-		// The returned string offsets from preg_match_all() are not
-		// Moved as we add more HTML.
-		foreach (array_reverse($matches) as $match) {
+		// the returned string offsets from preg_match_all() are not
+		// moved as we add more HTML.
+		foreach (array_reverse($matches) as $match)
+		{
 			// $match[0] is the matched string/link
 			// $match[1] is either a protocol prefix or 'www.'
 			//
 			// With PREG_OFFSET_CAPTURE, both of the above is an array,
-			// Where the actual value is held in [0] and its offset at the [1] index.
+			// where the actual value is held in [0] and its offset at the [1] index.
 			$a = '<a href="'.(strpos($match[1][0], '/') ? '' : 'http://').$match[0][0].'"'.$target.'>'.$match[0][0].'</a>';
 			$str = substr_replace($str, $a, $match[0][1], strlen($match[0][0]));
 		}
 	}
 
 	// Find and replace any emails.
-	if ($type !== 'url' && preg_match_all('#([\w\.\-\+]+@[a-z0-9\-]+\.[a-z0-9\-\.]+[^[:punct:]\s])#i', $str, $matches, PREG_OFFSET_CAPTURE)) {
-		foreach (array_reverse($matches[0]) as $match) {
-			if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== false) {
+	if ($type !== 'url' && preg_match_all('#([\w\.\-\+]+@[a-z0-9\-]+\.[a-z0-9\-\.]+[^[:punct:]\s])#i', $str, $matches, PREG_OFFSET_CAPTURE))
+	{
+		foreach (array_reverse($matches[0]) as $match)
+		{
+			if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== FALSE)
+			{
 				$str = substr_replace($str, safe_mailto($match[0]), $match[1], strlen($match[0]));
 			}
 		}
@@ -243,7 +249,7 @@ else document.write(unescape(l[i]));}
  * @param array $options
  * @return string
  */
-function url_slug($str, $options = array()) {
+function url_slug($str, $options = []) {
 	// Make sure string is in UTF-8 and strip invalid UTF-8 characters
 	$str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
 
@@ -351,4 +357,38 @@ function url_slug($str, $options = array()) {
 function ucfirst_utf8($str) {
   $a = mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8');
   return $a . mb_substr($str, 1, null, 'UTF-8');
+}
+
+
+
+/**
+ * Check if string contains html tags
+ * 
+ * @param string $string
+ * @return bool
+ */
+function contains_html_tags($string) {
+    return strlen($string) != strlen(strip_tags($string));
+}
+
+
+
+/**
+ * Output text with or without html tags
+ * 
+ * @param string $text
+ * @return string
+ */
+function output_text($text) {
+
+	// Text with html tags
+    if (contains_html_tags($text)) {
+		return $text;
+	}
+
+	// Text without html tags
+	else {
+		return auto_link(nl2br($text), 'both', true);
+	}
+
 }

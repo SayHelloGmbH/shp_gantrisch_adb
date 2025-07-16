@@ -68,7 +68,8 @@ $config['seo_url_page_slug'] = 'page';
 $config['seo_url_reset_slug'] = 'reset';
 
 
-/*|--------------------------------------------------------------------------
+/*
+|--------------------------------------------------------------------------
 | MySQL Database
 |--------------------------------------------------------------------------
 |
@@ -86,7 +87,8 @@ $config['db_database'] = $GLOBALS['ADBAPI']['DB_NAME'];
 |--------------------------------------------------------------------------
 | Custom view
 |--------------------------------------------------------------------------
-|| Set your custom view, located in your "custom" folder.
+|
+| Set your custom view, located in your "custom" folder.
 | example: "MyView"
 |
 */
@@ -156,13 +158,15 @@ $config['show_button_in_overview'] = false;
 $config['poi_listing_link_target'] = '';
 $config['heading_offer_title_in_overview'] = 'h3';
 $config['show_accessibility_filter'] = true;
+$config['show_municipality_filter'] = true;
 
 
 /*
 |--------------------------------------------------------------------------
 | Keyword filter
 |--------------------------------------------------------------------------
-|| Set keywords for the optinally keyword filter.
+|
+| Set keywords for the optinally keyword filter.
 | The first entry is the title of the filter, the second entry is the label to show all entries.
 |
 | Example:
