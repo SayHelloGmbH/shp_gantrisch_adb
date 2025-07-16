@@ -34,7 +34,10 @@ blocks.forEach((block) => {
 	}
 
 	// First remove the total count and hide all entries
-	block.querySelector('#offer_total').remove();
+	if (block.querySelector('#offer_total')) {
+		block.querySelector('#offer_total').remove();
+	}
+
 	block.querySelectorAll(`.${entry_class}:nth-child(n+${initial_count + 1})`).forEach((element) => {
 		element.classList.add('is--hidden');
 	});
