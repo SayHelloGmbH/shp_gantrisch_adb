@@ -38,9 +38,10 @@ class Rewrites
 	public function endpointVars($vars)
 	{
 
-		$offer_id = preg_replace('/[^0-9]/', '', trim($vars[$this->var_key] ?? ''));
+		preg_match('/\b(\d{3,6})\b/', $vars[$this->var_key] ?? '', $matches);
+		$offer_id = $matches[1] ?? '';
 
-		if (!empty($offer_id)) {
+		if (!empty($offer_id) && is_numeric($offer_id)) {
 			$vars['adb_offer_id'] = $offer_id;
 		}
 
