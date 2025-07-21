@@ -35,8 +35,6 @@ $config = [];
 | put your Hashkey in here.
 |
 */
-
-// Using get_option because we can't use ACF get_field at the point when this code is loaded
 $config['api_hash'] = $GLOBALS['ADBAPI']['api_hash'];
 
 
@@ -48,8 +46,6 @@ $config['api_hash'] = $GLOBALS['ADBAPI']['api_hash'];
 | Set your park ID here.
 |
 */
-
-// Using get_option because we can't use ACF get_field at the point when this code is loaded
 $config['park_id'] = (int) $GLOBALS['ADBAPI']['park_id'];
 
 
