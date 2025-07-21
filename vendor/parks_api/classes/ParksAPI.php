@@ -1960,14 +1960,15 @@ class ParksAPI
 	/**
 	 * Log migration
 	 * 
+	 * @param int $version_to
 	 * @return bool
 	 */
-	public function log_migration() 
+	public function log_migration($version_to) 
 	{
 
 		// Populate payload
 		$payload = array(
-			'api_version' => API_VERSION,
+			'api_version' => ($version_to > 0 ? $version_to : API_VERSION),
 			'php_version' => phpversion(),
 			'url' => (! empty($_SERVER['HTTP_HOST']) && ! empty($_SERVER['REQUEST_URI'])) ? $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : 'CLI',
 			'hash' => $this->config['api_hash'] ?? '',

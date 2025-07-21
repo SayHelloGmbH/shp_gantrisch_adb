@@ -944,6 +944,16 @@ class ParksView
 						$output .= '<span class="date">' . parks_show_date(['date_from' => $offer->date_from, 'date_to' => $offer->date_to, 'times' => $offer->times], $this->api->lang) . '</span>';
 					}
 
+					// Show project and research duration
+					if (in_array($offer->root_category, [CATEGORY_PROJECT, CATEGORY_RESEARCH])) {
+						$duration = $this->_prepare_project_duration($offer->duration_from, $offer->duration_to, $offer->duration_from_month, $offer->duration_to_month, true);
+						if (! empty($duration)) {
+							$output .= '
+								<span class="date">' . $duration . '</span>
+							';
+						}
+					}
+
 					// Offer description
 					if (! empty($this->config['show_short_description_in_overview'])) {
 						$output .= '<p class="offer_description offer_description_short"' . $lang_attr . '>';
@@ -2332,9 +2342,20 @@ class ParksView
 				}
 			}
 
-			// History back button, referrer is set
-			elseif (! empty($_SERVER['HTTP_REFERER']) && strstr($_SERVER['HTTP_REFERER'], $this->script_url) && !strstr($_SERVER['HTTP_REFERER'], '?offer=')) {
-				// Javascript back button
+			// History back button to referer page
+			elseif (
+				! empty($_SERVER['HTTP_REFERER']) 
+				&& 
+				(
+					! empty($_GET['force_back_to_referer'])
+					||
+					(
+						strstr($_SERVER['HTTP_REFERER'], $this->script_url)
+						&&
+						! strstr($_SERVER['HTTP_REFERER'], '?offer=')
+					)
+				)
+			) {
 				$template_data['OFFER_BACK_LINK'] = '<a class="go_back back_to_overview" href="javascript:void(0);" title="' . $this->api->lang->get('offer_link_back_to_offers') . '"><i aria-hidden="true">c</i><span>' . $this->api->lang->get('back_to_overview') . '</span></a>';
 			}
 
@@ -3260,9 +3281,10 @@ class ParksView
 	 * @param int $to_year
 	 * @param int $from_month
 	 * @param int $to_month
+	 * @param bool $is_overview
 	 * @return string
 	 */
-	protected function _prepare_project_duration($from_year, $to_year, $from_month = null, $to_month = null)
+	protected function _prepare_project_duration($from_year, $to_year, $from_month = null, $to_month = null, $is_overview = false)
 	{
 		$output = '';
 
@@ -3271,11 +3293,23 @@ class ParksView
 			// Output if year is not the same:
 			// => «From {M} {Y} until {M} {Y}»
 			if ($from_year != $to_year) {
-				$output .= $this->api->lang->get('offer_from') . ' <strong>';
+
+				if (! $is_overview) {
+					$output .= $this->api->lang->get('offer_from') . ' ';
+				}
+
+				$output .= '<strong>';
+
 				if ($from_month > 0) {
 					$output .= $this->api->lang->get('month_long_' . $from_month) . ' ';
 				}
-				$output .= $from_year . '</strong> ' . $this->api->lang->get('offer_to') . ' <strong>';
+
+				if ($is_overview) {
+					$output .= $from_year . ' – ';
+				} else {
+					$output .= $from_year . '</strong> ' . $this->api->lang->get('offer_to') . ' <strong>';
+				}
+
 				if ($to_month > 0) {
 					$output .= $this->api->lang->get('month_long_' . $to_month) . ' ';
 				}
@@ -3286,7 +3320,10 @@ class ParksView
 			// => «From {M} until {M} {Y}»
 			else {
 				if (($from_month > 0) && ($to_month > 0) && ($from_month != $to_month)) {
-					$output .= $this->api->lang->get('offer_from') . ' <strong>' . $this->api->lang->get('month_long_' . $from_month) . ' ' . $this->api->lang->get('offer_to') . ' ' . $this->api->lang->get('month_long_' . $to_month) . ' ' . $from_year . '</strong>';
+					if (! $is_overview) {
+						$output .= $this->api->lang->get('offer_from') . ' ';
+					}
+					$output .= '<strong>' . $this->api->lang->get('month_long_' . $from_month) . ' ' . $this->api->lang->get('offer_to') . ' ' . $this->api->lang->get('month_long_' . $to_month) . ' ' . $from_year . '</strong>';
 				} else {
 					$output .= '<strong>';
 					if ($from_month > 0) {
@@ -3295,13 +3332,17 @@ class ParksView
 					$output .= $from_year . '</strong>';
 				}
 			}
-		} else {
+		} else if ($is_overview == false) {
 			$output = $this->api->lang->get('offer_project_no_duration');
 		}
 
 		// Return string
 		if (! empty($output)) {
-			return $this->_show_text($this->api->lang->get('offer_project_duration'), $output, 'block project_duration');
+			if ($is_overview == false) {
+				return $this->_show_text($this->api->lang->get('offer_project_duration'), $output, 'block project_duration');
+			} else {
+				return $output;
+			}
 		}
 
 		return '';
@@ -3447,7 +3488,7 @@ class ParksView
 	 * @param int $poi (default: NULL)
 	 * @return string
 	 */
-	public function get_seo_detail_url($offer_id, $title, $poi = NULL)
+	public function get_seo_detail_url($offer_id = 0, $title = '', $poi = NULL, $include_script_url = true)
 	{
 
 		// Get detail slugs
@@ -3482,7 +3523,11 @@ class ParksView
 		}
 
 		// Set url
-		$url = $script_url . $detail_slug . '/' . $title_slug . '-' . $offer_id . $poi;
+		if ($include_script_url == true) {
+			$url = $script_url . $detail_slug . '/' . $title_slug . '-' . $offer_id . $poi;
+		} else {
+			$url = '/' . $detail_slug . '/' . $title_slug . '-' . $offer_id . $poi;
+		}
 
 		// Clean url from double slashes
 		$url = str_replace('//', '/', $url);

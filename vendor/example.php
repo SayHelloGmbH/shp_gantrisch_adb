@@ -9,28 +9,33 @@
 |
 */
 
+// Set current language
+$language = 'de';
+
 // Include API
 require_once('parks_api/autoload.php');
 
 // Initialize API with default language and optional with an alternative hash
-$api = new ParksAPI('de');
+$api = new ParksAPI($language);
 
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="<?= $language ?>">
 <head>
+	
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<title>parks.swiss API Example</title>
+	
+	<!-- jQuery: Required for the map only (will be deprecated in next API version) -->
+	<script src="https://angebote.paerke.ch/assets/dist/v21/jquery.min.js"></script>
+	<script src="https://angebote.paerke.ch/assets/dist/v21/jquery-ui.min.js"></script>
 
 	<!-- Parks API CSS  -->
-	<link href="https://angebote.paerke.ch/api/lib/api-20/api.css" rel="stylesheet">
+	<link href="https://angebote.paerke.ch/assets/dist/v21/css/parks.min.css" rel="stylesheet">
 
 	<!-- Parks API JS -->
-	<script src="https://angebote.paerke.ch/api/lib/api-20/<?php echo $api->lang_id; ?>.min.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-20/jquery.min.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-20/jquery-ui.min.js"></script>
-	<script src="https://angebote.paerke.ch/api/lib/api-20/ParkApp.min.js"></script>
+	<script src="https://angebote.paerke.ch/assets/dist/v21/parks.min.js"></script>
 
 </head>
 <body>
@@ -61,13 +66,14 @@ $api = new ParksAPI('de');
 			/*
 			'keywords' => '', 							// Filter by keywords
 			'contact_is_park_partner' => 0, 			// 1 == show only offers from park partners
-			'target_groups' => array(6), 				// Filter by target groups
+			'target_groups' => array(), 				// Filter by target groups
+			'fields_of_activity' => array(), 			// Filter by fields of activity
 			'search' => '', 							// Filter by an explicit word
 			'online_shop_enabled' => 0, 				// 1 = show online shop products only
-			'offers_barrier_free' => 0, 				// 1 = barrier free offers
-			'offers_learning_opportunity' => 0, 		// 1 = learning opportunity offers
-			'offers_child_friendly' => 0, 				// 1 = child friendly offers
-			'offers_filter_hints' => 0, 				// 1 = show only hints (Tipps)
+			'barrier_free' => 0, 						// 1 = barrier free offers
+			'learning_opportunity' => 0, 				// 1 = learning opportunity offers
+			'child_friendly' => 0, 						// 1 = child friendly offers
+			'is_hint' => 0, 							// 1 = show only hints (Tipps)
 			'offers_is_park_event' => 1,				// 1 = show only park events	
 			'has_accessibility_informations' => true,	// true = Filter offers with accessibility informations
 			'offers' => array(),						// Filter by offer ids
@@ -75,7 +81,8 @@ $api = new ParksAPI('de');
 			'hide_user_filter' => false,				// Hide user filter if more than one park is listed as dropdown in the filter
 			'hide_accessibility_filter' => false,		// Hide accessibility filter
 			'system_filter' => array(					// Additional filter set by your system
-				'target_groups' => array()					// Show only these target groups in offers list and filter view field
+				'target_groups' => array(),					// Show only offers for this target groups
+				'fields_of_activity' => array()				// Show only offers in this fields of activity
 			)
 			*/
 		);

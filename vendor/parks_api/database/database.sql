@@ -136,7 +136,7 @@ LOCK TABLES `api` WRITE;
 
 INSERT INTO `api` (`initialized`, `version`, `last_import`)
 VALUES
-	(1,'21',NULL);
+	(1,'21.1',NULL);
 
 /*!40000 ALTER TABLE `api` ENABLE KEYS */;
 UNLOCK TABLES;

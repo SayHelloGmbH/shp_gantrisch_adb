@@ -108,7 +108,7 @@ class ParksMigration
 	 * Migrate to specified version
 	 *
 	 * @access public
-	 * @param int $version_to
+	 * @param float $version_to
 	 * @return void
 	 */
 	public function migrate_to($version_to)
@@ -1059,7 +1059,7 @@ class ParksMigration
 			$this->api->db->query("UPDATE `api` SET `version` = " . $version_to . " LIMIT 1;");
 
 			// Log migration
-			$this->api->log_migration();
+			$this->api->log_migration($version_to);
 
 			// Show message
 			$message = 'Migration to version ' . $version_to . ' successfully finished.';

@@ -166,9 +166,6 @@ class ParksImport
 		// Sync fields of activity
 		$this->sync_fields_of_activity();
 
-		// Clean up municipalities
-		$this->api->db->delete('municipality');
-
 		// Add param to url with last import timestamp
 		if ($force !== true) {
 			$api_info = mysqli_fetch_assoc($this->api->db->get('api'));
