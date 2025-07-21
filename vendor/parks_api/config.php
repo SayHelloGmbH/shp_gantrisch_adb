@@ -134,6 +134,7 @@ $config['template_folder'] = 'standard';
 | 'poi_listing_link_target' => Set the detail link target in poi listing e.g. '_blank'
 | 'heading_offer_title_in_overview' => Set the heading html tag for offer titles in overview
 | 'show_accessibility_filter' => Show accessibility filter
+| 'show_municipality_filter' => Show municipality filter
 |
 */
 $config['always_show_filter'] = false;
