@@ -113,6 +113,17 @@ class Block
 						'ui_off_text' => _x('Hide', 'ACF field label', 'shp_gantrisch_adb'),
 					],
 					[
+						'key' => 'field_687e46478b5ac',
+						'label' => _x('Show map', 'ACF field label', 'shp_gantrisch_adb'),
+						'name' => 'adb_show_map',
+						'type' => 'true_false',
+						'instructions' => _x('Show or hide the map function for site visitors.', 'ACF field label', 'shp_gantrisch_adb'),
+						'default_value' => 0,
+						'ui' => 1,
+						'ui_on_text' => _x('Show', 'ACF field label', 'shp_gantrisch_adb'),
+						'ui_off_text' => _x('Hide', 'ACF field label', 'shp_gantrisch_adb'),
+					],
+					[
 						'key' => 'field_635fe86408687',
 						'label' => _x('Keywords', 'ACF field label', 'shp_gantrisch_adb'),
 						'name' => 'adb_keywords',
