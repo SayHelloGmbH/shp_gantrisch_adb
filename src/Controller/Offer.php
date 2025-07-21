@@ -115,6 +115,12 @@ class Offer
 		return $offer_title;
 	}
 
+	/**
+	 * Build and get the single offer URL
+	 *
+	 * @param int $offer_id
+	 * @return void
+	 */
 	public function singleUrl($offer_id)
 	{
 
