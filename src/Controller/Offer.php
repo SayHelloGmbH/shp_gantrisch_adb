@@ -136,11 +136,13 @@ class Offer
 			return '#';
 		}
 
+		$fake_slug = sanitize_title($this->offer_model->getTitle($offer_id));
+
 		return sprintf(
 			'%s%s/%s/',
 			$permalink,
 			$rewrite_key,
-			$offer_id
+			"{$fake_slug}-{$offer_id}"
 		);
 	}
 
