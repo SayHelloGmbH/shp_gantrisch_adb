@@ -14,7 +14,7 @@ class Block
 	{
 		add_action('init', [$this, 'register']);
 		add_action('acf/init', [$this, 'registerFields']);
-		add_action('wp_enqueue_scripts', [$this, 'maybeDequeueJquery'], PHP_INT_MAX);
+		//add_action('wp_enqueue_scripts', [$this, 'maybeDequeueJquery'], PHP_INT_MAX);
 
 		// All blocks. Block type check is in the method.
 		add_action('render_block', [$this, 'modifyHTML'], 10, 3);
