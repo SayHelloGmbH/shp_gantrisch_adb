@@ -2,6 +2,8 @@
 
 namespace SayHello\ShpGantrischAdb\Package;
 
+use SayHello\ShpGantrischAdb\Controller\Offer as OfferController;
+
 /**
  * Rewrite controls for Angebotsdatenbank
  * This allows the page URL to be called with the additional parameter
@@ -41,7 +43,21 @@ class Rewrites
 		preg_match('/\b(\d{3,6})\b/', $vars[$this->var_key] ?? '', $matches);
 		$offer_id = $matches[1] ?? '';
 
-		if (!empty($offer_id) && is_numeric($offer_id)) {
+		if (!empty($offer_id)) {
+
+			// If the requested URL contains a numeric offer ID, redirect to the "new" single offer URL which includes the slug
+			if ((int) $vars[$this->var_key] ?? '' === (int) $offer_id) {
+				$offer_controller = new OfferController();
+
+				$link = $offer_controller->singleUrl((int) $offer_id);
+
+				if (filter_var($link, FILTER_VALIDATE_URL) !== false) {
+					//die('Redirecting to offer URL: ' . $link);
+					wp_redirect($link, 301);
+					exit;
+				}
+			}
+
 			$vars['adb_offer_id'] = $offer_id;
 		}
 
