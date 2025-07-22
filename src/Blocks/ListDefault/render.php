@@ -20,7 +20,7 @@ $block_controller->extend($block);
 
 $classNameBase = $block['shp']['classNameBase'] ?? '';
 $show_filter = (bool) get_field('adb_show_filter');
-$show_map = (bool) get_field('adb_show_map');
+// $show_map = (bool) get_field('adb_show_map');
 
 if ((bool) (get_field('shp_adb_filterfunction_deactivate', 'options') ?? false) === true) {
 	$show_filter = false;
@@ -96,11 +96,9 @@ if (!is_array($category_ids)) {
 		</div>
 	<?php }
 
-	$shown_termine = [];
-
-	if ($show_map) {
-		$api->show_offers_map($category_ids, $filters);
-	}
+	// if ($show_map) {
+	// 	$api->show_offers_map($category_ids, $filters);
+	// }
 
 	$api->show_offers_list($category_ids, $filters);
 
