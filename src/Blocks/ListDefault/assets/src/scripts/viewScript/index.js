@@ -23,6 +23,9 @@ const blocks = document.querySelectorAll(`.${classNameBase}`);
 // const entry_class = `.${classNameBase}__entry`; // Own development class
 const entry_class = `listing_entry`; // ADB standard class
 const initial_count = Math.max(parseInt(shp_gantrisch_adb_block_list_default.initial_count), 1);
+const entry_count = document.querySelectorAll(`.${entry_class}`).length;
+
+console.log(`ADB List Default: Initial count: ${initial_count}, Entry count: ${entry_count}`);
 
 blocks.forEach((block) => {
 	const filterform = block.querySelector('.filter form'),
