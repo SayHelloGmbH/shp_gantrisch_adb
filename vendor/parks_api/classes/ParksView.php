@@ -347,9 +347,14 @@ class ParksView
 		// Filter: municipality
 		if (isset($params['show_municipality_filter']) && ($params['show_municipality_filter'] == true)) {
 
-			// Get municipalities
-			$municipalities = $this->api->model->get_municipalities();
-			if (! empty($municipalities)) {
+			// Get park municipalities
+			if (! empty($params['park_id']) && ($params['park_id'] > 0)) {
+				$municipalities = $this->api->model->get_municipalities(['park_id' => $params['park_id']]);
+			} else {
+				$municipalities = $this->api->model->get_municipalities();
+			}
+
+			if (! empty($municipalities) && (count($municipalities) > 1)) {
 
 				// Format municipality options
 				$municipality_options = '';
@@ -1677,9 +1682,9 @@ class ParksView
 
 		// Project and research fields
 		if (in_array($offer->root_category, [CATEGORY_PROJECT, CATEGORY_RESEARCH]) && empty($long_description)) {
-			$description .= ! empty($offer->project_initial_situation) ? '<h2>' . $this->api->lang->get('offer_project_initial_situation') . '</h2><p class="description">' . output_text($offer->project_initial_situation) . '</p>' : '';
-			$description .= ! empty($offer->project_goal) ? '<h2>' . $this->api->lang->get('offer_project_goal') . '</h2><p class="description">' . output_text($offer->project_goal) . '</p>' : '';
-			$description .= ! empty($offer->project_further_information) ? '<h2>' . $this->api->lang->get('offer_project_further_information') . '</h2><p class="description">' . output_text($offer->project_further_information) . '</p>' : '';
+			$description .= ! empty($offer->project_initial_situation) ? '<h2 class="project_title">' . $this->api->lang->get('offer_project_initial_situation') . '</h2><p class="description">' . output_text($offer->project_initial_situation) . '</p>' : '';
+			$description .= ! empty($offer->project_goal) ? '<h2 class="project_title">' . $this->api->lang->get('offer_project_goal') . '</h2><p class="description">' . output_text($offer->project_goal) . '</p>' : '';
+			$description .= ! empty($offer->project_further_information) ? '<h2 class="project_title">' . $this->api->lang->get('offer_project_further_information') . '</h2><p class="description">' . output_text($offer->project_further_information) . '</p>' : '';
 			$description .= ! empty($offer->project_partner) ? '<h2>' . $this->api->lang->get('offer_partner') . '</h2><p class="description">' . output_text($offer->project_partner) . '</p>' : '';
 		}
 
