@@ -344,8 +344,17 @@ class ParksModel
 		$categories = (array)($filter['categories'] ?? []);
 		$categories = array_filter($categories, fn($id) => $id !== '');
 		if (! empty($categories)) {
-			$conditions = array_map(fn($id) => "category_link.category_id = " . $id, $categories);
-			$where[] = '(' . implode(' OR ', $conditions) . ')';
+			$category_conditions = [];
+			foreach ($categories as $category_id) {
+				$category_conditions[] = "
+					(
+						c1.category_id = " . $category_id . "
+						OR c2.category_id = " . $category_id . "
+						OR c3.category_id = " . $category_id . "
+					)
+				";
+			}
+			$where[] = '(' . implode(' OR ', $category_conditions) . ')';
 		}
 
 		// Filter: is hint
@@ -1648,12 +1657,14 @@ class ParksModel
 	/**
 	 * Get municipalities
 	 * 
+	 * @param array $filter
 	 * @return array
 	 */
-	public function get_municipalities()
+	public function get_municipalities($filter = [])
 	{
-		// First get the municipalities
-		$q_municipalities = $this->api->db->get('municipality');
+
+		// Get the municipalities
+		$q_municipalities = $this->api->db->get('municipality', $filter);
 
 		// Return empty array if there are no municipalities
 		if (mysqli_num_rows($q_municipalities) <= 0) {

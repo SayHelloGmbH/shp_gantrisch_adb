@@ -581,6 +581,7 @@ class ParksAPI
 				'hide_accessibility_filter' => $filter['hide_accessibility_filter'] ?? false,
 				'projects_only' => $projects_only,
 				'show_municipality_filter' => $this->config['show_municipality_filter'] ?? true,
+				'park_id' => $park_id,
 			);
 
 			return $this->view->filter($params);
