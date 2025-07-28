@@ -782,7 +782,6 @@ class ParksView
 						else {
 							$offer_detail_url .= '&amp;poi=' . $poi . '&amp;original_category=' . $original_category;
 						}
-
 					}
 
 					// Prepare link pre-tag
@@ -917,8 +916,8 @@ class ParksView
 
 					// Offer location (place only)
 					if (
-						! empty($this->config['show_event_location_in_overview']) 
-						&& 
+						! empty($this->config['show_event_location_in_overview'])
+						&&
 						! empty($offer->institution_location)
 						&&
 						($offer->root_category == CATEGORY_EVENT)
@@ -986,7 +985,7 @@ class ParksView
 						$output .= '
 							<div class="price">
 								<span class="currency">CHF</span>
-								<span class="value">' . number_format($offer->online_shop_price, 2, '.', "'") . '</span>				
+								<span class="value">' . number_format($offer->online_shop_price, 2, '.', "'") . '</span>
 							</div>
 						';
 					}
@@ -1728,8 +1727,8 @@ class ParksView
 							<p>
 								' . $supplier_intro . '
 								' . $supplier_link_prefix . $supplier_name . $supplier_link_suffix . '</span>'
-								. $separator
-								. $article->article_description . '
+						. $separator
+						. $article->article_description . '
 							</p>
 						</div>
 					';
@@ -1801,7 +1800,7 @@ class ParksView
 				}
 
 				// Close wrap
-				$description .= '			
+				$description .= '
 					</div>
 				';
 			}
@@ -1864,8 +1863,7 @@ class ParksView
 					if (is_array($season_months) && ! empty($season_months)) {
 						if (count($season_months) == 12) {
 							$short_info .= '<span>' . $this->api->lang->get('offer_saison') . ':</span> ' . $this->api->lang->get('offer_all_season');
-						}
-						else {
+						} else {
 							foreach ($season_months as $month) {
 								$season_month_labels[] = $this->api->lang->get('month_long_' . $month);
 							}
@@ -2166,26 +2164,26 @@ class ParksView
 			$template_data['OFFER_IMAGES'] = '<div class="detail_pictures pictures" aria-hidden="true">';
 			foreach ($offer->images as $image) {
 				$data_caption = '';
-				
+
 				if (! empty($image->copyright)) {
 					$image_copyright = '';
 					if (!strstr($image->copyright, '©') && !strstr($image->copyright, '&copy; ')) {
 						$image_copyright .= '&copy;';
 					}
 					$image_copyright .= $image->copyright;
-					$data_caption = 'data-caption="'.$image_copyright.'"';
+					$data_caption = 'data-caption="' . $image_copyright . '"';
 				}
-				
+
 				$template_data['OFFER_IMAGES'] .= '<div class="attachment picture">';
-				
+
 				if ($config_image_enlargement === true) {
-					$template_data['OFFER_IMAGES'] .= '<a href="' . $image->large . '" class="offer_image" rel="offer_images" '.$data_caption.' data-fancybox="gallery"  aria-hidden="true">';
+					$template_data['OFFER_IMAGES'] .= '<a href="' . $image->large . '" class="offer_image" rel="offer_images" ' . $data_caption . ' data-fancybox="gallery"  aria-hidden="true">';
 				}
-				
+
 				$template_data['OFFER_IMAGES'] .= '<img src="' . $image->{$config_thumbnail_size} . '" alt="" class="offer_detail_image">';
-				
+
 				if (! empty($image->copyright)) {
-					$template_data['OFFER_IMAGES'] .= '<div class="image_description">'.$image_copyright.'</div>';
+					$template_data['OFFER_IMAGES'] .= '<div class="image_description">' . $image_copyright . '</div>';
 				}
 
 				if ($config_image_enlargement === true) {
@@ -2355,7 +2353,6 @@ class ParksView
 					if ($detail_segment_pos !== false) {
 						$back_link = substr($this->script_url, 0, $detail_segment_pos);
 					}
-
 				}
 
 				// Set placeholder
@@ -2420,11 +2417,12 @@ class ParksView
 
 	/**
 	 * Get «Add to favorites» link
-	 * 
+	 *
 	 * @param int $offer_id
 	 * @return string
 	 */
-	public function get_favorites_link($offer_id) {
+	public function get_favorites_link($offer_id)
+	{
 		$output = '';
 
 		// Check if favorites are enabled
@@ -2437,14 +2435,13 @@ class ParksView
 			// Set link attributes
 			$favorite_link_title = in_array($offer_id, $this->api->favorites) ? $this->api->lang->get('favorites_remove') : $this->api->lang->get('favorites_add');
 			$favorite_class = in_array($offer_id, $this->api->favorites) ? 'active' : '';
-			
+
 			// Output toggle favorite link
 			$output = '
 				<div class="favorite ' . $favorite_class . '">
 					<a href="' . $this->config['favorites_script_path'] . '/favorite.php?offer_id=' . $offer_id . '" data-offer-id="' . $offer_id . '" data-title="' . $favorite_link_title . '" data-label-add="' . $this->api->lang->get('favorites_add') . '" data-label-remove="' . $this->api->lang->get('favorites_remove') . '" class="tooltip" title="' . $favorite_link_title . '" role="button"><span aria-hidden="true">i</span></a>
 				</div>
 			';
-
 		}
 
 		return $output;
@@ -2542,8 +2539,7 @@ class ParksView
 				if (is_array($season_months) && ! empty($season_months)) {
 					if (count($season_months) == 12) {
 						$dates .= '<p>' . $this->api->lang->get('offer_all_season') . '</p>';
-					}
-					else {
+					} else {
 						foreach ($season_months as $month) {
 							$season_month_labels[] = $this->api->lang->get('month_long_' . $month);
 						}
@@ -2645,7 +2641,7 @@ class ParksView
 	protected function _get_detail_event($offer)
 	{
 
-		// Load template data		
+		// Load template data
 		$template_data['OFFER_ADDITIONAL_INFO'] = $this->_prepare_additional_infos($offer);
 		$template_data['OFFER_DATES'] = $this->_get_offer_dates($offer);
 		$template_data['OFFER_EVENT_LOCATION'] = trim($this->_show_text($this->api->lang->get('offer_event_location'), $offer->institution, 'block event_location'));
@@ -2659,7 +2655,6 @@ class ParksView
 
 		// Compile template data
 		return $this->_compile_output($template_data);
-
 	}
 
 
@@ -2861,11 +2856,7 @@ class ParksView
 				foreach ($offer->categories as $category) {
 					$path = $this->api->model->get_category_path($category->parent_id);
 
-<<<<<<< HEAD
-					if (is_array($path) && (count($path) > $current_level)) {
-=======
 					if (is_array($path) && count($path) > $current_level) {
->>>>>>> fe1a05c (Modifications direct on live server)
 						$offer_category_group = $all_categories[reset($path)];
 						$offer_category = $category;
 						$current_level = count($path);
@@ -3359,7 +3350,7 @@ class ParksView
 				<div class="' . $class . '">
 					<div class="description">
 						' . (! empty($title) ? '<h2>' . $title . '</h2>' : '') .
-						(($has_html == true) ? $content : auto_text_format($content)) . '
+				(($has_html == true) ? $content : auto_text_format($content)) . '
 					</div>
 				</div>
 			';
@@ -3497,7 +3488,4 @@ class ParksView
 		// Set detail url
 		return $url;
 	}
-
-
-
 }
