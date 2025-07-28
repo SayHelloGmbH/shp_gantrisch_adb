@@ -101,7 +101,7 @@ class ParksModel
 	/**
 	 * Get Custom Layers
 	 * [Deprecated with new map]
-	 * 
+	 *
 	 * @access public
 	 * @return mixed
 	 */
@@ -109,8 +109,8 @@ class ParksModel
 	{
 
 		$query = "
-			SELECT * 
-			FROM `map_layer` 
+			SELECT *
+			FROM `map_layer`
 			WHERE `languages` LIKE '%" . $this->api->lang->lang_id . "%'
 		";
 
@@ -123,8 +123,8 @@ class ParksModel
 
 				// Retrieve content
 				$query_i18n = "
-					SELECT * 
-					FROM `map_layer_i18n` 
+					SELECT *
+					FROM `map_layer_i18n`
 					WHERE `map_layer_id` = " . $row->map_layer_id . "
 				";
 				$q_layers_i18n = $this->api->db->query($query_i18n);
@@ -188,7 +188,7 @@ class ParksModel
 				MIN(offer_date.date_from) AS date_from,
 				MAX(offer_date.date_to) AS date_to,
 				main_offer.offer_id,
-				
+
 				MIN(
 					CASE
 						WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -198,7 +198,7 @@ class ParksModel
 					END
 				) AS main_category_id,
 
-				CASE 
+				CASE
 					MIN(
 						CASE
 							WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -211,8 +211,8 @@ class ParksModel
 					WHEN " . CATEGORY_PRODUCT . " THEN product.public_transport_stop
 					WHEN " . CATEGORY_BOOKING . " THEN booking.public_transport_stop
 				END AS public_transport_stop,
-			
-				CASE 
+
+				CASE
 					MIN(
 						CASE
 							WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -225,8 +225,8 @@ class ParksModel
 					WHEN " . CATEGORY_ACTIVITY . " THEN activity.season_months
 				END AS season_months,
 
-				CASE 
-					WHEN 
+				CASE
+					WHEN
 						MIN(
 							CASE
 								WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -238,7 +238,7 @@ class ParksModel
 						AND MIN(offer_date.date_from) < " . (! empty($filter_date_from) ? "'" . $filter_date_from . "'" : "NOW()") . "
 						AND MIN(offer_date.date_from) IS NOT NULL
 						THEN " . (! empty($filter_date_from) ? "'" . $filter_date_from . "'" : "CURDATE()") . "
-					WHEN 
+					WHEN
 						MIN(
 							CASE
 								WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -248,15 +248,15 @@ class ParksModel
 							END
 						) = " . CATEGORY_EVENT . "
 						THEN DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d')
-					ELSE 
+					ELSE
 						MIN(offer_i18n.title)
-				END AS start_date,	
+				END AS start_date,
 
 				TIMESTAMPDIFF(hour, MIN(offer_date.date_from), MAX(offer_date.date_to)) AS duration,
 				IFNULL( DATEDIFF(MAX(offer_date.date_to), MIN(offer_date.date_from) ), 0) AS date_difference,
 
-				CASE 
-					WHEN 
+				CASE
+					WHEN
 						MIN(offer_date.date_from) IS NOT NULL
 						AND (
 							DATE_FORMAT(MIN(offer_date.date_from), '%Y-%m-%d') = DATE_FORMAT(MAX(offer_date.date_to), '%Y-%m-%d')
@@ -275,7 +275,7 @@ class ParksModel
 					ELSE ''
 				END AS times,
 
-				CASE 
+				CASE
 					MIN(
 						CASE
 							WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -339,13 +339,22 @@ class ParksModel
 
 		// Where conditions
 		$where = [];
-		
+
 		// Filter: categories
 		$categories = (array)($filter['categories'] ?? []);
 		$categories = array_filter($categories, fn($id) => $id !== '');
 		if (! empty($categories)) {
-			$conditions = array_map(fn($id) => "category_link.category_id = " . $id, $categories);
-			$where[] = '(' . implode(' OR ', $conditions) . ')';
+			$category_conditions = [];
+			foreach ($categories as $category_id) {
+				$category_conditions[] = "
+					(
+						c1.category_id = " . $category_id . "
+						OR c2.category_id = " . $category_id . "
+						OR c3.category_id = " . $category_id . "
+					)
+				";
+			}
+			$where[] = '(' . implode(' OR ', $category_conditions) . ')';
 		}
 
 		// Filter: is hint
@@ -485,8 +494,7 @@ class ParksModel
 			";
 			if (is_array($filter['municipalities'])) {
 				$where[] = "(offer_municipality_link.municipality_id IN (" . implode(', ', $filter['municipalities']) . "))";
-			}
-			else {
+			} else {
 				$where[] = "offer_municipality_link.municipality_id = " . $filter['municipalities'];
 			}
 		}
@@ -584,7 +592,7 @@ class ParksModel
 							date_from >= NOW()
 						)
 
-					) 
+					)
 				";
 			}
 		} else {
@@ -792,8 +800,8 @@ class ParksModel
 
 			// Group by
 			$group_by = "
-				GROUP BY 
-					CASE 
+				GROUP BY
+					CASE
 						WHEN offer_date.date_from IS NOT NULL
 						THEN DATE_FORMAT(offer_date.date_from, '%Y-%m-%d')
 						ELSE main_offer.offer_id
@@ -807,20 +815,20 @@ class ParksModel
 				$order_by = " ORDER BY RAND() ";
 			} elseif ($ignore_hint_order === true) {
 				$order_by = "
-					ORDER BY 
-						start_date, 
-						date_difference ASC, 
-						MIN(offer_date.date_from) ASC, 
-						duration ASC, 
+					ORDER BY
+						start_date,
+						date_difference ASC,
+						MIN(offer_date.date_from) ASC,
+						duration ASC,
 						CAST(MAX(offer_date.date_to) AS DATE) ASC,
 						MIN(offer_i18n.title) ASC
 				";
 			} else {
 				$order_by = "
 					ORDER BY
-						is_hint DESC, 
+						is_hint DESC,
 						CASE
-							WHEN 
+							WHEN
 								MIN(
 									CASE
 										WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -829,13 +837,13 @@ class ParksModel
 										ELSE NULL
 									END
 								) IN (" . CATEGORY_PROJECT . ", " . CATEGORY_RESEARCH . ")
-							THEN project.duration_from 
+							THEN project.duration_from
 							ELSE NULL
 							END DESC,
-						CASE 
-							WHEN 
-								MIN(offer_date.date_from) IS NOT NULL 
-								AND 
+						CASE
+							WHEN
+								MIN(offer_date.date_from) IS NOT NULL
+								AND
 								MIN(
 									CASE
 										WHEN c3.category_id IS NOT NULL THEN c3.category_id
@@ -843,14 +851,13 @@ class ParksModel
 										WHEN c1.category_id IS NOT NULL THEN c1.category_id
 										ELSE NULL
 									END
-								) = " . CATEGORY_EVENT . " 
+								) = " . CATEGORY_EVENT . "
 							THEN MIN(offer_date.date_from)
 							ELSE MIN(offer_i18n.title)
 							END,
 						MIN(offer_i18n.title) ASC
 				";
 			}
-
 		}
 
 		// Limit query
@@ -1126,10 +1133,10 @@ class ParksModel
 							SELECT *
 							FROM `product_article` AS main_article
 							INNER JOIN `product_article_i18n` main_article_i18n ON main_article_i18n.`product_article_id` = main_article.`product_article_id`
-							WHERE 
+							WHERE
 								main_article.`offer_id` = " . $offer->offer_id . "
 								AND main_article_i18n.`language` = (
-													
+
 									SELECT IF (sub_article_i18n.`language` IS NOT NULL, sub_article_i18n.`language`, (
 										SELECT IF (sub_article_i18n.`language` IS NOT NULL, sub_article_i18n.`language`, (
 											SELECT
@@ -1150,7 +1157,7 @@ class ParksModel
 									FROM `product_article` AS sub_article
 									LEFT JOIN `product_article_i18n` sub_article_i18n ON sub_article_i18n.`product_article_id` = sub_article.`product_article_id` AND sub_article_i18n.`language` = '" . $this->api->lang->lang_id . "'
 									WHERE main_article.`product_article_id` = sub_article.`product_article_id`
-									
+
 								)
 
 						");
@@ -1164,7 +1171,7 @@ class ParksModel
 								$q_article_labels = $this->api->db->query("
 									SELECT *
 									FROM `product_article_label`
-									WHERE 
+									WHERE
 										`product_article_id` = " . $article->product_article_id . "
 										AND `language` = '" . $this->api->lang->lang_id . "'
 								");
@@ -1230,7 +1237,7 @@ class ParksModel
 				$q_linked_routes = $this->api->db->query("
 					SELECT `offer_id`
 					FROM `activity`
-					WHERE 
+					WHERE
 						`poi` LIKE '" . $offer->offer_id . ",%'
 						OR `poi` LIKE '%," . $offer->offer_id . ",%'
 				");
@@ -1267,7 +1274,7 @@ class ParksModel
 		if (array_key_exists($category_id, $this->categories)) {
 			return $this->categories[$category_id];
 		}
-		
+
 		return false;
 	}
 
@@ -1377,7 +1384,7 @@ class ParksModel
 		$q_category_links = $this->api->db->query("SELECT category_id FROM category_link GROUP BY category_link.category_id");
 
 		if (mysqli_num_rows($q_category_links) > 0) {
-			
+
 			// Add main categories
 			$category_links = [
 				CATEGORY_EVENT,
@@ -1415,7 +1422,7 @@ class ParksModel
 
 		// Get all users
 		$query = "
-			SELECT park_id, MIN(park) AS park 
+			SELECT park_id, MIN(park) AS park
 			FROM offer
 		";
 		if (is_array($categories) && ! empty($categories)) {
@@ -1647,19 +1654,20 @@ class ParksModel
 
 	/**
 	 * Get municipalities
-	 * 
+	 *
+	 * @param array $filter
 	 * @return array
 	 */
-	public function get_municipalities()
+	public function get_municipalities($filter = [])
 	{
-		// First get the municipalities
-		$q_municipalities = $this->api->db->get('municipality');
+		// Get the municipalities
+		$q_municipalities = $this->api->db->get('municipality', $filter);
 
 		// Return empty array if there are no municipalities
 		if (mysqli_num_rows($q_municipalities) <= 0) {
 			return [];
 		}
-		
+
 		// Format municipalities
 		$municipalities = [];
 		while ($row = mysqli_fetch_array($q_municipalities)) {
@@ -1797,8 +1805,8 @@ class ParksModel
 
 		// Get accessiblity options
 		$select_result = $this->api->db->query("
-			SELECT 
-				`icon_url`, 
+			SELECT
+				`icon_url`,
 				MIN(`description_" . $this->api->lang->lang_id . "`) AS `description`
 			FROM `accessibility_rating`
 			GROUP BY `icon_url`
@@ -1849,7 +1857,4 @@ class ParksModel
 
 		return false;
 	}
-
-
-
 }
