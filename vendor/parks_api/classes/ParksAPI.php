@@ -217,9 +217,7 @@ class ParksAPI
 
 						// Remove last slash
 						$session_url = rtrim($session_url, '/');
-
 					}
-					
 				}
 
 				// Set session
@@ -230,7 +228,6 @@ class ParksAPI
 				if (! empty($_COOKIE[$this->favorites_cookie_name])) {
 					$this->favorites = unserialize($_COOKIE[$this->favorites_cookie_name]);
 				}
-
 			}
 
 			// Init reset filter
@@ -281,7 +278,7 @@ class ParksAPI
 			$xml = $this->config['xml_export_offer_url'] . $this->hash;
 			$xml_map_layer = $this->config['xml_export_map_layer_url'] . $this->hash;
 			$xml_active_offers = $this->config['xml_export_active_offers'] . $this->hash;
-	
+
 			// Import data from XML into database
 			$this->import->import($xml, $force);
 			$this->import->import_map_layers($xml_map_layer);
@@ -292,8 +289,6 @@ class ParksAPI
 				'status' => true,
 				'messsage' => 'The offers were successfully synchronised.',
 			]);
-
-
 		} catch (Exception $e) {
 
 			// Return error as json
@@ -301,9 +296,7 @@ class ParksAPI
 				'status' => false,
 				'messsage' => 'ADB sync exception: ' . $e->getMessage(),
 			]);
-
 		}
-
 	}
 
 
@@ -320,7 +313,6 @@ class ParksAPI
 		// Migrate database to newer versions
 		$migration = new ParksMigration($this);
 		$migration->start();
-
 	}
 
 
@@ -581,6 +573,7 @@ class ParksAPI
 				'hide_accessibility_filter' => $filter['hide_accessibility_filter'] ?? false,
 				'projects_only' => $projects_only,
 				'show_municipality_filter' => $this->config['show_municipality_filter'] ?? true,
+				'park_id' => $park_id,
 			);
 
 			return $this->view->filter($params);
@@ -771,7 +764,7 @@ class ParksAPI
 	public function show_total()
 	{
 		if ($this->total > 0) {
-			
+
 			$total = $this->total . ' ' . (($this->total == 1) ? $this->lang->get('offer') : $this->lang->get('offers'));
 
 			if ($this->return_output === true) {
@@ -779,7 +772,6 @@ class ParksAPI
 			} else {
 				echo $total;
 			}
-
 		}
 	}
 
@@ -846,7 +838,6 @@ class ParksAPI
 
 						// Remove poi id from seo url
 						$seo_url = array_slice($seo_url, 0, -2);
-
 					}
 
 					// Split last url segment by dashes
@@ -920,7 +911,6 @@ class ParksAPI
 			} else {
 				echo $this->show_offers_list([], ['offers' => $this->favorites]);
 			}
-
 		}
 
 		// No favorites set
@@ -932,7 +922,6 @@ class ParksAPI
 			} else {
 				echo $message;
 			}
-			
 		}
 	}
 
@@ -984,7 +973,6 @@ class ParksAPI
 
 		// Empty cookie
 		setcookie($this->favorites_cookie_name, '', time(), '/');
-
 	}
 
 
@@ -1298,7 +1286,7 @@ class ParksAPI
 
 	/**
 	 * Reload page
-	 * 
+	 *
 	 * @access protected
 	 * @return void
 	 */
@@ -1959,10 +1947,10 @@ class ParksAPI
 
 	/**
 	 * Log migration
-	 * 
+	 *
 	 * @return bool
 	 */
-	public function log_migration() 
+	public function log_migration()
 	{
 
 		// Populate payload
@@ -1990,9 +1978,5 @@ class ParksAPI
 		curl_close($ch);
 
 		return true;
-
 	}
-
-
-	
 }
