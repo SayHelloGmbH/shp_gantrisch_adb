@@ -2861,7 +2861,11 @@ class ParksView
 				foreach ($offer->categories as $category) {
 					$path = $this->api->model->get_category_path($category->parent_id);
 
+<<<<<<< HEAD
 					if (is_array($path) && (count($path) > $current_level)) {
+=======
+					if (is_array($path) && count($path) > $current_level) {
+>>>>>>> fe1a05c (Modifications direct on live server)
 						$offer_category_group = $all_categories[reset($path)];
 						$offer_category = $category;
 						$current_level = count($path);
