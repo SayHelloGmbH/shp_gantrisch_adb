@@ -39,8 +39,7 @@ class Rewrites
 
 	public function endpointVars($vars)
 	{
-
-		preg_match('/\b(\d{3,6})\b/', $vars[$this->var_key] ?? '', $matches);
+		preg_match('/(\d{3,6})$/', $vars[$this->var_key] ?? '', $matches);
 		$offer_id = $matches[1] ?? '';
 
 		if (!empty($offer_id)) {
