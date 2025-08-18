@@ -45,7 +45,7 @@ class Rewrites
 		if (!empty($offer_id)) {
 
 			// If the requested URL contains a numeric offer ID, redirect to the "new" single offer URL which includes the slug
-			if ((int) $vars[$this->var_key] ?? '' === (int) $offer_id) {
+			if (strlen($vars[$this->var_key]) === strlen($offer_id) && (int) $vars[$this->var_key] ?? '' === (int) $offer_id) {
 				$offer_controller = new OfferController();
 
 				$link = $offer_controller->singleUrl((int) $offer_id);
