@@ -37,6 +37,11 @@ if (!empty($keywords)) {
 	$filters['keywords'] = $keywords;
 }
 
+$show_is_park_event = (bool) ($block['data']['show_is_park_event'] ?? false);
+if ($show_is_park_event) {
+	$filters['offers_is_park_event'] = 1;
+}
+
 if ($is_preview === true) {
 ?>
 	<div class="<?php echo $block['shp']['class_names']; ?>">

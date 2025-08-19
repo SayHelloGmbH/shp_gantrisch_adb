@@ -131,6 +131,17 @@ class Block
 						'rows' => 4,
 						'new_lines' => '',
 					],
+					[
+						'key' => 'field_68a43ab84b540',
+						'label' => _x('Only “Naturpark”', 'ACF field label', 'shp_gantrisch_adb'),
+						'name' => 'show_is_park_event',
+						'type' => 'true_false',
+						'instructions' => _x('Only show offers with the marker “Naturpark”.', 'ACF field label', 'shp_gantrisch_adb'),
+						'default_value' => 0,
+						'ui' => 1,
+						'ui_on_text' => _x('Yes', 'ACF field label', 'shp_gantrisch_adb'),
+						'ui_off_text' => _x('No', 'ACF field label', 'shp_gantrisch_adb'),
+					],
 					array(
 						'key' => 'field_6357fafbea9ab',
 						'label' => 'Categories',
