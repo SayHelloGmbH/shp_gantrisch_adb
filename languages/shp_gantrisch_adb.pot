@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-04 12:28+0000\n"
+"POT-Creation-Date: 2025-08-19 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: shp_gantrisch_adb\n"
@@ -37,6 +37,21 @@ msgctxt "ACF field label"
 msgid "Keywords"
 msgstr ""
 
+#: src/Blocks/ListDefault/Block.php:143
+msgctxt "ACF field label"
+msgid "No"
+msgstr ""
+
+#: src/Blocks/ListDefault/Block.php:139
+msgctxt "ACF field label"
+msgid "Only show offers with the marker “Naturpark”."
+msgstr ""
+
+#: src/Blocks/ListDefault/Block.php:136
+msgctxt "ACF field label"
+msgid "Only “Naturpark”"
+msgstr ""
+
 #: src/Blocks/ListDefault/Block.php:112
 msgctxt "ACF field label"
 msgid "Show"
@@ -50,6 +65,11 @@ msgstr ""
 #: src/Blocks/ListDefault/Block.php:109
 msgctxt "ACF field label"
 msgid "Show or hide the list filter function for site visitors."
+msgstr ""
+
+#: src/Blocks/ListDefault/Block.php:142
+msgctxt "ACF field label"
+msgid "Yes"
 msgstr ""
 
 #: src/Blocks/AccordionRoute/render.php:15
@@ -548,7 +568,7 @@ msgctxt "List block default button text"
 msgid "Load more"
 msgstr ""
 
-#: src/Blocks/ListDefault/Block.php:328
+#: src/Blocks/ListDefault/Block.php:339
 msgctxt "More offers label"
 msgid "Parkpartner"
 msgstr ""
@@ -557,7 +577,7 @@ msgstr ""
 msgid "Offer database for Naturpark Gantrisch"
 msgstr ""
 
-#: src/Blocks/ListDefault/Block.php:320
+#: src/Blocks/ListDefault/Block.php:331
 msgctxt "Park event label"
 msgid "Naturpark"
 msgstr ""
@@ -570,7 +590,7 @@ msgstr ""
 msgid "Say Hello GmbH"
 msgstr ""
 
-#: src/Blocks/ListDefault/Block.php:312
+#: src/Blocks/ListDefault/Block.php:323
 msgctxt "Tip label"
 msgid "Tipp"
 msgstr ""

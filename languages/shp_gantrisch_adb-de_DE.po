@@ -11,12 +11,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-11-30T14:04:37+01:00\n"
-"PO-Revision-Date: 2024-12-04 12:32+0000\n"
+"PO-Revision-Date: 2025-08-19 15:17+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: shp_gantrisch_adb\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.6.3; wp-6.1.1"
+"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.3.24"
 
 #: src/Blocks/ListDefault/Block.php:113
 msgctxt "ACF field label"
@@ -42,6 +42,22 @@ msgctxt "ACF field label"
 msgid "Keywords"
 msgstr "Schlagwörter"
 
+#: src/Blocks/ListDefault/Block.php:143
+msgctxt "ACF field label"
+msgid "No"
+msgstr "Nein"
+
+#: src/Blocks/ListDefault/Block.php:139
+msgctxt "ACF field label"
+msgid "Only show offers with the marker “Naturpark”."
+msgstr "Zeigt nur Angebote mit der Kennzeichnung «Naturpark» an."
+
+#: src/Blocks/ListDefault/Block.php:136
+msgctxt "ACF field label"
+msgid "Only “Naturpark”"
+msgstr ""
+"Nur «Naturpark»\n"
+
 #: src/Blocks/ListDefault/Block.php:112
 msgctxt "ACF field label"
 msgid "Show"
@@ -56,6 +72,11 @@ msgstr "Filter anzeigen"
 msgctxt "ACF field label"
 msgid "Show or hide the list filter function for site visitors."
 msgstr "Die Listenfilterfunktion für Website-Besucher anzeigen oder verbergen."
+
+#: src/Blocks/ListDefault/Block.php:142
+msgctxt "ACF field label"
+msgid "Yes"
+msgstr "Ja"
 
 #: src/Blocks/AccordionRoute/render.php:15
 msgctxt "ADB route difficulty"
@@ -561,7 +582,7 @@ msgctxt "List block default button text"
 msgid "Load more"
 msgstr "Weitere nachladen"
 
-#: src/Blocks/ListDefault/Block.php:328
+#: src/Blocks/ListDefault/Block.php:339
 msgctxt "More offers label"
 msgid "Parkpartner"
 msgstr "Parkpartner"
@@ -570,7 +591,7 @@ msgstr "Parkpartner"
 msgid "Offer database for Naturpark Gantrisch"
 msgstr "Angebotsdatenbank für den Naturpark Gantrisch"
 
-#: src/Blocks/ListDefault/Block.php:320
+#: src/Blocks/ListDefault/Block.php:331
 msgctxt "Park event label"
 msgid "Naturpark"
 msgstr "Naturpark"
@@ -584,7 +605,7 @@ msgstr ""
 msgid "Say Hello GmbH"
 msgstr "Say Hello GmbH"
 
-#: src/Blocks/ListDefault/Block.php:312
+#: src/Blocks/ListDefault/Block.php:323
 msgctxt "Tip label"
 msgid "Tipp"
 msgstr "Tipp"
